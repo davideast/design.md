@@ -1,47 +1,90 @@
 ---
 import Base from "../layouts/Base.astro";
 import TopRail from "../components/TopRail.astro";
-import ProofThumb from "../components/ProofThumb.astro";
-import { listCases } from "../lib/runs";
+import ProofPlate from "../components/ProofPlate.astro";
+import { listCases, compareView } from "../lib/runs";
 const cases = listCases();
+const cmp = compareView();
+const top = cmp?.tools[0];
+const bottom = cmp?.tools[cmp.tools.length - 1];
+const comparedKey = cmp?.caseKey; // the one case with a real cross-tool proof today
+const pct = (n: number) => Math.round(n * 100);
 ---
 <Base title="Design Bench">
   <TopRail active="Cases" />
   <main class="max-w-6xl mx-auto px-lg py-xl">
+    <!-- Identity: what this is, in one breath -->
     <h1 class="text-display font-display tracking-tight">Design Bench</h1>
-    <p class="text-body text-ink-muted mt-xs max-w-prose">
-      Test and compare how AI design tools render the same brief — the same content under
-      different design directions, measured and compared.
+    <p class="text-body text-ink mt-sm max-w-prose" style="font-size:16px;line-height:1.55">
+      A proofing station for AI design tools. It hands the same brief — identical content, palette, and type —
+      to each tool, then proofs what comes back: how faithfully each held the spec, and where it drifted.
     </p>
 
-    <div class="mt-xl grid grid-cols-1 md:grid-cols-2 gap-lg">
-      {cases.map((c) => (
-        <a href={`/cases/${c.key}`} class="block group border border-line bg-paper p-md hover:ring-1 hover:ring-primary transition">
-          <div class="flex items-baseline justify-between mb-sm">
-            <span class="font-display font-semibold text-base text-ink group-hover:text-primary">{c.title}</span>
-            <span class="font-label text-label uppercase text-ink-muted">open</span>
-          </div>
-          <ProofThumb src={c.thumb} label={c.title} />
-          <p class="text-body text-ink-muted mt-sm" style="font-size:13px">{c.world}</p>
-          <div class="font-label text-label uppercase text-ink-muted mt-md mb-xs">Result</div>
-          <p class="text-body" style="font-size:13.5px;line-height:1.45">{c.headline}</p>
-        </a>
-      ))}
-    </div>
+    <!-- HERO: the canonical proof — same brief, two tools, side by side -->
+    {cmp && top && bottom && (
+      <section class="mt-xl">
+        <div class="font-label text-label uppercase text-ink-muted mb-md">
+          On the table — {cmp.caseTitle}: one brief, {cmp.tools.length} tools
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-lg">
+          {cmp.tools.map((t) => (
+            <ProofPlate src={t.samplePath} providerName={t.toolName} fidelity={t.fidelity} href="/compare" />
+          ))}
+        </div>
+        <p class="text-body mt-md max-w-prose">
+          {top.toolName} held <b>{pct(top.fidelity)}%</b> of the handed palette; {bottom.toolName}, <b>{pct(bottom.fidelity)}%</b>.
+          Same brief, same spec — the tool is the only thing that changed.
+          <a href="/compare" class="text-primary hover:underline">See the full proof →</a>
+        </p>
+      </section>
+    )}
 
-    <div class="mt-xl border-t border-line pt-md max-w-prose">
-      <div class="font-label text-label uppercase text-ink-muted mb-sm">How to read the evidence</div>
-      <p class="text-body" style="font-size:13.5px;line-height:1.55">
-        A <b>treatment</b> is what the model was given — from nothing at all up to a complete specification.
-        The <b>default look</b> is what a tool produces with no direction; every distance is measured from it.
-        <b>Adjectives</b> are the treatment being challenged: describing a design in words like clean, modern, bold.
-        A case can also be compared across <b>tools</b> — the same direction handed to several — scored by
-        <b>fidelity</b>, how faithfully each reproduced it.
+    <!-- The cases: the briefs on the bench, each a job you can open -->
+    <section class="mt-xl border-t border-line pt-lg">
+      <div class="font-label text-label uppercase text-ink-muted mb-md">The cases — briefs on the bench</div>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-lg">
+        {cases.map((c) => {
+          const compared = c.key === comparedKey;
+          return (
+            <a href={`/cases/${c.key}`} class="block group border border-line bg-paper p-md hover:ring-1 hover:ring-primary transition" style="border-radius:0">
+              <div class="flex items-baseline justify-between mb-1">
+                <span class="font-display font-semibold text-base text-ink group-hover:text-primary">{c.title}</span>
+                <span class="font-label text-label uppercase text-ink-muted">open</span>
+              </div>
+              <p class="text-body text-ink-muted" style="font-size:13px">{c.world}</p>
+              <div class="mt-md pt-sm border-t border-line">
+                {compared && top && bottom ? (
+                  <div class="font-data text-data text-ink">
+                    proofed across tools — {top.toolName} {pct(top.fidelity)}% · {bottom.toolName} {pct(bottom.fidelity)}% palette fidelity
+                  </div>
+                ) : (
+                  <div class="font-data text-data text-ink-muted">cross-tool proof pending · direction ladder measured inside</div>
+                )}
+              </div>
+            </a>
+          );
+        })}
+      </div>
+    </section>
+
+    <!-- How the bench works — provider-first, method-grounding as the second lens -->
+    <section class="mt-xl border-t border-line pt-lg max-w-prose">
+      <div class="font-label text-label uppercase text-ink-muted mb-sm">How the bench works</div>
+      <p class="text-body" style="font-size:13.5px;line-height:1.6">
+        A <b>case</b> is one design job — a brief with fixed content, palette, and type. The bench hands that same
+        brief to each <b>tool</b> and proofs what comes back. <b>Fidelity</b> is how faithfully a tool reproduced the
+        handed palette and type — the CMYK bar under each proof. A second lens holds one tool fixed and varies the
+        <b>design direction</b> instead, from no direction up to a full specification, measured as distance from the
+        tool's default look; that lens lives inside each case.
       </p>
-    </div>
+    </section>
 
     <!-- Quieter paths for makers -->
     <div class="mt-lg flex flex-wrap gap-x-xl gap-y-sm max-w-prose">
+      <a href="/compare" class="group">
+        <span class="font-label text-label uppercase text-ink group-hover:text-primary">Compare tools →</span>
+        <span class="block text-body text-ink-muted" style="font-size:12.5px">the same brief, side by side, scored by fidelity</span>
+      </a>
       <a href="/cases/new" class="group">
         <span class="font-label text-label uppercase text-ink group-hover:text-primary">Start a new case →</span>
         <span class="block text-body text-ink-muted" style="font-size:12.5px">an ideation agent helps you find the world before any files exist</span>
@@ -49,10 +92,6 @@ const cases = listCases();
       <a href="/measurements" class="group">
         <span class="font-label text-label uppercase text-ink group-hover:text-primary">All measurements →</span>
         <span class="block text-body text-ink-muted" style="font-size:12.5px">every batch, model, and definition hash</span>
-      </a>
-      <a href="/compare" class="group">
-        <span class="font-label text-label uppercase text-ink group-hover:text-primary">Compare tools →</span>
-        <span class="block text-body text-ink-muted" style="font-size:12.5px">the same brief, two tools, scored by fidelity</span>
       </a>
     </div>
   </main>

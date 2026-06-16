@@ -507,6 +507,7 @@ export interface CompareTool {
 }
 
 export interface CompareView {
+  caseKey: string;
   caseTitle: string;
   world: string;
   evalHash: string;
@@ -538,6 +539,7 @@ export function compareView(runName = "tool-comp-smoke"): CompareView | null {
     })
     .sort((a: CompareTool, b: CompareTool) => b.fidelity - a.fidelity);
   return {
+    caseKey,
     caseTitle: CASE_TITLES[caseKey] ?? caseKey,
     world: CASE_WORLDS[caseKey] ?? "",
     evalHash: cfg.evalHash ?? "—",
