@@ -2,43 +2,100 @@
 import Base from "../layouts/Base.astro";
 import TopRail from "../components/TopRail.astro";
 import ProofThumb from "../components/ProofThumb.astro";
-import { gridTiles } from "../lib/bench";
+import { PROVIDERS, bestArm, gridTiles } from "../lib/bench";
 import { CASE_TITLES, CASE_WORLDS } from "../lib/runs";
-const tiles = gridTiles();
-// Group by design type so the page reads as "designs, across providers".
-const byCase = new Map<string, typeof tiles>();
-for (const t of tiles) {
-  if (!byCase.has(t.caseKey)) byCase.set(t.caseKey, []);
-  byCase.get(t.caseKey)!.push(t);
-}
+
+// Rows = cases (in first-seen order), columns = providers.
+const rows = Array.from(new Set(gridTiles().map((t) => t.caseKey)));
+const cols = PROVIDERS;
+const caseNo = (i: number) => `Case ${String(i + 1).padStart(2, "0")}`;
+const gridCols = `220px repeat(${cols.length}, minmax(0, 1fr))`;
 ---
 <Base title="Design Bench">
   <TopRail active="Cases" />
   <main class="max-w-6xl mx-auto px-lg py-xl">
-    <h1 class="text-display font-display tracking-tight">Design Bench</h1>
-    <p class="text-body text-ink-muted mt-xs max-w-prose">
-      The same brief, run through different AI design tools. Each tile is one tool's best result for that brief —
-      open it to see every arm side by side.
-    </p>
+    <header class="mb-xl">
+      <h1 class="font-display text-display text-ink mb-sm">Design Bench</h1>
+      <p class="font-body text-body text-ink-muted max-w-3xl">
+        Test and compare how AI design tools render the same brief — generate across tools, measure each against the
+        direction it was handed, and check the results side by side. Each cell is one tool's best result for that
+        brief; open it to see every arm side by side.
+      </p>
+    </header>
 
-    {[...byCase.entries()].map(([caseKey, group]) => (
-      <section class="mt-xl">
-        <div class="flex items-baseline justify-between border-b border-line pb-xs mb-md">
-          <span class="font-display font-semibold text-base text-ink">{CASE_TITLES[caseKey] ?? caseKey}</span>
-          <span class="font-label text-label uppercase text-ink-muted">{CASE_WORLDS[caseKey] ?? ""}</span>
+    <div class="flex flex-col md:flex-row gap-lg items-start">
+      <!-- CMYK reference tray (proofer strip) — a press reference, not a per-result palette -->
+      <aside class="hidden md:flex flex-col gap-xs pt-xl shrink-0">
+        <div class="border border-line bg-paper p-xs">
+          <span class="color-patch bg-ink"></span>
+          <span class="color-patch bg-primary"></span>
+          <span class="color-patch bg-secondary"></span>
+          <span class="color-patch bg-tertiary"></span>
+          <span class="color-patch bg-line"></span>
+          <span class="color-patch bg-paper border-t border-line mt-xs"></span>
         </div>
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-lg">
-          {group.map((t) => (
-            <a href={`/r/${t.providerKey}/${t.caseKey}`} class="block group">
-              <ProofThumb src={t.best?.render} />
-              <div class="mt-sm flex items-baseline justify-between">
-                <span class="font-label text-label uppercase text-ink group-hover:text-primary">{t.providerLabel}</span>
-                <span class="font-label text-label uppercase text-ink-muted">{t.best?.name}</span>
-              </div>
-            </a>
-          ))}
+        <div class="font-data text-data text-ink-muted text-center mt-xs" style="font-size:8px;line-height:1.3">CMYK<br/>REF</div>
+      </aside>
+
+      <!-- the matrix: cases (rows) × providers (columns) -->
+      <div class="grid w-full gap-xl items-start" style={`grid-template-columns:${gridCols}`}>
+        <!-- column headers -->
+        <div class="font-data text-data text-ink-muted self-end pb-xs">CASE \ TOOL</div>
+        {cols.map((p) => (
+          <div class="font-label text-label uppercase tracking-widest text-ink self-end border-b border-line pb-xs">{p.label}</div>
+        ))}
+
+        <!-- one row per case -->
+        {rows.map((caseKey, i) => (
+          <>
+            <div class="pt-xs">
+              <div class="font-label text-label uppercase tracking-widest text-ink-muted">{caseNo(i)}</div>
+              <div class="font-display text-ink mt-xs" style="font-size:19px;font-weight:600;line-height:1.2">{CASE_TITLES[caseKey] ?? caseKey}</div>
+              <p class="font-body text-body text-ink-muted mt-xs" style="font-size:12.5px;line-height:1.45">{CASE_WORLDS[caseKey] ?? ""}</p>
+            </div>
+
+            {cols.map((p) => {
+              const best = bestArm(p.key, caseKey);
+              return best ? (
+                <a href={`/r/${p.key}/${caseKey}`} class="relative bg-paper border border-line p-sm group hover:border-primary transition-colors">
+                  <div class="crop-mark-tl"></div><div class="crop-mark-tr"></div>
+                  <div class="crop-mark-bl"></div><div class="crop-mark-br"></div>
+                  <ProofThumb src={best.render} />
+                  <div class="mt-sm flex items-baseline justify-between border-t border-line pt-xs">
+                    <span class="font-label text-label uppercase text-ink group-hover:text-primary">{best.name}</span>
+                    <span class="font-data text-data text-ink-muted">1280×800</span>
+                  </div>
+                </a>
+              ) : (
+                <div class="relative bg-paper border border-dashed border-line p-sm flex items-center justify-center" style="min-height:180px">
+                  <span class="font-data text-data text-ink-muted">AWAITING_RENDER</span>
+                </div>
+              );
+            })}
+          </>
+        ))}
+      </div>
+    </div>
+
+    <!-- Reference // how to read -->
+    <section class="mt-xl relative bg-paper border border-line p-lg">
+      <div class="crop-mark-tl"></div><div class="crop-mark-tr"></div>
+      <div class="crop-mark-bl"></div><div class="crop-mark-br"></div>
+      <h3 class="font-label text-label uppercase tracking-widest text-ink border-b border-line pb-xs mb-md">Reference // How to read</h3>
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-md">
+        <div>
+          <span class="font-data text-data text-ink-muted block mb-xs">TERM: CASE</span>
+          <p class="font-body text-body text-ink" style="font-size:13px">One design brief — fixed content, palette, and type. The bench runs it through each tool.</p>
         </div>
-      </section>
-    ))}
+        <div>
+          <span class="font-data text-data text-ink-muted block mb-xs">TERM: ARM</span>
+          <p class="font-body text-body text-ink" style="font-size:13px">How much design direction the tool was handed, from no direction up to a full specification. The grid shows the best arm; open a cell for all of them.</p>
+        </div>
+        <div>
+          <span class="font-data text-data text-ink-muted block mb-xs">TERM: DEFAULT LOOK</span>
+          <p class="font-body text-body text-ink" style="font-size:13px">What a tool produces with no direction. Every arm's distance is measured from it.</p>
+        </div>
+      </div>
+    </section>
   </main>
 </Base>

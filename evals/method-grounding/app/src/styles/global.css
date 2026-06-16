@@ -1,2 +1,13 @@
 /* The two voices from DESIGN.md: IBM Plex Sans (house) + IBM Plex Mono (machine). */
 @import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&display=swap');
+
+/* Press-table decorations from the Stitch design system (our design system):
+   corner crop marks on proof sheets, and the CMYK reference patch. */
+.crop-mark-tl, .crop-mark-tr, .crop-mark-bl, .crop-mark-br {
+  position: absolute; width: 16px; height: 16px; pointer-events: none;
+}
+.crop-mark-tl { top: -16px; left: -16px; border-bottom: 1px solid #1c1b22; border-right: 1px solid #1c1b22; }
+.crop-mark-tr { top: -16px; right: -16px; border-bottom: 1px solid #1c1b22; border-left: 1px solid #1c1b22; }
+.crop-mark-bl { bottom: -16px; left: -16px; border-top: 1px solid #1c1b22; border-right: 1px solid #1c1b22; }
+.crop-mark-br { bottom: -16px; right: -16px; border-top: 1px solid #1c1b22; border-left: 1px solid #1c1b22; }
+.color-patch { width: 16px; height: 16px; display: block; }

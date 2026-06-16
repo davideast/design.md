@@ -26,12 +26,14 @@ const d = depthView(provider!, caseKey!)!;
       direction — from no direction at all to a full specification. Open any one to see it full size.
     </p>
 
-    <!-- all arms for this one provider, side by side -->
-    <div class="mt-xl grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-lg">
+    <!-- all arms for this one provider, side by side (each a crop-marked proof sheet) -->
+    <div class="mt-xl grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-xl">
       {d.arms.map((a) => (
-        <a href={a.render} target="_blank" rel="noopener" class="block group">
+        <a href={a.render} target="_blank" rel="noopener" class="relative bg-paper border border-line p-sm group hover:border-primary transition-colors">
+          <div class="crop-mark-tl"></div><div class="crop-mark-tr"></div>
+          <div class="crop-mark-bl"></div><div class="crop-mark-br"></div>
           <ProofThumb src={a.render} />
-          <div class="mt-sm flex items-baseline justify-between">
+          <div class="mt-sm flex items-baseline justify-between border-t border-line pt-xs">
             <span class="font-label text-label uppercase text-ink group-hover:text-primary">{a.name}</span>
             {a.isControl ? (
               <span class="font-label text-label uppercase text-ink-muted">default look</span>
@@ -39,7 +41,7 @@ const d = depthView(provider!, caseKey!)!;
               <span class="font-data text-data text-ink bg-accent-wash px-1">{a.score != null ? a.score.toFixed(2) : "—"}</span>
             )}
           </div>
-          <p class="text-body text-ink-muted mt-1" style="font-size:12.5px;line-height:1.4">{a.blurb}</p>
+          <p class="text-body text-ink-muted mt-xs" style="font-size:12.5px;line-height:1.4">{a.blurb}</p>
         </a>
       ))}
     </div>
