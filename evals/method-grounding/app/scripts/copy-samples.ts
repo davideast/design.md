@@ -16,12 +16,18 @@ let copied = 0;
 for (const caseKey of readdirSync(runDir).filter((d) => statSync(join(runDir, d)).isDirectory() && !["eval", "blind"].includes(d))) {
   const caseDir = join(runDir, caseKey);
   for (const cell of readdirSync(caseDir).filter((d) => statSync(join(caseDir, d)).isDirectory())) {
-    const sample = join(caseDir, cell, "0.html");
-    if (!existsSync(sample)) continue;
+    const samples = readdirSync(join(caseDir, cell)).filter((f) => /^\d+\.html$/.test(f));
+    if (!samples.length) continue;
+    // Flat sample-0 (thumbnails, case grid) + nested all-n (treatment sheet, detail).
     const outDir = join("public", "samples", caseKey);
-    mkdirSync(outDir, { recursive: true });
-    writeFileSync(join(outDir, `${cell}.html`), readFileSync(sample, "utf8"));
-    copied++;
+    const nestDir = join(outDir, cell);
+    mkdirSync(nestDir, { recursive: true });
+    for (const f of samples) {
+      const html = readFileSync(join(caseDir, cell, f), "utf8");
+      writeFileSync(join(nestDir, f), html);
+      if (f === "0.html") writeFileSync(join(outDir, `${cell}.html`), html);
+      copied++;
+    }
   }
 }
 

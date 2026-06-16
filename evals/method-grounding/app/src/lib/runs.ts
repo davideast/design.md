@@ -78,6 +78,12 @@ function samplePath(caseKey: string, cell: string): string | null {
   return existsSync(p) ? `/samples/${caseKey}/${cell}.html` : null;
 }
 
+/** The nth rendering of a cell, from the per-sample copies. */
+function samplePathN(caseKey: string, cell: string, n: number): string | null {
+  const p = join("public", "samples", caseKey, cell, `${n}.html`);
+  return existsSync(p) ? `/samples/${caseKey}/${cell}/${n}.html` : null;
+}
+
 export function caseView(caseKey: string): CaseView | null {
   const found = caseCells(caseKey);
   if (!found) return null;
@@ -157,6 +163,10 @@ export function renderingView(caseKey: string, treatment: string, n: number): Re
     { label: "Font families", value: `${(mc.fontFamilies ?? 0).toFixed(1)} avg` },
     { label: "Palette adherence", value: cell.paletteAdherence != null ? `${Math.round(cell.paletteAdherence * 100)}%` : "—" },
   ];
+  // Per-sample distance when we have it, falling back to the treatment mean.
+  const base = cellBaseline(cell);
+  const ss = (cell.sampleSummaries ?? []).find((x: any) => String(x.index) === String(n));
+  const perSample = treatment === "no-design-md" ? 0 : ss && ss.distToControl != null ? round2(Math.max(0, ss.distToControl - base)) : round2(cell.excessDistanceFromControl);
   return {
     caseTitle: CASE_TITLES[caseKey] ?? caseKey,
     caseKey,
@@ -166,10 +176,98 @@ export function renderingView(caseKey: string, treatment: string, n: number): Re
     total: cell.samples ?? 0,
     tool: toolLabel,
     date: /^\d{4}-\d{2}-\d{2}/.test(config.startedAt ?? "") ? config.startedAt.slice(0, 10) : "2026-06-10",
-    samplePath: samplePath(caseKey, treatment),
-    distance: round2(cell.excessDistanceFromControl),
+    samplePath: samplePathN(caseKey, treatment, n) ?? samplePath(caseKey, treatment),
+    distance: perSample,
     fieldMarks,
     exactWords: armProse(caseKey, treatment),
+  };
+}
+
+// ---------------------------------------------------------------------------
+// Treatment sheet: every rendering of one treatment, to read consistency.
+// The question is agreement — given the same input N times, how much did the
+// results converge? Grounded direction tends to stabilize; adjectives wander.
+// ---------------------------------------------------------------------------
+
+/** Distance the control's own renderings sit at, so per-sample distances read
+ *  on the same "from the default look" scale as the rest of the site. */
+function cellBaseline(cell: any): number {
+  if (cell.distanceFromControl == null || cell.excessDistanceFromControl == null) return 0;
+  return cell.distanceFromControl - cell.excessDistanceFromControl;
+}
+
+export interface SampleMark {
+  n: number;
+  distance: number | null;
+  samplePath: string | null;
+}
+
+export interface TreatmentSheet {
+  caseKey: string;
+  caseTitle: string;
+  world: string;
+  treatmentKey: string;
+  treatmentName: string;
+  blurb: string;
+  tool: string;
+  evalHash: string;
+  date: string;
+  isControl: boolean;
+  distance: number | null; // treatment mean, excess from default look
+  samples: SampleMark[];
+  spread: number | null; // widest minus narrowest per-sample distance
+  dispersion: number | null; // intra-arm dispersion (the eval's own consistency number)
+  contrastName: string | null; // the adjective treatment, for a consistency contrast
+  contrastSpread: number | null;
+}
+
+function cellSamples(cell: any, caseKey: string): SampleMark[] {
+  const base = cellBaseline(cell);
+  const sum = cell.sampleSummaries ?? [];
+  const n = Math.max(sum.length, cell.samples ?? 0);
+  const marks: SampleMark[] = [];
+  for (let i = 0; i < n; i++) {
+    const s = sum.find((x: any) => String(x.index) === String(i));
+    // A rendering can't be "more default than default" — clamp noise below the
+    // baseline to 0, where it reads honestly as "landed at the default look".
+    const d = s && s.distToControl != null ? round2(Math.max(0, s.distToControl - base)) : null;
+    marks.push({ n: i, distance: cell.cell === "no-design-md" ? 0 : d, samplePath: samplePathN(caseKey, cell.cell, i) });
+  }
+  return marks;
+}
+
+export function treatmentSheet(caseKey: string, treatment: string): TreatmentSheet | null {
+  const found = caseCells(caseKey);
+  if (!found) return null;
+  const cell = found.c.cells.find((x: any) => x.cell === treatment);
+  if (!cell) return null;
+  const samples = cellSamples(cell, caseKey);
+  const dists = samples.map((s) => s.distance).filter((d): d is number => d != null);
+  const spread = dists.length > 1 ? round2(Math.max(...dists) - Math.min(...dists)) : dists.length ? 0 : null;
+  // The adjective treatment, for the "same words, wider wandering" contrast.
+  const desc = found.c.cells.find((x: any) => x.cell === "description");
+  let contrastSpread: number | null = null;
+  if (desc && desc.cell !== treatment) {
+    const ds = cellSamples(desc, caseKey).map((s) => s.distance).filter((d): d is number => d != null);
+    contrastSpread = ds.length > 1 ? round2(Math.max(...ds) - Math.min(...ds)) : null;
+  }
+  return {
+    caseKey,
+    caseTitle: CASE_TITLES[caseKey] ?? caseKey,
+    world: CASE_WORLDS[caseKey] ?? "",
+    treatmentKey: treatment,
+    treatmentName: TREATMENTS[treatment]?.name ?? treatment,
+    blurb: TREATMENTS[treatment]?.blurb ?? "",
+    tool: toolLabel,
+    evalHash: config.evalHash ?? "—",
+    date: /^\d{4}-\d{2}-\d{2}/.test(config.startedAt ?? "") ? config.startedAt.slice(0, 10) : "2026-06-10",
+    isControl: treatment === "no-design-md",
+    distance: treatment === "no-design-md" ? 0 : round2(cell.excessDistanceFromControl),
+    samples,
+    spread,
+    dispersion: cell.intraArmDispersion != null ? round2(cell.intraArmDispersion) : null,
+    contrastName: desc && desc.cell !== treatment ? TREATMENTS["description"]?.name ?? "Adjectives" : null,
+    contrastSpread,
   };
 }
 

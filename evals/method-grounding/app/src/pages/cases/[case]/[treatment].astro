@@ -1,0 +1,88 @@
+---
+import Base from "../../../layouts/Base.astro";
+import TopRail from "../../../components/TopRail.astro";
+import ProofThumb from "../../../components/ProofThumb.astro";
+import { listCases, caseView, treatmentSheet } from "../../../lib/runs";
+
+export function getStaticPaths() {
+  const paths: any[] = [];
+  for (const c of listCases()) {
+    const v = caseView(c.key)!;
+    for (const t of v.treatments) {
+      if (t.samplePath) paths.push({ params: { case: c.key, treatment: t.key } });
+    }
+  }
+  return paths;
+}
+const { case: caseKey, treatment } = Astro.params;
+const s = treatmentSheet(caseKey!, treatment!)!;
+const shown = s.samples.filter((m) => m.samplePath);
+const tightest = s.spread != null && s.spread <= 0.05;
+---
+<Base title={`${s.treatmentName} — ${s.caseTitle} — Design Bench`}>
+  <TopRail active="Cases" />
+  <main class="max-w-6xl mx-auto px-lg py-xl">
+    <!-- 1. Wayfinding -->
+    <div class="font-label text-label uppercase text-ink-muted mb-sm">
+      <a href={`/cases/${s.caseKey}`} class="hover:text-primary">{s.caseTitle} — all treatments</a>
+    </div>
+    <h1 class="text-display font-display tracking-tight">{s.treatmentName}</h1>
+    <div class="font-data text-data text-ink-muted mt-xs">{s.tool} · all {shown.length} renderings</div>
+
+    <!-- 2. The reading line -->
+    <p class="text-body text-ink-muted mt-md max-w-prose">
+      {s.isControl ? (
+        <>Every image below is the tool with no direction at all — its default look. This is the baseline; every distance elsewhere on the site is measured from here.</>
+      ) : (
+        <>Every image below came from the same input: {s.blurb.charAt(0).toLowerCase() + s.blurb.slice(1)} How much the results agree is itself a finding — direction that grounds also tends to stabilize.</>
+      )}
+    </p>
+
+    <!-- 3. The sheet: all renderings, equal size -->
+    <div class="mt-xl grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-md">
+      {shown.map((m) => (
+        <a href={`/cases/${s.caseKey}/${s.treatmentKey}/${m.n}`} class="block group">
+          <ProofThumb src={m.samplePath} />
+          <div class="mt-xs flex items-baseline justify-between">
+            <span class="font-label text-label uppercase text-ink-muted group-hover:text-primary">{m.n + 1} of {shown.length}</span>
+            {!s.isControl && (
+              <span class="font-data text-data text-ink bg-accent-wash px-1">{m.distance != null ? m.distance.toFixed(2) : "—"}</span>
+            )}
+          </div>
+        </a>
+      ))}
+    </div>
+
+    <!-- 4. The consistency claim -->
+    {!s.isControl && s.spread != null && (
+      <div class="mt-xl border-l-2 border-primary pl-md max-w-prose">
+        {tightest ? (
+          <p class="text-body">
+            All {shown.length} renderings landed within <span class="font-data text-data">{s.spread.toFixed(2)}</span> of each other
+            — effectively the same result every time.
+            {s.contrastName && s.contrastSpread != null && s.contrastSpread > s.spread + 0.05 && (
+              <> The {s.contrastName.toLowerCase()} treatment, given the same number of tries, ranged across <span class="font-data text-data">{s.contrastSpread.toFixed(2)}</span>: same kind of words, far wider wandering.</>
+            )}
+          </p>
+        ) : (
+          <p class="text-body">
+            These {shown.length} renderings range across <span class="font-data text-data">{s.spread.toFixed(2)}</span> — the direction
+            left real room to wander.
+            {s.contrastName && s.contrastSpread != null && Math.abs(s.contrastSpread - s.spread) > 0.05 && (
+              <> For contrast, the {s.contrastName.toLowerCase()} treatment spread <span class="font-data text-data">{s.contrastSpread.toFixed(2)}</span> over the same count.</>
+            )}
+          </p>
+        )}
+        <p class="text-body text-ink-muted mt-sm" style="font-size:13px">
+          Spread is the gap between the farthest and nearest rendering, on the same distance-from-default-look scale used across the site.
+          A tight spread means the direction didn't just move the result — it moved it reliably.
+        </p>
+      </div>
+    )}
+
+    <!-- 5. Certification -->
+    <div class="mt-xl border-t border-line pt-sm font-data text-data text-ink-muted">
+      tool {s.tool} · {shown.length} renderings · definitions {s.evalHash} · measured {s.date} · distances from this tool's own default look
+    </div>
+  </main>
+</Base>
