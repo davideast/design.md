@@ -1,0 +1,531 @@
+<!DOCTYPE html><html class="light" lang="en"><head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>Design Bench: Agent Architecture</title>
+<!-- Material Symbols -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<!-- Google Fonts -->
+<link href="https://fonts.googleapis.com" rel="preconnect">
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&amp;family=IBM+Plex+Sans:wght@400;500;600;700&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<!-- Tailwind CSS -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<!-- Theme Configuration -->
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "on-background": "#1a1c1e",
+                    "on-error-container": "#93000a",
+                    "primary-fixed-dim": "#cbbeff",
+                    "on-error": "#ffffff",
+                    "on-secondary": "#ffffff",
+                    "on-tertiary": "#ffffff",
+                    "tertiary": "#7f2995",
+                    "on-secondary-fixed-variant": "#2339ab",
+                    "ink": "#1C1B22",
+                    "tertiary-fixed": "#fdd6ff",
+                    "surface-container-low": "#f3f3f6",
+                    "on-primary": "#ffffff",
+                    "error-container": "#ffdad6",
+                    "secondary-fixed-dim": "#bac3ff",
+                    "tertiary-container": "#9a44b0",
+                    "on-tertiary-fixed-variant": "#731b8a",
+                    "surface-variant": "#e2e2e5",
+                    "outline-variant": "#cac4d7",
+                    "surface": "#f9f9fc",
+                    "on-secondary-container": "#001d8c",
+                    "inverse-on-surface": "#f0f0f3",
+                    "on-tertiary-container": "#ffe1ff",
+                    "inverse-surface": "#2f3033",
+                    "accent-wash": "#EFEBFD",
+                    "on-surface-variant": "#484554",
+                    "on-secondary-fixed": "#00105c",
+                    "surface-tint": "#6240d8",
+                    "on-tertiary-fixed": "#340042",
+                    "on-primary-container": "#ede6ff",
+                    "surface-container-high": "#e8e8eb",
+                    "secondary": "#3f53c3",
+                    "surface-container-highest": "#e2e2e5",
+                    "surface-container": "#eeedf0",
+                    "primary-fixed": "#e6deff",
+                    "surface-dim": "#dadadd",
+                    "surface-container-lowest": "#ffffff",
+                    "ink-muted": "#6B6A74",
+                    "background": "#E9E9EC", /* Override for specific prompt requirement */
+                    "line": "#D8D8DC",
+                    "error": "#ba1a1a",
+                    "on-primary-fixed-variant": "#4a20bf",
+                    "inverse-primary": "#cbbeff",
+                    "on-surface": "#1a1c1e",
+                    "surface-bright": "#f9f9fc",
+                    "paper": "#FFFFFF",
+                    "outline": "#797586",
+                    "tertiary-fixed-dim": "#f3aeff",
+                    "secondary-fixed": "#dee0ff",
+                    "secondary-container": "#798dff",
+                    "primary-container": "#6d4de3",
+                    "primary": "#542fca",
+                    "on-primary-fixed": "#1d0061"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0px",
+                    "lg": "0px",
+                    "xl": "0px",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "xl": "40px",
+                    "md": "16px",
+                    "lg": "24px",
+                    "sm": "8px",
+                    "xs": "4px"
+            },
+            "fontFamily": {
+                    "reading-mono": [
+                            "IBM Plex Mono"
+                    ],
+                    "display-lg": [
+                            "IBM Plex Sans"
+                    ],
+                    "label-sm": [
+                            "IBM Plex Sans"
+                    ],
+                    "body-md": [
+                            "IBM Plex Sans"
+                    ]
+            },
+            "fontSize": {
+                    "reading-mono": [
+                            "12.5px",
+                            {
+                                    "lineHeight": "1.5",
+                                    "fontWeight": "400"
+                            }
+                    ],
+                    "display-lg": [
+                            "28px",
+                            {
+                                    "lineHeight": "1.2",
+                                    "fontWeight": "600"
+                            }
+                    ],
+                    "label-sm": [
+                            "12px",
+                            {
+                                    "lineHeight": "1.3",
+                                    "letterSpacing": "0.04em",
+                                    "fontWeight": "500"
+                            }
+                    ],
+                    "body-md": [
+                            "15px",
+                            {
+                                    "lineHeight": "1.55",
+                                    "fontWeight": "400"
+                            }
+                    ]
+            }
+          }
+        }
+      }
+    </script>
+<style>
+        body {
+            background-color: #E9E9EC;
+            color: #1C1B22;
+        }
+        
+        .crop-mark-tl {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 8px;
+            height: 8px;
+            border-top: 1px solid #1C1B22;
+            border-left: 1px solid #1C1B22;
+        }
+        .crop-mark-tr {
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 8px;
+            height: 8px;
+            border-top: 1px solid #1C1B22;
+            border-right: 1px solid #1C1B22;
+        }
+        .crop-mark-bl {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 8px;
+            height: 8px;
+            border-bottom: 1px solid #1C1B22;
+            border-left: 1px solid #1C1B22;
+        }
+        .crop-mark-br {
+            position: absolute;
+            bottom: 0;
+            right: 0;
+            width: 8px;
+            height: 8px;
+            border-bottom: 1px solid #1C1B22;
+            border-right: 1px solid #1C1B22;
+        }
+
+        .hide-scroll::-webkit-scrollbar {
+            display: none;
+        }
+        .hide-scroll {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+    </style>
+</head>
+<body class="font-body antialiased min-h-screen flex flex-col">
+<!-- Top Navigation Anchor (Shared Component) -->
+<nav class="bg-paper flex justify-between items-center w-full px-lg h-12 border-b border-line font-label text-label tracking-widest uppercase text-ink cursor-crosshair docked full-width top-0 sticky z-50 flat no shadows">
+<div class="flex items-center gap-xl">
+<span class="font-display text-display font-bold text-ink tracking-normal normal-case">Design Bench</span>
+<div class="hidden md:flex gap-lg h-full items-center">
+<a class="text-primary border-b-2 border-primary pb-1 flex items-center h-full" href="#">All cases</a>
+<a class="text-ink-muted hover:text-ink hover:bg-neutral transition-colors flex items-center h-full px-sm" href="#">Easel</a>
+<a class="text-ink-muted hover:text-ink hover:bg-neutral transition-colors flex items-center h-full px-sm" href="#">Calibration</a>
+<a class="text-ink-muted hover:text-ink hover:bg-neutral transition-colors flex items-center h-full px-sm" href="#">Archive</a>
+</div>
+</div>
+<div class="flex items-center gap-md text-ink-muted">
+<span class="material-symbols-outlined hover:text-ink transition-colors cursor-pointer" data-icon="settings">settings</span>
+<span class="material-symbols-outlined hover:text-ink transition-colors cursor-pointer" data-icon="help">help</span>
+</div>
+</nav>
+<div class="flex flex-1 overflow-hidden">
+<!-- Side Navigation Anchor (Shared Component) -->
+
+<!-- Main Canvas -->
+<main class="flex-1 pb-xl relative mx-auto max-w-full">
+<!-- Canvas Header -->
+<header class="px-xl pt-xl pb-lg shrink-0">
+<div class="flex items-center gap-sm font-label text-label tracking-widest uppercase text-ink-muted mb-lg">
+<a class="hover:text-ink flex items-center gap-xs" href="#"><span class="material-symbols-outlined text-[14px]">arrow_back</span> All cases</a>
+<span class="text-line">/</span>
+<span class="">DESIGN BENCH</span>
+<span class="text-line">/</span>
+<span class="text-ink font-semibold">CASE: AGENT ARCHITECTURE</span>
+</div>
+<div class="max-w-4xl">
+<h1 class="font-display text-display text-ink mb-md">Agent Architecture</h1>
+<p class="text-ink-muted font-body max-w-2xl">Every rendering below was asked for exactly the same thing: a seven-slide deck on agent architectures. The content never changed; only the design direction and the tool did.</p>
+</div>
+</header>
+<!-- Pivot Control Canvas Strip -->
+<div class="px-xl py-md border-y border-line flex items-center gap-xl bg-paper">
+<div class="flex items-center gap-md">
+<button class="px-sm py-xs font-label text-label uppercase tracking-wider text-primary border-b-2 border-primary bg-accent-wash flex flex-col items-start text-left">
+<span class="font-bold">By design direction</span>
+<span class="text-[10px] text-primary/80 lowercase mt-0.5">Compare treatments for one tool</span>
+</button>
+<button class="px-sm py-xs font-label text-label uppercase tracking-wider text-ink-muted hover:text-ink hover:bg-neutral transition-colors flex flex-col items-start text-left">
+<span class="">By tool</span>
+<span class="text-[10px] text-ink-muted lowercase mt-0.5">Compare tools for one treatment</span>
+</button>
+</div>
+<div class="h-8 w-px bg-line"></div>
+<div class="font-data text-data text-ink-muted flex items-center gap-2">
+<span class="material-symbols-outlined text-[16px]">memory</span>
+                    Tool: Stitch · Gemini 3.1 Pro
+                </div>
+</div>
+<!-- Proofing Bands Container -->
+<div class="p-xl flex flex-col gap-xl">
+<!-- Interaction Hint -->
+<div class="font-label text-label text-ink-muted flex items-center gap-sm">
+<span class="material-symbols-outlined text-[16px]">info</span>
+                    Select any rendering to open the full 22-render detail sheet.
+                </div>
+<!-- Band 1: Stitch -->
+<section class="bg-paper border border-line relative p-lg group hover:border-ink/20 transition-colors cursor-pointer">
+<div class="crop-mark-tl"></div>
+<div class="crop-mark-tr"></div>
+<div class="crop-mark-bl"></div>
+<div class="crop-mark-br"></div>
+<header class="mb-lg flex justify-between items-end border-b border-line pb-sm">
+<h2 class="font-label text-label uppercase tracking-widest text-ink font-bold">STITCH · GEMINI 3.1 PRO</h2>
+<div class="font-data text-data text-ink-muted text-[10px]">TREATMENT SET ALPHA</div>
+</header>
+<div class="flex gap-md w-max">
+<!-- Cell 1 -->
+<div class="w-64 flex flex-col gap-sm">
+<div class="aspect-video bg-paper border border-line relative overflow-hidden" data-alt="A highly detailed, professional UI design presentation slide showing a plain text outline about AI agent architectures. The aesthetic is extremely bare-bones and default, lacking any visual styling, resembling a plain white document with black Arial text. High contrast, sterile, corporate tech aesthetic.">
+<!-- Image Placeholder -->
+<div class="absolute inset-0 bg-line/20 flex items-center justify-center font-data text-ink/30 text-xs">RENDER_00</div>
+</div>
+<div>
+<h3 class="font-label text-label font-semibold text-ink">No direction</h3>
+<p class="font-body text-sm text-ink-muted mt-1 min-h-[44px]">The brief alone</p>
+</div>
+<div class="flex justify-between items-center border-t border-line pt-2 mt-auto">
+<span class="font-label text-[10px] uppercase text-ink-muted">Distance</span>
+<span class="font-data text-data text-ink">0.00</span>
+</div>
+</div>
+<!-- Cell 2 -->
+<div class="w-64 flex flex-col gap-sm">
+<div class="aspect-video bg-paper border border-line relative overflow-hidden" data-alt="A UI design presentation slide about agent architectures, showing basic application of a color palette. The slide features deep blues and subtle grays, with a clean sans-serif typography hierarchy. The layout remains simple and list-based, but looks slightly more polished than a default document. Professional, corporate, neat.">
+<div class="absolute inset-0 bg-line/20 flex items-center justify-center font-data text-ink/30 text-xs">RENDER_01</div>
+</div>
+<div>
+<h3 class="font-label text-label font-semibold text-ink">Tokens only</h3>
+<p class="font-body text-sm text-ink-muted mt-1 min-h-[44px]">Shared palette and type only</p>
+</div>
+<div class="flex justify-between items-center border-t border-line pt-2 mt-auto">
+<span class="font-label text-[10px] uppercase text-ink-muted">Distance</span>
+<span class="font-data text-data text-ink">0.18</span>
+</div>
+</div>
+<!-- Cell 3 -->
+<div class="w-64 flex flex-col gap-sm">
+<div class="aspect-video bg-paper border border-line relative overflow-hidden" data-alt="A refined presentation slide discussing AI agents, designed with a scholarly, print-like aesthetic. It features a muted, off-white background resembling fine paper, with elegant serif typography and generous margins. The layout looks more like a page from an academic journal than a standard slide deck. Restrained, intellectual mood.">
+<div class="absolute inset-0 bg-line/20 flex items-center justify-center font-data text-ink/30 text-xs">RENDER_02</div>
+</div>
+<div>
+<h3 class="font-label text-label font-semibold text-ink">Adjectives</h3>
+<p class="font-body text-sm text-ink-muted mt-1 min-h-[44px]">Plus an adjective description (scholarly, restrained, print-like)</p>
+</div>
+<div class="flex justify-between items-center border-t border-line pt-2 mt-auto">
+<span class="font-label text-[10px] uppercase text-ink-muted">Distance</span>
+<span class="font-data text-data text-ink">0.31</span>
+</div>
+</div>
+<!-- Cell 4 -->
+<div class="w-64 flex flex-col gap-sm relative">
+<!-- Highlight Box -->
+<div class="absolute -inset-2 border border-primary bg-primary/5 pointer-events-none z-10 hidden group-hover:block">
+<div class="absolute -top-2 -right-2 bg-primary text-paper font-data text-[9px] px-1">+0.64 shift</div>
+</div>
+<div class="aspect-video bg-paper border border-line relative overflow-hidden" data-alt="A presentation slide that looks exactly like a photocopied graduate computer science lecture handout. It features dense, diagram-heavy content with slightly degraded contrast mimicking a xerox copy. The text is dense, with subtle artifacts and a layout that implies it should be written on. Highly technical, academic, raw aesthetic.">
+<div class="absolute inset-0 bg-line/20 flex items-center justify-center font-data text-ink/30 text-xs">RENDER_03</div>
+</div>
+<div>
+<h3 class="font-label text-label font-semibold text-primary">One real object</h3>
+<p class="font-body text-sm text-ink-muted mt-1 min-h-[44px]">Plus one named artifact, a graduate CS lecture handout</p>
+</div>
+<div class="flex justify-between items-center border-t border-primary/30 pt-2 mt-auto">
+<span class="font-label text-[10px] uppercase text-primary">Distance</span>
+<span class="font-data text-data text-primary font-bold">0.95</span>
+</div>
+</div>
+<!-- Cell 5 -->
+<div class="w-64 flex flex-col gap-sm">
+<div class="aspect-video bg-paper border border-line relative overflow-hidden" data-alt="A stark, high-contrast presentation slide on AI architectures designed entirely in black and white. There are no subtle grays or gradients; graphics are bold, chunky, and purely monochromatic to ensure they survive a bad photocopy process. The layout is blocky and utilitarian. Industrial, functional, brutalist vibe.">
+<div class="absolute inset-0 bg-line/20 flex items-center justify-center font-data text-ink/30 text-xs">RENDER_04</div>
+</div>
+<div>
+<h3 class="font-label text-label font-semibold text-ink">One hard constraint</h3>
+<p class="font-body text-sm text-ink-muted mt-1 min-h-[44px]">Everything must survive photocopying</p>
+</div>
+<div class="flex justify-between items-center border-t border-line pt-2 mt-auto">
+<span class="font-label text-[10px] uppercase text-ink-muted">Distance</span>
+<span class="font-data text-data text-ink">0.71</span>
+</div>
+</div>
+<!-- Cell 6 -->
+<div class="w-64 flex flex-col gap-sm">
+<div class="aspect-video bg-paper border border-line relative overflow-hidden" data-alt="A slide design mimicking a professor's notebook page. The background resembles lined or grid paper with subtle texture. The content about agent architectures is arranged organically, perhaps with some elements looking handwritten or sketched out like chalk on a board or pen on paper. Intimate, academic, informal.">
+<div class="absolute inset-0 bg-line/20 flex items-center justify-center font-data text-ink/30 text-xs">RENDER_05</div>
+</div>
+<div>
+<h3 class="font-label text-label font-semibold text-ink">One governing metaphor</h3>
+<p class="font-body text-sm text-ink-muted mt-1 min-h-[44px]">Each slide a page from a professor's notebook</p>
+</div>
+<div class="flex justify-between items-center border-t border-line pt-2 mt-auto">
+<span class="font-label text-[10px] uppercase text-ink-muted">Distance</span>
+<span class="font-data text-data text-ink">0.66</span>
+</div>
+</div>
+<!-- Cell 7 -->
+<div class="w-64 flex flex-col gap-sm">
+<div class="aspect-video bg-paper border border-line relative overflow-hidden" data-alt="An incredibly complex and detailed presentation slide that looks like a final product from a high-end design agency. It features intricate micro-interactions implied in the static image, complex data visualizations regarding agent architecture, perfect alignment, and a sophisticated dark mode color palette. Elite, polished, hyper-professional.">
+<div class="absolute inset-0 bg-line/20 flex items-center justify-center font-data text-ink/30 text-xs">RENDER_06</div>
+</div>
+<div>
+<h3 class="font-label text-label font-semibold text-ink">Full specification</h3>
+<p class="font-body text-sm text-ink-muted mt-1 min-h-[44px]">The complete designer-grade spec</p>
+</div>
+<div class="flex justify-between items-center border-t border-line pt-2 mt-auto">
+<span class="font-label text-[10px] uppercase text-ink-muted">Distance</span>
+<span class="font-data text-data text-ink">1.02</span>
+</div>
+</div>
+</div>
+</section>
+<!-- Band 2: Gemini Direct -->
+<section class="bg-paper border border-line relative p-lg group hover:border-ink/20 transition-colors cursor-pointer">
+<div class="crop-mark-tl"></div>
+<div class="crop-mark-tr"></div>
+<div class="crop-mark-bl"></div>
+<div class="crop-mark-br"></div>
+<header class="mb-lg flex justify-between items-end border-b border-line pb-sm">
+<h2 class="font-label text-label uppercase tracking-widest text-ink font-bold">GEMINI 3.1 PRO · DIRECT</h2>
+<div class="font-data text-data text-ink-muted text-[10px]">TREATMENT SET BETA</div>
+</header>
+<div class="flex gap-md w-max">
+<!-- Cell 1 -->
+<div class="w-64 flex flex-col gap-sm">
+<div class="aspect-video bg-paper border border-line relative overflow-hidden" data-alt="A standard, somewhat generic presentation slide generated directly by an AI without specific design prompting. It features a basic bulleted list about agent architectures on a plain white background with standard blue headings. It lacks personality or strong visual hierarchy. Mundane, typical, uninspired.">
+<div class="absolute inset-0 bg-line/20 flex items-center justify-center font-data text-ink/30 text-xs">RENDER_07</div>
+</div>
+<div>
+<h3 class="font-label text-label font-semibold text-ink">No direction</h3>
+<p class="font-body text-sm text-ink-muted mt-1 min-h-[44px]">The brief alone</p>
+</div>
+<div class="flex justify-between items-center border-t border-line pt-2 mt-auto">
+<span class="font-label text-[10px] uppercase text-ink-muted">Distance</span>
+<span class="font-data text-data text-ink">0.00</span>
+</div>
+</div>
+<!-- Cell 2 -->
+<div class="w-64 flex flex-col gap-sm">
+<div class="aspect-video bg-paper border border-line relative overflow-hidden" data-alt="A slide showing a slightly more colorful approach to agent architectures, utilizing a specific color palette but still retaining a rigid, automated feel. The text is constrained to standard text boxes, and the colors feel somewhat arbitrarily applied to headers and bullet points rather than integrated into a holistic design.">
+<div class="absolute inset-0 bg-line/20 flex items-center justify-center font-data text-ink/30 text-xs">RENDER_08</div>
+</div>
+<div>
+<h3 class="font-label text-label font-semibold text-ink">Tokens only</h3>
+<p class="font-body text-sm text-ink-muted mt-1 min-h-[44px]">Shared palette and type only</p>
+</div>
+<div class="flex justify-between items-center border-t border-line pt-2 mt-auto">
+<span class="font-label text-[10px] uppercase text-ink-muted">Distance</span>
+<span class="font-data text-data text-ink">0.21</span>
+</div>
+</div>
+<!-- Cell 3 -->
+<div class="w-64 flex flex-col gap-sm">
+<div class="aspect-video bg-paper border border-line relative overflow-hidden" data-alt="An attempt at a 'scholarly' slide design by a raw AI model. It features perhaps too literal an interpretation, maybe adding an unnecessary graphic of an old book or a quill alongside the text about agent architectures. The typography attempts to be serif but feels slightly mismatched. Slightly awkward, literal interpretation.">
+<div class="absolute inset-0 bg-line/20 flex items-center justify-center font-data text-ink/30 text-xs">RENDER_09</div>
+</div>
+<div>
+<h3 class="font-label text-label font-semibold text-ink">Adjectives</h3>
+<p class="font-body text-sm text-ink-muted mt-1 min-h-[44px]">Plus an adjective description (scholarly, restrained, print-like)</p>
+</div>
+<div class="flex justify-between items-center border-t border-line pt-2 mt-auto">
+<span class="font-label text-[10px] uppercase text-ink-muted">Distance</span>
+<span class="font-data text-data text-ink">0.35</span>
+</div>
+</div>
+<!-- Cell 4 -->
+<div class="w-64 flex flex-col gap-sm">
+<div class="aspect-video bg-paper border border-line relative overflow-hidden" data-alt="A highly literal interpretation of a 'CS lecture handout' slide. It looks like a scanned piece of paper with text awkwardly overlaid. It features dense blocks of text and perhaps a crude diagram of agent architecture. It captures the 'messiness' but lacks the structural intent of a true designer's work. Cluttered, unrefined.">
+<div class="absolute inset-0 bg-line/20 flex items-center justify-center font-data text-ink/30 text-xs">RENDER_10</div>
+</div>
+<div>
+<h3 class="font-label text-label font-semibold text-ink">One real object</h3>
+<p class="font-body text-sm text-ink-muted mt-1 min-h-[44px]">Plus one named artifact, a graduate CS lecture handout</p>
+</div>
+<div class="flex justify-between items-center border-t border-line pt-2 mt-auto">
+<span class="font-label text-[10px] uppercase text-ink-muted">Distance</span>
+<span class="font-data text-data text-ink">0.88</span>
+</div>
+</div>
+<!-- Cell 5 -->
+<div class="w-64 flex flex-col gap-sm">
+<div class="aspect-video bg-paper border border-line relative overflow-hidden" data-alt="A slide designed to survive photocopying. It features extremely thick, harsh borders and very large, bold text. All subtlety is lost. It looks more like a warning sign or a very old web page printed out than a presentation slide about agent architectures. Brutally simplistic.">
+<div class="absolute inset-0 bg-line/20 flex items-center justify-center font-data text-ink/30 text-xs">RENDER_11</div>
+</div>
+<div>
+<h3 class="font-label text-label font-semibold text-ink">One hard constraint</h3>
+<p class="font-body text-sm text-ink-muted mt-1 min-h-[44px]">Everything must survive photocopying</p>
+</div>
+<div class="flex justify-between items-center border-t border-line pt-2 mt-auto">
+<span class="font-label text-[10px] uppercase text-ink-muted">Distance</span>
+<span class="font-data text-data text-ink">0.68</span>
+</div>
+</div>
+<!-- Cell 6 -->
+<div class="w-64 flex flex-col gap-sm">
+<div class="aspect-video bg-paper border border-line relative overflow-hidden" data-alt="A slide attempting a 'professor's notebook' metaphor. It might feature a prominent, perhaps cliché, spiral binding graphic on the side or a highly textured 'paper' background that overwhelms the actual content about agent architectures. The metaphor feels tacked on rather than structural.">
+<div class="absolute inset-0 bg-line/20 flex items-center justify-center font-data text-ink/30 text-xs">RENDER_12</div>
+</div>
+<div>
+<h3 class="font-label text-label font-semibold text-ink">One governing metaphor</h3>
+<p class="font-body text-sm text-ink-muted mt-1 min-h-[44px]">Each slide a page from a professor's notebook</p>
+</div>
+<div class="flex justify-between items-center border-t border-line pt-2 mt-auto">
+<span class="font-label text-[10px] uppercase text-ink-muted">Distance</span>
+<span class="font-data text-data text-ink">0.62</span>
+</div>
+</div>
+<!-- Cell 7 -->
+<div class="w-64 flex flex-col gap-sm">
+<div class="aspect-video bg-paper border border-line relative overflow-hidden" data-alt="An over-designed, somewhat chaotic slide resulting from feeding a full designer specification directly to a model without an intermediary agent. It attempts to apply every rule at once, resulting in conflicting alignments, mismatched font sizes, and a 'kitchen sink' approach to visualizing agent architecture. Complex but incoherent.">
+<div class="absolute inset-0 bg-line/20 flex items-center justify-center font-data text-ink/30 text-xs">RENDER_13</div>
+</div>
+<div>
+<h3 class="font-label text-label font-semibold text-ink">Full specification</h3>
+<p class="font-body text-sm text-ink-muted mt-1 min-h-[44px]">The complete designer-grade spec</p>
+</div>
+<div class="flex justify-between items-center border-t border-line pt-2 mt-auto">
+<span class="font-label text-[10px] uppercase text-ink-muted">Distance</span>
+<span class="font-data text-data text-ink">0.98</span>
+</div>
+</div>
+</div>
+</section>
+<!-- Explanatory & Insight Footer -->
+<div class="grid grid-cols-1 md:grid-cols-2 gap-xl mt-lg max-w-5xl">
+<!-- Left Col -->
+<div class="space-y-lg">
+<div class="bg-paper border border-line p-md">
+<p class="font-body text-sm text-ink">Each band's distances are measured from that tool's own default look, so they compare down a band but not across bands. To compare one treatment across tools, switch to "By tool," which uses fidelity instead.</p>
+</div>
+<div class="space-y-sm">
+<h4 class="font-label text-label uppercase tracking-widest text-ink font-bold border-b border-line pb-xs inline-block">How to read the numbers</h4>
+<dl class="space-y-xs font-body text-sm">
+<div class="grid grid-cols-[100px_1fr] gap-4">
+<dt class="text-ink font-semibold">Default look</dt>
+<dd class="text-ink-muted">The output when provided only the raw content brief with zero stylistic guidance.</dd>
+</div>
+<div class="grid grid-cols-[100px_1fr] gap-4">
+<dt class="text-ink font-semibold">Distance</dt>
+<dd class="text-ink-muted">Vector displacement from the default look within a tool's latent space (0.0 to 2.0).</dd>
+</div>
+<div class="grid grid-cols-[100px_1fr] gap-4">
+<dt class="text-ink font-semibold">Fidelity</dt>
+<dd class="text-ink-muted">Structural adherence to a gold-standard benchmark specification.</dd>
+</div>
+</dl>
+</div>
+</div>
+<!-- Right Col (Insight) -->
+<div class="bg-neutral p-lg border-l-4 border-primary">
+<h4 class="font-label text-label uppercase tracking-widest text-primary font-bold mb-md">THE SENTENCE THAT MOVED IT 0.64</h4>
+<blockquote class="font-display text-xl text-ink mb-md leading-relaxed">
+                            "Each slide looks like a single page of a graduate CS lecture handout — photocopied that morning, diagram-heavy, one teacher's voice, designed to be followed with a pen in hand."
+                        </blockquote>
+<p class="font-body text-sm text-ink-muted italic">
+                            "The model was never told 'no dark theme, no icon bullets' — the handout implies all of it."
+                        </p>
+</div>
+</div>
+</div>
+<!-- Certification Block -->
+<footer class="mt-auto px-xl py-lg border-t border-line bg-paper mt-xl">
+<div class="font-data text-[10px] text-ink-muted uppercase tracking-widest flex flex-wrap gap-x-4 gap-y-2">
+<span class="">STITCH · GEMINI 3.1 PRO</span>
+<span class="text-line">//</span>
+<span class="">GEMINI 3.1 PRO · DIRECT</span>
+<span class="text-line">·</span>
+<span class="">22 RENDERINGS PER TREATMENT PER TOOL</span>
+<span class="text-line">·</span>
+<span class="">DEFINITIONS HASH 5D7280C55EE4</span>
+<span class="text-line">·</span>
+<span class="">MEASURED 2026-06-10</span>
+</div>
+</footer>
+</main>
+</div>
+
+
+</body></html>

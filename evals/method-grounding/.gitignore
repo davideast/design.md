@@ -1,0 +1,5 @@
+node_modules/
+runs/
+.stitch-key
+.agent-provider.json
+ignored/

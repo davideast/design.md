@@ -1,0 +1,204 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Design Bench</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  /* Tokens — derived from DESIGN.md (press-proofing station). */
+  :root {
+    --primary:#6D4DE3; --secondary:#5B6FE0; --tertiary:#B45CC9;
+    --neutral:#E9E9EC; --ink:#1C1B22; --ink-muted:#6B6A74;
+    --paper:#FFFFFF; --line:#D8D8DC; --accent-wash:#EFEBFD;
+    --sharp:0px; --soft:2px;
+    --xs:4px; --sm:8px; --md:16px; --lg:24px; --xl:40px;
+    --sans:"IBM Plex Sans",system-ui,sans-serif; --mono:"IBM Plex Mono",ui-monospace,monospace;
+  }
+  * { box-sizing:border-box; }
+  body {
+    margin:0; background:var(--neutral); color:var(--ink);
+    font:400 15px/1.55 var(--sans);
+    /* faint working grid of the easel */
+    background-image:linear-gradient(var(--line) 1px,transparent 1px),linear-gradient(90deg,var(--line) 1px,transparent 1px);
+    background-size:24px 24px; background-position:-1px -1px;
+  }
+  .label { font:500 12px/1.3 var(--sans); letter-spacing:.04em; text-transform:uppercase; color:var(--ink-muted); }
+  .mono { font:400 12.5px/1.5 var(--mono); }
+  a { color:var(--primary); text-decoration:none; }
+  a:hover { text-decoration:underline; }
+
+  /* Top rail — identity, current job, actions */
+  .rail {
+    display:flex; align-items:center; gap:var(--md);
+    background:var(--paper); border-bottom:1px solid var(--line);
+    padding:0 var(--lg); height:48px; position:sticky; top:0; z-index:5;
+  }
+  .rail .brand { font:600 15px/1 var(--sans); letter-spacing:.01em; }
+  .rail .reg { width:13px; height:13px; position:relative; }
+  .rail .reg::before,.rail .reg::after { content:""; position:absolute; background:var(--primary); }
+  .rail .reg::before { left:6px; top:0; width:1px; height:13px; }
+  .rail .reg::after { top:6px; left:0; height:1px; width:13px; }
+  .rail .reg span { position:absolute; inset:2px; border:1px solid var(--primary); border-radius:50%; }
+  .rail .job { color:var(--ink-muted); }
+  .rail .spacer { flex:1; }
+  .rail .act { border:1px solid var(--line); background:var(--paper); color:var(--ink); padding:5px 11px; border-radius:var(--soft); cursor:pointer; font:500 13px/1 var(--sans); }
+  .rail .act:hover { border-color:var(--primary); color:var(--primary); }
+  .rail .act.primary { background:var(--primary); color:#fff; border-color:var(--primary); }
+
+  /* Page */
+  .page { max-width:1180px; margin:0 auto; padding:var(--xl) var(--lg) 80px; }
+  .masthead { margin-bottom:var(--xl); }
+  .masthead h1 { font:600 28px/1.2 var(--sans); margin:0 0 6px; letter-spacing:-.01em; }
+  .masthead p { margin:0; max-width:62ch; color:var(--ink); }
+  .colorbar { display:flex; gap:2px; margin-top:var(--md); }
+  .colorbar i { width:34px; height:10px; display:block; }
+  .colorbar .cap { margin-left:8px; align-self:center; }
+
+  .sectlabel { display:flex; align-items:center; gap:var(--sm); margin:var(--xl) 0 var(--md); }
+  .sectlabel::after { content:""; flex:1; height:1px; background:var(--line); }
+
+  /* Cases as proof sheets on the easel */
+  .sheets { display:grid; grid-template-columns:1fr 1fr; gap:36px; }
+  .frame { position:relative; padding:14px; }
+  .cm { position:absolute; width:9px; height:9px; }      /* crop marks */
+  .cm.tl { top:0; left:0; border-top:1px solid var(--ink); border-left:1px solid var(--ink); }
+  .cm.tr { top:0; right:0; border-top:1px solid var(--ink); border-right:1px solid var(--ink); }
+  .cm.bl { bottom:0; left:0; border-bottom:1px solid var(--ink); border-left:1px solid var(--ink); }
+  .cm.br { bottom:0; right:0; border-bottom:1px solid var(--ink); border-right:1px solid var(--ink); }
+  .sheet { background:var(--paper); border:1px solid var(--line); border-radius:var(--sharp); }
+  .frame:hover .sheet { outline:2px solid var(--primary); }
+  .frame:hover { background:var(--accent-wash); }
+  .proof { aspect-ratio:16/10; background:var(--neutral) repeating-linear-gradient(45deg,transparent,transparent 9px,rgba(0,0,0,.03) 9px,rgba(0,0,0,.03) 18px); border-bottom:1px solid var(--line); display:flex; align-items:center; justify-content:center; }
+  .proof .ph { color:var(--ink-muted); }
+  .sheet .body { padding:var(--md); }
+  .sheet h3 { font:600 17px/1.25 var(--sans); margin:0 0 4px; }
+  .sheet .world { color:var(--ink-muted); margin:0 0 12px; font-size:14px; }
+  .sheet .claim { margin:0; border-top:1px solid var(--line); padding-top:10px; }
+  .sheet .claim .num { font:500 13px var(--mono); color:var(--ink); background:var(--accent-wash); padding:1px 5px; }
+  .edgebar { display:flex; gap:2px; padding:10px var(--md) 0; }
+  .edgebar i { width:22px; height:7px; }
+  .edgebar .lab { margin-left:6px; align-self:center; }
+
+  /* How to read + maker links */
+  .reading { margin-top:56px; display:grid; grid-template-columns:2fr 1fr; gap:40px; align-items:start; }
+  .panel { background:var(--paper); border:1px solid var(--line); padding:var(--lg); }
+  .panel h2 { font:600 15px/1 var(--sans); margin:0 0 14px; }
+  .panel dl { margin:0; }
+  .panel dt { font:500 14px var(--sans); margin-top:12px; }
+  .panel dt:first-child { margin-top:0; }
+  .panel dd { margin:2px 0 0; color:var(--ink-muted); font-size:14px; }
+  .maker a { display:block; padding:12px 0; border-bottom:1px solid var(--line); color:var(--ink); }
+  .maker a:hover { color:var(--primary); text-decoration:none; }
+  .maker a span { display:block; color:var(--ink-muted); font-size:13px; margin-top:2px; }
+  .maker a:hover span { color:var(--ink-muted); }
+  .foot { margin-top:48px; color:var(--ink-muted); }
+</style>
+</head>
+<body>
+  <div class="rail">
+    <span class="reg"><span></span></span>
+    <span class="brand">Design Bench</span>
+    <span class="job mono">job: home · proofing</span>
+    <span class="spacer"></span>
+    <button class="act">New case</button>
+    <button class="act">All measurements</button>
+    <button class="act primary">Settings</button>
+  </div>
+
+  <div class="page">
+    <div class="masthead">
+      <div class="label" style="margin-bottom:10px">Proof sheet — overview</div>
+      <h1>Design Bench</h1>
+      <p>Test and compare how AI design tools render the same brief — generate across tools, measure each against the direction it was handed, and check the proofs side by side.</p>
+      <div class="colorbar">
+        <i style="background:var(--primary)"></i>
+        <i style="background:var(--secondary)"></i>
+        <i style="background:var(--tertiary)"></i>
+        <i style="background:var(--ink)"></i>
+        <i style="background:var(--ink-muted)"></i>
+        <span class="cap mono" style="color:var(--ink-muted)">color bar · calibration</span>
+      </div>
+    </div>
+
+    <div class="sectlabel"><span class="label">Cases — 4 on file</span></div>
+
+    <div class="sheets">
+      <div class="frame">
+        <i class="cm tl"></i><i class="cm tr"></i><i class="cm bl"></i><i class="cm br"></i>
+        <div class="sheet">
+          <div class="proof"><span class="ph label">proof · agent-architecture</span></div>
+          <div class="edgebar"><i style="background:var(--secondary)"></i><i style="background:var(--tertiary)"></i><i style="background:var(--primary)"></i><span class="lab mono" style="color:var(--ink-muted)">22 renderings</span></div>
+          <div class="body">
+            <h3>Agent Architecture</h3>
+            <p class="world">A seven-slide technical talk on AI agent loops.</p>
+            <p class="claim">Naming one real object — a graduate CS lecture handout — moved results <span class="num">0.64</span> farther from the model's default look than adjectives did.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="frame">
+        <i class="cm tl"></i><i class="cm tr"></i><i class="cm bl"></i><i class="cm br"></i>
+        <div class="sheet">
+          <div class="proof"><span class="ph label">proof · auralis</span></div>
+          <div class="edgebar"><i style="background:var(--secondary)"></i><i style="background:var(--tertiary)"></i><i style="background:var(--primary)"></i><span class="lab mono" style="color:var(--ink-muted)">18 renderings</span></div>
+          <div class="body">
+            <h3>Auralis</h3>
+            <p class="world">A marketing site for an AI voice platform.</p>
+            <p class="claim">The object grounding outperformed adjectives by <span class="num">0.36</span> across eighteen renderings.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="frame">
+        <i class="cm tl"></i><i class="cm tr"></i><i class="cm bl"></i><i class="cm br"></i>
+        <div class="sheet">
+          <div class="proof"><span class="ph label">proof · dc-tracks</span></div>
+          <div class="edgebar"><i style="background:var(--secondary)"></i><i style="background:var(--tertiary)"></i><i style="background:var(--primary)"></i><span class="lab mono" style="color:var(--ink-muted)">42 renderings</span></div>
+          <div class="body">
+            <h3>DC Tracks</h3>
+            <p class="world">An editorial music publication for Washington, DC.</p>
+            <p class="claim">The metaphor grounding led adjectives by <span class="num">0.21</span> across forty-two renderings.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="frame">
+        <i class="cm tl"></i><i class="cm tr"></i><i class="cm bl"></i><i class="cm br"></i>
+        <div class="sheet">
+          <div class="proof"><span class="ph label">proof · night-birding</span></div>
+          <div class="edgebar"><i style="background:var(--secondary)"></i><i style="background:var(--tertiary)"></i><i style="background:var(--primary)"></i><span class="lab mono" style="color:var(--ink-muted)">measuring…</span></div>
+          <div class="body">
+            <h3>Urban Nocturnal Field Guide</h3>
+            <p class="world">A field-notes site for night birding in the city.</p>
+            <p class="claim">Newest case; measurement in progress.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="reading">
+      <div class="panel">
+        <h2>How to read a proof</h2>
+        <dl>
+          <dt>Treatment</dt>
+          <dd>What the model was given — from nothing at all, up to a complete specification.</dd>
+          <dt>Default look</dt>
+          <dd>What the model produces with no direction. Every distance on a sheet is measured from it.</dd>
+          <dt>Adjectives</dt>
+          <dd>The treatment being challenged: describing a design in words like clean, modern, bold.</dd>
+        </dl>
+      </div>
+      <div class="maker">
+        <div class="label" style="margin-bottom:6px">For makers</div>
+        <a href="#">Start a new case from a spark<span>an ideation partner helps you find the world before any files exist</span></a>
+        <a href="#">All measurements<span>every batch, model, and definition hash</span></a>
+      </div>
+    </div>
+
+    <div class="foot mono">design-bench · proofing station · grounded in DESIGN.md</div>
+  </div>
+</body>
+</html>

@@ -1,0 +1,24 @@
+{
+  "name": "design-bench-app",
+  "type": "module",
+  "private": true,
+  "scripts": {
+    "gen:tailwind": "cd .. && bun app/scripts/gen-tailwind-config.ts",
+    "dev": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview"
+  },
+  "dependencies": {
+    "@astrojs/react": "^3.6.3",
+    "@astrojs/tailwind": "^5.1.4",
+    "astro": "^4.16.18",
+    "marked": "^18.0.5",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "tailwindcss": "^3.4.17"
+  },
+  "devDependencies": {
+    "@types/react": "^18.3.12",
+    "@types/react-dom": "^18.3.1"
+  }
+}

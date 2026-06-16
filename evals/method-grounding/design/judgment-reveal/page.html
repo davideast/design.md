@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Design Bench - Judgment Reveal</title>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&amp;family=IBM+Plex+Sans:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "line": "#D8D8DC",
+                      "on-surface-variant": "#484554",
+                      "tertiary-container": "#9a44b0",
+                      "tertiary-fixed": "#fdd6ff",
+                      "surface-container-low": "#f3f3f6",
+                      "on-tertiary-container": "#ffe1ff",
+                      "inverse-on-surface": "#f0f0f3",
+                      "on-tertiary-fixed": "#340042",
+                      "on-error-container": "#93000a",
+                      "surface-dim": "#dadadd",
+                      "outline-variant": "#cac4d7",
+                      "error-container": "#ffdad6",
+                      "primary-container": "#6d4de3",
+                      "background": "#f9f9fc",
+                      "on-primary-container": "#ede6ff",
+                      "neutral-surround": "#E9E9EC",
+                      "accent-wash": "#EFEBFD",
+                      "tertiary": "#7f2995",
+                      "on-surface": "#1a1c1e",
+                      "surface": "#f9f9fc",
+                      "error": "#ba1a1a",
+                      "secondary-fixed-dim": "#bac3ff",
+                      "on-secondary-container": "#001d8c",
+                      "on-secondary-fixed-variant": "#2339ab",
+                      "on-secondary-fixed": "#00105c",
+                      "ink": "#1C1B22",
+                      "ink-muted": "#6B6A74",
+                      "secondary": "#3f53c3",
+                      "primary": "#542fca",
+                      "on-error": "#ffffff",
+                      "paper": "#FFFFFF",
+                      "on-primary-fixed": "#1d0061",
+                      "surface-container-highest": "#e2e2e5",
+                      "on-tertiary-fixed-variant": "#731b8a",
+                      "surface-bright": "#f9f9fc",
+                      "on-primary-fixed-variant": "#4a20bf",
+                      "on-tertiary": "#ffffff",
+                      "surface-container-lowest": "#ffffff",
+                      "inverse-primary": "#cbbeff",
+                      "on-secondary": "#ffffff",
+                      "surface-container": "#eeedf0",
+                      "outline": "#797586",
+                      "secondary-fixed": "#dee0ff",
+                      "tertiary-fixed-dim": "#f3aeff",
+                      "on-background": "#1a1c1e",
+                      "surface-tint": "#6240d8",
+                      "on-primary": "#ffffff",
+                      "inverse-surface": "#2f3033",
+                      "surface-variant": "#e2e2e5",
+                      "secondary-container": "#798dff",
+                      "primary-fixed": "#e6deff",
+                      "primary-fixed-dim": "#cbbeff",
+                      "tertiary-magenta": "#B45CC9",
+                      "surface-container-high": "#e8e8eb"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.25rem",
+                      "lg": "0.5rem",
+                      "xl": "0.75rem",
+                      "full": "9999px"
+              },
+              "spacing": {
+                      "xs": "4px",
+                      "md": "16px",
+                      "xl": "40px",
+                      "lg": "24px",
+                      "sm": "8px"
+              },
+              "fontFamily": {
+                      "label": [
+                              "IBM Plex Sans"
+                      ],
+                      "display-lg": [
+                              "IBM Plex Sans"
+                      ],
+                      "label-sm": [
+                              "IBM Plex Sans"
+                      ],
+                      "display": [
+                              "IBM Plex Sans"
+                      ],
+                      "body-md": [
+                              "IBM Plex Sans"
+                      ],
+                      "body": [
+                              "IBM Plex Sans"
+                      ],
+                      "data-mono": [
+                              "IBM Plex Mono"
+                      ],
+                      "data": [
+                              "IBM Plex Mono"
+                      ]
+              },
+              "fontSize": {
+                      "label": [
+                              "12px",
+                              {
+                                      "lineHeight": "1.3",
+                                      "letterSpacing": "0.04em",
+                                      "fontWeight": "500"
+                              }
+                      ],
+                      "display-lg": [
+                              "28px",
+                              {
+                                      "lineHeight": "1.2",
+                                      "fontWeight": "600"
+                              }
+                      ],
+                      "label-sm": [
+                              "12px",
+                              {
+                                      "lineHeight": "1.3",
+                                      "letterSpacing": "0.04em",
+                                      "fontWeight": "500"
+                              }
+                      ],
+                      "display": [
+                              "28px",
+                              {
+                                      "lineHeight": "1.2",
+                                      "fontWeight": "600"
+                              }
+                      ],
+                      "body-md": [
+                              "15px",
+                              {
+                                      "lineHeight": "1.55",
+                                      "fontWeight": "400"
+                              }
+                      ],
+                      "body": [
+                              "15px",
+                              {
+                                      "lineHeight": "1.55",
+                                      "fontWeight": "400"
+                              }
+                      ],
+                      "data-mono": [
+                              "12.5px",
+                              {
+                                      "lineHeight": "1.5",
+                                      "fontWeight": "400"
+                              }
+                      ],
+                      "data": [
+                              "12.5px",
+                              {
+                                      "lineHeight": "1.5",
+                                      "fontWeight": "400"
+                              }
+                      ]
+              }
+      },
+          },
+        }
+      </script>
+<style>
+        .crop-mark {
+            position: absolute;
+            width: 8px;
+            height: 8px;
+            border-color: #1C1B22; /* ink */
+        }
+        .crop-tl { top: -1px; left: -1px; border-top: 1px solid; border-left: 1px solid; }
+        .crop-tr { top: -1px; right: -1px; border-top: 1px solid; border-right: 1px solid; }
+        .crop-bl { bottom: -1px; left: -1px; border-bottom: 1px solid; border-left: 1px solid; }
+        .crop-br { bottom: -1px; right: -1px; border-bottom: 1px solid; border-right: 1px solid; }
+      </style>
+</head>
+<body class="bg-neutral-surround text-ink font-body min-h-screen flex flex-col antialiased selection:bg-accent-wash selection:text-primary-container">
+<!-- TopNavBar -->
+<header class="flex justify-between items-center px-md w-full border-b border-line bg-background h-10 sticky top-0 z-50">
+<div class="flex items-center gap-xl">
+<span class="text-label font-label font-bold tracking-tight text-on-surface">Design Bench</span>
+<div class="h-4 w-px bg-line"></div>
+<span class="text-data-mono font-data-mono text-ink-muted">AGENT ARCHITECTURE</span>
+</div>
+<nav class="flex items-center gap-lg h-full">
+<a class="h-full flex items-center text-on-surface-variant hover:text-primary transition-colors text-label-sm font-label-sm" href="#">HISTORY</a>
+<a class="h-full flex items-center text-on-surface-variant hover:text-primary transition-colors text-label-sm font-label-sm" href="#">SETTINGS</a>
+</nav>
+<div class="flex items-center gap-sm">
+<button class="px-3 py-1 border border-line rounded text-label-sm font-label-sm text-on-surface hover:border-primary-container hover:text-primary-container transition-colors bg-paper">NEW COMPARISON</button>
+<button class="px-3 py-1 rounded text-label-sm font-label-sm text-on-primary bg-primary-container hover:bg-primary transition-colors">NEXT JUDGMENT</button>
+</div>
+</header>
+<!-- Main Content -->
+<main class="flex-grow p-xl max-w-[1600px] mx-auto w-full flex flex-col gap-xl">
+<!-- Outcome Header -->
+<section class="max-w-3xl">
+<h1 class="text-display font-display text-ink mb-sm">You picked C — the one real object treatment.</h1>
+<p class="text-body-md font-body-md text-ink-muted">
+                The measurement agrees: it landed farthest from this tool's default look (all five were from <span class="font-data-mono text-data-mono">Stitch · Gemini 3.1 Pro</span>).
+            </p>
+</section>
+<!-- Proofing Grid -->
+<section class="grid grid-cols-5 gap-md w-full">
+<!-- Sheet A -->
+<div class="flex flex-col gap-sm group">
+<div class="bg-paper border border-line aspect-[3/4] relative p-1 shadow-[0_2px_8px_rgba(0,0,0,0.02)] transition-shadow hover:shadow-[0_4px_12px_rgba(0,0,0,0.05)]">
+<div class="crop-mark crop-tl"></div>
+<div class="crop-mark crop-tr"></div>
+<div class="crop-mark crop-bl"></div>
+<div class="crop-mark crop-br"></div>
+<img class="w-full h-full object-cover grayscale opacity-90 group-hover:grayscale-0 transition-all duration-300" data-alt="Abstract minimal geometric shapes in a cool, stark studio lighting, representing a conceptual design output. The style is clinical, precise, and devoid of organic warmth, fitting a technical prepress testing scenario." src="https://lh3.googleusercontent.com/aida-public/AB6AXuB9AeGkJ4a4h6eaRFDc1yri3iDumavJbcBg0cxRSr0lV_kGAathb4v_vUB1VHbCTRifYs0xmCCzicJGtMnkmzMcNxUE2UD54oMBR5RLPkhMLTHu4eQI0ol_SC6k6L0hasUF5RVSQp0Lnvj0hnniJrMabi8GIJphMM7d1wfm7R065aG8AxtK2InS2PvRiVz4_JEJACcqCg74KPwRuJbQF8hJJuyXfilz56PjuMLNOYb2JghpPjXfvWkDqD0Z9vVCatFZYGhHxD7RmKI7"/>
+<div class="absolute top-2 left-2 bg-paper/90 backdrop-blur-sm px-1.5 py-0.5 border border-line text-data-mono font-data-mono text-ink">A</div>
+</div>
+<div class="flex flex-col">
+<span class="text-label-sm font-label-sm text-ink">Adjectives</span>
+<span class="text-data-mono font-data-mono text-ink-muted">0.31</span>
+</div>
+</div>
+<!-- Sheet B -->
+<div class="flex flex-col gap-sm group">
+<div class="bg-paper border border-line aspect-[3/4] relative p-1 shadow-[0_2px_8px_rgba(0,0,0,0.02)] transition-shadow hover:shadow-[0_4px_12px_rgba(0,0,0,0.05)]">
+<div class="crop-mark crop-tl"></div>
+<div class="crop-mark crop-tr"></div>
+<div class="crop-mark crop-bl"></div>
+<div class="crop-mark crop-br"></div>
+<img class="w-full h-full object-cover grayscale opacity-90 group-hover:grayscale-0 transition-all duration-300" data-alt="Strictly typographic layout test sheet with varying weights of sans-serif fonts in tight grids. The lighting is perfectly even, reminiscent of a scanner bed, highlighting the crispness of the letters against the white paper." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDUItnmTdwnw2cksEVqVgzPC1m9K-QIJ52WU9SD-FlcUlK8eD8XriOjhHfa7vrT6Vqntc0m6FtBZXz1yv3J9TnIC_Pd3S6bw13WGLQGSm93HXckY0VZ8OkjewEFOhmHCJyx3T0-ocMB4oD2BEyXdMoZ5Fhvf5YHRGEOlKas5uOWklmX-Aa9hW-9vfbNFdWjKsTKjrCpxsiONcefI0yU3qj2-Xa_eDKVgAXipkV4qkYw6qZdrFKJNzSeX-ITNGTwAugJuaoN8q-twzqA"/>
+<div class="absolute top-2 left-2 bg-paper/90 backdrop-blur-sm px-1.5 py-0.5 border border-line text-data-mono font-data-mono text-ink">B</div>
+</div>
+<div class="flex flex-col">
+<span class="text-label-sm font-label-sm text-ink">Tokens only</span>
+<span class="text-data-mono font-data-mono text-ink-muted">0.18</span>
+</div>
+</div>
+<!-- Sheet C (Selected) -->
+<div class="flex flex-col gap-sm">
+<div class="bg-paper border-2 border-primary-container aspect-[3/4] relative p-1 shadow-[0_8px_24px_rgba(109,77,227,0.15)] transform -translate-y-1">
+<div class="crop-mark crop-tl"></div>
+<div class="crop-mark crop-tr"></div>
+<div class="crop-mark crop-bl"></div>
+<div class="crop-mark crop-br"></div>
+<img class="w-full h-full object-cover" data-alt="A single, hyper-realistic everyday object, perhaps a vintage mechanical pencil, laid flat on a pristine white background. The lighting is stark and directional, casting a sharp shadow to emphasize its physical reality over abstract concepts." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAAZZmvSIVAyX62rkP_BFJ-YfLv0YiFJVfd3eeWEnci4Q13y8bIKUZXEWIxpINCBCSDQnFh-5x0pOieo_XVRISBf8nTGAqSs3aFaqEd_Oicgpbdl2xjuYw5oIXZQo49Ghklf2gMcWbm9VLS7qg0aTuGRajPuUTnfSptwo1oX86xEk3EgR6cWv4sx4OfKsLHGK9hUr6GtZtUM7hTAtDgQo2mDcgiLglnX6KuGPtrk3OEReGLpCdspc5AJNJ7txLtB7nU4zcfNPW-YbUH"/>
+<div class="absolute top-2 left-2 bg-primary-container text-on-primary px-1.5 py-0.5 text-data-mono font-data-mono">C</div>
+</div>
+<div class="flex flex-col">
+<span class="text-label-sm font-label-sm text-primary-container font-bold">One real object</span>
+<span class="text-data-mono font-data-mono text-primary-container font-bold">0.95 — your pick</span>
+</div>
+</div>
+<!-- Sheet D -->
+<div class="flex flex-col gap-sm group">
+<div class="bg-paper border border-line aspect-[3/4] relative p-1 shadow-[0_2px_8px_rgba(0,0,0,0.02)] transition-shadow hover:shadow-[0_4px_12px_rgba(0,0,0,0.05)]">
+<div class="crop-mark crop-tl"></div>
+<div class="crop-mark crop-tr"></div>
+<div class="crop-mark crop-bl"></div>
+<div class="crop-mark crop-br"></div>
+<img class="w-full h-full object-cover grayscale opacity-90 group-hover:grayscale-0 transition-all duration-300" data-alt="A generic, uninspired corporate stock photo style layout featuring bland placeholder UI elements. The execution feels flat, automated, and lacking any specific design intent or grounding." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCufqCItPrwRgCsRRaPLDDL1fSfpi3xJtPXDfdirfXuf59NUkHi-t0RCJJsLrQH-TA0hpBwEF9D4dIJpJcG098fj_dML3nvDHXOXRkZ5v1gwSKeKFafHuvNBOuf-7jd8bt2WWd3Etvjn_mc_dIVK0eGJR9IUFjdrIySwRX9MPCuYz_Bt44ccHIkyVRO1ZYOplDl3PzhOVbGATQ5qsCi6YuE3CFwkC_wSi2uQ2zp1tC5o3kRcMJQI3jGQoVe3q-KwXPQsYlAloDy9dWF"/>
+<div class="absolute top-2 left-2 bg-paper/90 backdrop-blur-sm px-1.5 py-0.5 border border-line text-data-mono font-data-mono text-ink">D</div>
+</div>
+<div class="flex flex-col">
+<span class="text-label-sm font-label-sm text-ink">No direction</span>
+<span class="text-data-mono font-data-mono text-ink-muted">0</span>
+</div>
+</div>
+<!-- Sheet E -->
+<div class="flex flex-col gap-sm group">
+<div class="bg-paper border border-line aspect-[3/4] relative p-1 shadow-[0_2px_8px_rgba(0,0,0,0.02)] transition-shadow hover:shadow-[0_4px_12px_rgba(0,0,0,0.05)]">
+<div class="crop-mark crop-tl"></div>
+<div class="crop-mark crop-tr"></div>
+<div class="crop-mark crop-bl"></div>
+<div class="crop-mark crop-br"></div>
+<img class="w-full h-full object-cover grayscale opacity-90 group-hover:grayscale-0 transition-all duration-300" data-alt="A highly structured layout using an architectural blueprint motif. Blue lines and precise measurements overlay a technical diagram, showing a strong, singular governing theme applied rigidly to the composition." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDvD7XAKOrvZKpK8ZVDFQq33DHEMwlQ5ApkzvVbDWpMyVECBqaEYUzV2VW-dojcnJKCibV1Zj5bRoYNGOi8TcaQEiY6x_MeuYScdZzDS7F8oYhCwQU9XlXzhvxFPT2KrWPPqnXh9OQGAeUAAXBJxBCYojvTtSwuP6IbDoacWv1nNhS3DGL67IzeCPrkyCal8SymV0L7AFU_vlYwiF0z9oAV9DzTwG33GcudZ9rdbgg6RZ_Rh8vcL3D2ld5omND8ArUh_dFAqCURe40E"/>
+<div class="absolute top-2 left-2 bg-paper/90 backdrop-blur-sm px-1.5 py-0.5 border border-line text-data-mono font-data-mono text-ink">E</div>
+</div>
+<div class="flex flex-col">
+<span class="text-label-sm font-label-sm text-ink">One governing metaphor</span>
+<span class="text-data-mono font-data-mono text-ink-muted">0.66</span>
+</div>
+</div>
+</section>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-xl mt-lg">
+<!-- Grounding Prose Section -->
+<section class="bg-paper p-lg border border-line flex flex-col gap-sm relative">
+<div class="crop-mark crop-tl"></div>
+<div class="crop-mark crop-tr"></div>
+<div class="crop-mark crop-bl"></div>
+<div class="crop-mark crop-br"></div>
+<h2 class="text-label font-label text-ink tracking-widest uppercase">GROUNDING PROSE</h2>
+<div class="pl-md border-l-2 border-primary-container py-1">
+<p class="text-body-md font-body-md text-ink italic">
+                        "Each slide looks like a single page of a graduate CS lecture handout — photocopied that morning, diagram-heavy, one teacher's voice."
+                    </p>
+</div>
+<p class="text-label-sm font-label-sm text-ink-muted mt-2">
+                    You judged the output; these are the words that produced it.
+                </p>
+</section>
+<!-- Running Tally Section -->
+<section class="bg-paper p-lg border border-line flex flex-col justify-center relative">
+<div class="crop-mark crop-tl"></div>
+<div class="crop-mark crop-tr"></div>
+<div class="crop-mark crop-bl"></div>
+<div class="crop-mark crop-br"></div>
+<p class="text-body-md font-body-md text-ink">
+                    Across your <span class="font-data-mono text-data-mono bg-surface-variant px-1">2</span> judgments in this set, you've picked a grounded treatment <span class="font-data-mono text-data-mono bg-surface-variant px-1">twice</span>. Readers agree with the measurement in <span class="font-data-mono text-data-mono text-primary-container font-medium">71%</span> of recorded judgments.
+                </p>
+</section>
+</div>
+</main>
+<!-- Footer -->
+<footer class="flex justify-between items-center px-md py-xs w-full border-t border-line bg-neutral-surround mt-auto">
+<span class="text-label-sm font-label text-ink-muted">© 2024 DESIGN BENCH | PRECISION PROOFING SYSTEM</span>
+<div class="flex gap-lg">
+<a class="text-label-sm font-label-sm text-ink-muted hover:text-primary transition-colors" href="#">CALIBRATION</a>
+<a class="text-label-sm font-label-sm text-ink-muted hover:text-primary transition-colors" href="#">DOCUMENTATION</a>
+<a class="text-label-sm font-label-sm text-ink-muted hover:text-primary transition-colors" href="#">LEGAL</a>
+</div>
+</footer>
+</body></html>

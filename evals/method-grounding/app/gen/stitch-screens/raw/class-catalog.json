@@ -1,0 +1,1671 @@
+{
+  "summary": {
+    "filesProcessed": 3,
+    "uniqueClasses": 252,
+    "totalOccurrences": 1870
+  },
+  "classes": {
+    "flex": {
+      "total": 109,
+      "files": {
+        "home.html": 21,
+        "rendering-detail.html": 23,
+        "comparison.html": 65
+      }
+    },
+    "text-ink-muted": {
+      "total": 74,
+      "files": {
+        "home.html": 21,
+        "rendering-detail.html": 9,
+        "comparison.html": 44
+      }
+    },
+    "border-line": {
+      "total": 71,
+      "files": {
+        "home.html": 18,
+        "rendering-detail.html": 17,
+        "comparison.html": 36
+      }
+    },
+    "text-ink": {
+      "total": 70,
+      "files": {
+        "home.html": 23,
+        "rendering-detail.html": 9,
+        "comparison.html": 38
+      }
+    },
+    "items-center": {
+      "total": 63,
+      "files": {
+        "home.html": 11,
+        "rendering-detail.html": 10,
+        "comparison.html": 42
+      }
+    },
+    "font-label-sm": {
+      "total": 51,
+      "files": {
+        "home.html": 14,
+        "comparison.html": 37
+      }
+    },
+    "font-reading-mono": {
+      "total": 48,
+      "files": {
+        "home.html": 15,
+        "comparison.html": 33
+      }
+    },
+    "text-label-sm": {
+      "total": 37,
+      "files": {
+        "home.html": 14,
+        "comparison.html": 23
+      }
+    },
+    "border": {
+      "total": 36,
+      "files": {
+        "home.html": 10,
+        "rendering-detail.html": 8,
+        "comparison.html": 18
+      }
+    },
+    "flex-col": {
+      "total": 34,
+      "files": {
+        "home.html": 8,
+        "rendering-detail.html": 8,
+        "comparison.html": 18
+      }
+    },
+    "uppercase": {
+      "total": 33,
+      "files": {
+        "home.html": 10,
+        "comparison.html": 23
+      }
+    },
+    "font-body-md": {
+      "total": 32,
+      "files": {
+        "home.html": 13,
+        "comparison.html": 19
+      }
+    },
+    "text-reading-mono": {
+      "total": 32,
+      "files": {
+        "home.html": 15,
+        "comparison.html": 17
+      }
+    },
+    "justify-between": {
+      "total": 31,
+      "files": {
+        "home.html": 6,
+        "rendering-detail.html": 8,
+        "comparison.html": 17
+      }
+    },
+    "relative": {
+      "total": 30,
+      "files": {
+        "home.html": 10,
+        "rendering-detail.html": 2,
+        "comparison.html": 18
+      }
+    },
+    "transition-colors": {
+      "total": 29,
+      "files": {
+        "home.html": 11,
+        "rendering-detail.html": 10,
+        "comparison.html": 8
+      }
+    },
+    "border-t": {
+      "total": 22,
+      "files": {
+        "home.html": 6,
+        "rendering-detail.html": 1,
+        "comparison.html": 15
+      }
+    },
+    "font-semibold": {
+      "total": 22,
+      "files": {
+        "home.html": 4,
+        "comparison.html": 18
+      }
+    },
+    "text-[10px]": {
+      "total": 21,
+      "files": {
+        "rendering-detail.html": 2,
+        "comparison.html": 19
+      }
+    },
+    "text-sm": {
+      "total": 20,
+      "files": {
+        "home.html": 3,
+        "comparison.html": 17
+      }
+    },
+    "justify-center": {
+      "total": 19,
+      "files": {
+        "home.html": 4,
+        "rendering-detail.html": 1,
+        "comparison.html": 14
+      }
+    },
+    "overflow-hidden": {
+      "total": 19,
+      "files": {
+        "home.html": 4,
+        "comparison.html": 15
+      }
+    },
+    "absolute": {
+      "total": 19,
+      "files": {
+        "home.html": 3,
+        "comparison.html": 16
+      }
+    },
+    "gap-sm": {
+      "total": 19,
+      "files": {
+        "rendering-detail.html": 3,
+        "comparison.html": 16
+      }
+    },
+    "aspect-video": {
+      "total": 18,
+      "files": {
+        "home.html": 4,
+        "comparison.html": 14
+      }
+    },
+    "w-full": {
+      "total": 16,
+      "files": {
+        "home.html": 7,
+        "rendering-detail.html": 8,
+        "comparison.html": 1
+      }
+    },
+    "mb-md": {
+      "total": 16,
+      "files": {
+        "home.html": 13,
+        "comparison.html": 3
+      }
+    },
+    "mt-auto": {
+      "total": 16,
+      "files": {
+        "rendering-detail.html": 1,
+        "comparison.html": 15
+      }
+    },
+    "text-xs": {
+      "total": 16,
+      "files": {
+        "rendering-detail.html": 2,
+        "comparison.html": 14
+      }
+    },
+    "bg-surface-container": {
+      "total": 15,
+      "files": {
+        "home.html": 1,
+        "comparison.html": 14
+      }
+    },
+    "border-b": {
+      "total": 15,
+      "files": {
+        "home.html": 2,
+        "rendering-detail.html": 9,
+        "comparison.html": 4
+      }
+    },
+    "material-symbols-outlined": {
+      "total": 15,
+      "files": {
+        "home.html": 5,
+        "rendering-detail.html": 5,
+        "comparison.html": 5
+      }
+    },
+    "bg-paper": {
+      "total": 15,
+      "files": {
+        "home.html": 6,
+        "rendering-detail.html": 7,
+        "comparison.html": 2
+      }
+    },
+    "w-64": {
+      "total": 14,
+      "files": {
+        "comparison.html": 14
+      }
+    },
+    "inset-0": {
+      "total": 14,
+      "files": {
+        "comparison.html": 14
+      }
+    },
+    "bg-line/20": {
+      "total": 14,
+      "files": {
+        "comparison.html": 14
+      }
+    },
+    "text-ink/30": {
+      "total": 14,
+      "files": {
+        "comparison.html": 14
+      }
+    },
+    "mt-1": {
+      "total": 14,
+      "files": {
+        "comparison.html": 14
+      }
+    },
+    "min-h-[44px]": {
+      "total": 14,
+      "files": {
+        "comparison.html": 14
+      }
+    },
+    "pt-2": {
+      "total": 14,
+      "files": {
+        "comparison.html": 14
+      }
+    },
+    "cursor-pointer": {
+      "total": 13,
+      "files": {
+        "home.html": 9,
+        "comparison.html": 4
+      }
+    },
+    "text-body-md": {
+      "total": 12,
+      "files": {
+        "home.html": 12
+      }
+    },
+    "tracking-widest": {
+      "total": 12,
+      "files": {
+        "home.html": 5,
+        "comparison.html": 7
+      }
+    },
+    "font-label": {
+      "total": 12,
+      "files": {
+        "rendering-detail.html": 12
+      }
+    },
+    "text-label": {
+      "total": 12,
+      "files": {
+        "rendering-detail.html": 12
+      }
+    },
+    "font-data-mono": {
+      "total": 12,
+      "files": {
+        "rendering-detail.html": 12
+      }
+    },
+    "hover:text-primary": {
+      "total": 11,
+      "files": {
+        "home.html": 5,
+        "rendering-detail.html": 6
+      }
+    },
+    "text-primary": {
+      "total": 10,
+      "files": {
+        "home.html": 2,
+        "rendering-detail.html": 2,
+        "comparison.html": 6
+      }
+    },
+    "gap-xs": {
+      "total": 10,
+      "files": {
+        "home.html": 8,
+        "rendering-detail.html": 1,
+        "comparison.html": 1
+      }
+    },
+    "p-lg": {
+      "total": 10,
+      "files": {
+        "home.html": 5,
+        "rendering-detail.html": 2,
+        "comparison.html": 3
+      }
+    },
+    "text-data-mono": {
+      "total": 10,
+      "files": {
+        "rendering-detail.html": 10
+      }
+    },
+    "font-display-lg": {
+      "total": 9,
+      "files": {
+        "home.html": 6,
+        "comparison.html": 3
+      }
+    },
+    "pb-1": {
+      "total": 9,
+      "files": {
+        "home.html": 3,
+        "rendering-detail.html": 5,
+        "comparison.html": 1
+      }
+    },
+    "text-primary-container": {
+      "total": 9,
+      "files": {
+        "home.html": 5,
+        "rendering-detail.html": 4
+      }
+    },
+    "hover:text-ink": {
+      "total": 9,
+      "files": {
+        "home.html": 2,
+        "comparison.html": 7
+      }
+    },
+    "gap-md": {
+      "total": 8,
+      "files": {
+        "home.html": 3,
+        "rendering-detail.html": 1,
+        "comparison.html": 4
+      }
+    },
+    "dark:text-outline-variant": {
+      "total": 8,
+      "files": {
+        "home.html": 2,
+        "rendering-detail.html": 3,
+        "comparison.html": 3
+      }
+    },
+    "duration-150": {
+      "total": 8,
+      "files": {
+        "home.html": 5,
+        "rendering-detail.html": 3
+      }
+    },
+    "crop-mark-tl": {
+      "total": 8,
+      "files": {
+        "home.html": 5,
+        "rendering-detail.html": 1,
+        "comparison.html": 2
+      }
+    },
+    "crop-mark-tr": {
+      "total": 8,
+      "files": {
+        "home.html": 5,
+        "rendering-detail.html": 1,
+        "comparison.html": 2
+      }
+    },
+    "crop-mark-bl": {
+      "total": 8,
+      "files": {
+        "home.html": 5,
+        "rendering-detail.html": 1,
+        "comparison.html": 2
+      }
+    },
+    "crop-mark-br": {
+      "total": 8,
+      "files": {
+        "home.html": 5,
+        "rendering-detail.html": 1,
+        "comparison.html": 2
+      }
+    },
+    "px-1": {
+      "total": 8,
+      "files": {
+        "home.html": 3,
+        "rendering-detail.html": 4,
+        "comparison.html": 1
+      }
+    },
+    "cursor-crosshair": {
+      "total": 8,
+      "files": {
+        "rendering-detail.html": 7,
+        "comparison.html": 1
+      }
+    },
+    "bg-surface": {
+      "total": 8,
+      "files": {
+        "rendering-detail.html": 4,
+        "comparison.html": 4
+      }
+    },
+    "bg-surface-variant": {
+      "total": 7,
+      "files": {
+        "home.html": 4,
+        "rendering-detail.html": 2,
+        "comparison.html": 1
+      }
+    },
+    "text-on-surface": {
+      "total": 7,
+      "files": {
+        "rendering-detail.html": 7
+      }
+    },
+    "hover:bg-surface-variant": {
+      "total": 7,
+      "files": {
+        "rendering-detail.html": 3,
+        "comparison.html": 4
+      }
+    },
+    "font-bold": {
+      "total": 7,
+      "files": {
+        "comparison.html": 7
+      }
+    },
+    "px-lg": {
+      "total": 6,
+      "files": {
+        "home.html": 5,
+        "comparison.html": 1
+      }
+    },
+    "gap-xl": {
+      "total": 6,
+      "files": {
+        "home.html": 2,
+        "comparison.html": 4
+      }
+    },
+    "hidden": {
+      "total": 6,
+      "files": {
+        "home.html": 2,
+        "rendering-detail.html": 2,
+        "comparison.html": 2
+      }
+    },
+    "border-primary": {
+      "total": 6,
+      "files": {
+        "home.html": 1,
+        "rendering-detail.html": 1,
+        "comparison.html": 4
+      }
+    },
+    "color-patch": {
+      "total": 6,
+      "files": {
+        "home.html": 6
+      }
+    },
+    "mt-xs": {
+      "total": 6,
+      "files": {
+        "home.html": 6
+      }
+    },
+    "grid": {
+      "total": 6,
+      "files": {
+        "home.html": 2,
+        "comparison.html": 4
+      }
+    },
+    "group": {
+      "total": 6,
+      "files": {
+        "home.html": 4,
+        "comparison.html": 2
+      }
+    },
+    "items-start": {
+      "total": 6,
+      "files": {
+        "home.html": 4,
+        "comparison.html": 2
+      }
+    },
+    "border-dashed": {
+      "total": 6,
+      "files": {
+        "home.html": 1,
+        "rendering-detail.html": 5
+      }
+    },
+    "text-line": {
+      "total": 6,
+      "files": {
+        "comparison.html": 6
+      }
+    },
+    "dark:hover:text-primary-fixed-dim": {
+      "total": 5,
+      "files": {
+        "home.html": 5
+      }
+    },
+    "active:opacity-80": {
+      "total": 5,
+      "files": {
+        "home.html": 5
+      }
+    },
+    "mx-auto": {
+      "total": 5,
+      "files": {
+        "home.html": 4,
+        "comparison.html": 1
+      }
+    },
+    "pb-xs": {
+      "total": 5,
+      "files": {
+        "home.html": 1,
+        "rendering-detail.html": 3,
+        "comparison.html": 1
+      }
+    },
+    "text-[16px]": {
+      "total": 5,
+      "files": {
+        "home.html": 2,
+        "rendering-detail.html": 1,
+        "comparison.html": 2
+      }
+    },
+    "p-md": {
+      "total": 5,
+      "files": {
+        "rendering-detail.html": 4,
+        "comparison.html": 1
+      }
+    },
+    "items-baseline": {
+      "total": 5,
+      "files": {
+        "rendering-detail.html": 5
+      }
+    },
+    "color-swatch": {
+      "total": 5,
+      "files": {
+        "rendering-detail.html": 5
+      }
+    },
+    "h-full": {
+      "total": 5,
+      "files": {
+        "comparison.html": 5
+      }
+    },
+    "px-sm": {
+      "total": 5,
+      "files": {
+        "comparison.html": 5
+      }
+    },
+    "h-12": {
+      "total": 4,
+      "files": {
+        "home.html": 1,
+        "rendering-detail.html": 2,
+        "comparison.html": 1
+      }
+    },
+    "text-display-lg": {
+      "total": 4,
+      "files": {
+        "home.html": 2,
+        "comparison.html": 2
+      }
+    },
+    "md:flex": {
+      "total": 4,
+      "files": {
+        "home.html": 2,
+        "rendering-detail.html": 1,
+        "comparison.html": 1
+      }
+    },
+    "border-b-2": {
+      "total": 4,
+      "files": {
+        "home.html": 1,
+        "rendering-detail.html": 1,
+        "comparison.html": 2
+      }
+    },
+    "max-w-6xl": {
+      "total": 4,
+      "files": {
+        "home.html": 4
+      }
+    },
+    "mb-sm": {
+      "total": 4,
+      "files": {
+        "home.html": 1,
+        "rendering-detail.html": 3
+      }
+    },
+    "flex-grow": {
+      "total": 4,
+      "files": {
+        "home.html": 1,
+        "rendering-detail.html": 3
+      }
+    },
+    "pb-xl": {
+      "total": 4,
+      "files": {
+        "home.html": 3,
+        "comparison.html": 1
+      }
+    },
+    "gap-lg": {
+      "total": 4,
+      "files": {
+        "home.html": 1,
+        "rendering-detail.html": 2,
+        "comparison.html": 1
+      }
+    },
+    "hover:border-primary-container": {
+      "total": 4,
+      "files": {
+        "home.html": 4
+      }
+    },
+    "duration-200": {
+      "total": 4,
+      "files": {
+        "home.html": 4
+      }
+    },
+    "text-[20px]": {
+      "total": 4,
+      "files": {
+        "home.html": 4
+      }
+    },
+    "pt-sm": {
+      "total": 4,
+      "files": {
+        "home.html": 4
+      }
+    },
+    "bg-accent-wash": {
+      "total": 4,
+      "files": {
+        "home.html": 3,
+        "comparison.html": 1
+      }
+    },
+    "block": {
+      "total": 4,
+      "files": {
+        "home.html": 4
+      }
+    },
+    "mb-xs": {
+      "total": 4,
+      "files": {
+        "home.html": 4
+      }
+    },
+    "font-label-caps": {
+      "total": 4,
+      "files": {
+        "rendering-detail.html": 4
+      }
+    },
+    "text-label-caps": {
+      "total": 4,
+      "files": {
+        "rendering-detail.html": 4
+      }
+    },
+    "rounded-sm": {
+      "total": 4,
+      "files": {
+        "rendering-detail.html": 4
+      }
+    },
+    "mb-lg": {
+      "total": 4,
+      "files": {
+        "rendering-detail.html": 1,
+        "comparison.html": 3
+      }
+    },
+    "crop-mark": {
+      "total": 4,
+      "files": {
+        "rendering-detail.html": 4
+      }
+    },
+    "light": {
+      "total": 3,
+      "files": {
+        "home.html": 1,
+        "rendering-detail.html": 1,
+        "comparison.html": 1
+      }
+    },
+    "antialiased": {
+      "total": 3,
+      "files": {
+        "home.html": 1,
+        "rendering-detail.html": 1,
+        "comparison.html": 1
+      }
+    },
+    "min-h-screen": {
+      "total": 3,
+      "files": {
+        "home.html": 1,
+        "rendering-detail.html": 1,
+        "comparison.html": 1
+      }
+    },
+    "top-0": {
+      "total": 3,
+      "files": {
+        "home.html": 1,
+        "rendering-detail.html": 1,
+        "comparison.html": 1
+      }
+    },
+    "z-50": {
+      "total": 3,
+      "files": {
+        "home.html": 1,
+        "rendering-detail.html": 1,
+        "comparison.html": 1
+      }
+    },
+    "max-w-full": {
+      "total": 3,
+      "files": {
+        "home.html": 1,
+        "rendering-detail.html": 1,
+        "comparison.html": 1
+      }
+    },
+    "dark:text-primary-fixed-dim": {
+      "total": 3,
+      "files": {
+        "home.html": 2,
+        "comparison.html": 1
+      }
+    },
+    "pt-xl": {
+      "total": 3,
+      "files": {
+        "home.html": 2,
+        "comparison.html": 1
+      }
+    },
+    "p-xs": {
+      "total": 3,
+      "files": {
+        "home.html": 1,
+        "rendering-detail.html": 2
+      }
+    },
+    "grid-cols-1": {
+      "total": 3,
+      "files": {
+        "home.html": 2,
+        "comparison.html": 1
+      }
+    },
+    "pt-md": {
+      "total": 3,
+      "files": {
+        "home.html": 2,
+        "rendering-detail.html": 1
+      }
+    },
+    "bg-primary-container": {
+      "total": 3,
+      "files": {
+        "home.html": 1,
+        "rendering-detail.html": 2
+      }
+    },
+    "font-body": {
+      "total": 3,
+      "files": {
+        "rendering-detail.html": 3
+      }
+    },
+    "text-[14px]": {
+      "total": 3,
+      "files": {
+        "rendering-detail.html": 2,
+        "comparison.html": 1
+      }
+    },
+    "max-w-4xl": {
+      "total": 3,
+      "files": {
+        "rendering-detail.html": 2,
+        "comparison.html": 1
+      }
+    },
+    "dark:hover:text-paper": {
+      "total": 3,
+      "files": {
+        "comparison.html": 3
+      }
+    },
+    "dark:hover:bg-on-surface-variant": {
+      "total": 3,
+      "files": {
+        "comparison.html": 3
+      }
+    },
+    "px-xl": {
+      "total": 3,
+      "files": {
+        "comparison.html": 3
+      }
+    },
+    "grid-cols-[100px_1fr]": {
+      "total": 3,
+      "files": {
+        "comparison.html": 3
+      }
+    },
+    "gap-4": {
+      "total": 3,
+      "files": {
+        "comparison.html": 3
+      }
+    },
+    "dark:border-outline-variant": {
+      "total": 2,
+      "files": {
+        "home.html": 1,
+        "comparison.html": 1
+      }
+    },
+    "flat": {
+      "total": 2,
+      "files": {
+        "home.html": 1,
+        "comparison.html": 1
+      }
+    },
+    "no": {
+      "total": 2,
+      "files": {
+        "home.html": 1,
+        "comparison.html": 1
+      }
+    },
+    "shadows": {
+      "total": 2,
+      "files": {
+        "home.html": 1,
+        "comparison.html": 1
+      }
+    },
+    "dark:text-surface-bright": {
+      "total": 2,
+      "files": {
+        "home.html": 1,
+        "rendering-detail.html": 1
+      }
+    },
+    "dark:border-primary-fixed-dim": {
+      "total": 2,
+      "files": {
+        "home.html": 1,
+        "comparison.html": 1
+      }
+    },
+    "pb-lg": {
+      "total": 2,
+      "files": {
+        "home.html": 1,
+        "comparison.html": 1
+      }
+    },
+    "md:flex-row": {
+      "total": 2,
+      "files": {
+        "home.html": 1,
+        "rendering-detail.html": 1
+      }
+    },
+    "text-center": {
+      "total": 2,
+      "files": {
+        "home.html": 2
+      }
+    },
+    "md:grid-cols-2": {
+      "total": 2,
+      "files": {
+        "home.html": 1,
+        "comparison.html": 1
+      }
+    },
+    "italic": {
+      "total": 2,
+      "files": {
+        "home.html": 1,
+        "comparison.html": 1
+      }
+    },
+    "sticky": {
+      "total": 2,
+      "files": {
+        "rendering-detail.html": 1,
+        "comparison.html": 1
+      }
+    },
+    "flex-shrink-0": {
+      "total": 2,
+      "files": {
+        "rendering-detail.html": 2
+      }
+    },
+    "dark:text-primary-fixed": {
+      "total": 2,
+      "files": {
+        "rendering-detail.html": 2
+      }
+    },
+    "z-10": {
+      "total": 2,
+      "files": {
+        "rendering-detail.html": 1,
+        "comparison.html": 1
+      }
+    },
+    "h-auto": {
+      "total": 2,
+      "files": {
+        "rendering-detail.html": 2
+      }
+    },
+    "mt-2": {
+      "total": 2,
+      "files": {
+        "rendering-detail.html": 2
+      }
+    },
+    "rounded-none": {
+      "total": 2,
+      "files": {
+        "rendering-detail.html": 2
+      }
+    },
+    "text-body": {
+      "total": 2,
+      "files": {
+        "rendering-detail.html": 2
+      }
+    },
+    "space-y-sm": {
+      "total": 2,
+      "files": {
+        "rendering-detail.html": 1,
+        "comparison.html": 1
+      }
+    },
+    "py-sm": {
+      "total": 2,
+      "files": {
+        "rendering-detail.html": 2
+      }
+    },
+    "px-md": {
+      "total": 2,
+      "files": {
+        "rendering-detail.html": 2
+      }
+    },
+    "border-primary-container": {
+      "total": 2,
+      "files": {
+        "rendering-detail.html": 2
+      }
+    },
+    "shadow-sm": {
+      "total": 2,
+      "files": {
+        "rendering-detail.html": 2
+      }
+    },
+    "gap-2": {
+      "total": 2,
+      "files": {
+        "rendering-detail.html": 1,
+        "comparison.html": 1
+      }
+    },
+    "gap-1": {
+      "total": 2,
+      "files": {
+        "rendering-detail.html": 2
+      }
+    },
+    "p-xl": {
+      "total": 2,
+      "files": {
+        "rendering-detail.html": 1,
+        "comparison.html": 1
+      }
+    },
+    "bg-line": {
+      "total": 2,
+      "files": {
+        "rendering-detail.html": 1,
+        "comparison.html": 1
+      }
+    },
+    "leading-relaxed": {
+      "total": 2,
+      "files": {
+        "rendering-detail.html": 1,
+        "comparison.html": 1
+      }
+    },
+    "dark:text-paper": {
+      "total": 2,
+      "files": {
+        "comparison.html": 2
+      }
+    },
+    "flex-1": {
+      "total": 2,
+      "files": {
+        "comparison.html": 2
+      }
+    },
+    "py-xs": {
+      "total": 2,
+      "files": {
+        "comparison.html": 2
+      }
+    },
+    "tracking-wider": {
+      "total": 2,
+      "files": {
+        "comparison.html": 2
+      }
+    },
+    "text-left": {
+      "total": 2,
+      "files": {
+        "comparison.html": 2
+      }
+    },
+    "lowercase": {
+      "total": 2,
+      "files": {
+        "comparison.html": 2
+      }
+    },
+    "mt-0.5": {
+      "total": 2,
+      "files": {
+        "comparison.html": 2
+      }
+    },
+    "hover:border-ink/20": {
+      "total": 2,
+      "files": {
+        "comparison.html": 2
+      }
+    },
+    "items-end": {
+      "total": 2,
+      "files": {
+        "comparison.html": 2
+      }
+    },
+    "pb-sm": {
+      "total": 2,
+      "files": {
+        "comparison.html": 2
+      }
+    },
+    "w-max": {
+      "total": 2,
+      "files": {
+        "comparison.html": 2
+      }
+    },
+    "pt-12": {
+      "total": 1,
+      "files": {
+        "home.html": 1
+      }
+    },
+    "bg-surface-container-low": {
+      "total": 1,
+      "files": {
+        "home.html": 1
+      }
+    },
+    "dark:bg-surface-container-lowest": {
+      "total": 1,
+      "files": {
+        "home.html": 1
+      }
+    },
+    "fixed": {
+      "total": 1,
+      "files": {
+        "home.html": 1
+      }
+    },
+    "tracking-tight": {
+      "total": 1,
+      "files": {
+        "home.html": 1
+      }
+    },
+    "max-w-3xl": {
+      "total": 1,
+      "files": {
+        "home.html": 1
+      }
+    },
+    "bg-[#1C1B22]": {
+      "total": 1,
+      "files": {
+        "home.html": 1
+      }
+    },
+    "bg-[#6D4DE3]": {
+      "total": 1,
+      "files": {
+        "home.html": 1
+      }
+    },
+    "bg-[#5B6FE0]": {
+      "total": 1,
+      "files": {
+        "home.html": 1
+      }
+    },
+    "bg-[#B45CC9]": {
+      "total": 1,
+      "files": {
+        "home.html": 1
+      }
+    },
+    "bg-[#D8D8DC]": {
+      "total": 1,
+      "files": {
+        "home.html": 1
+      }
+    },
+    "bg-[#FFFFFF]": {
+      "total": 1,
+      "files": {
+        "home.html": 1
+      }
+    },
+    "text-[8px]": {
+      "total": 1,
+      "files": {
+        "home.html": 1
+      }
+    },
+    "w-2": {
+      "total": 1,
+      "files": {
+        "home.html": 1
+      }
+    },
+    "h-2": {
+      "total": 1,
+      "files": {
+        "home.html": 1
+      }
+    },
+    "animate-pulse": {
+      "total": 1,
+      "files": {
+        "home.html": 1
+      }
+    },
+    "md:grid-cols-3": {
+      "total": 1,
+      "files": {
+        "home.html": 1
+      }
+    },
+    "bg-neutral-surround": {
+      "total": 1,
+      "files": {
+        "rendering-detail.html": 1
+      }
+    },
+    "bg-background": {
+      "total": 1,
+      "files": {
+        "rendering-detail.html": 1
+      }
+    },
+    "dark:bg-background": {
+      "total": 1,
+      "files": {
+        "rendering-detail.html": 1
+      }
+    },
+    "dark:border-outline": {
+      "total": 1,
+      "files": {
+        "rendering-detail.html": 1
+      }
+    },
+    "px-edge-margin": {
+      "total": 1,
+      "files": {
+        "rendering-detail.html": 1
+      }
+    },
+    "font-display": {
+      "total": 1,
+      "files": {
+        "rendering-detail.html": 1
+      }
+    },
+    "text-display": {
+      "total": 1,
+      "files": {
+        "rendering-detail.html": 1
+      }
+    },
+    "tracking-tighter": {
+      "total": 1,
+      "files": {
+        "rendering-detail.html": 1
+      }
+    },
+    "md:w-[320px]": {
+      "total": 1,
+      "files": {
+        "rendering-detail.html": 1
+      }
+    },
+    "border-r": {
+      "total": 1,
+      "files": {
+        "rendering-detail.html": 1
+      }
+    },
+    "shadow-[2px_0_10px_rgba(0,0,0,0.05)]": {
+      "total": 1,
+      "files": {
+        "rendering-detail.html": 1
+      }
+    },
+    "min-h-[calc(100vh-48px)]": {
+      "total": 1,
+      "files": {
+        "rendering-detail.html": 1
+      }
+    },
+    "border-ink": {
+      "total": 1,
+      "files": {
+        "rendering-detail.html": 1
+      }
+    },
+    "text-white": {
+      "total": 1,
+      "files": {
+        "rendering-detail.html": 1
+      }
+    },
+    "hover:bg-primary": {
+      "total": 1,
+      "files": {
+        "rendering-detail.html": 1
+      }
+    },
+    "shadow-[rgba(109,77,227,0.2)]": {
+      "total": 1,
+      "files": {
+        "rendering-detail.html": 1
+      }
+    },
+    "justify-start": {
+      "total": 1,
+      "files": {
+        "rendering-detail.html": 1
+      }
+    },
+    "overflow-y-auto": {
+      "total": 1,
+      "files": {
+        "rendering-detail.html": 1
+      }
+    },
+    "mt-md": {
+      "total": 1,
+      "files": {
+        "rendering-detail.html": 1
+      }
+    },
+    "color-bar": {
+      "total": 1,
+      "files": {
+        "rendering-detail.html": 1
+      }
+    },
+    "lg:flex": {
+      "total": 1,
+      "files": {
+        "rendering-detail.html": 1
+      }
+    },
+    "bg-secondary": {
+      "total": 1,
+      "files": {
+        "rendering-detail.html": 1
+      }
+    },
+    "bg-tertiary": {
+      "total": 1,
+      "files": {
+        "rendering-detail.html": 1
+      }
+    },
+    "bg-ink": {
+      "total": 1,
+      "files": {
+        "rendering-detail.html": 1
+      }
+    },
+    "opacity-90": {
+      "total": 1,
+      "files": {
+        "rendering-detail.html": 1
+      }
+    },
+    "hover:opacity-100": {
+      "total": 1,
+      "files": {
+        "rendering-detail.html": 1
+      }
+    },
+    "transition-opacity": {
+      "total": 1,
+      "files": {
+        "rendering-detail.html": 1
+      }
+    },
+    "p-sm": {
+      "total": 1,
+      "files": {
+        "rendering-detail.html": 1
+      }
+    },
+    "border-l-2": {
+      "total": 1,
+      "files": {
+        "rendering-detail.html": 1
+      }
+    },
+    "h-xl": {
+      "total": 1,
+      "files": {
+        "rendering-detail.html": 1
+      }
+    },
+    "dark:bg-inverse-surface": {
+      "total": 1,
+      "files": {
+        "comparison.html": 1
+      }
+    },
+    "docked": {
+      "total": 1,
+      "files": {
+        "comparison.html": 1
+      }
+    },
+    "full-width": {
+      "total": 1,
+      "files": {
+        "comparison.html": 1
+      }
+    },
+    "tracking-normal": {
+      "total": 1,
+      "files": {
+        "comparison.html": 1
+      }
+    },
+    "normal-case": {
+      "total": 1,
+      "files": {
+        "comparison.html": 1
+      }
+    },
+    "shrink-0": {
+      "total": 1,
+      "files": {
+        "comparison.html": 1
+      }
+    },
+    "max-w-2xl": {
+      "total": 1,
+      "files": {
+        "comparison.html": 1
+      }
+    },
+    "py-md": {
+      "total": 1,
+      "files": {
+        "comparison.html": 1
+      }
+    },
+    "border-y": {
+      "total": 1,
+      "files": {
+        "comparison.html": 1
+      }
+    },
+    "text-primary/80": {
+      "total": 1,
+      "files": {
+        "comparison.html": 1
+      }
+    },
+    "h-8": {
+      "total": 1,
+      "files": {
+        "comparison.html": 1
+      }
+    },
+    "w-px": {
+      "total": 1,
+      "files": {
+        "comparison.html": 1
+      }
+    },
+    "-inset-2": {
+      "total": 1,
+      "files": {
+        "comparison.html": 1
+      }
+    },
+    "bg-primary/5": {
+      "total": 1,
+      "files": {
+        "comparison.html": 1
+      }
+    },
+    "pointer-events-none": {
+      "total": 1,
+      "files": {
+        "comparison.html": 1
+      }
+    },
+    "group-hover:block": {
+      "total": 1,
+      "files": {
+        "comparison.html": 1
+      }
+    },
+    "-top-2": {
+      "total": 1,
+      "files": {
+        "comparison.html": 1
+      }
+    },
+    "-right-2": {
+      "total": 1,
+      "files": {
+        "comparison.html": 1
+      }
+    },
+    "bg-primary": {
+      "total": 1,
+      "files": {
+        "comparison.html": 1
+      }
+    },
+    "text-paper": {
+      "total": 1,
+      "files": {
+        "comparison.html": 1
+      }
+    },
+    "text-[9px]": {
+      "total": 1,
+      "files": {
+        "comparison.html": 1
+      }
+    },
+    "border-primary/30": {
+      "total": 1,
+      "files": {
+        "comparison.html": 1
+      }
+    },
+    "mt-lg": {
+      "total": 1,
+      "files": {
+        "comparison.html": 1
+      }
+    },
+    "max-w-5xl": {
+      "total": 1,
+      "files": {
+        "comparison.html": 1
+      }
+    },
+    "space-y-lg": {
+      "total": 1,
+      "files": {
+        "comparison.html": 1
+      }
+    },
+    "inline-block": {
+      "total": 1,
+      "files": {
+        "comparison.html": 1
+      }
+    },
+    "space-y-xs": {
+      "total": 1,
+      "files": {
+        "comparison.html": 1
+      }
+    },
+    "border-l-4": {
+      "total": 1,
+      "files": {
+        "comparison.html": 1
+      }
+    },
+    "text-xl": {
+      "total": 1,
+      "files": {
+        "comparison.html": 1
+      }
+    },
+    "py-lg": {
+      "total": 1,
+      "files": {
+        "comparison.html": 1
+      }
+    },
+    "mt-xl": {
+      "total": 1,
+      "files": {
+        "comparison.html": 1
+      }
+    },
+    "flex-wrap": {
+      "total": 1,
+      "files": {
+        "comparison.html": 1
+      }
+    },
+    "gap-x-4": {
+      "total": 1,
+      "files": {
+        "comparison.html": 1
+      }
+    },
+    "gap-y-2": {
+      "total": 1,
+      "files": {
+        "comparison.html": 1
+      }
+    }
+  }
+}

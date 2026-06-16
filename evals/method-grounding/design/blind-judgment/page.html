@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Design Bench - Blind Judgment</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&amp;family=IBM+Plex+Mono:wght@400;500&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "surface-container-lowest": "#ffffff",
+                        "on-error-container": "#93000a",
+                        "on-error": "#ffffff",
+                        "surface-variant": "#e2e2e5",
+                        "surface-container-low": "#f3f3f6",
+                        "line": "#D8D8DC",
+                        "on-secondary-container": "#001d8c",
+                        "on-background": "#1a1c1e",
+                        "on-tertiary-fixed-variant": "#731b8a",
+                        "inverse-surface": "#2f3033",
+                        "paper": "#FFFFFF",
+                        "inverse-primary": "#cbbeff",
+                        "error-container": "#ffdad6",
+                        "on-surface": "#1a1c1e",
+                        "surface": "#f9f9fc",
+                        "accent-wash": "#EFEBFD",
+                        "on-primary-container": "#ede6ff",
+                        "on-secondary-fixed-variant": "#2339ab",
+                        "primary-container": "#6d4de3",
+                        "secondary": "#3f53c3",
+                        "tertiary": "#7f2995",
+                        "surround": "#E9E9EC",
+                        "on-primary-fixed-variant": "#4a20bf",
+                        "on-tertiary-fixed": "#340042",
+                        "surface-container": "#eeedf0",
+                        "ink": "#1C1B22",
+                        "on-secondary-fixed": "#00105c",
+                        "primary": "#542fca",
+                        "on-primary": "#ffffff",
+                        "surface-tint": "#6240d8",
+                        "on-tertiary": "#ffffff",
+                        "surface-dim": "#dadadd",
+                        "primary-fixed": "#e6deff",
+                        "secondary-container": "#798dff",
+                        "on-secondary": "#ffffff",
+                        "secondary-fixed": "#dee0ff",
+                        "on-primary-fixed": "#1d0061",
+                        "surface-container-high": "#e8e8eb",
+                        "tertiary-fixed-dim": "#f3aeff",
+                        "tertiary-fixed": "#fdd6ff",
+                        "surface-container-highest": "#e2e2e5",
+                        "surface-bright": "#f9f9fc",
+                        "outline": "#797586",
+                        "inverse-on-surface": "#f0f0f3",
+                        "secondary-fixed-dim": "#bac3ff",
+                        "on-surface-variant": "#484554",
+                        "tertiary-container": "#9a44b0",
+                        "background": "#f9f9fc",
+                        "ink-muted": "#6B6A74",
+                        "primary-fixed-dim": "#cbbeff",
+                        "on-tertiary-container": "#ffe1ff",
+                        "error": "#ba1a1a",
+                        "outline-variant": "#cac4d7"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "xs": "4px",
+                        "md": "16px",
+                        "lg": "24px",
+                        "sm": "8px",
+                        "xl": "40px"
+                    },
+                    "fontFamily": {
+                        "label": ["IBM Plex Sans"],
+                        "data-mono": ["IBM Plex Mono"],
+                        "body": ["IBM Plex Sans"],
+                        "display": ["IBM Plex Sans"],
+                        "data": ["IBM Plex Mono"],
+                        "body-md": ["IBM Plex Sans"],
+                        "display-lg": ["IBM Plex Sans"],
+                        "label-sm": ["IBM Plex Sans"]
+                    },
+                    "fontSize": {
+                        "label": ["12px", { "lineHeight": "1.3", "letterSpacing": "0.04em", "fontWeight": "500" }],
+                        "data-mono": ["12.5px", { "lineHeight": "1.5", "fontWeight": "400" }],
+                        "body": ["15px", { "lineHeight": "1.55", "fontWeight": "400" }],
+                        "display": ["28px", { "lineHeight": "1.2", "fontWeight": "600" }],
+                        "data": ["12.5px", { "lineHeight": "1.5", "fontWeight": "400" }],
+                        "body-md": ["15px", { "lineHeight": "1.55", "fontWeight": "400" }],
+                        "display-lg": ["28px", { "lineHeight": "1.2", "fontWeight": "600" }],
+                        "label-sm": ["12px", { "lineHeight": "1.3", "letterSpacing": "0.04em", "fontWeight": "500" }]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        body { background-color: #E9E9EC; }
+        .crop-mark-tl { position: absolute; top: 0; left: 0; width: 10px; height: 10px; border-top: 1px solid #D8D8DC; border-left: 1px solid #D8D8DC; transform: translate(-2px, -2px); }
+        .crop-mark-tr { position: absolute; top: 0; right: 0; width: 10px; height: 10px; border-top: 1px solid #D8D8DC; border-right: 1px solid #D8D8DC; transform: translate(2px, -2px); }
+        .crop-mark-bl { position: absolute; bottom: 0; left: 0; width: 10px; height: 10px; border-bottom: 1px solid #D8D8DC; border-left: 1px solid #D8D8DC; transform: translate(-2px, 2px); }
+        .crop-mark-br { position: absolute; bottom: 0; right: 0; width: 10px; height: 10px; border-bottom: 1px solid #D8D8DC; border-right: 1px solid #D8D8DC; transform: translate(2px, 2px); }
+        .proof-sheet { transition: all 0.2s ease; cursor: pointer; }
+        .proof-sheet:hover { border-color: #cac4d7; }
+        .proof-sheet.selected { border-color: #6d4de3; box-shadow: 0 0 0 1px #6d4de3; }
+        .proof-sheet.selected .letter-label { color: #6d4de3; }
+    </style>
+</head>
+<body class="min-h-screen text-on-surface font-body antialiased flex flex-col">
+<!-- TopNavBar -->
+<nav class="bg-surface-container-low dark:bg-surface-container-low w-full h-10 flex items-center border-b border-line dark:border-outline-variant flat no shadows">
+<div class="flex justify-between items-center w-full px-lg max-w-full">
+<div class="flex items-center gap-xl">
+<span class="font-display text-display text-on-surface dark:text-on-surface tracking-tighter text-[16px] uppercase leading-none">DESIGN BENCH</span>
+<div class="hidden md:flex items-center gap-md">
+<a class="font-label-sm text-label-sm uppercase tracking-widest text-on-primary-fixed-variant dark:text-primary-fixed border-b-2 border-primary hover:text-primary-container transition-colors duration-150 cursor-pointer active:opacity-70 pb-[10px] translate-y-[5px]" href="#">PROOFS</a>
+<a class="font-label-sm text-label-sm uppercase tracking-widest text-on-surface-variant dark:text-on-surface-variant hover:text-primary hover:text-primary-container transition-colors duration-150 cursor-pointer active:opacity-70 pb-[10px] translate-y-[5px] border-b-2 border-transparent" href="#">RESOURCES</a>
+<a class="font-label-sm text-label-sm uppercase tracking-widest text-on-surface-variant dark:text-on-surface-variant hover:text-primary hover:text-primary-container transition-colors duration-150 cursor-pointer active:opacity-70 pb-[10px] translate-y-[5px] border-b-2 border-transparent" href="#">ARCHIVE</a>
+<a class="font-label-sm text-label-sm uppercase tracking-widest text-on-surface-variant dark:text-on-surface-variant hover:text-primary hover:text-primary-container transition-colors duration-150 cursor-pointer active:opacity-70 pb-[10px] translate-y-[5px] border-b-2 border-transparent" href="#">HISTORY</a>
+</div>
+</div>
+<div class="flex items-center gap-md">
+<button class="font-label-sm text-label-sm uppercase tracking-widest text-on-surface-variant dark:text-on-surface-variant hover:text-primary hover:text-primary-container transition-colors duration-150 cursor-pointer active:opacity-70">SETTINGS</button>
+<button class="font-label-sm text-label-sm uppercase tracking-widest text-primary dark:text-primary-fixed hover:text-primary-container transition-colors duration-150 cursor-pointer active:opacity-70 font-semibold">EXPORT</button>
+</div>
+</div>
+</nav>
+<!-- Main Workspace -->
+<main class="flex-grow flex flex-col p-lg max-w-[1600px] mx-auto w-full">
+<!-- Header & Wayfinding -->
+<div class="mb-xl">
+<a class="font-label text-label text-on-surface-variant hover:text-primary transition-colors inline-flex items-center mb-md uppercase tracking-wider" href="#">
+                ← Back to Agent Architecture
+            </a>
+<div class="flex flex-col md:flex-row justify-between items-end gap-lg border-b border-line pb-md">
+<div class="max-w-3xl">
+<h1 class="font-body-md text-body-md text-ink mb-xs">
+                        Below are five renderings of the same seven-slide deck — all from Stitch · Gemini 3.1 Pro, in shuffled order, with their treatments hidden.
+                    </h1>
+<p class="font-body-md text-body-md text-ink font-medium">
+                        Pick the one with the clearest point of view — then see which method made it.
+                    </p>
+<a class="font-label text-label text-primary-container hover:text-primary transition-colors underline mt-xs inline-block" href="#">
+                        Judge tools instead — same direction, the tool hidden.
+                    </a>
+</div>
+<div class="font-data-mono text-data-mono text-ink-muted uppercase bg-surface-container-high px-sm py-[2px] rounded-sm">
+                    Judgment 2 of 6 in this set
+                </div>
+</div>
+</div>
+<!-- The Easel -->
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-md mb-xl flex-grow items-start">
+<!-- Proof Sheet A -->
+<div class="proof-sheet bg-paper border border-line rounded-none p-sm relative group" onclick="selectProof('A')">
+<div class="crop-mark-tl"></div><div class="crop-mark-tr"></div><div class="crop-mark-bl"></div><div class="crop-mark-br"></div>
+<div class="aspect-[4/3] bg-surface-container-lowest w-full relative overflow-hidden border border-line">
+<img alt="Proof rendering option A" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBLL8x7EFjcQEad8fFoR_O0Q8JXZtHLLpG2apLboW1AzJmBGZbgya1a-Yn_sTAqdwhD37wTvGzWL9HzpNfAvBFesu5ar07lSosofYZmPXvzdkYJ3kpksqKxsGzzIYiB_8Zs98qdguvWYTkaTDVHOWEIpx-avHUqxcEgfiw9nSLjiyqHx88tg0xaZpt9M_7iBt0sEkn5zKg3Y606UWfHNY4fUSGPxgpwZp5Kftaz7Mi-rAsBsZh_Vq1T1iqeCKpNH9ImEroXxck60GC_"/>
+</div>
+<div class="mt-sm flex justify-center">
+<span class="letter-label font-data-mono text-[24px] text-ink-muted group-hover:text-ink transition-colors">A</span>
+</div>
+</div>
+<!-- Proof Sheet B -->
+<div class="proof-sheet bg-paper border border-line rounded-none p-sm relative group" onclick="selectProof('B')">
+<div class="crop-mark-tl"></div><div class="crop-mark-tr"></div><div class="crop-mark-bl"></div><div class="crop-mark-br"></div>
+<div class="aspect-[4/3] bg-surface-container-lowest w-full relative overflow-hidden border border-line">
+<img alt="Proof rendering option B" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBLL8x7EFjcQEad8fFoR_O0Q8JXZtHLLpG2apLboW1AzJmBGZbgya1a-Yn_sTAqdwhD37wTvGzWL9HzpNfAvBFesu5ar07lSosofYZmPXvzdkYJ3kpksqKxsGzzIYiB_8Zs98qdguvWYTkaTDVHOWEIpx-avHUqxcEgfiw9nSLjiyqHx88tg0xaZpt9M_7iBt0sEkn5zKg3Y606UWfHNY4fUSGPxgpwZp5Kftaz7Mi-rAsBsZh_Vq1T1iqeCKpNH9ImEroXxck60GC_"/>
+</div>
+<div class="mt-sm flex justify-center">
+<span class="letter-label font-data-mono text-[24px] text-ink-muted group-hover:text-ink transition-colors">B</span>
+</div>
+</div>
+<!-- Proof Sheet C -->
+<div class="proof-sheet bg-paper border border-line rounded-none p-sm relative group" onclick="selectProof('C')">
+<div class="crop-mark-tl"></div><div class="crop-mark-tr"></div><div class="crop-mark-bl"></div><div class="crop-mark-br"></div>
+<div class="aspect-[4/3] bg-surface-container-lowest w-full relative overflow-hidden border border-line">
+<img alt="Proof rendering option C" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBLL8x7EFjcQEad8fFoR_O0Q8JXZtHLLpG2apLboW1AzJmBGZbgya1a-Yn_sTAqdwhD37wTvGzWL9HzpNfAvBFesu5ar07lSosofYZmPXvzdkYJ3kpksqKxsGzzIYiB_8Zs98qdguvWYTkaTDVHOWEIpx-avHUqxcEgfiw9nSLjiyqHx88tg0xaZpt9M_7iBt0sEkn5zKg3Y606UWfHNY4fUSGPxgpwZp5Kftaz7Mi-rAsBsZh_Vq1T1iqeCKpNH9ImEroXxck60GC_"/>
+</div>
+<div class="mt-sm flex justify-center">
+<span class="letter-label font-data-mono text-[24px] text-ink-muted group-hover:text-ink transition-colors">C</span>
+</div>
+</div>
+<!-- Proof Sheet D -->
+<div class="proof-sheet bg-paper border border-line rounded-none p-sm relative group" onclick="selectProof('D')">
+<div class="crop-mark-tl"></div><div class="crop-mark-tr"></div><div class="crop-mark-bl"></div><div class="crop-mark-br"></div>
+<div class="aspect-[4/3] bg-surface-container-lowest w-full relative overflow-hidden border border-line">
+<img alt="Proof rendering option D" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBLL8x7EFjcQEad8fFoR_O0Q8JXZtHLLpG2apLboW1AzJmBGZbgya1a-Yn_sTAqdwhD37wTvGzWL9HzpNfAvBFesu5ar07lSosofYZmPXvzdkYJ3kpksqKxsGzzIYiB_8Zs98qdguvWYTkaTDVHOWEIpx-avHUqxcEgfiw9nSLjiyqHx88tg0xaZpt9M_7iBt0sEkn5zKg3Y606UWfHNY4fUSGPxgpwZp5Kftaz7Mi-rAsBsZh_Vq1T1iqeCKpNH9ImEroXxck60GC_"/>
+</div>
+<div class="mt-sm flex justify-center">
+<span class="letter-label font-data-mono text-[24px] text-ink-muted group-hover:text-ink transition-colors">D</span>
+</div>
+</div>
+<!-- Proof Sheet E -->
+<div class="proof-sheet bg-paper border border-line rounded-none p-sm relative group" onclick="selectProof('E')">
+<div class="crop-mark-tl"></div><div class="crop-mark-tr"></div><div class="crop-mark-bl"></div><div class="crop-mark-br"></div>
+<div class="aspect-[4/3] bg-surface-container-lowest w-full relative overflow-hidden border border-line">
+<img alt="Proof rendering option E" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBLL8x7EFjcQEad8fFoR_O0Q8JXZtHLLpG2apLboW1AzJmBGZbgya1a-Yn_sTAqdwhD37wTvGzWL9HzpNfAvBFesu5ar07lSosofYZmPXvzdkYJ3kpksqKxsGzzIYiB_8Zs98qdguvWYTkaTDVHOWEIpx-avHUqxcEgfiw9nSLjiyqHx88tg0xaZpt9M_7iBt0sEkn5zKg3Y606UWfHNY4fUSGPxgpwZp5Kftaz7Mi-rAsBsZh_Vq1T1iqeCKpNH9ImEroXxck60GC_"/>
+</div>
+<div class="mt-sm flex justify-center">
+<span class="letter-label font-data-mono text-[24px] text-ink-muted group-hover:text-ink transition-colors">E</span>
+</div>
+</div>
+</div>
+<!-- The Verdict Panel -->
+<div class="bg-paper border border-line p-lg rounded-none relative mt-auto max-w-4xl mx-auto w-full">
+<div class="crop-mark-tl"></div><div class="crop-mark-tr"></div><div class="crop-mark-bl"></div><div class="crop-mark-br"></div>
+<h2 class="font-body-md text-body-md text-ink mb-md font-medium text-center">Which rendering most escapes the look you'd expect by default?</h2>
+<div class="flex justify-center gap-lg mb-lg">
+<label class="flex items-center gap-xs cursor-pointer group">
+<input class="text-primary-container focus:ring-primary-container border-line w-4 h-4 rounded-full" name="verdict" type="radio" value="A"/>
+<span class="font-data-mono text-data-mono text-ink-muted group-hover:text-ink">A</span>
+</label>
+<label class="flex items-center gap-xs cursor-pointer group">
+<input class="text-primary-container focus:ring-primary-container border-line w-4 h-4 rounded-full" name="verdict" type="radio" value="B"/>
+<span class="font-data-mono text-data-mono text-ink-muted group-hover:text-ink">B</span>
+</label>
+<label class="flex items-center gap-xs cursor-pointer group">
+<input class="text-primary-container focus:ring-primary-container border-line w-4 h-4 rounded-full" name="verdict" type="radio" value="C"/>
+<span class="font-data-mono text-data-mono text-ink-muted group-hover:text-ink">C</span>
+</label>
+<label class="flex items-center gap-xs cursor-pointer group">
+<input class="text-primary-container focus:ring-primary-container border-line w-4 h-4 rounded-full" name="verdict" type="radio" value="D"/>
+<span class="font-data-mono text-data-mono text-ink-muted group-hover:text-ink">D</span>
+</label>
+<label class="flex items-center gap-xs cursor-pointer group">
+<input class="text-primary-container focus:ring-primary-container border-line w-4 h-4 rounded-full" name="verdict" type="radio" value="E"/>
+<span class="font-data-mono text-data-mono text-ink-muted group-hover:text-ink">E</span>
+</label>
+</div>
+<div class="flex flex-col items-center">
+<button class="bg-primary-container text-on-primary font-label text-label uppercase tracking-widest px-xl py-sm rounded-[2px] hover:bg-primary transition-colors active:opacity-90 min-w-[200px]">
+                    Lock in and reveal
+                </button>
+<p class="font-data-mono text-[10px] text-ink-muted mt-sm uppercase text-center max-w-[300px]">
+                    Your verdict is recorded before the reveal — it can't be changed after.
+                </p>
+</div>
+</div>
+</main>
+<!-- Footer -->
+<footer class="bg-surround dark:bg-inverse-surface border-t border-line dark:border-outline-variant flat no shadows flex justify-between items-center px-md py-xs w-full mt-auto">
+<span class="font-data-mono text-data-mono font-bold text-on-surface">DESIGN BENCH v2.4 // REGISTRATION: ACTIVE</span>
+<div class="flex gap-md">
+<a class="font-data-mono text-data-mono uppercase text-on-surface-variant hover:text-tertiary transition-all duration-75" href="#">CALIBRATION</a>
+<a class="font-data-mono text-data-mono uppercase text-on-surface-variant hover:text-tertiary transition-all duration-75" href="#">SUPPORT</a>
+<a class="font-data-mono text-data-mono uppercase text-on-surface-variant hover:text-tertiary transition-all duration-75" href="#">LEGAL</a>
+</div>
+</footer>
+<script>
+        function selectProof(letter) {
+            // Remove selected class from all sheets
+            document.querySelectorAll('.proof-sheet').forEach(sheet => {
+                sheet.classList.remove('selected');
+            });
+            
+            // Add selected class to clicked sheet
+            const sheets = Array.from(document.querySelectorAll('.proof-sheet'));
+            const index = ['A', 'B', 'C', 'D', 'E'].indexOf(letter);
+            if(index !== -1 && sheets[index]) {
+                sheets[index].classList.add('selected');
+            }
+
+            // Update radio button
+            const radio = document.querySelector(`input[name="verdict"][value="${letter}"]`);
+            if (radio) {
+                radio.checked = true;
+            }
+        }
+
+        // Listen for radio button changes to update visual selection
+        document.querySelectorAll('input[name="verdict"]').forEach(radio => {
+            radio.addEventListener('change', (e) => {
+                selectProof(e.target.value);
+            });
+        });
+    </script>
+</body></html>

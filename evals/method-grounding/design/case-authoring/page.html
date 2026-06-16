@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Case Authoring - Design Bench</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&amp;family=IBM+Plex+Sans:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "secondary-fixed-dim": "#bac3ff",
+                        "inverse-primary": "#cbbeff",
+                        "on-primary-fixed-variant": "#4a20bf",
+                        "background": "#f9f9fc",
+                        "on-primary-container": "#ede6ff",
+                        "surface-tint": "#6240d8",
+                        "on-background": "#1a1c1e",
+                        "primary-fixed": "#e6deff",
+                        "secondary-fixed": "#dee0ff",
+                        "accent-wash": "#EFEBFD",
+                        "tertiary-fixed-dim": "#f3aeff",
+                        "primary-container": "#6d4de3",
+                        "on-surface-variant": "#484554",
+                        "on-error-container": "#93000a",
+                        "surface": "#E9E9EC", // Override surface for easel
+                        "on-tertiary": "#ffffff",
+                        "on-tertiary-fixed-variant": "#731b8a",
+                        "tertiary": "#7f2995",
+                        "on-secondary-fixed": "#00105c",
+                        "on-secondary": "#ffffff",
+                        "surface-bright": "#f9f9fc",
+                        "ink-muted": "#6B6A74",
+                        "outline-variant": "#cac4d7",
+                        "error": "#ba1a1a",
+                        "surface-container-low": "#f3f3f6",
+                        "error-container": "#ffdad6",
+                        "on-primary": "#ffffff",
+                        "secondary-container": "#798dff",
+                        "on-tertiary-container": "#ffe1ff",
+                        "on-primary-fixed": "#1d0061",
+                        "surface-container-lowest": "#ffffff",
+                        "paper": "#FFFFFF",
+                        "on-secondary-fixed-variant": "#2339ab",
+                        "tertiary-container": "#9a44b0",
+                        "surface-container-highest": "#e2e2e5",
+                        "secondary": "#3f53c3",
+                        "tertiary-fixed": "#fdd6ff",
+                        "ink": "#1C1B22",
+                        "surface-variant": "#e2e2e5",
+                        "primary-fixed-dim": "#cbbeff",
+                        "surface-container": "#eeedf0",
+                        "on-error": "#ffffff",
+                        "on-tertiary-fixed": "#340042",
+                        "on-secondary-container": "#001d8c",
+                        "inverse-surface": "#2f3033",
+                        "outline": "#797586",
+                        "line": "#D8D8DC",
+                        "inverse-on-surface": "#f0f0f3",
+                        "surface-container-high": "#e8e8eb",
+                        "on-surface": "#1a1c1e",
+                        "surface-dim": "#dadadd",
+                        "primary": "#542fca"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0px",
+                        "lg": "0px",
+                        "xl": "0px",
+                        "full": "0px"
+                    },
+                    "spacing": {
+                        "xs": "4px",
+                        "md": "16px",
+                        "lg": "24px",
+                        "xl": "40px",
+                        "sm": "8px"
+                    },
+                    "fontFamily": {
+                        "label-sm": ["IBM Plex Sans", "sans-serif"],
+                        "body-md": ["IBM Plex Sans", "sans-serif"],
+                        "display-lg": ["IBM Plex Sans", "sans-serif"],
+                        "data-mono": ["IBM Plex Mono", "monospace"]
+                    },
+                    "fontSize": {
+                        "label-sm": ["12px", { "lineHeight": "1.3", "letterSpacing": "0.04em", "fontWeight": "500" }],
+                        "body-md": ["15px", { "lineHeight": "1.55", "fontWeight": "400" }],
+                        "display-lg": ["28px", { "lineHeight": "1.2", "fontWeight": "600" }],
+                        "data-mono": ["12.5px", { "lineHeight": "1.5", "fontWeight": "400" }]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        .crop-marks::before {
+            content: '';
+            position: absolute;
+            top: -4px; left: -4px; width: 8px; height: 8px;
+            border-top: 1px solid #1C1B22; border-left: 1px solid #1C1B22;
+            pointer-events: none;
+        }
+        .crop-marks::after {
+            content: '';
+            position: absolute;
+            bottom: -4px; right: -4px; width: 8px; height: 8px;
+            border-bottom: 1px solid #1C1B22; border-right: 1px solid #1C1B22;
+            pointer-events: none;
+        }
+        .crop-marks-alt::before {
+            content: '';
+            position: absolute;
+            top: -4px; right: -4px; width: 8px; height: 8px;
+            border-top: 1px solid #1C1B22; border-right: 1px solid #1C1B22;
+            pointer-events: none;
+        }
+        .crop-marks-alt::after {
+            content: '';
+            position: absolute;
+            bottom: -4px; left: -4px; width: 8px; height: 8px;
+            border-bottom: 1px solid #1C1B22; border-left: 1px solid #1C1B22;
+            pointer-events: none;
+        }
+        .color-bar {
+            position: absolute;
+            left: 0; top: 0; bottom: 0; width: 4px;
+            background: linear-gradient(to bottom, #00ffff 20%, #ff00ff 20% 40%, #ffff00 40% 60%, #000000 60% 80%, #ffffff 80%);
+            border-right: 1px solid #D8D8DC;
+        }
+    </style>
+</head>
+<body class="bg-surface text-ink min-h-screen flex flex-col font-body-md overflow-x-hidden selection:bg-accent-wash selection:text-ink">
+<!-- TopAppBar -->
+<header class="fixed top-0 left-0 w-full z-50 flex justify-between items-center px-lg h-md bg-surface border-b border-line">
+<div class="flex items-center gap-md">
+<span class="font-display-lg text-display-lg font-bold text-ink tracking-tight uppercase">Design Bench</span>
+<nav class="flex items-center gap-sm font-label-sm text-label-sm">
+<a class="text-ink-muted hover:text-primary-container transition-colors uppercase" href="#">Case Gallery</a>
+<span class="text-line">/</span>
+<a class="text-primary font-bold uppercase" href="#">Urban Nocturnal Field Guide</a>
+</nav>
+</div>
+<div class="flex items-center gap-md font-label-sm text-label-sm">
+<button class="text-ink-muted hover:text-error transition-colors uppercase">Delete draft</button>
+<button class="bg-primary-container text-on-primary px-4 py-1 hover:opacity-90 active:opacity-80 transition-all uppercase font-bold tracking-wider">PROMOTE TO GALLERY</button>
+</div>
+</header>
+<!-- Main Layout (The Easel) -->
+<main class="flex-grow pt-16 px-lg pb-lg flex flex-col md:flex-row gap-md max-w-[1600px] mx-auto w-full">
+<!-- Left Column: Proof Sheets -->
+<div class="flex-grow flex flex-col gap-md">
+<!-- Sheet 1: CHECKS -->
+<article class="bg-paper p-xl relative shadow-sm border border-line group">
+<div class="crop-marks"></div><div class="crop-marks-alt"></div>
+<div class="color-bar opacity-50 group-hover:opacity-100 transition-opacity"></div>
+<div class="pl-4">
+<header class="mb-lg border-b border-line pb-sm flex justify-between items-end">
+<h2 class="font-label-sm text-label-sm font-bold text-ink uppercase tracking-widest">CHECKS</h2>
+<span class="font-data-mono text-data-mono text-ink-muted">Validation gate</span>
+</header>
+<div class="mb-md">
+<span class="inline-block bg-accent-wash text-primary-container font-label-sm text-label-sm px-2 py-1 mb-2 uppercase border border-primary-container">Draft — passes all checks, ready to promote.</span>
+</div>
+<ul class="space-y-sm text-ink mb-lg">
+<li class="flex items-start gap-sm">
+<span class="font-data-mono text-data-mono text-primary-container mt-1">[PASS]</span>
+<span>Shared tokens identical across all treatments</span>
+</li>
+<li class="flex items-start gap-sm">
+<span class="font-data-mono text-data-mono text-primary-container mt-1">[PASS]</span>
+<span>Treatment lengths within 35% of each other <span class="font-data-mono text-data-mono text-ink-muted">(310–355 words)</span></span>
+</li>
+<li class="flex items-start gap-sm">
+<span class="font-data-mono text-data-mono text-primary-container mt-1">[PASS]</span>
+<span>Format linter — 0 errors, 0 warnings.</span>
+</li>
+<li class="flex items-start gap-sm">
+<span class="font-data-mono text-data-mono text-primary-container mt-1">[PASS]</span>
+<span>No unfinished markers.</span>
+</li>
+<li class="flex items-start gap-sm">
+<span class="font-data-mono text-data-mono text-primary-container mt-1">[PASS]</span>
+<span>Do's and Don'ts only in the full specification</span>
+</li>
+</ul>
+<p class="font-data-mono text-data-mono text-ink-muted border-l-2 border-line pl-sm">A case enters the gallery only when every check passes; the agent runs these same checks after each edit.</p>
+</div>
+</article>
+<!-- Sheet 2: THE BRIEF -->
+<article class="bg-paper p-xl relative shadow-sm border border-line group">
+<div class="crop-marks"></div><div class="crop-marks-alt"></div>
+<div class="color-bar opacity-50 group-hover:opacity-100 transition-opacity"></div>
+<div class="pl-4">
+<header class="mb-lg border-b border-line pb-sm flex justify-between items-end">
+<h2 class="font-label-sm text-label-sm font-bold text-ink uppercase tracking-widest">THE BRIEF</h2>
+<span class="font-data-mono text-data-mono text-ink-muted">what every treatment must contain</span>
+</header>
+<p class="text-ink leading-relaxed max-w-2xl">
+                        Design a field-notes site for night birding in the city: a season log of nocturnal walks, each entry with species heard, location, time, and a short field note…
+                    </p>
+</div>
+</article>
+<!-- Sheet 3: TREATMENTS -->
+<article class="bg-paper p-xl relative shadow-sm border border-line group">
+<div class="crop-marks"></div><div class="crop-marks-alt"></div>
+<div class="color-bar opacity-50 group-hover:opacity-100 transition-opacity"></div>
+<div class="pl-4">
+<header class="mb-lg border-b border-line pb-sm flex justify-between items-end">
+<h2 class="font-label-sm text-label-sm font-bold text-ink uppercase tracking-widest">TREATMENTS</h2>
+<span class="font-data-mono text-data-mono text-ink-muted">5 variants</span>
+</header>
+<ol class="list-decimal list-inside space-y-md text-ink">
+<li class="pl-sm">
+<span class="font-medium">Tokens only (front matter, no prose) · Adjectives</span>
+<span class="float-right font-data-mono text-data-mono text-ink-muted">— 340 words</span>
+</li>
+<li class="pl-sm">
+<span class="font-medium">One real object: a 1960s Peterson field guide</span>
+<span class="float-right font-data-mono text-data-mono text-ink-muted">— 350 words</span>
+</li>
+<li class="pl-sm">
+<span class="font-medium bg-accent-wash px-1 outline outline-1 outline-primary-container">One hard constraint: 1960s offset printing</span>
+<span class="float-right font-data-mono text-data-mono text-primary-container font-bold">— 322 words</span>
+</li>
+<li class="pl-sm">
+<span class="font-medium">One governing metaphor: the naturalist's season log</span>
+<span class="float-right font-data-mono text-data-mono text-ink-muted">— 331 words</span>
+</li>
+<li class="pl-sm border-t border-line pt-sm mt-sm">
+<span class="font-bold">Full specification</span>
+<span class="float-right font-data-mono text-data-mono text-ink-muted">— 612 words</span>
+</li>
+</ol>
+</div>
+</article>
+</div>
+<!-- Right Column: Conversation Panel -->
+<aside class="w-full md:w-80 flex-shrink-0 flex flex-col h-[calc(100vh-80px)] sticky top-[80px]">
+<div class="bg-paper border border-line shadow-lg flex flex-col h-full relative">
+<div class="crop-marks"></div><div class="crop-marks-alt"></div>
+<header class="p-sm border-b border-line bg-surface-container-lowest">
+<div class="font-label-sm text-label-sm font-bold text-ink uppercase">gemini / gemini-3-flash-preview</div>
+</header>
+<div class="flex-grow p-md overflow-y-auto space-y-lg flex flex-col justify-end">
+<!-- Maker Message -->
+<div class="flex flex-col items-end">
+<span class="font-label-sm text-label-sm text-ink-muted uppercase mb-1">Maker</span>
+<div class="bg-surface p-sm border border-line text-ink text-sm max-w-[90%]">
+                            Sharpen the constraint treatment; the printing limitation should forbid more
+                        </div>
+</div>
+<!-- Agent Message -->
+<div class="flex flex-col items-start">
+<span class="font-label-sm text-label-sm text-primary-container uppercase mb-1">Agent</span>
+<div class="bg-accent-wash p-sm border border-primary-container text-ink text-sm max-w-[90%]">
+                            Tightened to two ink colors and halftone-only images; validation clean
+                        </div>
+<div class="mt-1 font-data-mono text-data-mono text-ink-muted">
+                            constraint <span class="text-on-secondary-container">+6</span> <span class="text-error">−4</span>
+</div>
+</div>
+</div>
+<div class="p-sm border-t border-line bg-surface-container-lowest">
+<textarea class="w-full bg-surface border border-line p-sm text-sm font-body-md text-ink placeholder:text-ink-muted focus:outline-none focus:border-primary-container focus:ring-1 focus:ring-primary-container resize-none h-24 mb-sm" placeholder="Direct the agent — critique, rewrite, validate…"></textarea>
+<div class="flex flex-wrap gap-xs">
+<button class="font-label-sm text-label-sm uppercase border border-line px-2 py-1 hover:border-primary-container hover:bg-accent-wash transition-colors">validate</button>
+<button class="font-label-sm text-label-sm uppercase border border-line px-2 py-1 hover:border-primary-container hover:bg-accent-wash transition-colors">draft all treatments</button>
+<button class="font-label-sm text-label-sm uppercase border border-line px-2 py-1 hover:border-primary-container hover:bg-accent-wash transition-colors">propose groundings</button>
+<button class="font-label-sm text-label-sm uppercase border border-line px-2 py-1 hover:border-primary-container hover:bg-accent-wash transition-colors">critique</button>
+</div>
+</div>
+</div>
+</aside>
+</main>
+</body></html>

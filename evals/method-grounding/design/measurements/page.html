@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Measurements - Design Bench</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&amp;family=IBM+Plex+Mono:wght@400;500&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "primary-container": "#6d4de3",
+                        "on-surface-variant": "#484554",
+                        "tertiary-fixed-dim": "#f3aeff",
+                        "surface": "#f9f9fc",
+                        "on-error-container": "#93000a",
+                        "on-background": "#1a1c1e",
+                        "surface-tint": "#6240d8",
+                        "secondary-fixed": "#dee0ff",
+                        "accent-wash": "#EFEBFD",
+                        "primary-fixed": "#e6deff",
+                        "on-primary-container": "#ede6ff",
+                        "on-primary-fixed-variant": "#4a20bf",
+                        "background": "#f9f9fc",
+                        "secondary-fixed-dim": "#bac3ff",
+                        "inverse-primary": "#cbbeff",
+                        "surface-container-low": "#f3f3f6",
+                        "error-container": "#ffdad6",
+                        "on-tertiary-container": "#ffe1ff",
+                        "on-primary": "#ffffff",
+                        "secondary-container": "#798dff",
+                        "outline-variant": "#cac4d7",
+                        "error": "#ba1a1a",
+                        "on-secondary-fixed": "#00105c",
+                        "on-secondary": "#ffffff",
+                        "tertiary": "#7f2995",
+                        "surface-bright": "#f9f9fc",
+                        "ink-muted": "#6B6A74",
+                        "on-tertiary": "#ffffff",
+                        "on-tertiary-fixed-variant": "#731b8a",
+                        "surface-container": "#eeedf0",
+                        "tertiary-fixed": "#fdd6ff",
+                        "secondary": "#3f53c3",
+                        "primary-fixed-dim": "#cbbeff",
+                        "ink": "#1C1B22",
+                        "surface-variant": "#e2e2e5",
+                        "tertiary-container": "#9a44b0",
+                        "surface-container-highest": "#e2e2e5",
+                        "paper": "#FFFFFF",
+                        "on-secondary-fixed-variant": "#2339ab",
+                        "surface-container-lowest": "#ffffff",
+                        "on-primary-fixed": "#1d0061",
+                        "primary": "#542fca",
+                        "surface-dim": "#dadadd",
+                        "line": "#D8D8DC",
+                        "inverse-on-surface": "#f0f0f3",
+                        "surface-container-high": "#e8e8eb",
+                        "on-surface": "#1a1c1e",
+                        "on-secondary-container": "#001d8c",
+                        "outline": "#797586",
+                        "inverse-surface": "#2f3033",
+                        "on-error": "#ffffff",
+                        "on-tertiary-fixed": "#340042",
+                        "easel": "#E9E9EC"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0px",
+                        "lg": "0px",
+                        "xl": "0px",
+                        "full": "9999px",
+                        "sharp": "0px"
+                    },
+                    "spacing": {
+                        "margin": "24px",
+                        "lg": "24px",
+                        "xs": "4px",
+                        "md": "16px",
+                        "sm": "8px",
+                        "xl": "40px",
+                        "gutter": "16px"
+                    },
+                    "fontFamily": {
+                        "display-lg": ["IBM Plex Sans", "sans-serif"],
+                        "label-caps": ["IBM Plex Sans", "sans-serif"],
+                        "reading-sm": ["IBM Plex Mono", "monospace"],
+                        "display-md": ["IBM Plex Sans", "sans-serif"],
+                        "reading-md": ["IBM Plex Mono", "monospace"],
+                        "body-md": ["IBM Plex Sans", "sans-serif"],
+                        "body-sm": ["IBM Plex Sans", "sans-serif"]
+                    },
+                    "fontSize": {
+                        "display-lg": ["28px", { "lineHeight": "34px", "letterSpacing": "-0.01em", "fontWeight": "600" }],
+                        "label-caps": ["12px", { "lineHeight": "16px", "letterSpacing": "0.04em", "fontWeight": "500" }],
+                        "reading-sm": ["11px", { "lineHeight": "16px", "fontWeight": "400" }],
+                        "display-md": ["22px", { "lineHeight": "28px", "fontWeight": "600" }],
+                        "reading-md": ["13px", { "lineHeight": "20px", "fontWeight": "400" }],
+                        "body-md": ["15px", { "lineHeight": "24px", "fontWeight": "400" }],
+                        "body-sm": ["14px", { "lineHeight": "20px", "fontWeight": "400" }]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        body { background-color: #E9E9EC; }
+        .crop-mark-tl { position: absolute; top: 0; left: 0; width: 16px; height: 16px; border-top: 1px solid #1C1B22; border-left: 1px solid #1C1B22; transform: translate(-8px, -8px); }
+        .crop-mark-tr { position: absolute; top: 0; right: 0; width: 16px; height: 16px; border-top: 1px solid #1C1B22; border-right: 1px solid #1C1B22; transform: translate(8px, -8px); }
+        .crop-mark-bl { position: absolute; bottom: 0; left: 0; width: 16px; height: 16px; border-bottom: 1px solid #1C1B22; border-left: 1px solid #1C1B22; transform: translate(-8px, 8px); }
+        .crop-mark-br { position: absolute; bottom: 0; right: 0; width: 16px; height: 16px; border-bottom: 1px solid #1C1B22; border-right: 1px solid #1C1B22; transform: translate(8px, 8px); }
+        .registration-target { position: absolute; width: 12px; height: 12px; border: 1px solid #1C1B22; border-radius: 50%; top: -20px; left: 50%; transform: translateX(-50%); display: flex; align-items: center; justify-content: center; }
+        .registration-target::before { content: ''; position: absolute; width: 1px; height: 16px; background: #1C1B22; }
+        .registration-target::after { content: ''; position: absolute; width: 16px; height: 1px; background: #1C1B22; }
+    </style>
+</head>
+<body class="font-body-md text-ink antialiased bg-[#E9E9EC] min-h-screen flex flex-col md:flex-row">
+<!-- TopNavBar -->
+<nav class="bg-surface border-b border-line flex justify-between items-center w-full px-lg h-12 fixed top-0 z-50">
+<div class="flex items-center space-x-margin">
+<span class="font-label-caps text-label-caps font-bold tracking-tighter text-primary">Design Bench</span>
+<div class="hidden md:flex space-x-md items-center">
+<a class="font-label-caps text-label-caps text-ink-muted pb-1 hover:text-primary transition-colors cursor-crosshair" href="#">Dashboard</a>
+<a class="font-label-caps text-label-caps text-ink-muted pb-1 hover:text-primary transition-colors cursor-crosshair" href="#">Job Queue</a>
+<a class="font-label-caps text-label-caps text-primary border-b-2 border-primary pb-1 cursor-crosshair" href="#">Standards</a>
+<a class="font-label-caps text-label-caps text-ink-muted pb-1 hover:text-primary transition-colors cursor-crosshair" href="#">Archive</a>
+</div>
+</div>
+<div class="flex items-center space-x-sm">
+<button aria-label="settings" class="p-1 text-ink-muted hover:text-primary transition-colors cursor-crosshair">
+<span class="material-symbols-outlined text-[18px]">settings</span>
+</button>
+<button aria-label="help" class="p-1 text-ink-muted hover:text-primary transition-colors cursor-crosshair">
+<span class="material-symbols-outlined text-[18px]">help</span>
+</button>
+<div class="w-6 h-6 bg-surface-variant border border-line flex items-center justify-center overflow-hidden ml-sm">
+<span class="material-symbols-outlined text-[14px] text-ink-muted">person</span>
+</div>
+</div>
+</nav>
+<!-- SideNavBar -->
+<aside class="hidden md:flex bg-surface-container-low border-r border-line flex-col items-center py-md space-y-md w-20 h-screen fixed left-0 top-12 z-40 transition-all duration-75 ease-linear">
+<div class="flex flex-col items-center mb-md w-full px-sm">
+<div class="w-10 h-10 bg-surface-variant border border-line flex items-center justify-center mb-sm">
+<span class="font-label-caps text-[10px] text-ink text-center leading-none">STA<br/>04</span>
+</div>
+<span class="font-display-md text-[10px] font-bold text-ink leading-tight text-center truncate w-full">STATION 04</span>
+<span class="font-reading-sm text-[8px] text-ink-muted text-center w-full truncate">Calibrated 08:00</span>
+</div>
+<div class="flex flex-col w-full space-y-sm px-xs">
+<a class="flex flex-col items-center p-sm text-ink-muted hover:bg-surface-variant transition-colors group cursor-crosshair w-full" href="#">
+<span class="material-symbols-outlined text-[20px] mb-1 group-hover:text-primary transition-colors">search_insights</span>
+<span class="font-label-caps text-[9px] text-center w-full truncate">Loupe</span>
+</a>
+<a class="flex flex-col items-center p-sm text-ink-muted hover:bg-surface-variant transition-colors group cursor-crosshair w-full" href="#">
+<span class="material-symbols-outlined text-[20px] mb-1 group-hover:text-primary transition-colors">colorize</span>
+<span class="font-label-caps text-[9px] text-center w-full truncate">Densitometer</span>
+</a>
+<a class="flex flex-col items-center p-sm bg-primary-container text-on-primary-container transition-colors group cursor-crosshair w-full border border-primary-container" href="#">
+<span class="material-symbols-outlined text-[20px] mb-1">palette</span>
+<span class="font-label-caps text-[9px] text-center w-full truncate">Color Bars</span>
+</a>
+<a class="flex flex-col items-center p-sm text-ink-muted hover:bg-surface-variant transition-colors group cursor-crosshair w-full" href="#">
+<span class="material-symbols-outlined text-[20px] mb-1 group-hover:text-primary transition-colors">center_focus_strong</span>
+<span class="font-label-caps text-[9px] text-center w-full truncate">Registration</span>
+</a>
+<a class="flex flex-col items-center p-sm text-ink-muted hover:bg-surface-variant transition-colors group cursor-crosshair w-full" href="#">
+<span class="material-symbols-outlined text-[20px] mb-1 group-hover:text-primary transition-colors">ios_share</span>
+<span class="font-label-caps text-[9px] text-center w-full truncate">Export</span>
+</a>
+</div>
+<div class="mt-auto pt-md w-full px-sm pb-12">
+<button class="w-full py-xs px-sm border border-ink text-ink font-label-caps text-[10px] hover:bg-ink hover:text-paper transition-colors cursor-crosshair uppercase">
+                New Proof
+            </button>
+</div>
+</aside>
+<!-- Main Content Canvas -->
+<main class="flex-1 mt-12 md:ml-20 p-md md:p-xl flex justify-center overflow-x-auto">
+<!-- The Proof Sheet (Ledger) -->
+<div class="bg-paper border border-line w-full max-w-6xl min-w-[800px] p-lg md:p-xl relative shadow-sm">
+<!-- Prepress Ornaments -->
+<div class="crop-mark-tl"></div>
+<div class="crop-mark-tr"></div>
+<div class="crop-mark-bl"></div>
+<div class="crop-mark-br"></div>
+<div class="registration-target"></div>
+<!-- Color Bar Edge -->
+<div class="absolute top-0 right-0 h-full w-2 flex flex-col border-l border-line opacity-80">
+<div class="flex-1 bg-[#6D4DE3]"></div>
+<div class="flex-1 bg-[#5B6FE0]"></div>
+<div class="flex-1 bg-[#B45CC9]"></div>
+<div class="flex-1 bg-ink"></div>
+<div class="flex-1 bg-line"></div>
+</div>
+<!-- Header Section -->
+<header class="mb-xl border-b border-line pb-md pr-margin">
+<div class="flex justify-between items-baseline mb-sm">
+<h1 class="font-display-lg text-display-lg text-ink">Measurements</h1>
+<a class="font-label-caps text-label-caps text-ink-muted hover:text-primary underline decoration-line hover:decoration-primary underline-offset-4 cursor-crosshair flex items-center" href="#">
+<span class="material-symbols-outlined text-[14px] mr-1">arrow_back</span>
+                        Case Gallery
+                    </a>
+</div>
+<p class="font-body-md text-body-md text-ink-muted max-w-3xl">
+                    Every claim on this site traces to one of the batches below. Two batches are directly comparable only when they share an experiment, a metric, and a definitions hash.
+                </p>
+</header>
+<!-- The Ledger Table -->
+<div class="overflow-x-auto pr-margin mb-xl">
+<table class="w-full text-left border-collapse">
+<thead>
+<tr class="border-b border-line font-label-caps text-label-caps text-ink-muted uppercase">
+<th class="py-sm px-xs font-medium">Name</th>
+<th class="py-sm px-xs font-medium">Date</th>
+<th class="py-sm px-xs font-medium">Experiment</th>
+<th class="py-sm px-xs font-medium">Tool</th>
+<th class="py-sm px-xs font-medium">Model</th>
+<th class="py-sm px-xs font-medium">Metric</th>
+<th class="py-sm px-xs font-medium">Def Hash</th>
+<th class="py-sm px-xs font-medium w-1/3">Headline / Claim</th>
+</tr>
+</thead>
+<tbody class="font-body-sm text-body-sm text-ink divide-y divide-line">
+<!-- Row 1 -->
+<tr class="hover:bg-surface transition-colors">
+<td class="py-md px-xs">tool-comp-smoke</td>
+<td class="py-md px-xs font-reading-sm text-reading-sm text-ink-muted">2026-06-15</td>
+<td class="py-md px-xs">tool comparison</td>
+<td class="py-md px-xs">Stitch</td>
+<td class="py-md px-xs text-ink-muted">Gemini 3.1 Pro vs<br/>Gemini 3.1 Pro direct</td>
+<td class="py-md px-xs">fidelity to direction</td>
+<td class="py-md px-xs font-reading-sm text-reading-sm text-ink-muted">9255ea5d23ee</td>
+<td class="py-md px-xs leading-snug">"Gemini direct reproduced 83% of its color on the handed palette; Stitch 49%. (2 renderings each — a smoke test.)"</td>
+</tr>
+<!-- Row 2 -->
+<tr class="hover:bg-surface transition-colors">
+<td class="py-md px-xs">dc-tracks (afternoon)</td>
+<td class="py-md px-xs font-reading-sm text-reading-sm text-ink-muted">2026-06-10</td>
+<td class="py-md px-xs">method grounding</td>
+<td class="py-md px-xs">Stitch</td>
+<td class="py-md px-xs text-ink-muted">Gemini 3.1 Pro</td>
+<td class="py-md px-xs">distance from default look</td>
+<td class="py-md px-xs font-reading-sm text-reading-sm text-ink-muted">16119bc6a53a</td>
+<td class="py-md px-xs leading-snug">"The metaphor grounding led adjectives by 0.21."</td>
+</tr>
+<!-- Row 3 -->
+<tr class="hover:bg-surface transition-colors">
+<td class="py-md px-xs">par-diag</td>
+<td class="py-md px-xs font-reading-sm text-reading-sm text-ink-muted">2026-06-10</td>
+<td class="py-md px-xs">method grounding</td>
+<td class="py-md px-xs">Stitch</td>
+<td class="py-md px-xs text-ink-muted">Gemini 3.1 Pro</td>
+<td class="py-md px-xs">distance from default look</td>
+<td class="py-md px-xs font-reading-sm text-reading-sm text-ink-muted">50e2cc3f1a01</td>
+<td class="py-md px-xs leading-snug">"2 renderings of Auralis; a diagnostic."</td>
+</tr>
+<!-- Row 4 -->
+<tr class="hover:bg-surface transition-colors opacity-60">
+<td class="py-md px-xs">dc-tracks (earlier)</td>
+<td class="py-md px-xs font-reading-sm text-reading-sm text-ink-muted">2026-06-10</td>
+<td class="py-md px-xs">method grounding</td>
+<td class="py-md px-xs">Stitch</td>
+<td class="py-md px-xs text-ink-muted">Gemini 3.1 Pro</td>
+<td class="py-md px-xs italic text-ink-muted">[No Metric]</td>
+<td class="py-md px-xs font-reading-sm text-reading-sm text-ink-muted">16119bc6a53a</td>
+<td class="py-md px-xs leading-snug">"Generated but never measured."</td>
+</tr>
+<!-- Row 5 -->
+<tr class="hover:bg-surface transition-colors">
+<td class="py-md px-xs">demo</td>
+<td class="py-md px-xs font-reading-sm text-reading-sm text-ink-muted">2026-06-09</td>
+<td class="py-md px-xs">method grounding</td>
+<td class="py-md px-xs">Stitch</td>
+<td class="py-md px-xs text-ink-muted">Gemini 3.1 Pro</td>
+<td class="py-md px-xs">distance from default look</td>
+<td class="py-md px-xs font-reading-sm text-reading-sm text-ink-muted">5d7280c55ee4</td>
+<td class="py-md px-xs leading-snug">"One real object beat adjectives by 0.64 on Agent Architecture."</td>
+</tr>
+<!-- Row 6 -->
+<tr class="hover:bg-surface transition-colors">
+<td class="py-md px-xs">demo-flash</td>
+<td class="py-md px-xs font-reading-sm text-reading-sm text-ink-muted">2026-06-09</td>
+<td class="py-md px-xs">method grounding</td>
+<td class="py-md px-xs">Stitch</td>
+<td class="py-md px-xs text-ink-muted">Gemini 3 Flash</td>
+<td class="py-md px-xs">distance from default look</td>
+<td class="py-md px-xs font-reading-sm text-reading-sm text-ink-muted">50e2cc3f1a01</td>
+<td class="py-md px-xs leading-snug">"Object beat adjectives by 0.34 on the smaller model."</td>
+</tr>
+</tbody>
+</table>
+</div>
+<!-- Footer / Explainer Section -->
+<footer class="border-t border-line pt-lg pr-margin grid grid-cols-1 md:grid-cols-3 gap-lg">
+<div class="col-span-1 md:col-span-2">
+<h3 class="font-label-caps text-label-caps text-ink font-bold mb-sm uppercase">How a batch becomes a claim</h3>
+<div class="font-body-sm text-body-sm text-ink-muted space-y-sm">
+<p>
+                            Measurements are run in discrete batches to ensure stable variables. A batch specifies the target models, the baseline tools, the rendering pipeline configurations, and the exact metric formulation applied to the outputs.
+                        </p>
+<p>
+                            When a batch completes, its outputs are hashed to a definition file, ensuring that the metric scores shown here are immutably tied to the exact prompts and code that generated them. Claims in the gallery link back to these definition hashes to provide reproducible proof.
+                        </p>
+</div>
+</div>
+<div class="col-span-1 flex flex-col justify-end items-start md:items-end">
+<a class="font-label-caps text-label-caps text-primary hover:text-primary-container transition-colors cursor-crosshair flex items-center group" href="#">
+<span class="material-symbols-outlined text-[16px] mr-1 group-hover:scale-110 transition-transform">add_box</span>
+                        Start a new measurement batch.
+                    </a>
+</div>
+</footer>
+</div>
+</main>
+</body></html>

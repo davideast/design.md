@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>New Measurement Batch | Design Bench</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&amp;family=IBM+Plex+Sans:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary-container": "#6d4de3",
+                        "on-surface-variant": "#484554",
+                        "ink": "#1C1B22",
+                        "secondary-fixed": "#dee0ff",
+                        "on-error": "#ffffff",
+                        "surface": "#f9f9fc",
+                        "inverse-on-surface": "#f0f0f3",
+                        "primary-fixed": "#e6deff",
+                        "on-secondary-fixed-variant": "#2339ab",
+                        "on-secondary": "#ffffff",
+                        "surface-tint": "#6240d8",
+                        "on-surface": "#1a1c1e",
+                        "on-secondary-fixed": "#00105c",
+                        "on-primary-container": "#ede6ff",
+                        "tertiary-magenta": "#B45CC9",
+                        "surface-container-lowest": "#ffffff",
+                        "on-primary-fixed": "#1d0061",
+                        "primary-fixed-dim": "#cbbeff",
+                        "on-primary-fixed-variant": "#4a20bf",
+                        "secondary-fixed-dim": "#bac3ff",
+                        "on-tertiary": "#ffffff",
+                        "secondary-container": "#798dff",
+                        "secondary": "#3f53c3",
+                        "inverse-surface": "#2f3033",
+                        "ink-muted": "#6B6A74",
+                        "surface-container": "#eeedf0",
+                        "on-background": "#1a1c1e",
+                        "line": "#D8D8DC",
+                        "surface-container-high": "#e8e8eb",
+                        "error-container": "#ffdad6",
+                        "tertiary-fixed-dim": "#f3aeff",
+                        "primary": "#542fca",
+                        "tertiary-container": "#9a44b0",
+                        "on-secondary-container": "#001d8c",
+                        "surface-dim": "#dadadd",
+                        "on-tertiary-fixed-variant": "#731b8a",
+                        "surface-container-low": "#f3f3f6",
+                        "on-error-container": "#93000a",
+                        "tertiary-fixed": "#fdd6ff",
+                        "outline-variant": "#cac4d7",
+                        "on-primary": "#ffffff",
+                        "surface-variant": "#e2e2e5",
+                        "background": "#f9f9fc",
+                        "tertiary": "#7f2995",
+                        "on-tertiary-fixed": "#340042",
+                        "accent-wash": "#EFEBFD",
+                        "error": "#ba1a1a",
+                        "on-tertiary-container": "#ffe1ff",
+                        "outline": "#797586",
+                        "neutral-surround": "#E9E9EC",
+                        "inverse-primary": "#cbbeff",
+                        "surface-container-highest": "#e2e2e5",
+                        "paper": "#FFFFFF",
+                        "surface-bright": "#f9f9fc"
+                    },
+                    borderRadius: {
+                        "DEFAULT": "2px",
+                        "none": "0px",
+                        "lg": "2px",
+                        "xl": "2px",
+                        "full": "9999px"
+                    },
+                    spacing: {
+                        "xl": "40px",
+                        "lg": "24px",
+                        "xs": "4px",
+                        "sm": "8px",
+                        "md": "16px"
+                    },
+                    fontFamily: {
+                        "display": ["IBM Plex Sans", "sans-serif"],
+                        "label-sm": ["IBM Plex Sans", "sans-serif"],
+                        "data": ["IBM Plex Mono", "monospace"],
+                        "display-lg": ["IBM Plex Sans", "sans-serif"],
+                        "label": ["IBM Plex Sans", "sans-serif"],
+                        "body-md": ["IBM Plex Sans", "sans-serif"],
+                        "data-mono": ["IBM Plex Mono", "monospace"],
+                        "body": ["IBM Plex Sans", "sans-serif"]
+                    },
+                    fontSize: {
+                        "display": ["28px", { lineHeight: "1.2", fontWeight: "600" }],
+                        "label-sm": ["12px", { lineHeight: "1.3", letterSpacing: "0.04em", fontWeight: "500" }],
+                        "data": ["12.5px", { lineHeight: "1.5", fontWeight: "400" }],
+                        "display-lg": ["32px", { lineHeight: "1.2", fontWeight: "600" }],
+                        "label": ["12px", { lineHeight: "1.3", letterSpacing: "0.04em", fontWeight: "500" }],
+                        "body-md": ["15px", { lineHeight: "1.55", fontWeight: "400" }],
+                        "data-mono": ["12.5px", { lineHeight: "1.5", fontWeight: "400" }],
+                        "body": ["15px", { lineHeight: "1.55", fontWeight: "400" }]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        
+        /* Crop mark styles for proof sheets */
+        .crop-marks {
+            position: relative;
+        }
+        .crop-marks::before, .crop-marks::after {
+            content: '';
+            position: absolute;
+            background-color: theme('colors.ink');
+        }
+        
+        .crop-top-left::before { top: -6px; left: -1px; width: 1px; height: 12px; }
+        .crop-top-left::after { top: -1px; left: -6px; width: 12px; height: 1px; }
+        
+        .crop-top-right::before { top: -6px; right: -1px; width: 1px; height: 12px; }
+        .crop-top-right::after { top: -1px; right: -6px; width: 12px; height: 1px; }
+        
+        .crop-bottom-left::before { bottom: -6px; left: -1px; width: 1px; height: 12px; }
+        .crop-bottom-left::after { bottom: -1px; left: -6px; width: 12px; height: 1px; }
+        
+        .crop-bottom-right::before { bottom: -6px; right: -1px; width: 1px; height: 12px; }
+        .crop-bottom-right::after { bottom: -1px; right: -6px; width: 12px; height: 1px; }
+
+        /* Custom radio and checkbox styling to fit the technical vibe */
+        .tech-radio {
+            appearance: none;
+            width: 14px;
+            height: 14px;
+            border: 1px solid theme('colors.outline');
+            border-radius: 50%;
+            outline: none;
+            position: relative;
+            cursor: pointer;
+        }
+        .tech-radio:checked {
+            border-color: theme('colors.primary-container');
+        }
+        .tech-radio:checked::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background-color: theme('colors.primary-container');
+        }
+
+        .tech-checkbox {
+            appearance: none;
+            width: 14px;
+            height: 14px;
+            border: 1px solid theme('colors.outline');
+            border-radius: 2px;
+            outline: none;
+            position: relative;
+            cursor: pointer;
+        }
+        .tech-checkbox:checked {
+            background-color: theme('colors.primary-container');
+            border-color: theme('colors.primary-container');
+        }
+        .tech-checkbox:checked::after {
+            content: '';
+            position: absolute;
+            top: 1px;
+            left: 4px;
+            width: 4px;
+            height: 8px;
+            border: solid white;
+            border-width: 0 2px 2px 0;
+            transform: rotate(45deg);
+        }
+    </style>
+</head>
+<body class="bg-neutral-surround text-ink font-body min-h-screen flex flex-col items-center py-xl">
+<!-- Nav / Top Rail equivalent (Wayfinding) -->
+<div class="w-full max-w-5xl px-lg mb-lg flex items-center justify-between">
+<div class="flex items-center gap-xs text-ink-muted hover:text-ink cursor-pointer transition-colors group">
+<span class="material-symbols-outlined text-[16px] group-hover:-translate-x-1 transition-transform">arrow_left_alt</span>
+<span class="font-label text-label uppercase tracking-widest">Measurements</span>
+</div>
+<div class="font-data text-data text-ink-muted">
+            DESIGN_BENCH / CONFIG / V.1.2.4
+        </div>
+</div>
+<!-- Main Easel / Proof Sheet Container -->
+<main class="w-full max-w-5xl bg-paper relative shadow-sm border border-line">
+<!-- Crop Marks -->
+<div class="crop-marks crop-top-left absolute top-0 left-0"></div>
+<div class="crop-marks crop-top-right absolute top-0 right-0"></div>
+<div class="crop-marks crop-bottom-left absolute bottom-0 left-0"></div>
+<div class="crop-marks crop-bottom-right absolute bottom-0 right-0"></div>
+<!-- Header -->
+<header class="p-lg border-b border-line">
+<h1 class="font-display-lg text-display-lg text-ink tracking-tight mb-xs">New measurement batch</h1>
+<p class="font-body-md text-body-md text-ink-muted max-w-2xl">Configure experiment parameters to evaluate generated design fidelity.</p>
+</header>
+<div class="grid grid-cols-1 lg:grid-cols-12">
+<!-- Left Column: Configuration -->
+<div class="col-span-1 lg:col-span-8 border-r border-line p-lg flex flex-col gap-xl">
+<!-- 1. Experiment Choice -->
+<section>
+<div class="flex items-baseline justify-between mb-sm">
+<h2 class="font-label text-label uppercase tracking-widest text-ink">1. Experiment Axis</h2>
+<span class="font-data-mono text-data-mono text-ink-muted text-[11px]">DEF_METRIC_LINK</span>
+</div>
+<p class="font-body text-body text-on-surface-variant mb-md">The experiment sets the axis; the metric follows.</p>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-md">
+<!-- Active Tile -->
+<div class="border-2 border-primary-container bg-accent-wash p-md rounded relative cursor-pointer">
+<div class="absolute top-md right-md flex items-center justify-center">
+<span class="material-symbols-outlined text-primary-container text-[20px]" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+</div>
+<h3 class="font-label text-label uppercase text-primary font-bold mb-sm">Method Grounding</h3>
+<p class="font-body-md text-body-md text-ink-muted text-sm pr-6 leading-relaxed">
+                                Hold the tool fixed; vary the design direction across the grounding ladder. Arms are treatments; scored by distance from the tool's default look.
+                            </p>
+</div>
+<!-- Inactive Tile -->
+<div class="border border-line bg-surface hover:border-outline-variant p-md rounded cursor-pointer transition-colors group">
+<h3 class="font-label text-label uppercase text-ink mb-sm group-hover:text-primary-container transition-colors">Tool Comparison</h3>
+<p class="font-body-md text-body-md text-ink-muted text-sm leading-relaxed">
+                                Hold one direction fixed; vary the tool. Arms are the tools you pick; scored by fidelity.
+                            </p>
+</div>
+</div>
+</section>
+<div class="h-px bg-line w-full"></div>
+<!-- 2. The Arms -->
+<section>
+<h2 class="font-label text-label uppercase tracking-widest text-ink mb-md">2. Treatments (Arms)</h2>
+<div class="flex flex-wrap gap-xs">
+<span class="border border-line bg-surface text-ink-muted font-body-md text-[13px] px-3 py-1 rounded cursor-not-allowed">No direction (control)</span>
+<span class="border border-line bg-surface text-ink hover:border-outline-variant font-body-md text-[13px] px-3 py-1 rounded cursor-pointer transition-colors">Tokens only</span>
+<span class="border border-primary-container bg-accent-wash text-primary font-body-md text-[13px] px-3 py-1 rounded cursor-pointer flex items-center gap-1">Adjectives <span class="material-symbols-outlined text-[14px]">check</span></span>
+<span class="border border-line bg-surface text-ink hover:border-outline-variant font-body-md text-[13px] px-3 py-1 rounded cursor-pointer transition-colors">One real object</span>
+<span class="border border-line bg-surface text-ink hover:border-outline-variant font-body-md text-[13px] px-3 py-1 rounded cursor-pointer transition-colors">One hard constraint</span>
+<span class="border border-line bg-surface text-ink hover:border-outline-variant font-body-md text-[13px] px-3 py-1 rounded cursor-pointer transition-colors">One governing metaphor</span>
+<span class="border border-line bg-surface text-ink hover:border-outline-variant font-body-md text-[13px] px-3 py-1 rounded cursor-pointer transition-colors">Full specification</span>
+</div>
+</section>
+<div class="h-px bg-line w-full"></div>
+<!-- 3. Cases -->
+<section>
+<div class="flex items-baseline justify-between mb-sm">
+<h2 class="font-label text-label uppercase tracking-widest text-ink">3. Cases</h2>
+<span class="font-body text-body text-on-surface-variant text-sm">Each selected case is rendered for every arm.</span>
+</div>
+<div class="grid grid-cols-2 gap-sm">
+<label class="flex items-start gap-sm p-sm border border-line rounded hover:bg-surface-container-lowest cursor-pointer">
+<input checked="" class="tech-checkbox mt-1" type="checkbox"/>
+<div>
+<div class="font-body-md text-ink font-medium">Agent Architecture</div>
+<div class="font-data-mono text-ink-muted text-[11px] mt-0.5">CASE_AA_01</div>
+</div>
+</label>
+<label class="flex items-start gap-sm p-sm border border-line rounded hover:bg-surface-container-lowest cursor-pointer">
+<input checked="" class="tech-checkbox mt-1" type="checkbox"/>
+<div>
+<div class="font-body-md text-ink font-medium">Auralis</div>
+<div class="font-data-mono text-ink-muted text-[11px] mt-0.5">CASE_AU_04</div>
+</div>
+</label>
+<label class="flex items-start gap-sm p-sm border border-line rounded hover:bg-surface-container-lowest cursor-pointer">
+<input class="tech-checkbox mt-1" type="checkbox"/>
+<div>
+<div class="font-body-md text-ink font-medium">DC Tracks</div>
+<div class="font-data-mono text-ink-muted text-[11px] mt-0.5">CASE_DC_99</div>
+</div>
+</label>
+<label class="flex items-start gap-sm p-sm border border-line rounded hover:bg-surface-container-lowest cursor-pointer">
+<input class="tech-checkbox mt-1" type="checkbox"/>
+<div>
+<div class="font-body-md text-ink font-medium">Urban Nocturnal Field Guide</div>
+<div class="font-data-mono text-ink-muted text-[11px] mt-0.5">CASE_UN_12</div>
+</div>
+</label>
+</div>
+</section>
+<div class="h-px bg-line w-full"></div>
+<!-- 4. Tool & Channel -->
+<section class="grid grid-cols-1 md:grid-cols-2 gap-lg">
+<!-- Tool Selection -->
+<div>
+<h2 class="font-label text-label uppercase tracking-widest text-ink mb-md">4. Tool Selection</h2>
+<div class="flex flex-col gap-sm mb-sm">
+<label class="flex items-center gap-sm cursor-pointer group">
+<input checked="" class="tech-radio" name="tool" type="radio"/>
+<span class="font-body-md text-ink group-hover:text-primary-container transition-colors">Stitch · Gemini 3.1 Pro</span>
+</label>
+<label class="flex items-center gap-sm cursor-pointer group">
+<input class="tech-radio" name="tool" type="radio"/>
+<span class="font-body-md text-ink group-hover:text-primary-container transition-colors">Gemini 3.1 Pro · direct</span>
+</label>
+</div>
+<p class="font-data-mono text-ink-muted text-[11px] leading-tight border-l-2 border-line pl-sm">
+                            One tool, so every treatment's distance is measured from the same default look.
+                        </p>
+</div>
+<!-- Channels -->
+<div>
+<h2 class="font-label text-label uppercase tracking-widest text-ink mb-md">5. Channels</h2>
+<div class="flex flex-col gap-sm mb-sm">
+<label class="flex items-center gap-sm cursor-pointer group">
+<input checked="" class="tech-checkbox" type="checkbox"/>
+<span class="font-body-md text-ink group-hover:text-primary-container transition-colors">as a design system</span>
+</label>
+<label class="flex items-center gap-sm cursor-pointer group">
+<input class="tech-checkbox" type="checkbox"/>
+<span class="font-body-md text-ink group-hover:text-primary-container transition-colors">in the prompt</span>
+</label>
+</div>
+<p class="font-data-mono text-ink-muted text-[11px] leading-tight border-l-2 border-line pl-sm">
+                            Only Stitch offers the design-system channel; raw models receive the direction in the prompt.
+                        </p>
+</div>
+</section>
+</div>
+<!-- Right Column: Results & Meta -->
+<div class="col-span-1 lg:col-span-4 bg-surface-container-lowest flex flex-col">
+<!-- The Metric -->
+<div class="p-lg border-b border-line bg-surface-container flex flex-col gap-sm">
+<span class="font-label text-label uppercase tracking-widest text-ink-muted">Expected Metric</span>
+<div class="font-body-md text-ink font-bold flex items-center gap-xs">
+<span class="material-symbols-outlined text-primary-container text-[18px]">straighten</span>
+                        DISTANCE FROM DEFAULT LOOK
+                    </div>
+</div>
+<!-- Simulation Logic -->
+<div class="p-lg border-b border-line flex-grow">
+<h2 class="font-label text-label uppercase tracking-widest text-ink mb-md flex items-center gap-xs">
+<span class="material-symbols-outlined text-[16px]">calculate</span> Simulation Logic
+                    </h2>
+<div class="space-y-sm font-data-mono text-[13px] text-ink-muted">
+<div class="flex justify-between">
+<span>Renderings per arm</span>
+<span class="text-ink font-medium">8</span>
+</div>
+<div class="flex justify-between">
+<span>Renderings of control</span>
+<span class="text-ink font-medium">8</span>
+</div>
+<div class="my-md border-t border-line border-dashed"></div>
+<div class="flex flex-col gap-xs">
+<span class="text-[11px] uppercase tracking-wider">Calculation</span>
+<span class="pl-sm border-l border-line">(8 per arm × 2 cases × 5 arms × 1 channel)</span>
+</div>
+<div class="flex justify-between items-baseline pt-sm mt-sm border-t border-line">
+<span class="font-label text-label text-ink">TOTAL SCOPE</span>
+<span class="text-primary-container font-bold text-[15px]">80 + controls</span>
+</div>
+</div>
+</div>
+<!-- Metadata & Action -->
+<div class="p-lg bg-surface">
+<div class="flex flex-col gap-md mb-lg">
+<div class="flex flex-col gap-xs">
+<label class="font-label text-label uppercase tracking-widest text-ink">Model Override (Optional)</label>
+<select class="w-full bg-paper border border-line rounded p-sm font-data-mono text-[13px] text-ink focus:border-primary-container focus:ring-0 outline-none">
+<option>GEMINI_3_1_PRO</option>
+<option>GEMINI_3_FLASH</option>
+</select>
+</div>
+<div class="flex flex-col gap-xs">
+<label class="font-label text-label uppercase tracking-widest text-ink">Batch Name</label>
+<input class="w-full bg-paper border border-line rounded p-sm font-data-mono text-[13px] text-ink focus:border-primary-container focus:ring-0 outline-none" placeholder="e.g., october-baseline" type="text"/>
+</div>
+</div>
+<button class="w-full bg-primary-container hover:bg-surface-tint text-on-primary font-label text-label uppercase tracking-widest py-3 px-4 rounded transition-colors flex justify-center items-center gap-sm shadow-sm active:translate-y-px">
+                        Generate and Measure
+                        <span class="material-symbols-outlined text-[18px]">play_arrow</span>
+</button>
+<p class="font-data-mono text-[10px] text-ink-muted text-center mt-sm leading-tight">
+                        The batch records definitions by hash <br/>[SHA-256] and refuses to resume if changed.
+                    </p>
+</div>
+</div>
+</div>
+</main>
+</body></html>

@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Design Bench</title>
+<!-- Google Fonts -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&amp;family=IBM+Plex+Sans:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<!-- Material Symbols -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind CSS -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<!-- Tailwind Config -->
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "surface-dim": "#dadadd",
+                    "secondary-fixed-dim": "#bac3ff",
+                    "secondary-container": "#798dff",
+                    "error": "#ba1a1a",
+                    "on-secondary-fixed": "#00105c",
+                    "on-surface": "#1a1c1e",
+                    "tertiary": "#7f2995",
+                    "tertiary-container": "#9a44b0",
+                    "surface-container": "#eeedf0",
+                    "surface-variant": "#e2e2e5",
+                    "paper": "#FFFFFF",
+                    "on-tertiary-fixed": "#340042",
+                    "secondary-fixed": "#dee0ff",
+                    "outline": "#797586",
+                    "on-tertiary-fixed-variant": "#731b8a",
+                    "surface-container-lowest": "#ffffff",
+                    "surface-container-low": "#f3f3f6",
+                    "on-secondary-fixed-variant": "#2339ab",
+                    "on-error-container": "#93000a",
+                    "secondary": "#3f53c3",
+                    "background": "#f9f9fc",
+                    "surface-tint": "#6240d8",
+                    "on-secondary-container": "#001d8c",
+                    "surface-container-highest": "#e2e2e5",
+                    "on-primary": "#ffffff",
+                    "on-background": "#1a1c1e",
+                    "error-container": "#ffdad6",
+                    "on-primary-fixed": "#1d0061",
+                    "on-primary-container": "#ede6ff",
+                    "accent-wash": "#EFEBFD",
+                    "inverse-primary": "#cbbeff",
+                    "on-primary-fixed-variant": "#4a20bf",
+                    "primary-container": "#6d4de3",
+                    "outline-variant": "#cac4d7",
+                    "on-tertiary": "#ffffff",
+                    "inverse-surface": "#2f3033",
+                    "on-surface-variant": "#484554",
+                    "surface-bright": "#f9f9fc",
+                    "surface": "#f9f9fc",
+                    "primary-fixed-dim": "#cbbeff",
+                    "on-tertiary-container": "#ffe1ff",
+                    "line": "#D8D8DC",
+                    "inverse-on-surface": "#f0f0f3",
+                    "ink": "#1C1B22",
+                    "on-secondary": "#ffffff",
+                    "on-error": "#ffffff",
+                    "tertiary-fixed": "#fdd6ff",
+                    "tertiary-fixed-dim": "#f3aeff",
+                    "primary": "#542fca",
+                    "primary-fixed": "#e6deff",
+                    "ink-muted": "#6B6A74",
+                    "surface-container-high": "#e8e8eb"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0px",
+                    "lg": "0px",
+                    "xl": "0px",
+                    "full": "0px"
+            },
+            "spacing": {
+                    "xl": "40px",
+                    "sm": "8px",
+                    "xs": "4px",
+                    "lg": "24px",
+                    "md": "16px"
+            },
+            "fontFamily": {
+                    "label-sm": [
+                            "IBM Plex Sans"
+                    ],
+                    "display-lg": [
+                            "IBM Plex Sans"
+                    ],
+                    "reading-mono": [
+                            "IBM Plex Mono"
+                    ],
+                    "body-md": [
+                            "IBM Plex Sans"
+                    ]
+            },
+            "fontSize": {
+                    "label-sm": [
+                            "12px",
+                            {
+                                    "lineHeight": "1.3",
+                                    "letterSpacing": "0.04em",
+                                    "fontWeight": "500"
+                            }
+                    ],
+                    "display-lg": [
+                            "28px",
+                            {
+                                    "lineHeight": "1.2",
+                                    "fontWeight": "600"
+                            }
+                    ],
+                    "reading-mono": [
+                            "12.5px",
+                            {
+                                    "lineHeight": "1.5",
+                                    "fontWeight": "400"
+                            }
+                    ],
+                    "body-md": [
+                            "15px",
+                            {
+                                    "lineHeight": "1.55",
+                                    "fontWeight": "400"
+                            }
+                    ]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .material-symbols-outlined.fill {
+            font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        
+        /* Crop mark styles */
+        .crop-mark-tl {
+            position: absolute; top: -16px; left: -16px; width: 16px; height: 16px;
+            border-bottom: 1px solid #1C1B22; border-right: 1px solid #1C1B22; pointer-events: none;
+        }
+        .crop-mark-tr {
+            position: absolute; top: -16px; right: -16px; width: 16px; height: 16px;
+            border-bottom: 1px solid #1C1B22; border-left: 1px solid #1C1B22; pointer-events: none;
+        }
+        .crop-mark-bl {
+            position: absolute; bottom: -16px; left: -16px; width: 16px; height: 16px;
+            border-top: 1px solid #1C1B22; border-right: 1px solid #1C1B22; pointer-events: none;
+        }
+        .crop-mark-br {
+            position: absolute; bottom: -16px; right: -16px; width: 16px; height: 16px;
+            border-top: 1px solid #1C1B22; border-left: 1px solid #1C1B22; pointer-events: none;
+        }
+        
+        /* Color bar patch */
+        .color-patch {
+            width: 16px; height: 16px; display: block;
+        }
+    </style>
+</head>
+<body class="bg-surface-container text-ink font-body-md antialiased min-h-screen flex flex-col pt-12">
+<!-- TopNavBar Shared Component -->
+<nav class="bg-surface-container-low dark:bg-surface-container-lowest fixed top-0 w-full z-50 h-12 border-b border-line dark:border-outline-variant flat no shadows flex justify-between items-center px-lg w-full max-w-full">
+<div class="flex items-center gap-xl">
+<div class="font-display-lg text-display-lg uppercase tracking-tight text-ink dark:text-surface-bright">Design Bench</div>
+<div class="hidden md:flex gap-md">
+<a class="font-label-sm text-label-sm text-ink-muted dark:text-outline-variant pb-1 hover:text-primary dark:hover:text-primary-fixed-dim transition-colors duration-150 cursor-pointer active:opacity-80" href="#">New case</a>
+<a class="font-label-sm text-label-sm text-primary dark:text-primary-fixed-dim border-b-2 border-primary dark:border-primary-fixed-dim pb-1 hover:text-primary dark:hover:text-primary-fixed-dim transition-colors duration-150 cursor-pointer active:opacity-80" href="#">All measurements</a>
+<a class="font-label-sm text-label-sm text-ink-muted dark:text-outline-variant pb-1 hover:text-primary dark:hover:text-primary-fixed-dim transition-colors duration-150 cursor-pointer active:opacity-80" href="#">Settings</a>
+</div>
+</div>
+<div class="flex items-center gap-md text-primary dark:text-primary-fixed-dim">
+<span class="material-symbols-outlined cursor-pointer active:opacity-80 hover:text-primary dark:hover:text-primary-fixed-dim transition-colors duration-150">account_circle</span>
+<span class="material-symbols-outlined cursor-pointer active:opacity-80 hover:text-primary dark:hover:text-primary-fixed-dim transition-colors duration-150">help</span>
+</div>
+</nav>
+<!-- Header Section -->
+<header class="max-w-6xl mx-auto px-lg pt-xl pb-lg w-full">
+<h1 class="font-display-lg text-display-lg text-ink mb-sm">Design Bench</h1>
+<p class="font-body-md text-body-md text-ink-muted max-w-3xl">Test and compare how AI design tools render the same brief — generate across tools, measure each against the direction it was handed, and check the results side by side.</p>
+</header>
+<!-- Main Easel Content -->
+<main class="flex-grow max-w-6xl mx-auto px-lg pb-xl w-full flex flex-col md:flex-row gap-lg">
+<!-- Color Bar Side Panel (Simulating Proofer Tray/Strip) -->
+<aside class="hidden md:flex flex-col gap-xs pt-xl">
+<div class="border border-line bg-paper p-xs">
+<div class="color-patch bg-[#1C1B22]"></div>
+<div class="color-patch bg-[#6D4DE3]"></div>
+<div class="color-patch bg-[#5B6FE0]"></div>
+<div class="color-patch bg-[#B45CC9]"></div>
+<div class="color-patch bg-[#D8D8DC]"></div>
+<div class="color-patch bg-[#FFFFFF] border-t border-line mt-xs"></div>
+</div>
+<div class="font-reading-mono text-reading-mono text-[8px] text-ink-muted text-center mt-xs">CMYK<br/>REF</div>
+</aside>
+<!-- Grid of Proof Sheets -->
+<div class="grid grid-cols-1 md:grid-cols-2 gap-xl w-full pt-md relative">
+<!-- Case 1 -->
+<article class="bg-paper border border-line relative p-lg group hover:border-primary-container transition-colors duration-200 cursor-pointer">
+<div class="crop-mark-tl"></div><div class="crop-mark-tr"></div>
+<div class="crop-mark-bl"></div><div class="crop-mark-br"></div>
+<div class="flex justify-between items-start mb-md">
+<div>
+<h2 class="font-label-sm text-label-sm text-ink uppercase tracking-widest">Case 01</h2>
+<h3 class="font-display-lg text-[20px] font-semibold text-ink mt-xs">Agent Architecture</h3>
+</div>
+<span class="font-reading-mono text-reading-mono text-ink-muted">1844x912</span>
+</div>
+<p class="font-body-md text-body-md text-ink-muted mb-md">A seven-slide technical talk on AI agent loops.</p>
+<div class="aspect-video bg-surface-variant border border-line mb-md flex items-center justify-center relative overflow-hidden" data-alt="A highly detailed, starkly minimalist presentation slide layout for a technical talk about AI agent architectures. The aesthetic is clean, monochrome, light-mode prepress style with exact grids, precise typography in dark ink against pristine white paper backgrounds. Thin crop marks and subtle structural lines define the layout blocks.">
+<span class="font-reading-mono text-reading-mono text-ink-muted absolute">THUMBNAIL_A</span>
+</div>
+<div class="border-t border-line pt-sm flex flex-col gap-xs">
+<span class="font-label-sm text-label-sm text-ink uppercase">Result Analysis</span>
+<p class="font-body-md text-body-md text-ink">Naming one real object, a graduate CS lecture handout, moved results <span class="font-reading-mono text-reading-mono bg-accent-wash text-primary-container px-1">0.64</span> farther from the model's default look than adjectives did.</p>
+</div>
+</article>
+<!-- Case 2 -->
+<article class="bg-paper border border-line relative p-lg group hover:border-primary-container transition-colors duration-200 cursor-pointer">
+<div class="crop-mark-tl"></div><div class="crop-mark-tr"></div>
+<div class="crop-mark-bl"></div><div class="crop-mark-br"></div>
+<div class="flex justify-between items-start mb-md">
+<div>
+<h2 class="font-label-sm text-label-sm text-ink uppercase tracking-widest">Case 02</h2>
+<h3 class="font-display-lg text-[20px] font-semibold text-ink mt-xs">Auralis</h3>
+</div>
+<span class="font-reading-mono text-reading-mono text-ink-muted">1844x912</span>
+</div>
+<p class="font-body-md text-body-md text-ink-muted mb-md">A marketing site for an AI voice platform.</p>
+<div class="aspect-video bg-surface-variant border border-line mb-md flex items-center justify-center relative overflow-hidden" data-alt="A highly structured, high-contrast, light-mode user interface rendering of an audio software dashboard. The UI is composed of sharp rectangular containers, distinct hairline borders, and neutral gray backgrounds with stark white content areas. A subtle waveform graphic in faint purple adds technical flavor without breaking the austere, prepress-contract aesthetic.">
+<span class="font-reading-mono text-reading-mono text-ink-muted absolute">THUMBNAIL_B</span>
+</div>
+<div class="border-t border-line pt-sm flex flex-col gap-xs">
+<span class="font-label-sm text-label-sm text-ink uppercase">Result Analysis</span>
+<p class="font-body-md text-body-md text-ink">The object grounding outperformed adjectives by <span class="font-reading-mono text-reading-mono bg-accent-wash text-primary-container px-1">0.36</span> across 18 renderings.</p>
+</div>
+</article>
+<!-- Case 3 -->
+<article class="bg-paper border border-line relative p-lg group hover:border-primary-container transition-colors duration-200 cursor-pointer">
+<div class="crop-mark-tl"></div><div class="crop-mark-tr"></div>
+<div class="crop-mark-bl"></div><div class="crop-mark-br"></div>
+<div class="flex justify-between items-start mb-md">
+<div>
+<h2 class="font-label-sm text-label-sm text-ink uppercase tracking-widest">Case 03</h2>
+<h3 class="font-display-lg text-[20px] font-semibold text-ink mt-xs">DC Tracks</h3>
+</div>
+<span class="font-reading-mono text-reading-mono text-ink-muted">1844x912</span>
+</div>
+<p class="font-body-md text-body-md text-ink-muted mb-md">An editorial music publication for Washington, DC.</p>
+<div class="aspect-video bg-surface-variant border border-line mb-md flex items-center justify-center relative overflow-hidden" data-alt="A strict, gridded layout for an editorial magazine spread viewed on a bright, light-mode screen. The composition relies on rigid typography blocks, crisp white backgrounds, and hairline gray dividers typical of a proofing station output. Thin, sharp black borders enclose structural columns meant for dense text and stark, high-contrast imagery.">
+<span class="font-reading-mono text-reading-mono text-ink-muted absolute">THUMBNAIL_C</span>
+</div>
+<div class="border-t border-line pt-sm flex flex-col gap-xs">
+<span class="font-label-sm text-label-sm text-ink uppercase">Result Analysis</span>
+<p class="font-body-md text-body-md text-ink">The metaphor grounding led adjectives by <span class="font-reading-mono text-reading-mono bg-accent-wash text-primary-container px-1">0.21</span> across 42 renderings.</p>
+</div>
+</article>
+<!-- Case 4 -->
+<article class="bg-paper border border-line relative p-lg group hover:border-primary-container transition-colors duration-200 cursor-pointer">
+<div class="crop-mark-tl"></div><div class="crop-mark-tr"></div>
+<div class="crop-mark-bl"></div><div class="crop-mark-br"></div>
+<div class="flex justify-between items-start mb-md">
+<div>
+<h2 class="font-label-sm text-label-sm text-ink uppercase tracking-widest flex items-center gap-xs">Case 04 <span class="w-2 h-2 bg-primary-container block animate-pulse"></span></h2>
+<h3 class="font-display-lg text-[20px] font-semibold text-ink mt-xs">Urban Nocturnal Field Guide</h3>
+</div>
+<span class="font-reading-mono text-reading-mono text-ink-muted">1844x912</span>
+</div>
+<p class="font-body-md text-body-md text-ink-muted mb-md">A field-notes site for night birding in the city.</p>
+<div class="aspect-video bg-surface-variant border border-line border-dashed mb-md flex flex-col items-center justify-center relative overflow-hidden">
+<span class="material-symbols-outlined text-ink-muted mb-xs">hourglass_empty</span>
+<span class="font-reading-mono text-reading-mono text-ink-muted text-center">AWAITING_RENDER</span>
+</div>
+<div class="border-t border-line pt-sm flex flex-col gap-xs">
+<span class="font-label-sm text-label-sm text-ink uppercase">Result Analysis</span>
+<p class="font-body-md text-body-md text-ink italic text-ink-muted">Newest case; measurement in progress.</p>
+</div>
+</article>
+</div>
+</main>
+<!-- Spec Sheet / How to Read Section -->
+<section class="max-w-6xl mx-auto px-lg pb-xl w-full">
+<div class="bg-paper border border-line p-lg relative">
+<div class="crop-mark-tl"></div><div class="crop-mark-tr"></div>
+<div class="crop-mark-bl"></div><div class="crop-mark-br"></div>
+<h3 class="font-label-sm text-label-sm text-ink uppercase tracking-widest border-b border-line pb-xs mb-md">Reference // How to read</h3>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-md">
+<div>
+<span class="font-reading-mono text-reading-mono text-ink-muted block mb-xs">TERM: TREATMENT</span>
+<p class="font-body-md text-body-md text-ink text-sm">The specific prompting strategy applied to the model (e.g., using conceptual metaphors vs. direct adjectives).</p>
+</div>
+<div>
+<span class="font-reading-mono text-reading-mono text-ink-muted block mb-xs">TERM: DEFAULT LOOK</span>
+<p class="font-body-md text-body-md text-ink text-sm">The baseline visual output a tool produces when given a generic task without stylistic constraints.</p>
+</div>
+<div>
+<span class="font-reading-mono text-reading-mono text-ink-muted block mb-xs">TERM: ADJECTIVES</span>
+<p class="font-body-md text-body-md text-ink text-sm">The standard approach of describing desired styles using descriptive words (e.g., "clean, modern, minimalist").</p>
+</div>
+</div>
+</div>
+</section>
+<!-- Footer Actions -->
+<footer class="max-w-6xl mx-auto px-lg pb-xl pt-md w-full flex justify-between items-center border-t border-line">
+<a class="font-label-sm text-label-sm text-primary-container hover:text-ink transition-colors flex items-center gap-xs" href="#">
+<span class="material-symbols-outlined text-[16px]">add_box</span>
+            Start a new case from a spark
+        </a>
+<a class="font-label-sm text-label-sm text-primary-container hover:text-ink transition-colors flex items-center gap-xs" href="#">
+<span class="material-symbols-outlined text-[16px]">list_alt</span>
+            All measurements
+        </a>
+</footer>
+</body></html>

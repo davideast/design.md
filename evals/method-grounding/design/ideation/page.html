@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Ideation - Design Bench</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&amp;family=IBM+Plex+Sans:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "background": "#f9f9fc",
+                        "line": "#D8D8DC",
+                        "surface-container-highest": "#e2e2e5",
+                        "on-tertiary-fixed": "#340042",
+                        "on-error-container": "#93000a",
+                        "error": "#ba1a1a",
+                        "secondary-fixed-dim": "#bac3ff",
+                        "on-primary-fixed-variant": "#4a20bf",
+                        "on-tertiary-fixed-variant": "#731b8a",
+                        "surface-tint": "#6240d8",
+                        "surface": "#f9f9fc",
+                        "on-primary-container": "#ede6ff",
+                        "primary-fixed-dim": "#cbbeff",
+                        "on-surface": "#1a1c1e",
+                        "on-primary-fixed": "#1d0061",
+                        "surface-dim": "#dadadd",
+                        "secondary-fixed": "#dee0ff",
+                        "primary-container": "#6d4de3",
+                        "on-surface-variant": "#484554",
+                        "surface-variant": "#e2e2e5",
+                        "tertiary-container": "#9a44b0",
+                        "primary-fixed": "#e6deff",
+                        "outline": "#797586",
+                        "ink-muted": "#6B6A74",
+                        "secondary": "#3f53c3",
+                        "tertiary-fixed-dim": "#f3aeff",
+                        "on-primary": "#ffffff",
+                        "primary": "#542fca",
+                        "on-secondary": "#ffffff",
+                        "inverse-on-surface": "#f0f0f3",
+                        "outline-variant": "#cac4d7",
+                        "on-secondary-fixed": "#00105c",
+                        "surface-container-lowest": "#ffffff",
+                        "paper": "#FFFFFF",
+                        "error-container": "#ffdad6",
+                        "on-secondary-fixed-variant": "#2339ab",
+                        "tertiary": "#7f2995",
+                        "surface-container-low": "#f3f3f6",
+                        "surface-bright": "#f9f9fc",
+                        "surface-container": "#eeedf0",
+                        "on-error": "#ffffff",
+                        "on-background": "#1a1c1e",
+                        "on-secondary-container": "#001d8c",
+                        "accent-wash": "#EFEBFD",
+                        "on-tertiary-container": "#ffe1ff",
+                        "ink": "#1C1B22",
+                        "secondary-container": "#798dff",
+                        "on-tertiary": "#ffffff",
+                        "surface-container-high": "#e8e8eb",
+                        "inverse-primary": "#cbbeff",
+                        "inverse-surface": "#2f3033",
+                        "tertiary-fixed": "#fdd6ff"
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    spacing: {
+                        "lg": "24px",
+                        "edge-margin": "24px",
+                        "xl": "40px",
+                        "md": "16px",
+                        "sm": "8px",
+                        "xs": "4px",
+                        "gutter": "16px"
+                    },
+                    fontFamily: {
+                        "data-mono": ["IBM Plex Mono", "monospace"],
+                        "body": ["IBM Plex Sans", "sans-serif"],
+                        "label": ["IBM Plex Sans", "sans-serif"],
+                        "display": ["IBM Plex Sans", "sans-serif"],
+                        "display-mobile": ["IBM Plex Sans", "sans-serif"]
+                    },
+                    fontSize: {
+                        "data-mono": ["12.5px", { lineHeight: "1.5", fontWeight: "400" }],
+                        "body": ["15px", { lineHeight: "1.55", fontWeight: "400" }],
+                        "label": ["12px", { lineHeight: "1.3", letterSpacing: "0.04em", fontWeight: "500" }],
+                        "display": ["28px", { lineHeight: "1.2", letterSpacing: "-0.01em", fontWeight: "600" }],
+                        "display-mobile": ["24px", { lineHeight: "1.2", fontWeight: "600" }]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        body { background-color: #E9E9EC; }
+        
+        /* Technical Details - Crop Marks */
+        .proof-sheet {
+            position: relative;
+        }
+        .proof-sheet::before, .proof-sheet::after,
+        .proof-sheet .crop-marks::before, .proof-sheet .crop-marks::after {
+            content: '';
+            position: absolute;
+            background-color: theme('colors.ink');
+        }
+        
+        /* Top Left */
+        .proof-sheet::before { top: -4px; left: -1px; width: 1px; height: 8px; }
+        .proof-sheet::after { top: -1px; left: -4px; width: 8px; height: 1px; }
+        
+        /* Top Right */
+        .proof-sheet .crop-top-right::before { top: -4px; right: -1px; width: 1px; height: 8px; position: absolute; content: ''; background-color: theme('colors.ink'); }
+        .proof-sheet .crop-top-right::after { top: -1px; right: -4px; width: 8px; height: 1px; position: absolute; content: ''; background-color: theme('colors.ink'); }
+
+        /* Bottom Left */
+        .proof-sheet .crop-bottom-left::before { bottom: -4px; left: -1px; width: 1px; height: 8px; position: absolute; content: ''; background-color: theme('colors.ink'); }
+        .proof-sheet .crop-bottom-left::after { bottom: -1px; left: -4px; width: 8px; height: 1px; position: absolute; content: ''; background-color: theme('colors.ink'); }
+
+        /* Bottom Right */
+        .proof-sheet .crop-bottom-right::before { bottom: -4px; right: -1px; width: 1px; height: 8px; position: absolute; content: ''; background-color: theme('colors.ink'); }
+        .proof-sheet .crop-bottom-right::after { bottom: -1px; right: -4px; width: 8px; height: 1px; position: absolute; content: ''; background-color: theme('colors.ink'); }
+
+
+        /* Scrollbar styling for Conversation Panel */
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 4px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: theme('colors.surface-container-high');
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: theme('colors.outline-variant');
+            border-radius: 0;
+        }
+    </style>
+</head>
+<body class="font-body text-body text-on-surface antialiased h-screen overflow-hidden flex flex-col">
+<!-- TopNav - Predicted Component Implementation -->
+<header class="bg-surface border-b border-line flex justify-between items-center w-full px-edge-margin h-16 z-50 shrink-0">
+<div class="flex items-center gap-md">
+<img alt="Design Bench Logo" class="w-6 h-6 object-contain" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAYAAABXAvmHAAAA3UlEQVR4AeyXUQ6EIBBDZ/f+d94d+RPB2FRSlBoggcwMtI8P/MbDPwtQAzQBEyAdOLtCv6w9U8/jHNuZgGP0hCsWoIaCEPjkYZGe4buG5G6xu+TeBBHQqyFdtwCp/bm5CaQJ0mYCUvtzcxNIE6RtJQJSo7ubIwTQf4N6Uza/rlfmiICSMNtgAWoiCIHtjY70WhuS24qt65U5IqAkzDZYgJqICZgA6YCvEGkgnW4CtIVkgaUIDHnPkwBiKQKsWUPyX02g9Sa/thbRiosR36sJjDDs9pomcLulYMHHE/gDAAD//2eFcrUAAAAGSURBVAMAaXBIYaaoL3QAAAAASUVORK5CYII="/>
+<span class="font-display text-display tracking-tighter text-ink">ProofStation v1.0</span>
+</div>
+<nav class="hidden md:flex gap-lg h-full">
+<a class="font-label text-label uppercase tracking-widest text-primary border-b-2 border-primary pb-1 flex items-center h-full hover:bg-accent-wash transition-colors px-2" href="#">Easel</a>
+<a class="font-label text-label uppercase tracking-widest text-ink-muted flex items-center h-full hover:bg-accent-wash transition-colors px-2" href="#">Archive</a>
+<a class="font-label text-label uppercase tracking-widest text-ink-muted flex items-center h-full hover:bg-accent-wash transition-colors px-2" href="#">Assets</a>
+</nav>
+<div class="flex items-center gap-md text-ink">
+<button class="p-2 hover:bg-accent-wash transition-colors group cursor-crosshair">
+<span class="material-symbols-outlined text-ink group-hover:text-primary transition-colors">zoom_in</span>
+</button>
+<button class="p-2 hover:bg-accent-wash transition-colors group cursor-crosshair">
+<span class="material-symbols-outlined text-ink group-hover:text-primary transition-colors">grid_view</span>
+</button>
+<button class="p-2 hover:bg-accent-wash transition-colors group cursor-crosshair">
+<span class="material-symbols-outlined text-ink group-hover:text-primary transition-colors">settings</span>
+</button>
+<div class="w-8 h-8 rounded-none border border-line bg-surface-container-high overflow-hidden ml-2">
+<!-- Avatar placeholder -->
+</div>
+</div>
+</header>
+<!-- Main Workspace -->
+<main class="flex-1 flex overflow-hidden w-full">
+<!-- Left Panel: Easel / Captured Artifacts -->
+<section class="flex-1 overflow-y-auto p-xl custom-scrollbar relative">
+<div class="max-w-3xl mx-auto space-y-xl pb-24">
+<!-- Wayfinding -->
+<div class="flex items-center gap-2 text-ink-muted font-data-mono text-data-mono">
+<a class="hover:text-primary hover:underline underline-offset-4 flex items-center gap-1" href="#">
+<span class="material-symbols-outlined text-[14px]">arrow_back</span>
+                        Case Gallery
+                    </a>
+<span class="text-line">/</span>
+<span class="text-ink">a field notes site for night birding in the city</span>
+</div>
+<!-- Proof Sheet 1: Captured Brief -->
+<article class="proof-sheet bg-paper border border-line p-xl rounded-none shadow-sm relative group">
+<div class="crop-top-right"></div>
+<div class="crop-bottom-left"></div>
+<div class="crop-bottom-right"></div>
+<div class="flex items-center justify-between mb-lg">
+<h2 class="font-label text-label text-ink uppercase tracking-widest flex items-center gap-2">
+<span class="material-symbols-outlined text-primary text-[16px]">capture</span>
+                            Captured brief
+                        </h2>
+<span class="font-data-mono text-data-mono text-ink-muted bg-surface-container px-2 py-0.5">REF-A01</span>
+</div>
+<div class="font-body text-body text-ink leading-relaxed max-w-2xl">
+                        Design a field-notes site for night birding in the city: a season log of nocturnal walks, each entry with species heard, location, time, and a short field note.
+                    </div>
+</article>
+<!-- Proof Sheet 2: Captured Direction -->
+<article class="proof-sheet bg-paper border border-line p-xl rounded-none shadow-sm relative group">
+<div class="crop-top-right"></div>
+<div class="crop-bottom-left"></div>
+<div class="crop-bottom-right"></div>
+<div class="flex items-center justify-between mb-lg">
+<h2 class="font-label text-label text-ink uppercase tracking-widest flex items-center gap-2">
+<span class="material-symbols-outlined text-primary text-[16px]">capture</span>
+                            Captured direction
+                        </h2>
+<span class="font-data-mono text-data-mono text-ink-muted bg-surface-container px-2 py-0.5">REF-A02</span>
+</div>
+<div class="space-y-md">
+<div class="font-data-mono text-data-mono text-primary bg-accent-wash px-3 py-2 border-l-2 border-primary">
+                            META: 4 colors, 2 type roles, tight spacing — drawn from 1960s offset printing
+                        </div>
+<div class="font-body text-body text-ink leading-relaxed max-w-2xl">
+                            The Urban Nocturnal Field Guide is a mid-century scientific manual brought to life. It prioritizes clarity and stark contrast over ornamental design, evoking the functional beauty of vintage reference materials.
+                        </div>
+</div>
+</article>
+<!-- Commit Action Area -->
+<div class="pt-lg border-t border-line border-dashed">
+<div class="bg-surface border border-line p-lg flex flex-col gap-md">
+<h3 class="font-label text-label uppercase tracking-widest text-ink mb-1">Commitment Phase</h3>
+<div class="flex items-start gap-4">
+<div class="flex-1">
+<label class="sr-only" for="project-name">Short Name</label>
+<input class="w-full bg-paper border border-line rounded-none font-data-mono text-data-mono p-3 focus:ring-0 focus:border-primary placeholder:text-outline" id="project-name" placeholder="project-short-name" type="text" value="night-birding"/>
+</div>
+<button class="bg-primary hover:bg-surface-tint text-on-primary font-label text-label uppercase tracking-widest px-6 py-3 rounded-none transition-colors border border-primary flex items-center gap-2 whitespace-nowrap">
+                                Commit — project into treatments
+                                <span class="material-symbols-outlined text-[16px]">arrow_forward</span>
+</button>
+</div>
+<p class="font-data-mono text-data-mono text-ink-muted mt-2 max-w-2xl">
+                            Committing scaffolds the case from the captured direction and writes all treatments from it; available once both artifacts are captured, and it is yours — the agent never commits.
+                        </p>
+</div>
+</div>
+</div>
+</section>
+<!-- Right Panel: Conversation Panel -->
+<aside class="w-[480px] bg-surface-container-lowest border-l border-line flex flex-col shrink-0 z-40 shadow-[-4px_0_12px_rgba(28,27,34,0.03)]">
+<!-- Panel Header / Status -->
+<header class="p-md border-b border-line bg-surface flex items-center justify-between">
+<h2 class="font-label text-label uppercase tracking-widest text-ink">Agent Terminal</h2>
+<div class="font-data-mono text-data-mono text-primary flex items-center gap-2">
+<span class="w-2 h-2 rounded-none bg-primary animate-pulse"></span>
+                    brief done · direction done — ready to commit
+                </div>
+</header>
+<!-- Chat Scroll Area -->
+<div class="flex-1 overflow-y-auto p-md custom-scrollbar space-y-lg flex flex-col">
+<!-- Turn: Maker -->
+<div class="flex flex-col items-end w-full">
+<div class="bg-surface border border-line p-3 max-w-[85%] rounded-none">
+<span class="font-label text-[10px] text-ink-muted uppercase tracking-wider block mb-1">Maker</span>
+<p class="font-body text-body text-ink">night birding in the city</p>
+</div>
+</div>
+<!-- Turn: Agent -->
+<div class="flex flex-col items-start w-full">
+<div class="bg-accent-wash border border-primary-fixed-dim p-3 max-w-[90%] rounded-none relative">
+<!-- Decorative corner -->
+<div class="absolute top-0 left-0 w-2 h-2 border-t border-l border-primary"></div>
+<span class="font-label text-[10px] text-primary uppercase tracking-wider block mb-1">Agent</span>
+<p class="font-body text-body text-ink mb-2">The default here is a sleek dark-mode dashboard with neon accents and owl photography. Three worlds that escape it:</p>
+<ul class="font-data-mono text-data-mono text-ink-muted space-y-1 list-disc list-inside">
+<li>a 1960s Peterson field guide</li>
+<li>a transit-system night map</li>
+<li>a pirate-radio log zine</li>
+</ul>
+</div>
+</div>
+<!-- Turn: Maker -->
+<div class="flex flex-col items-end w-full">
+<div class="bg-surface border border-line p-3 max-w-[85%] rounded-none">
+<span class="font-label text-[10px] text-ink-muted uppercase tracking-wider block mb-1">Maker</span>
+<p class="font-body text-body text-ink">the field guide — capture both</p>
+</div>
+</div>
+<!-- Turn: Agent (Latest) -->
+<div class="flex flex-col items-start w-full">
+<div class="bg-accent-wash border border-primary p-3 max-w-[90%] rounded-none relative">
+<div class="absolute top-0 left-0 w-2 h-2 border-t border-l border-primary"></div>
+<span class="font-label text-[10px] text-primary uppercase tracking-wider block mb-1 flex items-center gap-1">
+<span class="material-symbols-outlined text-[12px]">done_all</span>
+                            Agent
+                        </span>
+<p class="font-body text-body text-ink">Captured the brief and the direction. You can commit when ready.</p>
+</div>
+</div>
+<!-- Spacer to push input to bottom if needed -->
+<div class="flex-1"></div>
+</div>
+<!-- Input Area -->
+<div class="p-md border-t border-line bg-surface">
+<!-- Quick Actions -->
+<div class="flex flex-wrap gap-2 mb-sm">
+<button class="font-data-mono text-[11px] text-ink bg-surface-container border border-outline-variant px-2 py-1 hover:bg-surface-container-high transition-colors">3 worlds</button>
+<button class="font-data-mono text-[11px] text-ink bg-surface-container border border-outline-variant px-2 py-1 hover:bg-surface-container-high transition-colors">name the enemy</button>
+<button class="font-data-mono text-[11px] text-ink bg-surface-container border border-outline-variant px-2 py-1 hover:bg-surface-container-high transition-colors">directions</button>
+<button class="font-data-mono text-[11px] text-primary border border-primary-fixed-dim bg-accent-wash px-2 py-1 hover:bg-primary hover:text-on-primary transition-colors flex items-center gap-1">
+<span class="material-symbols-outlined text-[12px]">capture</span> capture brief
+                    </button>
+<button class="font-data-mono text-[11px] text-primary border border-primary-fixed-dim bg-accent-wash px-2 py-1 hover:bg-primary hover:text-on-primary transition-colors flex items-center gap-1">
+<span class="material-symbols-outlined text-[12px]">capture</span> capture direction
+                    </button>
+</div>
+<div class="relative">
+<textarea class="w-full bg-paper border border-line rounded-none font-body text-body p-3 min-h-[80px] focus:ring-0 focus:border-primary placeholder:text-outline resize-none custom-scrollbar" placeholder="React, redirect, choose..."></textarea>
+<div class="absolute bottom-2 right-2">
+<button class="bg-primary hover:bg-surface-tint text-on-primary p-1.5 flex items-center justify-center transition-colors shadow-sm cursor-crosshair">
+<span class="material-symbols-outlined text-[18px]">send</span>
+</button>
+</div>
+</div>
+<div class="flex justify-between items-center mt-2">
+<span class="font-data-mono text-[10px] text-ink-muted">SYS.RDY</span>
+<span class="font-data-mono text-[10px] text-ink-muted">ENTER to send, SHIFT+ENTER for newline</span>
+</div>
+</div>
+</aside>
+</main>
+</body></html>

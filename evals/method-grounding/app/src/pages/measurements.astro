@@ -1,0 +1,118 @@
+---
+import Base from "../layouts/Base.astro";
+import TopRail from "../components/TopRail.astro";
+import ProofThumb from "../components/ProofThumb.astro";
+import { listCases, caseView, heroPair, listRuns } from "../lib/runs";
+const cases = listCases();
+const hero = heroPair();
+const runs = listRuns();
+const measured = runs.filter((r) => r.measured);
+const unmeasured = runs.length - measured.length;
+---
+<Base title="Measurements — Design Bench">
+  <TopRail active="All measurements" />
+  <main class="max-w-6xl mx-auto px-lg py-xl">
+    <h1 class="text-display font-display tracking-tight">Measurements</h1>
+    <p class="text-body text-ink-muted mt-xs max-w-prose">
+      Every rendering on this site, with the distance it landed from the model's default look. Open any
+      one to see it full size and read its field marks — the claims trace back to these.
+    </p>
+
+    {hero && (
+      <section class="mt-xl">
+        <div class="font-label text-label uppercase text-ink-muted mb-md">What a distance is</div>
+        <div class="grid grid-cols-1 md:grid-cols-[1fr_auto_1fr] gap-lg items-center">
+          <a href={`/cases/${cases[0]?.key}/no-design-md/0`} class="block group">
+            <div class="font-label text-label uppercase text-ink-muted mb-xs group-hover:text-primary">No direction · the default look</div>
+            <ProofThumb src={hero.defaultSrc} mini />
+          </a>
+          <div class="text-center px-sm">
+            <div class="font-display text-ink" style="font-size:46px;line-height:1">{hero.distance}</div>
+            <div class="font-label text-label uppercase text-ink-muted mt-xs">apart</div>
+          </div>
+          <a href={`/cases/${cases[0]?.key}/object/0`} class="block group">
+            <div class="font-label text-label uppercase text-ink-muted mb-xs group-hover:text-primary">One real object · directed</div>
+            <ProofThumb src={hero.groundedSrc} mini />
+          </a>
+        </div>
+        <p class="text-body text-ink-muted mt-md max-w-prose" style="font-size:14px">
+          Distance starts at <span class="font-data text-data">0.00</span> — identical to the tool's default
+          look — and climbs as a rendering departs from it (perceptual color difference plus structural
+          features: gradients, shadows, dark backgrounds, icon fonts). Adjectives typically reach about
+          <span class="font-data text-data">0.30</span>; naming one real object, past
+          <span class="font-data text-data">0.60</span>. So {hero.distance} means the grounded rendering
+          moved that far from the dark default deck on the left.
+        </p>
+      </section>
+    )}
+
+    <section class="mt-xl border-t border-line pt-lg">
+      <div class="font-label text-label uppercase text-ink-muted mb-md">Every rendering we measured</div>
+      {cases.map((c) => {
+        const v = caseView(c.key)!;
+        const shown = v.treatments.filter((t) => t.samplePath);
+        return (
+          <div class="mt-lg">
+            <a href={`/cases/${c.key}`} class="font-display font-semibold text-base text-ink hover:text-primary">{v.title} →</a>
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-md mt-sm">
+              {shown.map((t) => (
+                <a href={`/cases/${c.key}/${t.key}/0`} class="block group">
+                  <ProofThumb src={t.samplePath} mini />
+                  <div class="flex items-baseline justify-between mt-1">
+                    <span class="font-label text-label uppercase text-ink group-hover:text-primary">{t.name}</span>
+                    <span class="font-data text-data text-ink bg-accent-wash px-1">{t.isControl ? "0.00" : t.distance?.toFixed(2) ?? "—"}</span>
+                  </div>
+                </a>
+              ))}
+            </div>
+          </div>
+        );
+      })}
+      <p class="text-body text-ink-muted mt-lg max-w-prose" style="font-size:13px">
+        Every distance above is measured from the same no-direction control within its case. Click any
+        rendering for the full screen and its field marks; click a case name for the side-by-side ladder.
+      </p>
+    </section>
+
+    <section class="mt-xl border-t border-line pt-lg">
+      <div class="font-label text-label uppercase text-ink-muted mb-sm">Where these numbers come from</div>
+      <p class="text-body text-ink-muted max-w-prose" style="font-size:14px">
+        Every distance above comes from a <em>run</em> — one sitting where a tool got the same brief, rendered
+        it several times, and each result was scored the same way. We average over the whole batch, so a number
+        reflects how the tool usually behaves, not one lucky screenshot. These are the runs the numbers trace back to.
+      </p>
+      <div class="mt-md overflow-x-auto">
+        <table class="w-full border-collapse" style="font-size:13px">
+          <thead>
+            <tr class="text-left font-label text-label uppercase text-ink-muted border-b border-line">
+              <th class="py-2 pr-md font-normal">Run</th>
+              <th class="py-2 pr-md font-normal">Date</th>
+              <th class="py-2 pr-md font-normal">What we changed</th>
+              <th class="py-2 pr-md font-normal">Tool</th>
+              <th class="py-2 pr-md font-normal text-right">Renderings</th>
+              <th class="py-2 font-normal">How we scored it</th>
+            </tr>
+          </thead>
+          <tbody>
+            {measured.map((r) => (
+              <tr class="border-b border-line align-top">
+                <td class="py-2 pr-md font-data text-data text-ink">{r.name}</td>
+                <td class="py-2 pr-md text-ink-muted">{r.date || "—"}</td>
+                <td class="py-2 pr-md text-ink">{r.experiment === "tool-comparison" ? "the tool, same brief" : "the design direction, same tool"}</td>
+                <td class="py-2 pr-md text-ink-muted">{r.toolLabel}</td>
+                <td class="py-2 pr-md font-data text-data text-ink-muted text-right">{r.samples}</td>
+                <td class="py-2 text-ink-muted">{r.metricLabel}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+      {unmeasured > 0 && (
+        <p class="text-body text-ink-muted mt-sm max-w-prose" style="font-size:13px">
+          {unmeasured} more {unmeasured === 1 ? "run was" : "runs were"} generated but never scored, so no number
+          here traces back to {unmeasured === 1 ? "it" : "them"}. They're left out on purpose.
+        </p>
+      )}
+    </section>
+  </main>
+</Base>

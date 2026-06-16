@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Design Bench - Proofer</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400&amp;family=IBM+Plex+Sans:wght@400;500;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "secondary-fixed-dim": "#bac3ff",
+                        "error-container": "#ffdad6",
+                        "tertiary-fixed": "#fdd6ff",
+                        "surface": "#f9f9fc",
+                        "inverse-primary": "#cbbeff",
+                        "surface-container-low": "#f3f3f6",
+                        "primary-fixed-dim": "#cbbeff",
+                        "on-tertiary-fixed": "#340042",
+                        "on-tertiary-container": "#ffe1ff",
+                        "background": "#f9f9fc",
+                        "surface-container-lowest": "#ffffff",
+                        "primary": "#542fca",
+                        "on-primary": "#ffffff",
+                        "secondary-fixed": "#dee0ff",
+                        "on-primary-container": "#ede6ff",
+                        "ink": "#1C1B22",
+                        "paper": "#FFFFFF",
+                        "surface-container": "#eeedf0",
+                        "secondary": "#3f53c3",
+                        "on-tertiary-fixed-variant": "#731b8a",
+                        "on-secondary-fixed-variant": "#2339ab",
+                        "secondary-container": "#798dff",
+                        "surface-container-high": "#e8e8eb",
+                        "on-secondary": "#ffffff",
+                        "error": "#ba1a1a",
+                        "tertiary-fixed-dim": "#f3aeff",
+                        "on-background": "#1a1c1e",
+                        "surface-dim": "#dadadd",
+                        "outline-variant": "#cac4d7",
+                        "tertiary": "#7f2995",
+                        "inverse-surface": "#2f3033",
+                        "ink-muted": "#6B6A74",
+                        "surface-tint": "#6240d8",
+                        "on-surface-variant": "#484554",
+                        "surface-bright": "#f9f9fc",
+                        "primary-fixed": "#e6deff",
+                        "inverse-on-surface": "#f0f0f3",
+                        "outline": "#797586",
+                        "surface-container-highest": "#e2e2e5",
+                        "on-primary-fixed-variant": "#4a20bf",
+                        "on-primary-fixed": "#1d0061",
+                        "on-secondary-container": "#001d8c",
+                        "on-error": "#ffffff",
+                        "on-tertiary": "#ffffff",
+                        "surface-variant": "#e2e2e5",
+                        "on-secondary-fixed": "#00105c",
+                        "line": "#D8D8DC",
+                        "on-surface": "#1a1c1e",
+                        "accent-wash": "#EFEBFD",
+                        "primary-container": "#6d4de3",
+                        "on-error-container": "#93000a",
+                        "tertiary-container": "#9a44b0"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "lg": "24px",
+                        "xs": "4px",
+                        "xl": "40px",
+                        "sm": "8px",
+                        "md": "16px"
+                    },
+                    "fontFamily": {
+                        "reading-mono": ["IBM Plex Mono"],
+                        "label-sm": ["IBM Plex Sans"],
+                        "body-md": ["IBM Plex Sans"],
+                        "display-lg": ["IBM Plex Sans"]
+                    },
+                    "fontSize": {
+                        "reading-mono": ["12.5px", { "lineHeight": "1.5", "fontWeight": "400" }],
+                        "label-sm": ["12px", { "lineHeight": "1.3", "letterSpacing": "0.04em", "fontWeight": "500" }],
+                        "body-md": ["15px", { "lineHeight": "1.55", "fontWeight": "400" }],
+                        "display-lg": ["28px", { "lineHeight": "1.2", "fontWeight": "600" }]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        body { background-color: #E9E9EC; }
+        .crop-mark { position: absolute; width: 16px; height: 16px; border-color: #1C1B22; border-style: solid; border-width: 0; }
+        .crop-tl { top: -8px; left: -8px; border-top-width: 1px; border-left-width: 1px; }
+        .crop-tr { top: -8px; right: -8px; border-top-width: 1px; border-right-width: 1px; }
+        .crop-bl { bottom: -8px; left: -8px; border-bottom-width: 1px; border-left-width: 1px; }
+        .crop-br { bottom: -8px; right: -8px; border-bottom-width: 1px; border-right-width: 1px; }
+        .color-patch { height: 16px; width: 16px; display: inline-block; }
+    </style>
+</head>
+<body class="text-ink font-body-md antialiased min-h-screen flex flex-col">
+<!-- TopNavBar -->
+<nav class="fixed top-0 left-0 w-full z-50 flex justify-between items-center px-lg h-12 bg-surface-container-high dark:bg-surface-container-highest border-b border-line dark:border-outline-variant flat no shadows">
+<div class="flex items-center h-full">
+<span class="text-display-lg font-display-lg tracking-tight text-ink dark:text-paper mr-8">Design Bench</span>
+<div class="flex h-full">
+<a class="text-ink-muted dark:text-outline h-full flex items-center px-4 hover:bg-surface-container-highest dark:hover:bg-surface-dim transition-colors cursor-crosshair active:opacity-80 font-label-sm text-label-sm" href="#">Archive</a>
+<a class="text-primary dark:text-primary-fixed border-b-2 border-primary dark:border-primary-fixed h-full flex items-center px-4 hover:bg-surface-container-highest dark:hover:bg-surface-dim transition-colors cursor-crosshair active:opacity-80 font-label-sm text-label-sm" href="#">Calibration</a>
+<a class="text-ink-muted dark:text-outline h-full flex items-center px-4 hover:bg-surface-container-highest dark:hover:bg-surface-dim transition-colors cursor-crosshair active:opacity-80 font-label-sm text-label-sm" href="#">Assets</a>
+<a class="text-ink-muted dark:text-outline h-full flex items-center px-4 hover:bg-surface-container-highest dark:hover:bg-surface-dim transition-colors cursor-crosshair active:opacity-80 font-label-sm text-label-sm" href="#">Reports</a>
+</div>
+</div>
+<div class="flex items-center gap-4">
+<button class="text-ink dark:text-paper hover:bg-surface-container-highest dark:hover:bg-surface-dim transition-colors cursor-crosshair active:opacity-80 p-2"><span class="material-symbols-outlined">settings</span></button>
+<button class="text-ink dark:text-paper hover:bg-surface-container-highest dark:hover:bg-surface-dim transition-colors cursor-crosshair active:opacity-80 p-2"><span class="material-symbols-outlined">notifications</span></button>
+</div>
+</nav>
+<!-- SideNavBar -->
+<nav class="fixed left-0 top-12 bottom-0 w-20 z-40 flex flex-col justify-between py-md bg-surface-container dark:bg-surface-dim border-r border-line dark:border-outline-variant flat no shadows">
+<div class="w-full flex flex-col items-center">
+<div class="mb-6 flex flex-col items-center">
+<span class="font-label-sm text-label-sm uppercase tracking-widest text-ink-muted text-center leading-tight">Proofer<br/>Tray</span>
+<span class="font-reading-mono text-reading-mono text-[10px] text-ink-muted mt-1">v2.4.1</span>
+</div>
+<a class="text-ink-muted dark:text-outline flex flex-col items-center justify-center py-4 w-full hover:bg-surface-container-highest dark:hover:bg-surface-variant transition-all scale-95 active:scale-90" href="#"><span class="material-symbols-outlined">search_insights</span><span class="font-label-sm text-label-sm mt-1 hidden">Loupe</span></a>
+<a class="text-ink-muted dark:text-outline flex flex-col items-center justify-center py-4 w-full hover:bg-surface-container-highest dark:hover:bg-surface-variant transition-all scale-95 active:scale-90" href="#"><span class="material-symbols-outlined">crop</span><span class="font-label-sm text-label-sm mt-1 hidden">Crop</span></a>
+<a class="bg-ink dark:bg-paper text-paper dark:text-ink flex flex-col items-center justify-center py-4 w-full hover:bg-surface-container-highest dark:hover:bg-surface-variant transition-all scale-95 active:scale-90" href="#"><span class="material-symbols-outlined">straighten</span><span class="font-label-sm text-label-sm mt-1 hidden">Measure</span></a>
+<a class="text-ink-muted dark:text-outline flex flex-col items-center justify-center py-4 w-full hover:bg-surface-container-highest dark:hover:bg-surface-variant transition-all scale-95 active:scale-90" href="#"><span class="material-symbols-outlined">palette</span><span class="font-label-sm text-label-sm mt-1 hidden">Color</span></a>
+<a class="text-ink-muted dark:text-outline flex flex-col items-center justify-center py-4 w-full hover:bg-surface-container-highest dark:hover:bg-surface-variant transition-all scale-95 active:scale-90" href="#"><span class="material-symbols-outlined">compare</span><span class="font-label-sm text-label-sm mt-1 hidden">Compare</span></a>
+</div>
+<div class="w-full flex flex-col items-center">
+<a class="text-ink-muted dark:text-outline flex flex-col items-center justify-center py-4 w-full hover:bg-surface-container-highest dark:hover:bg-surface-variant transition-all scale-95 active:scale-90" href="#"><span class="material-symbols-outlined">help_outline</span></a>
+<a class="text-ink-muted dark:text-outline flex flex-col items-center justify-center py-4 w-full hover:bg-surface-container-highest dark:hover:bg-surface-variant transition-all scale-95 active:scale-90" href="#"><span class="material-symbols-outlined">terminal</span></a>
+</div>
+</nav>
+<!-- Main Easel Area -->
+<main class="flex-grow ml-20 mt-12 p-lg md:p-xl flex justify-center items-start overflow-auto">
+<!-- Proof Sheet Container -->
+<div class="relative bg-paper w-full max-w-6xl shadow-none rounded-none border border-line p-xl">
+<!-- Crop Marks -->
+<div class="crop-mark crop-tl"></div>
+<div class="crop-mark crop-tr"></div>
+<div class="crop-mark crop-bl"></div>
+<div class="crop-mark crop-br"></div>
+<!-- Color Bar -->
+<div class="absolute right-0 top-0 h-full w-6 border-l border-line flex flex-col items-center py-xl gap-1">
+<div class="color-patch bg-[#6D4DE3]"></div>
+<div class="color-patch bg-[#5B6FE0]"></div>
+<div class="color-patch bg-[#B45CC9]"></div>
+<div class="color-patch bg-ink"></div>
+<div class="color-patch bg-line"></div>
+<div class="color-patch bg-white border border-line"></div>
+</div>
+<!-- Content Area (inside margin of color bar) -->
+<div class="pr-12">
+<!-- Header -->
+<header class="mb-12 border-b border-line pb-6">
+<a class="font-label-sm text-label-sm text-primary-container hover:text-surface-tint flex items-center mb-4 transition-colors" href="#"><span class="material-symbols-outlined text-[16px] mr-1">arrow_back</span> Agent Architecture — all treatments</a>
+<h1 class="font-display-lg text-display-lg text-ink mb-6">One real object — all 22 renderings</h1>
+<p class="font-body-md text-body-md text-ink-muted max-w-3xl leading-relaxed">
+                        Every image below came from the same input: the shared tokens plus one named artifact, a graduate CS lecture handout. How much the results agree is itself a finding — direction that grounds also stabilizes.
+                    </p>
+</header>
+<!-- Grid -->
+<div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-4 mb-12">
+<!-- Rendering Blocks (generated via script for brevity, outputting explicit HTML below) -->
+<!-- 1 -->
+<div class="flex flex-col">
+<div class="aspect-[4/3] bg-surface-container-low border border-line flex items-center justify-center mb-2 overflow-hidden">
+<img alt="Placeholder" class="object-cover w-full h-full grayscale opacity-80" data-alt="A highly detailed top-down view of a stark, modern computer science desk setup in a bright, light-mode environment. The lighting is cold and clinical, casting precise shadows. On the desk, a single printed graduate CS lecture handout rests perfectly aligned with the desk's edge. The color palette consists of pristine whites, stark blacks, and neutral grays, embodying an industrial precision aesthetic. The mood is analytical and deeply focused." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBz703kj24XLiVNDtTyWYZpK51uQwL8ljvsRtgFOqT5BVhc0GdYb80E4d8nJeoBvsMaY6Be_VTkUPu9vRqOFTotqnX29ui81czKGFVr3X_A00B2BZBWEKWMlr793xkw2RcFN7v-SAkdPMmLhTwWsOJR-hiRFfNaBIfElTZ-6K72jy3511zvAOTUzN_j1QN6RVHAoxqXjKzhP27SfTHMOQOpGSUJF93B_nhZECjswuefSoVl6ETo5BbfVn23kLzdTy6WlAuFoNaBb37P"/>
+</div>
+<div class="flex justify-between items-baseline border-t border-line pt-1">
+<span class="font-label-sm text-label-sm text-ink-muted">1 of 22</span>
+<span class="font-reading-mono text-reading-mono text-ink">0.95</span>
+</div>
+</div>
+<!-- 2 -->
+<div class="flex flex-col">
+<div class="aspect-[4/3] bg-surface-container-low border border-line flex items-center justify-center mb-2 overflow-hidden">
+<img alt="Placeholder" class="object-cover w-full h-full grayscale opacity-80" data-alt="A macro shot of complex mathematical algorithms scribbled across a whiteboard in a brightly lit, minimalist laboratory. The focus is incredibly sharp on the central equations, while the edges blur into pure white. The lighting is high-key and diffused, removing all harsh shadows. The palette is strictly monochromatic, reflecting a pristine, objective testing environment. The atmosphere feels rigorous and intellectual." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCEgkN1ioYKWktxN_u4g0oKJ38a27JQ8fVx3OIvyKgqTXLOjstRGljVarGy61f9UrrlZn62pmq3kSp8ylfXL6YcOEwDHx5t76r-g0fFeEC-Pei2sGNUpkxuR_RKQQ7sWd46fXZWKcJOZlJYqbu1rtMTKObYT0iEGNPx9vkatdcZolj262yYK5YgWJnCLCKT6hnA3XHf4pfUI7v5AS44nXeVrbdxXQsyxOxLV4oxuotP5cAI0kjEPQBRTm6BrdqUbvclNQ4sc18LMJqp"/>
+</div>
+<div class="flex justify-between items-baseline border-t border-line pt-1">
+<span class="font-label-sm text-label-sm text-ink-muted">2 of 22</span>
+<span class="font-reading-mono text-reading-mono text-ink">0.92</span>
+</div>
+</div>
+<!-- 3 -->
+<div class="flex flex-col">
+<div class="aspect-[4/3] bg-surface-container-low border border-line flex items-center justify-center mb-2 overflow-hidden">
+<div class="w-full h-full bg-surface-variant"></div>
+</div>
+<div class="flex justify-between items-baseline border-t border-line pt-1">
+<span class="font-label-sm text-label-sm text-ink-muted">3 of 22</span>
+<span class="font-reading-mono text-reading-mono text-ink">0.98</span>
+</div>
+</div>
+<!-- 4 -->
+<div class="flex flex-col">
+<div class="aspect-[4/3] bg-surface-container-low border border-line flex items-center justify-center mb-2 overflow-hidden">
+<div class="w-full h-full bg-surface-variant"></div>
+</div>
+<div class="flex justify-between items-baseline border-t border-line pt-1">
+<span class="font-label-sm text-label-sm text-ink-muted">4 of 22</span>
+<span class="font-reading-mono text-reading-mono text-ink">0.89</span>
+</div>
+</div>
+<!-- 5 -->
+<div class="flex flex-col">
+<div class="aspect-[4/3] bg-surface-container-low border border-line flex items-center justify-center mb-2 overflow-hidden">
+<div class="w-full h-full bg-surface-variant"></div>
+</div>
+<div class="flex justify-between items-baseline border-t border-line pt-1">
+<span class="font-label-sm text-label-sm text-ink-muted">5 of 22</span>
+<span class="font-reading-mono text-reading-mono text-ink">1.01</span>
+</div>
+</div>
+<!-- 6 -->
+<div class="flex flex-col">
+<div class="aspect-[4/3] bg-surface-container-low border border-line flex items-center justify-center mb-2 overflow-hidden">
+<div class="w-full h-full bg-surface-variant"></div>
+</div>
+<div class="flex justify-between items-baseline border-t border-line pt-1">
+<span class="font-label-sm text-label-sm text-ink-muted">6 of 22</span>
+<span class="font-reading-mono text-reading-mono text-ink">0.94</span>
+</div>
+</div>
+<!-- 7 -->
+<div class="flex flex-col">
+<div class="aspect-[4/3] bg-surface-container-low border border-line flex items-center justify-center mb-2 overflow-hidden">
+<div class="w-full h-full bg-surface-variant"></div>
+</div>
+<div class="flex justify-between items-baseline border-t border-line pt-1">
+<span class="font-label-sm text-label-sm text-ink-muted">7 of 22</span>
+<span class="font-reading-mono text-reading-mono text-ink">0.96</span>
+</div>
+</div>
+<!-- 8 -->
+<div class="flex flex-col">
+<div class="aspect-[4/3] bg-surface-container-low border border-line flex items-center justify-center mb-2 overflow-hidden">
+<div class="w-full h-full bg-surface-variant"></div>
+</div>
+<div class="flex justify-between items-baseline border-t border-line pt-1">
+<span class="font-label-sm text-label-sm text-ink-muted">8 of 22</span>
+<span class="font-reading-mono text-reading-mono text-ink">0.91</span>
+</div>
+</div>
+<!-- 9 -->
+<div class="flex flex-col">
+<div class="aspect-[4/3] bg-surface-container-low border border-line flex items-center justify-center mb-2 overflow-hidden">
+<div class="w-full h-full bg-surface-variant"></div>
+</div>
+<div class="flex justify-between items-baseline border-t border-line pt-1">
+<span class="font-label-sm text-label-sm text-ink-muted">9 of 22</span>
+<span class="font-reading-mono text-reading-mono text-ink">0.99</span>
+</div>
+</div>
+<!-- 10 -->
+<div class="flex flex-col">
+<div class="aspect-[4/3] bg-surface-container-low border border-line flex items-center justify-center mb-2 overflow-hidden">
+<div class="w-full h-full bg-surface-variant"></div>
+</div>
+<div class="flex justify-between items-baseline border-t border-line pt-1">
+<span class="font-label-sm text-label-sm text-ink-muted">10 of 22</span>
+<span class="font-reading-mono text-reading-mono text-ink">0.93</span>
+</div>
+</div>
+<!-- 11 -->
+<div class="flex flex-col">
+<div class="aspect-[4/3] bg-surface-container-low border border-line flex items-center justify-center mb-2 overflow-hidden">
+<div class="w-full h-full bg-surface-variant"></div>
+</div>
+<div class="flex justify-between items-baseline border-t border-line pt-1">
+<span class="font-label-sm text-label-sm text-ink-muted">11 of 22</span>
+<span class="font-reading-mono text-reading-mono text-ink">0.88</span>
+</div>
+</div>
+<!-- 12 -->
+<div class="flex flex-col">
+<div class="aspect-[4/3] bg-surface-container-low border border-line flex items-center justify-center mb-2 overflow-hidden">
+<div class="w-full h-full bg-surface-variant"></div>
+</div>
+<div class="flex justify-between items-baseline border-t border-line pt-1">
+<span class="font-label-sm text-label-sm text-ink-muted">12 of 22</span>
+<span class="font-reading-mono text-reading-mono text-ink">1.02</span>
+</div>
+</div>
+<!-- 13 -->
+<div class="flex flex-col">
+<div class="aspect-[4/3] bg-surface-container-low border border-line flex items-center justify-center mb-2 overflow-hidden">
+<div class="w-full h-full bg-surface-variant"></div>
+</div>
+<div class="flex justify-between items-baseline border-t border-line pt-1">
+<span class="font-label-sm text-label-sm text-ink-muted">13 of 22</span>
+<span class="font-reading-mono text-reading-mono text-ink">0.97</span>
+</div>
+</div>
+<!-- 14 -->
+<div class="flex flex-col">
+<div class="aspect-[4/3] bg-surface-container-low border border-line flex items-center justify-center mb-2 overflow-hidden">
+<div class="w-full h-full bg-surface-variant"></div>
+</div>
+<div class="flex justify-between items-baseline border-t border-line pt-1">
+<span class="font-label-sm text-label-sm text-ink-muted">14 of 22</span>
+<span class="font-reading-mono text-reading-mono text-ink">0.95</span>
+</div>
+</div>
+<!-- 15 -->
+<div class="flex flex-col">
+<div class="aspect-[4/3] bg-surface-container-low border border-line flex items-center justify-center mb-2 overflow-hidden">
+<div class="w-full h-full bg-surface-variant"></div>
+</div>
+<div class="flex justify-between items-baseline border-t border-line pt-1">
+<span class="font-label-sm text-label-sm text-ink-muted">15 of 22</span>
+<span class="font-reading-mono text-reading-mono text-ink">0.90</span>
+</div>
+</div>
+</div>
+<!-- Footer Claims & Certification -->
+<div class="border-t border-line pt-6">
+<p class="font-body-md text-body-md text-ink mb-6">
+                        The 22 renderings sit within <span class="font-reading-mono text-reading-mono">0.14</span> of each other — the tightest spread of any treatment in this case. The adjective treatment's spread across the same count is <span class="font-reading-mono text-reading-mono">0.41</span>: same words, much wider wandering.
+                    </p>
+<div class="font-reading-mono text-reading-mono text-ink-muted text-xs uppercase tracking-widest border border-line p-4 inline-block bg-surface-container-lowest">
+                        generation model GEMINI_3_1_PRO · 22 renderings · definitions hash 5d7280c55ee4 · measured 2026-06-10
+                    </div>
+</div>
+</div>
+</div>
+</main>
+</body></html>

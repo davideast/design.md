@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Method Grounding - Atlas Design</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:ital,wght@0,400;0,500;1,400&amp;family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,500;0,8..60,600;1,8..60,400&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "surface": "#faf9f5",
+                      "primary-fixed": "#e7e1dc",
+                      "on-secondary": "#ffffff",
+                      "surface-container-high": "#e9e8e4",
+                      "surface-container": "#efeeea",
+                      "tertiary": "#0f0000",
+                      "carmine": "#A23B2A",
+                      "on-secondary-fixed-variant": "#4a463f",
+                      "primary-fixed-dim": "#cbc6c1",
+                      "surface-container-lowest": "#ffffff",
+                      "surface-dim": "#dbdad6",
+                      "ink": "#1F1D1A",
+                      "on-primary-fixed": "#1d1b18",
+                      "inverse-surface": "#2f312e",
+                      "error-container": "#ffdad6",
+                      "on-tertiary-fixed-variant": "#832516",
+                      "background": "#faf9f5",
+                      "on-tertiary-container": "#d6624d",
+                      "on-primary": "#ffffff",
+                      "error": "#ba1a1a",
+                      "on-surface-variant": "#4a463f",
+                      "on-secondary-fixed": "#1e1b15",
+                      "primary-container": "#1f1d1a",
+                      "secondary-container": "#e5dfd5",
+                      "on-primary-container": "#898580",
+                      "inverse-primary": "#cbc6c1",
+                      "tertiary-fixed-dim": "#ffb4a6",
+                      "secondary-fixed-dim": "#ccc6bc",
+                      "outline-variant": "#cdc5bc",
+                      "on-background": "#1b1c1a",
+                      "surface-container-highest": "#e3e2df",
+                      "on-primary-fixed-variant": "#494643",
+                      "tertiary-container": "#430300",
+                      "on-surface": "#1b1c1a",
+                      "inverse-on-surface": "#f2f1ed",
+                      "surface-tint": "#615e5a",
+                      "on-secondary-container": "#66625a",
+                      "on-error-container": "#93000a",
+                      "tertiary-fixed": "#ffdad4",
+                      "outline": "#7c766e",
+                      "surface-variant": "#e3e2df",
+                      "atlas-stock": "#F9F8F4",
+                      "primary": "#040302",
+                      "on-tertiary-fixed": "#3f0300",
+                      "secondary-fixed": "#e8e2d8",
+                      "on-error": "#ffffff",
+                      "surface-bright": "#faf9f5",
+                      "surface-container-low": "#f4f4f0",
+                      "on-tertiary": "#ffffff",
+                      "ink-tint": "#6E6A62",
+                      "secondary": "#625e56"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.25rem",
+                      "lg": "0.5rem",
+                      "xl": "0.75rem",
+                      "full": "9999px"
+              },
+              "spacing": {
+                      "margin-md": "64px",
+                      "margin-sm": "32px",
+                      "unit": "8px",
+                      "gutter": "16px",
+                      "margin-lg": "96px"
+              },
+              "fontFamily": {
+                      "machine-data": [
+                              "IBM Plex Mono"
+                      ],
+                      "headline-lg-mobile": [
+                              "\"Source Serif 4\""
+                      ],
+                      "body-main": [
+                              "\"Source Serif 4\""
+                      ],
+                      "caption": [
+                              "\"Source Serif 4\""
+                      ],
+                      "headline-lg": [
+                              "\"Source Serif 4\""
+                      ]
+              },
+              "fontSize": {
+                      "machine-data": [
+                              "12.5px",
+                              {
+                                      "lineHeight": "1.5",
+                                      "fontWeight": "400"
+                              }
+                      ],
+                      "headline-lg-mobile": [
+                              "28px",
+                              {
+                                      "lineHeight": "1.2",
+                                      "fontWeight": "500"
+                              }
+                      ],
+                      "body-main": [
+                              "17px",
+                              {
+                                      "lineHeight": "1.6",
+                                      "fontWeight": "400"
+                              }
+                      ],
+                      "caption": [
+                              "13px",
+                              {
+                                      "lineHeight": "1.5",
+                                      "letterSpacing": "0.01em",
+                                      "fontWeight": "400"
+                              }
+                      ],
+                      "headline-lg": [
+                              "32px",
+                              {
+                                      "lineHeight": "1.15",
+                                      "fontWeight": "500"
+                              }
+                      ]
+              }
+      },
+          },
+        }
+      </script>
+<style>
+        body {
+            background-color: #F9F8F4; /* atlas-stock */
+            color: #1F1D1A; /* ink */
+        }
+    </style>
+</head>
+<body class="font-body-main text-body-main antialiased selection:bg-surface-variant selection:text-ink">
+<!-- TopNavBar -->
+<nav class="bg-surface dark:bg-surface flex justify-between items-center w-full px-margin-md py-gutter max-w-full mx-auto border-b border-ink-tint sticky top-0 z-50">
+<div class="font-headline-lg text-headline-lg text-primary dark:text-on-surface uppercase tracking-tight flex items-center">
+<span>Atlas Design</span>
+</div>
+<div class="hidden md:flex gap-gutter items-center">
+<a class="text-on-surface-variant dark:text-on-surface-variant hover:text-carmine transition-colors duration-200 cursor-pointer active:opacity-80" href="#">Plates</a>
+<a class="text-carmine dark:text-on-tertiary-container font-bold hover:text-carmine transition-colors duration-200 cursor-pointer active:opacity-80" href="#">Methodology</a>
+<a class="text-on-surface-variant dark:text-on-surface-variant hover:text-carmine transition-colors duration-200 cursor-pointer active:opacity-80" href="#">Archive</a>
+</div>
+<button class="font-caption text-caption border border-ink px-4 py-2 hover:border-carmine hover:text-carmine transition-colors duration-200 cursor-pointer active:opacity-80 flex items-center gap-2">
+            Begin Evaluation
+            <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 0;">arrow_forward</span>
+</button>
+</nav>
+<main class="max-w-[1440px] mx-auto px-margin-sm md:px-margin-md py-margin-sm md:py-margin-md flex flex-col gap-margin-md">
+<!-- Identity Section -->
+<header class="flex flex-col gap-gutter max-w-3xl border-b border-ink-tint pb-margin-sm">
+<h1 class="font-headline-lg-mobile md:font-headline-lg text-headline-lg-mobile md:text-headline-lg text-ink">Method Grounding</h1>
+<p class="font-body-main text-body-main text-ink-tint">An evaluation of how design direction changes what AI models produce — the same content brief, rendered under different kinds of direction, measured and compared.</p>
+</header>
+<!-- Cases Spread -->
+<section class="grid grid-cols-1 lg:grid-cols-2 gap-x-margin-md gap-y-margin-md border-b border-ink-tint pb-margin-md">
+<!-- Plate 1 -->
+<article class="flex flex-col gap-gutter">
+<div class="border border-ink-tint p-unit bg-surface">
+<img alt="A detailed technical presentation slide on AI agent loops, mimicking a 1958 computer science lecture handout by Turing, complete with aged paper texture, typewriter font, and hand-drawn system diagrams." class="w-full h-auto object-cover grayscale mix-blend-multiply" data-alt="A meticulously crafted technical presentation slide titled 'CS 221: ARTIFICIAL INTELLIGENCE AGENTS - LECTURE NOTES', supposedly authored by Prof. A. Turing on Oct 26, 1958. The visual style faithfully mimics a vintage, mid-century academic handout. The background is an aged, off-white paper texture with subtle stains and creases. The text, typed in a classic typewriter font, details 'The Perception-Action Cycle' and 'Internal State &amp; Goal Formulation'. Accompanying the text are hand-drawn style diagrams illustrating an 'AGENT' interacting with an 'ENVIRONMENT' via 'SENSORS' and 'ACTUATORS', further reinforcing the authentic, historical scientific aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDkIJZW77QkFwzIkHYfNuShSOJggi57WWn6v0WyDfJWkbThaZznrwu58IrWrnW8UgThDZeipX2C7EUvWrlrv5NBmCD5q5Pb8SPqttod6z6OjdGOntsYa7AF2TjAK9TwGz0bWhWLvnotylXgK5fCKDAA37KktQX1RWyBtaIi31isHSOoBr7zx8xhnFW5lu8eR9Ury01GqRHmwCuWZwG31nsNG0CCoc8bZrgZ0rruYcXR429LKaKkSxNakaQlQWpCx9l-xC9vjaMTmUs"/>
+</div>
+<div class="flex flex-col gap-2">
+<h2 class="font-body-main text-body-main text-ink uppercase tracking-wider">Agent Architecture</h2>
+<p class="font-caption text-caption text-ink-tint">A seven-slide technical talk on AI agent loops.</p>
+<div class="border-t border-ink-tint pt-2 mt-2 flex gap-4 items-baseline">
+<span class="font-machine-data text-machine-data text-ink">Δ 0.64</span>
+<span class="font-caption text-caption text-ink-tint">Naming one real object — a graduate CS lecture handout — moved results farther from the model's default look than adjectives did.</span>
+</div>
+</div>
+</article>
+<!-- Plate 2 -->
+<article class="flex flex-col gap-gutter">
+<div class="border border-ink-tint p-unit bg-surface">
+<img alt="Auralis AI voice platform marketing site, featuring a clean, minimalist layout with sophisticated typography, primarily black and white with subtle grayscale tones." class="w-full h-auto object-cover grayscale mix-blend-multiply" data-alt="A sophisticated, minimalist marketing website interface for 'Auralis', an AI voice platform. The design is strictly flat, utilizing a high-contrast palette of pristine white, deep black, and subtle greys. The typography is modern and elegant, establishing a clear hierarchy through scale and weight without relying on color. The layout is structured with generous whitespace and precise alignments, projecting a clinical, high-end technological aesthetic consistent with modern digital product marketing." src="https://lh3.googleusercontent.com/aida-public/AB6AXuA38tQ54frIrNXMZr9O4QWCdGsv9IitrWyhkbpSpeprm2dZqHtCXNzQ7DP1D5NXNfxgueiIsQwiH4GSFLd04Q9TZSMUYcXAevKoVworVOjFaUm6xmu9G_bVqSxs-dyNTbHoMpJLWoQV0bO6gZWe23kGslcFpLmHYXCEnwqdqYoX0h50ZH1ReVN7VYxW0zFJc5LozynnOGXUzeNbI_Xi2x5vQbKsOylPqR0aw3xkEbZg6Xik9coGoaCyp8ZphaGKraH2gNtMGgSA2FY"/>
+</div>
+<div class="flex flex-col gap-2">
+<h2 class="font-body-main text-body-main text-ink uppercase tracking-wider">Auralis</h2>
+<p class="font-caption text-caption text-ink-tint">A marketing site for an AI voice platform.</p>
+<div class="border-t border-ink-tint pt-2 mt-2 flex gap-4 items-baseline">
+<span class="font-machine-data text-machine-data text-ink">Δ 0.36</span>
+<span class="font-caption text-caption text-ink-tint">The object grounding outperformed adjectives across 18 renderings.</span>
+</div>
+</div>
+</article>
+<!-- Plate 3 -->
+<article class="flex flex-col gap-gutter">
+<div class="border border-ink-tint p-unit bg-surface">
+<img alt="DC Tracks editorial layout, an indie music publication showcasing a curated, text-heavy design with a stark, intellectual aesthetic." class="w-full h-auto object-cover grayscale mix-blend-multiply" data-alt="An editorial layout for 'DC Tracks', a sophisticated music publication for Washington, DC. The design evokes a high-end, independent magazine spread, relying heavily on stark typography and rigorous grid structures. The color palette is muted, focusing on structural elements like hairlines and generous margins rather than decorative fills. The aesthetic is curated and intellectual, prioritizing the reading experience and typographic hierarchy over glossy imagery." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCOOwoUKbu-w1VnrHt2PHZGbcoluz_JGdUX867NjiyJSOXATCy9rI4bs1S0oLp--JoKtoA3J7auU6IgIUrqwcGQlc70auMNGdt-dIdxOYK29-Dleyk19_usIhkMtrnHGqrJscuMEUdCK8ULUehjfBLG43MrFYSTROLqjpbnI0Myt8lID16scwAC4A0HM-66uQkdD-7IPpNeIpOzk_3o7X4qMjqXa0UicR4S7BR6IYPyaaAy4avyxWdFh-0u_EDIrSjDltuB7geDhog"/>
+</div>
+<div class="flex flex-col gap-2">
+<h2 class="font-body-main text-body-main text-ink uppercase tracking-wider">DC Tracks</h2>
+<p class="font-caption text-caption text-ink-tint">An editorial music publication for Washington, DC.</p>
+<div class="border-t border-ink-tint pt-2 mt-2 flex gap-4 items-baseline">
+<span class="font-machine-data text-machine-data text-ink">Δ 0.21</span>
+<span class="font-caption text-caption text-ink-tint">Measured across 42 renderings; the metaphor grounding led over adjectives.</span>
+</div>
+</div>
+</article>
+<!-- Plate 4 -->
+<article class="flex flex-col gap-gutter">
+<div class="border border-ink-tint p-unit bg-surface">
+<img alt="Urban Nocturnal Field Guide spread, designed as a vintage, mid-century scientific manual on birding, featuring detailed etched illustrations of owls on aged paper." class="w-full h-auto object-cover mix-blend-multiply" data-alt="A two-page spread from an 'URBAN NIGHT BIRDING FIELD NOTES' manual. The design meticulously replicates a vintage, mid-century scientific field guide. The background is a heavily textured, tea-stained parchment paper. The text is set in a mix of typewriter and elegant serif fonts. Detailed, finely cross-hatched, etching-style illustrations of nocturnal birds, specifically Common Nighthawks and Eastern Screech Owls perched on city infrastructure, dominate the pages. The aesthetic is rigorously archival, looking like a physical artifact produced via 1960s offset printing." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDk1TOUWWywauv-fhZQO5R3-OM2yLmZJpqTGBPHq8h4lwtITYktENRRwOOisPLAe3JVedWspE03ejdEjMuLApsCmVJ6aBaviRJok_hcExVmanGNsbRMWylHInKFNbORZjJDZ7u2eVE48omQlJ77LkC_tNBeBy_fSpwgG-liLKPOmmIEAiwUjJqZ-UDjOl4gDHRifkEz0ldIZCkTbp9FgzEm9MkNPW2ooMh27WXITG8fkD5uwPAXzuvdRJBSiy7w1Uj-84dgutO3qro"/>
+</div>
+<div class="flex flex-col gap-2">
+<h2 class="font-body-main text-body-main text-ink uppercase tracking-wider">Urban Nocturnal Field Guide</h2>
+<p class="font-caption text-caption text-ink-tint">A field-notes site for night birding in the city, constrained by 1960s offset printing.</p>
+<div class="border-t border-ink-tint pt-2 mt-2 flex gap-4 items-baseline">
+<span class="font-machine-data text-machine-data text-ink">--</span>
+<span class="font-caption text-caption text-ink-tint">Newest case; measurement in progress.</span>
+</div>
+</div>
+</article>
+</section>
+<!-- Context & Paths -->
+<div class="grid grid-cols-1 md:grid-cols-2 gap-margin-md">
+<section class="flex flex-col gap-gutter pr-margin-sm border-r border-ink-tint">
+<h3 class="font-body-main text-body-main text-ink uppercase tracking-widest border-b border-ink-tint pb-2">How to read the evidence</h3>
+<ul class="font-caption text-caption text-ink-tint flex flex-col gap-4 mt-2">
+<li><strong class="text-ink font-normal">Treatment:</strong> The specific linguistic framing applied to the prompt (e.g., specifying an object vs. a mood).</li>
+<li><strong class="text-ink font-normal">Default Look:</strong> The baseline stylistic output of the model without specific grounding constraints.</li>
+<li><strong class="text-ink font-normal">Adjectives:</strong> The standard industry approach of stacking descriptive words to steer aesthetic outcomes.</li>
+</ul>
+</section>
+<section class="flex flex-col gap-gutter">
+<h3 class="font-body-main text-body-main text-ink uppercase tracking-widest border-b border-ink-tint pb-2">Paths for makers</h3>
+<div class="flex flex-col gap-4 mt-2">
+<a class="group flex flex-col gap-1" href="#">
+<div class="flex items-center gap-2 text-ink group-hover:text-carmine transition-colors duration-200">
+<span class="font-body-main text-body-main border-b border-transparent group-hover:border-carmine">Start a new case from a spark</span>
+<span class="material-symbols-outlined text-[16px]" style="font-variation-settings: 'FILL' 0;">arrow_outward</span>
+</div>
+<p class="font-caption text-caption text-ink-tint">Begin an evaluation using a predefined physical object or metaphor as grounding.</p>
+</a>
+<a class="group flex flex-col gap-1" href="#">
+<div class="flex items-center gap-2 text-ink group-hover:text-carmine transition-colors duration-200">
+<span class="font-body-main text-body-main border-b border-transparent group-hover:border-carmine">All measurements</span>
+<span class="material-symbols-outlined text-[16px]" style="font-variation-settings: 'FILL' 0;">arrow_outward</span>
+</div>
+<p class="font-caption text-caption text-ink-tint">Review the raw data and comparative metrics for all completed evaluation cases.</p>
+</a>
+</div>
+</section>
+</div>
+</main>
+<!-- Footer -->
+<footer class="bg-surface dark:bg-surface flex flex-col md:flex-row justify-between items-center w-full px-margin-md py-margin-sm mt-margin-lg border-t border-ink-tint">
+<div class="font-headline-lg text-headline-lg text-primary mb-4 md:mb-0">
+            Atlas Design
+        </div>
+<div class="font-caption text-caption text-on-surface-variant dark:text-on-surface-variant flex flex-col md:flex-row items-center gap-4">
+<span>© 2024 Atlas Scientific. All rights reserved. Precision in observation.</span>
+<div class="flex gap-4">
+<a class="hover:text-carmine underline transition-all duration-300" href="#">Privacy</a>
+<a class="hover:text-carmine underline transition-all duration-300" href="#">Terms</a>
+<a class="hover:text-carmine underline transition-all duration-300" href="#">Institutional Access</a>
+</div>
+</div>
+</footer>
+</body></html>

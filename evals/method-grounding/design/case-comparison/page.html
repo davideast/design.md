@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Design Bench - Agent Architecture</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&amp;family=IBM+Plex+Mono:wght@400;500&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-primary-fixed": "#1d0061",
+                        "inverse-on-surface": "#f0f0f3",
+                        "on-primary-fixed-variant": "#4a20bf",
+                        "on-secondary-fixed": "#00105c",
+                        "on-tertiary-fixed-variant": "#731b8a",
+                        "surface-container-high": "#e8e8eb",
+                        "inverse-surface": "#2f3033",
+                        "tertiary-container": "#9a44b0",
+                        "ink": "#1C1B22",
+                        "tertiary": "#7f2995",
+                        "surface-container": "#eeedf0",
+                        "surface-tint": "#6240d8",
+                        "surface-container-lowest": "#ffffff",
+                        "background": "#f9f9fc",
+                        "on-surface-variant": "#484554",
+                        "surface-container-low": "#f3f3f6",
+                        "outline-variant": "#cac4d7",
+                        "secondary-fixed-dim": "#bac3ff",
+                        "primary-fixed": "#e6deff",
+                        "on-secondary-fixed-variant": "#2339ab",
+                        "on-primary-container": "#ede6ff",
+                        "on-tertiary": "#ffffff",
+                        "line": "#D8D8DC",
+                        "secondary-container": "#798dff",
+                        "on-primary": "#ffffff",
+                        "surface-bright": "#f9f9fc",
+                        "on-tertiary-container": "#ffe1ff",
+                        "primary": "#542fca",
+                        "on-secondary-container": "#001d8c",
+                        "paper": "#FFFFFF",
+                        "on-tertiary-fixed": "#340042",
+                        "surface-dim": "#dadadd",
+                        "accent-wash": "#EFEBFD",
+                        "secondary": "#3f53c3",
+                        "error-container": "#ffdad6",
+                        "tertiary-fixed-dim": "#f3aeff",
+                        "outline": "#797586",
+                        "ink-muted": "#6B6A74",
+                        "on-error": "#ffffff",
+                        "on-background": "#1a1c1e",
+                        "primary-container": "#6d4de3",
+                        "error": "#ba1a1a",
+                        "on-surface": "#1a1c1e",
+                        "primary-fixed-dim": "#cbbeff",
+                        "on-error-container": "#93000a",
+                        "secondary-fixed": "#dee0ff",
+                        "tertiary-fixed": "#fdd6ff",
+                        "surface-container-highest": "#e2e2e5",
+                        "surface": "#f9f9fc",
+                        "inverse-primary": "#cbbeff",
+                        "on-secondary": "#ffffff",
+                        "surface-variant": "#e2e2e5"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "sm": "8px",
+                        "xl": "40px",
+                        "md": "16px",
+                        "xs": "4px",
+                        "lg": "24px"
+                    },
+                    "fontFamily": {
+                        "display-lg": [
+                            "IBM Plex Sans"
+                        ],
+                        "reading-mono": [
+                            "IBM Plex Mono"
+                        ],
+                        "label-sm": [
+                            "IBM Plex Sans"
+                        ],
+                        "body-md": [
+                            "IBM Plex Sans"
+                        ]
+                    },
+                    "fontSize": {
+                        "display-lg": [
+                            "28px",
+                            {
+                                "lineHeight": "1.2",
+                                "fontWeight": "600"
+                            }
+                        ],
+                        "reading-mono": [
+                            "12.5px",
+                            {
+                                "lineHeight": "1.5",
+                                "fontWeight": "400"
+                            }
+                        ],
+                        "label-sm": [
+                            "12px",
+                            {
+                                "lineHeight": "1.3",
+                                "letterSpacing": "0.04em",
+                                "fontWeight": "500"
+                            }
+                        ],
+                        "body-md": [
+                            "15px",
+                            {
+                                "lineHeight": "1.55",
+                                "fontWeight": "400"
+                            }
+                        ]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        body {
+            background-color: #E9E9EC; /* Easel gray */
+        }
+        
+        .proof-sheet {
+            position: relative;
+            background-color: #FFFFFF;
+            border: 1px solid #D8D8DC;
+            border-radius: 0;
+            box-shadow: none;
+        }
+
+        .crop-mark {
+            position: absolute;
+            width: 8px;
+            height: 8px;
+            border-color: #1C1B22;
+            border-style: solid;
+        }
+        .crop-tl { top: -1px; left: -1px; border-width: 1px 0 0 1px; }
+        .crop-tr { top: -1px; right: -1px; border-width: 1px 1px 0 0; }
+        .crop-bl { bottom: -1px; left: -1px; border-width: 0 0 1px 1px; }
+        .crop-br { bottom: -1px; right: -1px; border-width: 0 1px 1px 0; }
+        
+        .grease-pencil {
+            color: #6D4DE3;
+            border-bottom: 2px solid #6D4DE3;
+        }
+        
+        /* Hide scrollbar for the horizontal scrolling easel view */
+        .easel-scroll::-webkit-scrollbar {
+            display: none;
+        }
+        .easel-scroll {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+    </style>
+</head>
+<body class="font-body-md text-ink antialiased min-h-screen flex flex-col">
+<!-- TopNavBar -->
+<nav class="bg-surface dark:bg-inverse-surface text-ink dark:text-inverse-on-surface flex justify-between items-center w-full px-md h-xl max-w-full docked full-width top-0 border-b border-line dark:border-outline-variant flat no shadows cursor-crosshair transition-opacity duration-150 z-50">
+<div class="flex items-center space-x-lg">
+<span class="font-display-lg text-display-lg font-bold tracking-tight text-ink dark:text-inverse-on-surface">Design Bench</span>
+<div class="hidden md:flex space-x-md">
+<a class="font-label-sm text-label-sm text-ink-muted dark:text-outline-variant hover:text-primary dark:hover:text-primary-fixed-dim transition-colors flex flex-col items-center justify-center h-full pt-[4px]" href="#">
+<span class="px-2">Easel</span>
+</a>
+<a class="font-label-sm text-label-sm text-primary dark:text-primary-fixed-dim border-b-2 border-primary dark:border-primary-fixed-dim pb-1 hover:text-primary dark:hover:text-primary-fixed-dim transition-colors flex flex-col items-center justify-center h-full pt-[4px]" href="#">
+<span class="px-2">Archive</span>
+</a>
+<a class="font-label-sm text-label-sm text-ink-muted dark:text-outline-variant hover:text-primary dark:hover:text-primary-fixed-dim transition-colors flex flex-col items-center justify-center h-full pt-[4px]" href="#">
+<span class="px-2">Assets</span>
+</a>
+</div>
+</div>
+<div class="flex items-center space-x-md">
+<button class="text-ink-muted dark:text-outline-variant hover:text-primary dark:hover:text-primary-fixed-dim transition-colors">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 0;">settings</span>
+</button>
+<button class="text-ink-muted dark:text-outline-variant hover:text-primary dark:hover:text-primary-fixed-dim transition-colors">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 0;">help_outline</span>
+</button>
+</div>
+</nav>
+<!-- Main Content Area -->
+<main class="flex-grow flex flex-col">
+<!-- Wayfinding & Header Section -->
+<div class="px-lg md:px-[64px] py-xl">
+<a class="font-label-sm text-label-sm text-ink-muted hover:text-primary transition-colors flex items-center mb-lg" href="#">
+<span class="material-symbols-outlined text-[16px] mr-xs">arrow_back</span>
+                All cases
+            </a>
+<div class="max-w-3xl">
+<h1 class="font-display-lg text-display-lg mb-md">Agent Architecture — a slide deck for a technical talk.</h1>
+<p class="font-body-md text-ink-muted mb-sm">
+                    This case investigates the effectiveness of different instructional methods for style direction when generating technical slide decks.
+                </p>
+<p class="font-body-md">
+<span class="font-label-sm text-label-sm text-primary uppercase tracking-wider mr-2">The Claim</span>
+                    Adjectives are inefficient. Describing a design with a <span class="grease-pencil">single concrete object or governing metaphor</span> produces outcomes significantly further from the default look than lists of stylistic adjectives.
+                </p>
+</div>
+</div>
+<!-- Easel Proofing Area -->
+<div class="w-full overflow-x-auto easel-scroll pb-xl flex-grow">
+<div class="flex space-x-md px-lg md:px-[64px] pb-lg w-max">
+<!-- Proof Sheet 1 -->
+<div class="proof-sheet w-[320px] flex flex-col">
+<div class="crop-tl crop-mark"></div><div class="crop-tr crop-mark"></div>
+<div class="crop-bl crop-mark"></div><div class="crop-br crop-mark"></div>
+<div class="h-[240px] bg-surface-container border-b border-line flex items-center justify-center p-xs">
+<img class="w-full h-full object-cover grayscale opacity-80" data-alt="A clean, minimalist slide presentation projected in a sterile corporate conference room. The slide features basic black sans-serif text on a stark white background with standard corporate formatting. The room is evenly lit with cool fluorescent overhead lighting, casting a neutral, objective glow. The aesthetic is strictly default, lacking any distinct stylistic character." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBX_4cIlk4eYUJNs6XRH4n8HjOGWs7vYBti8TzFUoTywmjSTQbjAtTT-UnK68aozA_AaLeQ7RHVxARCB9Nh8bKLqiImgBHqmJYVo3UCxU26K2UpKdVh0hVkeoOVahjTnc8Vtok8aoM4HJwotdYhyOeK89y8QM4694JKb7ohA4OJj3d557VFq_9MsUp7oiiDK5bsQqEf1bbrdwdJDJRp_aJ6XravlI4Xf0CB1uAjPP4pOLIyHMcwx4gnjFWaElYgSCWYlJ0forFPrEew"/>
+</div>
+<div class="p-md flex-grow flex flex-col justify-between">
+<div>
+<h3 class="font-label-sm text-label-sm uppercase mb-xs text-ink">No direction</h3>
+<p class="font-body-md text-[13px] text-ink-muted leading-snug">The model received the brief alone. This is the default look everything below is measured against.</p>
+</div>
+<div class="mt-md pt-sm border-t border-line flex justify-between items-center">
+<span class="font-label-sm text-label-sm text-ink-muted">Distance</span>
+<span class="font-reading-mono text-reading-mono">0.00</span>
+</div>
+</div>
+</div>
+<!-- Proof Sheet 2 -->
+<div class="proof-sheet w-[320px] flex flex-col">
+<div class="crop-tl crop-mark"></div><div class="crop-tr crop-mark"></div>
+<div class="crop-bl crop-mark"></div><div class="crop-br crop-mark"></div>
+<div class="h-[240px] bg-surface-container border-b border-line flex items-center justify-center p-xs">
+<img class="w-full h-full object-cover grayscale opacity-80" data-alt="A slide presentation showing subtle refinements in typography and layout. The text is crisp and aligned, using a slightly more sophisticated sans-serif font than the default. The background remains white, and the overall feel is clean but generic. The lighting is even and flat, emphasizing the typographic structure without adding mood." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBsJ2R8sagbgRtS_UdtH2IrWa3z7byJf3xvPagFGm8bwzx64jEU4tVzIJx7LzXkjlfnmAvIqgNkhb3Cd5Q5PlflmCCi_CUFaSvvhjFqX82qNeOTBkbjGwzW-PSBu1b7_mAySUwp6m6aBwfuj9Fl-M0Kqosa8V5HwswVdyeVlNWVrUxSYg5l2ldwLoV96jsrTfHPVXR4EAh4MKvFI-aLqlVMm5wG-kVJzJpDzpxDosB5dxvupJv73L08eSHJLj8mJKsMmfOC8_YP41E8"/>
+</div>
+<div class="p-md flex-grow flex flex-col justify-between">
+<div>
+<h3 class="font-label-sm text-label-sm uppercase mb-xs text-ink">Tokens only</h3>
+<p class="font-body-md text-[13px] text-ink-muted leading-snug">The shared palette and type choices, with no words about how to use them.</p>
+</div>
+<div class="mt-md pt-sm border-t border-line flex justify-between items-center">
+<span class="font-label-sm text-label-sm text-ink-muted">Distance</span>
+<span class="font-reading-mono text-reading-mono">0.18</span>
+</div>
+</div>
+</div>
+<!-- Proof Sheet 3 -->
+<div class="proof-sheet w-[320px] flex flex-col">
+<div class="crop-tl crop-mark"></div><div class="crop-tr crop-mark"></div>
+<div class="crop-bl crop-mark"></div><div class="crop-br crop-mark"></div>
+<div class="h-[240px] bg-surface-container border-b border-line flex items-center justify-center p-xs">
+<img class="w-full h-full object-cover grayscale opacity-80" data-alt="A slide presentation that attempts a scholarly, restrained, print-like aesthetic. It features serif typography and generous margins, resembling a textbook page. The visual composition is rigid and traditional. The lighting is soft and diffuse, attempting to mimic library reading light, resulting in a somewhat dry, academic appearance." src="https://lh3.googleusercontent.com/aida-public/AB6AXuA4EISFNA3Ag6KpEwztiIVcdTNDutyPIfHG-1SbaAdRE6EIedsTi74yrBrjaUJ9PxKwd3CP3cB7fgsFlq1WPDGl5hDYcY2AZt1fh0LhInbi7beCZyF0GuSp8NvSJQmTGwlLC4yFLnq9qWmn5yLQ39DUZ8vZRMddOTk9VgCjMDJQSynCz-ruhavFQDPuBpR-oKtS7AcpJpt8monZ79I4Bgsrp-VoqhMAOePNvEsp0ua28iKdruf7nzWmLxFiF2d4SOKgOi17cdx2cDdC"/>
+</div>
+<div class="p-md flex-grow flex flex-col justify-between">
+<div>
+<h3 class="font-label-sm text-label-sm uppercase mb-xs text-ink">Adjectives</h3>
+<p class="font-body-md text-[13px] text-ink-muted leading-snug">The shared tokens, plus a description in adjectives: scholarly, restrained, print-like. Adjectives are the method being challenged.</p>
+</div>
+<div class="mt-md pt-sm border-t border-line flex justify-between items-center">
+<span class="font-label-sm text-label-sm text-ink-muted">Distance</span>
+<span class="font-reading-mono text-reading-mono">0.31</span>
+</div>
+</div>
+</div>
+<!-- Proof Sheet 4 (Highlight) -->
+<div class="proof-sheet w-[320px] flex flex-col border-primary border-2">
+<div class="crop-tl crop-mark"></div><div class="crop-tr crop-mark"></div>
+<div class="crop-bl crop-mark"></div><div class="crop-br crop-mark"></div>
+<div class="h-[240px] bg-surface-container border-b border-line flex items-center justify-center p-xs relative">
+<!-- Grease pencil mark for highest delta -->
+<div class="absolute top-sm right-sm bg-primary text-on-primary font-reading-mono text-reading-mono px-2 py-1 rounded-sm">+0.64</div>
+<img class="w-full h-full object-cover grayscale opacity-90 mix-blend-multiply" data-alt="A slide presentation designed strictly as a graduate CS lecture handout. The layout is dense, utilitarian, and highly structured, featuring mono-spaced code snippets, sharp geometric diagrams, and no decorative elements. It looks like a high-quality photocopy of technical notes. The contrast is stark black and white, conveying rigorous academic precision." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDTLO8FrPEHc0kuvPZoKLWL8Wk1vH2u0V5uZakftJ1cm_TjB6FrvMwtWxRN1FL-bnHgBvyhC-DxLPpArIJvKROSdZ2JseVk7EPhSvFwLNWwhEEhdfss3D6EMfjoCv-mS5HT7dCDNTt-BFHJwckbnSzpwBlhWFSD2-Nw6m4C6ytpilGu3fC67j7RVkDb0ir0y2JKHGUn62tb2QX8Hoo_UVSkjy8n0Sa2hCLUS2m8yWSsF61vZKugoqmYlAlq9b7qdovD7es_-3IH_8WT"/>
+</div>
+<div class="p-md flex-grow flex flex-col justify-between bg-accent-wash">
+<div>
+<h3 class="font-label-sm text-label-sm uppercase mb-xs text-primary font-bold">One real object</h3>
+<p class="font-body-md text-[13px] text-ink leading-snug">The shared tokens, plus one artifact named precisely: <span class="font-bold">a graduate CS lecture handout</span>.</p>
+</div>
+<div class="mt-md pt-sm border-t border-primary/30 flex justify-between items-center">
+<span class="font-label-sm text-label-sm text-primary">Distance</span>
+<span class="font-reading-mono text-reading-mono text-primary font-bold">0.95</span>
+</div>
+</div>
+</div>
+<!-- Proof Sheet 5 -->
+<div class="proof-sheet w-[320px] flex flex-col">
+<div class="crop-tl crop-mark"></div><div class="crop-tr crop-mark"></div>
+<div class="crop-bl crop-mark"></div><div class="crop-br crop-mark"></div>
+<div class="h-[240px] bg-surface-container border-b border-line flex items-center justify-center p-xs">
+<img class="w-full h-full object-cover grayscale opacity-80" data-alt="A slide presentation stripped of all color and subtle shading, constrained to survive photocopying. It uses stark line art, heavy borders, and ultra-high contrast typography. Gradients are replaced with halftone dot patterns. The aesthetic is brutalist and purely functional, mimicking the limitations of early xerox technology." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCASdApaoM-5b5-A-t6TjDIdXyNALVd7Pb_0kjYhIN-ycibOmDxhI7uQiPzBavvUay0Tju5pS88gqEO0zHkp9CM83lLYmrjPnw9_FGC_oFRKSQ_CSTMeXGCtn3z2hP9LWvEXVx_mD2kgEPuE6Fa4ATzx21Wx8an9k1jZjd-V9n6vmn1eGERv3GPhk9-HiExAaR0x77-U6b4Li4kSaiG8jOuTayUMGQXdGcBYmDqWtLQ75MneTl-7CdZGkWnqwVqvMwJZyQC7pQoHw8y"/>
+</div>
+<div class="p-md flex-grow flex flex-col justify-between">
+<div>
+<h3 class="font-label-sm text-label-sm uppercase mb-xs text-ink">One hard constraint</h3>
+<p class="font-body-md text-[13px] text-ink-muted leading-snug">Plus one limitation: everything must survive photocopying.</p>
+</div>
+<div class="mt-md pt-sm border-t border-line flex justify-between items-center">
+<span class="font-label-sm text-label-sm text-ink-muted">Distance</span>
+<span class="font-reading-mono text-reading-mono">0.71</span>
+</div>
+</div>
+</div>
+<!-- Proof Sheet 6 -->
+<div class="proof-sheet w-[320px] flex flex-col">
+<div class="crop-tl crop-mark"></div><div class="crop-tr crop-mark"></div>
+<div class="crop-bl crop-mark"></div><div class="crop-br crop-mark"></div>
+<div class="h-[240px] bg-surface-container border-b border-line flex items-center justify-center p-xs">
+<img class="w-full h-full object-cover grayscale opacity-80" data-alt="A slide presentation styled to look like pages from a professor's working notebook. The background has a faint grid texture, and the typography mimics neat, structured handwriting combined with typed annotations. Diagrams look hand-drawn but precise. The visual tone is intimate, intellectual, and slightly raw, capturing the process of thought." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAxHa9SQ-ltRGvEhGxcNMSNHNuM9o-sxpDnVi-pWI7peenXWlMDGMggFC2aVMngRpBsJfeR7toF1lvYvW7UdLCP4jHdC1tYGh2a4z50rsBSvnx3J-dZ0IUVy-6_pu3ZD6e2VReWceQoTBQjd2nI51VKZWiET6EL-hGfkpROhbZcnhnMAk_vPbs_ynxiT6XRYpexmo_uciMfGzGffTcDoPXlxcSLUoOBXTFn8Ux60xHnttjcZJH5KCXD-HjFOvyrCmSDZH907KR15ccl"/>
+</div>
+<div class="p-md flex-grow flex flex-col justify-between">
+<div>
+<h3 class="font-label-sm text-label-sm uppercase mb-xs text-ink">One governing metaphor</h3>
+<p class="font-body-md text-[13px] text-ink-muted leading-snug">Plus one idea mapped onto every element: each slide is a page from a professor's working notebook.</p>
+</div>
+<div class="mt-md pt-sm border-t border-line flex justify-between items-center">
+<span class="font-label-sm text-label-sm text-ink-muted">Distance</span>
+<span class="font-reading-mono text-reading-mono">0.66</span>
+</div>
+</div>
+</div>
+<!-- Proof Sheet 7 -->
+<div class="proof-sheet w-[320px] flex flex-col">
+<div class="crop-tl crop-mark"></div><div class="crop-tr crop-mark"></div>
+<div class="crop-bl crop-mark"></div><div class="crop-br crop-mark"></div>
+<div class="h-[240px] bg-surface-container border-b border-line flex items-center justify-center p-xs">
+<img class="w-full h-full object-cover grayscale opacity-80" data-alt="A highly refined, designer-grade slide presentation. It features an impeccable grid system, sophisticated typographic hierarchy, and perfectly balanced negative space. The composition is flawless and intentional down to the pixel. The lighting is pristine, emphasizing the razor-sharp precision of the layout. It represents the absolute ceiling of stylistic control." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAzyd6nw2t33QIQed5T2rqgdDkylo8e9lEyqr_AgtyAf3-dS_bg1APRK2KMbYnBYT0LO9KMFRrVmUkXYXe52XrnADg5PSo5KJuOrBKLjtuTRyn1tktdjBJ8h3iQI9-hAuyzwsVM8p0Pz56uWEjp12E0Rc11lGEcO6Z2blBH13hNz1e8WMA48dnaWYow8kxnCbvckq6T4r2eVK-CMxJ_bYRGo_jQ0H7-JLrZvvTwVscAsXu1VvDMBz1xMEL7Jq6KamejHEBtiwlEIMuQ"/>
+</div>
+<div class="p-md flex-grow flex flex-col justify-between">
+<div>
+<h3 class="font-label-sm text-label-sm uppercase mb-xs text-ink">Full specification</h3>
+<p class="font-body-md text-[13px] text-ink-muted leading-snug">The complete designer-grade specification. The ceiling the shorter methods reach toward.</p>
+</div>
+<div class="mt-md pt-sm border-t border-line flex justify-between items-center">
+<span class="font-label-sm text-label-sm text-ink-muted">Distance</span>
+<span class="font-reading-mono text-reading-mono">1.02</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Post-Comparison Context & Navigation -->
+<div class="px-lg md:px-[64px] py-xl flex flex-col md:flex-row justify-between items-end border-t border-line mt-auto">
+<div class="mb-lg md:mb-0">
+<p class="font-body-md text-ink max-w-xl">
+<span class="font-label-sm text-label-sm uppercase tracking-wider text-ink-muted block mb-2">The Insight</span>
+                    Naming a <span class="grease-pencil bg-accent-wash px-1">specific, recognizable artifact</span> ("graduate CS lecture handout") forces the model to synthesize a cohesive visual system rather than blindly applying disconnected adjectives.
+                </p>
+</div>
+<div class="flex space-x-lg">
+<a class="font-label-sm text-label-sm text-ink-muted hover:text-ink transition-colors flex items-center" href="#">
+<span class="material-symbols-outlined text-[16px] mr-xs">visibility_off</span>
+                    Compare without labels
+                </a>
+<a class="font-label-sm text-label-sm text-primary hover:text-primary-fixed-variant transition-colors flex items-center" href="#">
+                    Next case: Auralis
+                    <span class="material-symbols-outlined text-[16px] ml-xs">arrow_forward</span>
+</a>
+</div>
+</div>
+</main>
+<!-- Certification Block / Technical Footer -->
+<footer class="bg-surface-container border-t border-line px-lg md:px-[64px] py-md">
+<div class="flex flex-col md:flex-row justify-between items-start md:items-center space-y-2 md:space-y-0">
+<div class="font-reading-mono text-[11px] text-ink-muted tracking-wide flex flex-wrap gap-x-4">
+<span>GEMINI_3_1_PRO</span>
+<span class="text-line">|</span>
+<span>22 renderings per treatment</span>
+<span class="text-line">|</span>
+<span>definitions hash 5d7280c55ee4</span>
+<span class="text-line">|</span>
+<span>measured 2026-06-10</span>
+</div>
+<div class="font-reading-mono text-[11px] text-ink-muted max-w-md text-left md:text-right">
+                Distance combines perceptual color difference with structural features, validated against 10,000 reshuffled orderings.
+            </div>
+</div>
+</footer>
+</body></html>

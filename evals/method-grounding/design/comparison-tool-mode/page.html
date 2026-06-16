@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Design Bench - Tool Comparison</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "surface-container-high": "#e8e8eb",
+                      "on-secondary-fixed-variant": "#2339ab",
+                      "on-background": "#1a1c1e",
+                      "line": "#D8D8DC",
+                      "surface-container-lowest": "#ffffff",
+                      "tertiary-container": "#9a44b0",
+                      "on-tertiary-container": "#ffe1ff",
+                      "paper": "#FFFFFF",
+                      "surface-container-low": "#f3f3f6",
+                      "on-primary-fixed": "#1d0061",
+                      "secondary-container": "#798dff",
+                      "on-surface": "#1a1c1e",
+                      "on-error-container": "#93000a",
+                      "tertiary-fixed": "#fdd6ff",
+                      "surface-bright": "#f9f9fc",
+                      "surface": "#f9f9fc",
+                      "on-secondary": "#ffffff",
+                      "surface-tint": "#6240d8",
+                      "on-secondary-container": "#001d8c",
+                      "on-surface-variant": "#484554",
+                      "tertiary": "#7f2995",
+                      "primary": "#542fca",
+                      "ink-muted": "#6B6A74",
+                      "inverse-primary": "#cbbeff",
+                      "secondary-fixed-dim": "#bac3ff",
+                      "surface-container-highest": "#e2e2e5",
+                      "primary-fixed-dim": "#cbbeff",
+                      "accent-wash": "#EFEBFD",
+                      "on-primary-fixed-variant": "#4a20bf",
+                      "primary-container": "#6d4de3",
+                      "surface-container": "#eeedf0",
+                      "on-tertiary-fixed-variant": "#731b8a",
+                      "on-tertiary": "#ffffff",
+                      "on-error": "#ffffff",
+                      "surface-variant": "#e2e2e5",
+                      "secondary-fixed": "#dee0ff",
+                      "outline-variant": "#cac4d7",
+                      "on-primary": "#ffffff",
+                      "primary-fixed": "#e6deff",
+                      "inverse-surface": "#2f3033",
+                      "error": "#ba1a1a",
+                      "ink": "#1C1B22",
+                      "tertiary-fixed-dim": "#f3aeff",
+                      "outline": "#797586",
+                      "surface-dim": "#dadadd",
+                      "inverse-on-surface": "#f0f0f3",
+                      "on-secondary-fixed": "#00105c",
+                      "on-primary-container": "#ede6ff",
+                      "on-tertiary-fixed": "#340042",
+                      "secondary": "#3f53c3",
+                      "background": "#f9f9fc",
+                      "error-container": "#ffdad6",
+                      
+                      // Explicit custom colors for this specific design context, mapping to the theme concepts
+                      "surround": "#E9E9EC", // Used for the background as requested
+                      "violet-active": "#6D4DE3", // Violet for active selection
+                      "proof-white": "#FFFFFF"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.25rem",
+                      "lg": "0.5rem",
+                      "xl": "0.75rem",
+                      "full": "9999px"
+              },
+              "spacing": {
+                      "margin": "24px",
+                      "xs": "4px",
+                      "md": "16px",
+                      "lg": "24px",
+                      "unit": "4px",
+                      "gutter": "16px",
+                      "xl": "40px",
+                      "sm": "8px"
+              },
+              "fontFamily": {
+                      "data-mono-bold": [
+                              "IBM Plex Mono"
+                      ],
+                      "body-md": [
+                              "IBM Plex Sans"
+                      ],
+                      "headline-md": [
+                              "IBM Plex Sans"
+                      ],
+                      "label-sm": [
+                              "IBM Plex Sans"
+                      ],
+                      "display-lg": [
+                              "IBM Plex Sans"
+                      ],
+                      "data-mono": [
+                              "IBM Plex Mono"
+                      ]
+              },
+              "fontSize": {
+                      "data-mono-bold": [
+                              "12.5px",
+                              {
+                                      "lineHeight": "18px",
+                                      "fontWeight": "600"
+                              }
+                      ],
+                      "body-md": [
+                              "15px",
+                              {
+                                      "lineHeight": "24px",
+                                      "fontWeight": "400"
+                              }
+                      ],
+                      "headline-md": [
+                              "20px",
+                              {
+                                      "lineHeight": "28px",
+                                      "fontWeight": "600"
+                              }
+                      ],
+                      "label-sm": [
+                              "12px",
+                              {
+                                      "lineHeight": "16px",
+                                      "letterSpacing": "0.04em",
+                                      "fontWeight": "500"
+                              }
+                      ],
+                      "display-lg": [
+                              "28px",
+                              {
+                                      "lineHeight": "34px",
+                                      "letterSpacing": "-0.01em",
+                                      "fontWeight": "600"
+                              }
+                      ],
+                      "data-mono": [
+                              "12.5px",
+                              {
+                                      "lineHeight": "18px",
+                                      "fontWeight": "400"
+                              }
+                      ]
+              }
+            },
+          }
+        }
+    </script>
+<!-- Google Fonts implementation for IBM Plex Sans & Mono -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600&amp;family=IBM+Plex+Sans:wght@400;500;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        /* Custom crop marks implementation */
+        .crop-marks {
+            position: relative;
+        }
+        
+        .crop-marks::before, .crop-marks::after {
+            content: '';
+            position: absolute;
+            background-color: transparent;
+            pointer-events: none;
+        }
+
+        /* Top Left */
+        .crop-tl::before {
+            top: -1px; left: -1px; width: 8px; height: 1px; background-color: #1C1B22; position: absolute; content: '';
+        }
+        .crop-tl::after {
+            top: -1px; left: -1px; width: 1px; height: 8px; background-color: #1C1B22; position: absolute; content: '';
+        }
+
+        /* Top Right */
+        .crop-tr::before {
+            top: -1px; right: -1px; width: 8px; height: 1px; background-color: #1C1B22; position: absolute; content: '';
+        }
+        .crop-tr::after {
+            top: -1px; right: -1px; width: 1px; height: 8px; background-color: #1C1B22; position: absolute; content: '';
+        }
+
+        /* Bottom Left */
+        .crop-bl::before {
+            bottom: -1px; left: -1px; width: 8px; height: 1px; background-color: #1C1B22; position: absolute; content: '';
+        }
+        .crop-bl::after {
+            bottom: -1px; left: -1px; width: 1px; height: 8px; background-color: #1C1B22; position: absolute; content: '';
+        }
+
+        /* Bottom Right */
+        .crop-br::before {
+            bottom: -1px; right: -1px; width: 8px; height: 1px; background-color: #1C1B22; position: absolute; content: '';
+        }
+        .crop-br::after {
+            bottom: -1px; right: -1px; width: 1px; height: 8px; background-color: #1C1B22; position: absolute; content: '';
+        }
+    </style>
+</head>
+<body class="bg-surround text-on-surface antialiased min-h-screen selection:bg-violet-active selection:text-white">
+<!-- TopNavBar JSON implementation -->
+<!-- {"name": "TopNavBar", "product_name": "Design Bench", "search_bar": "hidden", "navigation_links": ["All cases", "Case Name"], "style_bg_color": "bg-surface-container dark:bg-surface-dim", "style_primary_color": "text-on-surface dark:text-on-surface", "style_typography": "font-label-sm text-label-sm tracking-wider", "style_brand_logo": "font-headline-md text-headline-md font-bold text-on-surface dark:text-on-surface", "style_component_shape": "fixed top-0 w-full h-[48px]", "style_separation_logic": "border-b border-line dark:border-outline-variant", "style_shadows_and_elevation": "flat no shadows", "style_active_navigation": "text-primary dark:text-inverse-primary font-bold", "style_inactive_navigation": "text-on-surface-variant dark:text-outline", "style_universal_hover": "hover:text-tertiary dark:hover:text-tertiary-fixed", "style_interactions": "transition-colors duration-150 ease-linear", "style_shell_layout": "flex items-center justify-between px-margin w-full h-[48px] z-50"} -->
+<header class="bg-surface-container text-on-surface font-label-sm text-label-sm tracking-wider fixed top-0 w-full h-[48px] border-b border-line shadow-none flex items-center justify-between px-margin z-50">
+<div class="flex items-center gap-xs">
+<a class="text-on-surface-variant hover:text-tertiary transition-colors duration-150 ease-linear font-label-sm text-label-sm" href="#">All cases</a>
+<span class="text-on-surface-variant font-data-mono text-data-mono">/</span>
+<a class="text-on-surface-variant hover:text-tertiary transition-colors duration-150 ease-linear font-label-sm text-label-sm" href="#">Agent Architecture</a>
+</div>
+<div class="font-headline-md text-headline-md font-extrabold text-on-surface tracking-tight">
+            Design Bench
+        </div>
+</header>
+<!-- Main Workspace -->
+<main class="pt-[80px] pb-xl px-margin max-w-[1920px] mx-auto min-h-screen flex flex-col">
+<!-- Controls & Meta Row -->
+<div class="flex flex-col md:flex-row justify-between items-start md:items-end mb-margin gap-md border-b border-line pb-sm">
+<div class="flex flex-col gap-xs">
+<span class="font-label-sm text-label-sm text-ink-muted uppercase tracking-widest">Pivot Control</span>
+<div class="flex gap-md">
+<!-- Note: SideNav json logic integrated here as horizontal pivot per instruction "no sidebars" and "Pivot Control: By design direction and By tool" -->
+<button class="font-label-sm text-label-sm text-on-surface-variant pb-xs border-b-2 border-transparent hover:text-violet-active transition-colors">By design direction</button>
+<button class="font-label-sm text-label-sm text-primary border-b-2 border-primary font-bold">By tool</button>
+</div>
+</div>
+<div class="flex flex-col md:text-right gap-xs">
+<span class="font-label-sm text-label-sm text-ink-muted uppercase tracking-widest">Context</span>
+<span class="font-headline-md text-headline-md font-semibold text-ink">Direction: one real object</span>
+</div>
+</div>
+<!-- The Side-by-Side Proof Sheets -->
+<div class="grid grid-cols-1 xl:grid-cols-3 gap-gutter flex-grow">
+<!-- Sheet 1: Reference -->
+<article class="bg-proof-white border border-line relative crop-marks crop-tl crop-tr crop-bl crop-br flex flex-col h-full rounded-none">
+<!-- Color Bar Edge (Right) -->
+<div class="absolute right-0 top-0 bottom-0 w-[8px] flex flex-col border-l border-line z-10">
+<div class="flex-1 bg-[#6D4DE3]"></div>
+<div class="flex-1 bg-[#5B6FE0]"></div>
+<div class="flex-1 bg-[#B45CC9]"></div>
+</div>
+<!-- Image Area -->
+<div class="relative w-full aspect-[4/3] bg-surface border-b border-line overflow-hidden p-md pr-[24px]">
+<img alt="Abstract minimalist scene featuring a singular object" class="w-full h-full object-cover filter grayscale-0 contrast-100" data-alt="A clinical, high-resolution photograph of a single physical object—a perfectly smooth, geometric shape—resting on a stark white surface. The lighting is incredibly controlled and flat, resembling a high-end product photography studio or a technical proofing environment. The object is rendered with sharp precision, exhibiting a palette heavily biased towards distinct, measurable shades of violet and subtle grays. The composition is utterly neutral and dead-center, emphasizing objective verification over artistic expression." src="https://lh3.googleusercontent.com/aida-public/AB6AXuB2a4tSikiuoow-GMAIJh8cl0Bji_pzhWRtBtEBEsVWUl4kHUzRodh9estmXZNMOaB3-lC4FSbWKEW_oW9NAO2QUM0tEw8pPgEJkxWSViQbqXvzIkGhNIxf1ZLXhXtDF8tgaSHOXK-7H5rMbIFy-cfUMRo3sHt8Yjb7sK6dvfHvW6qI-hMmz-d3_fQwDdPLEUFAYx9Rl6hIJZSpBVMg9PI4lCFhELO4rTnSZQQpVRb6QmzrHg524mNz8Z2P3N3YU-VmnkovlijuBO7P"/>
+</div>
+<!-- Content Area -->
+<div class="p-margin pr-[32px] flex flex-col flex-grow">
+<h2 class="font-data-mono-bold text-data-mono-bold text-ink mb-sm uppercase tracking-wider border-b border-line pb-xs">Reference</h2>
+<p class="font-body-md text-body-md text-on-surface-variant flex-grow">
+                        The handed direction: the shared palette and type the tools were asked to honor.
+                    </p>
+<div class="mt-margin pt-sm border-t border-line flex justify-between items-end">
+<span class="font-label-sm text-label-sm text-ink-muted">Expected Yield</span>
+<span class="font-data-mono text-data-mono text-ink">100%</span>
+</div>
+</div>
+</article>
+<!-- Sheet 2: Stitch · Gemini 3.1 Pro -->
+<article class="bg-proof-white border border-line relative crop-marks crop-tl crop-tr crop-bl crop-br flex flex-col h-full rounded-none shadow-[0_1px_3px_rgba(0,0,0,0.02)]">
+<!-- Color Bar Edge (Right) -->
+<div class="absolute right-0 top-0 bottom-0 w-[8px] flex flex-col border-l border-line z-10">
+<div class="flex-1 bg-[#6D4DE3]"></div>
+<div class="flex-1 bg-[#5B6FE0]"></div>
+<div class="flex-1 bg-[#B45CC9]"></div>
+</div>
+<!-- Image Area -->
+<div class="relative w-full aspect-[4/3] bg-surface border-b border-line overflow-hidden p-md pr-[24px]">
+<img alt="AI generated render of object" class="w-full h-full object-cover" data-alt="An AI-generated attempt at reproducing a precise geometric object within a stark, clinical environment. The image displays slight but measurable color deviation from the reference, leaning towards a slightly more fragmented, multi-tonal violet palette. The lighting remains flat and technical, characteristic of a digital rendering engine attempting physical realism. Minor artifacting is visible upon close inspection, emphasizing the synthetic nature of the image against a pure white background." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBY3Z5isy-pTr_xX2mqheG3s9Tsmk_l7zerhJDjiBXhlJkiBsEFJ52PP2R0XenRIOxP6C26NLjeEsLyBAC2-oKc1G9pA3gZJilwsB3XozhZcZFMvtsBUTzSyl1USrmd5rUWEvdJu0NV2pLWJqR_lb8iz5SqCBaAJB7iXjuuWfJZQ9C5A9ainrTin4NrCXY0ZVVrTvbbEpIHvwD4oPQGHPDso1iVBTRFIiuCMix_RsA1gQiQssZj0iCOayQOBGHlkMFmBoG8CR74fH9t"/>
+</div>
+<!-- Content Area -->
+<div class="p-margin pr-[32px] flex flex-col flex-grow">
+<h2 class="font-data-mono-bold text-data-mono-bold text-ink mb-sm uppercase tracking-wider border-b border-line pb-xs">Stitch · Gemini 3.1 Pro</h2>
+<p class="font-body-md text-body-md text-on-surface-variant flex-grow">
+                        Reproduced <span class="font-data-mono text-data-mono bg-surface-container px-1 py-0.5 border border-line">49%</span> of its color on the handed palette. It re-synthesized the palette into fifteen shades.
+                    </p>
+<div class="mt-margin pt-sm border-t border-line flex justify-between items-end">
+<span class="font-label-sm text-label-sm text-ink-muted">Measured Fidelity</span>
+<span class="font-data-mono text-data-mono text-error">49%</span>
+</div>
+</div>
+</article>
+<!-- Sheet 3: Gemini 3.1 Pro · direct -->
+<article class="bg-proof-white border border-line relative crop-marks crop-tl crop-tr crop-bl crop-br flex flex-col h-full rounded-none shadow-[0_1px_3px_rgba(0,0,0,0.02)]">
+<!-- Color Bar Edge (Right) -->
+<div class="absolute right-0 top-0 bottom-0 w-[8px] flex flex-col border-l border-line z-10">
+<div class="flex-1 bg-[#6D4DE3]"></div>
+<div class="flex-1 bg-[#5B6FE0]"></div>
+<div class="flex-1 bg-[#B45CC9]"></div>
+</div>
+<!-- Image Area -->
+<div class="relative w-full aspect-[4/3] bg-surface border-b border-line overflow-hidden p-md pr-[24px]">
+<img alt="AI generated render of object direct" class="w-full h-full object-cover" data-alt="A highly faithful AI-generated reproduction of a solitary geometric object in a controlled, white studio environment. The color matching is notably superior, adhering closely to the constrained violet colorway with minimal tonal spread. The rendering is razor-sharp, embodying a brutalist technical aesthetic where precision is prioritized over atmospheric effect. The overall look is stark, clean, and highly calibrated." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAoGoQmSPZvAVv5EDAYBNyqAGk7G2R9BoteLV_A4rEMrCG5IPD32gmMwIQJmESjTwPbrXpC4c7vLfY9WJzA3VTnh1Vm1Iqo2jncopabklE0cO3HFToEmJ5epDBWJ_KjhtrMCiZHNLGSXINEjtgZE45YYqkmS8w--NfuIAxY-aGduCOfnqm9BgU612gGktG0eNM1_lgtBvmw2cQe_EckDUgjF9i7FeBnDAkyZS8Gs3RjI3S_ACLVnwbQH2bcO1BSzaYTwRRofdcxqYu6"/>
+</div>
+<!-- Content Area -->
+<div class="p-margin pr-[32px] flex flex-col flex-grow">
+<h2 class="font-data-mono-bold text-data-mono-bold text-ink mb-sm uppercase tracking-wider border-b border-line pb-xs">Gemini 3.1 Pro · direct</h2>
+<p class="font-body-md text-body-md text-on-surface-variant flex-grow">
+                        Reproduced <span class="font-data-mono text-data-mono bg-surface-container px-1 py-0.5 border border-line">83%</span> of its color on the handed palette, with six shades — the more faithful of the two.
+                    </p>
+<div class="mt-margin pt-sm border-t border-line flex justify-between items-end">
+<span class="font-label-sm text-label-sm text-ink-muted">Measured Fidelity</span>
+<span class="font-data-mono-bold text-data-mono-bold text-primary">83%</span>
+</div>
+</div>
+</article>
+</div>
+<!-- Technical Footer / Explainer & Certification -->
+<footer class="mt-xl border-t-2 border-ink pt-margin grid grid-cols-1 md:grid-cols-2 gap-xl">
+<div class="max-w-xl">
+<p class="font-body-md text-body-md text-ink">
+                    Fidelity is the share of color within OKLab ΔE &lt; 0.05 of the handed palette — the only measure comparable across tools, because each tool has a different default look of its own.
+                </p>
+</div>
+<div class="flex flex-col md:items-end justify-start gap-sm">
+<div class="flex gap-md border border-line p-sm bg-surface-container-low w-full md:w-auto">
+<div class="flex flex-col">
+<span class="font-label-sm text-label-sm text-ink-muted">Hash</span>
+<span class="font-data-mono text-data-mono text-ink">9255ea5d23ee</span>
+</div>
+<div class="w-px bg-line"></div>
+<div class="flex flex-col">
+<span class="font-label-sm text-label-sm text-ink-muted">Date</span>
+<span class="font-data-mono text-data-mono text-ink">2026-06-15</span>
+</div>
+</div>
+<span class="font-label-sm text-label-sm text-ink-muted">2 renderings per tool (a smoke test)</span>
+</div>
+</footer>
+</main>
+</body></html>

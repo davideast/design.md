@@ -1,0 +1,41 @@
+---
+import Base from "../layouts/Base.astro";
+import TopRail from "../components/TopRail.astro";
+import ProofThumb from "../components/ProofThumb.astro";
+import { listCases } from "../lib/runs";
+const cases = listCases();
+---
+<Base title="Design Bench">
+  <TopRail active="Cases" />
+  <main class="max-w-6xl mx-auto px-lg py-xl">
+    <h1 class="text-display font-display tracking-tight">Design Bench</h1>
+    <p class="text-body text-ink-muted mt-xs max-w-prose">
+      Test and compare how AI design tools render the same brief — the same content under
+      different design directions, measured and compared.
+    </p>
+
+    <div class="mt-xl grid grid-cols-1 md:grid-cols-2 gap-lg">
+      {cases.map((c) => (
+        <a href={`/cases/${c.key}`} class="block group border border-line bg-paper p-md hover:ring-1 hover:ring-primary transition">
+          <div class="flex items-baseline justify-between mb-sm">
+            <span class="font-display font-semibold text-base text-ink group-hover:text-primary">{c.title}</span>
+            <span class="font-label text-label uppercase text-ink-muted">open</span>
+          </div>
+          <ProofThumb src={c.thumb} label={c.title} />
+          <p class="text-body text-ink-muted mt-sm" style="font-size:13px">{c.world}</p>
+          <div class="font-label text-label uppercase text-ink-muted mt-md mb-xs">Result</div>
+          <p class="text-body" style="font-size:13.5px;line-height:1.45">{c.headline}</p>
+        </a>
+      ))}
+    </div>
+
+    <div class="mt-xl border-t border-line pt-md max-w-prose">
+      <div class="font-label text-label uppercase text-ink-muted mb-sm">How to read the evidence</div>
+      <p class="text-body" style="font-size:13.5px;line-height:1.55">
+        A <b>treatment</b> is what the model was given — from nothing at all up to a complete specification.
+        The <b>default look</b> is what a tool produces with no direction; every distance is measured from it.
+        <b>Adjectives</b> are the treatment being challenged: describing a design in words like clean, modern, bold.
+      </p>
+    </div>
+  </main>
+</Base>

@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Design Bench</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&amp;family=Inter:wght@400;500;600&amp;family=IBM+Plex+Mono:wght@400;500&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "tertiary": "#7f2995",
+                      "on-surface": "#1a1c1d",
+                      "surface-variant": "#e2e2e4",
+                      "surface-container": "#edeef0",
+                      "on-tertiary-fixed": "#340042",
+                      "surface-dim": "#d9dadc",
+                      "on-tertiary": "#ffffff",
+                      "background": "#f9f9fb",
+                      "primary": "#542fca",
+                      "outline": "#797586",
+                      "primary-container": "#6d4de3",
+                      "surface-container-low": "#f3f3f5",
+                      "ink-muted": "#6B6A78",
+                      "on-primary": "#ffffff",
+                      "on-tertiary-fixed-variant": "#731b8a",
+                      "on-primary-container": "#ede6ff",
+                      "surface-container-highest": "#e2e2e4",
+                      "surface-container-high": "#e8e8ea",
+                      "on-primary-fixed-variant": "#4a20bf",
+                      "tertiary-container": "#9a44b0",
+                      "inverse-on-surface": "#f0f0f2",
+                      "accent-wash": "#EFEBFD",
+                      "surface-tint": "#6240d8",
+                      "surface-bright": "#f9f9fb",
+                      "secondary-container": "#798dff",
+                      "on-secondary-fixed-variant": "#2339ab",
+                      "on-error-container": "#93000a",
+                      "on-secondary-fixed": "#00105c",
+                      "line": "#E6E5EC",
+                      "surface-container-lowest": "#ffffff",
+                      "surface": "#f9f9fb",
+                      "on-secondary-container": "#001d8c",
+                      "on-error": "#ffffff",
+                      "tertiary-fixed": "#fdd6ff",
+                      "panel": "#FFFFFF",
+                      "on-background": "#1a1c1d",
+                      "tertiary-fixed-dim": "#f3aeff",
+                      "on-tertiary-container": "#ffe1ff",
+                      "on-surface-variant": "#484554",
+                      "error-container": "#ffdad6",
+                      "outline-variant": "#cac4d7",
+                      "inverse-surface": "#2f3132",
+                      "on-primary-fixed": "#1d0061",
+                      "inverse-primary": "#cbbeff",
+                      "primary-fixed-dim": "#cbbeff",
+                      "primary-fixed": "#e6deff",
+                      "error": "#ba1a1a",
+                      "secondary": "#3f53c3",
+                      "ink": "#1C1B22",
+                      "secondary-fixed-dim": "#bac3ff",
+                      "secondary-fixed": "#dee0ff",
+                      "on-secondary": "#ffffff"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.125rem",
+                      "lg": "0.25rem",
+                      "xl": "0.5rem",
+                      "full": "0.75rem"
+              },
+              "spacing": {
+                      "sm": "8px",
+                      "md": "16px",
+                      "xs": "4px",
+                      "sidebar-width": "280px",
+                      "lg": "24px",
+                      "xl": "40px",
+                      "gutter": "24px"
+              },
+              "fontFamily": {
+                      "display-lg": [
+                              "Space Grotesk"
+                      ],
+                      "label-sm": [
+                              "Inter"
+                      ],
+                      "display-lg-mobile": [
+                              "Space Grotesk"
+                      ],
+                      "data-mono": [
+                              "IBM Plex Mono"
+                      ],
+                      "body-md": [
+                              "Inter"
+                      ]
+              },
+              "fontSize": {
+                      "display-lg": [
+                              "30px",
+                              {
+                                      "lineHeight": "36px",
+                                      "fontWeight": "600"
+                              }
+                      ],
+                      "label-sm": [
+                              "13px",
+                              {
+                                      "lineHeight": "18px",
+                                      "letterSpacing": "0.01em",
+                                      "fontWeight": "500"
+                              }
+                      ],
+                      "display-lg-mobile": [
+                              "24px",
+                              {
+                                      "lineHeight": "28px",
+                                      "fontWeight": "600"
+                              }
+                      ],
+                      "data-mono": [
+                              "12.5px",
+                              {
+                                      "lineHeight": "19px",
+                                      "fontWeight": "400"
+                              }
+                      ],
+                      "body-md": [
+                              "15px",
+                              {
+                                      "lineHeight": "24px",
+                                      "fontWeight": "400"
+                              }
+                      ]
+              }
+      },
+          },
+        }
+      </script>
+<style>
+        .bg-grid-pattern {
+            background-size: 40px 40px;
+            background-image: 
+                linear-gradient(to right, #E6E5EC 1px, transparent 1px),
+                linear-gradient(to bottom, #E6E5EC 1px, transparent 1px);
+        }
+        .ruler-x {
+            background-image: linear-gradient(to right, #E6E5EC 1px, transparent 1px);
+            background-size: 8px 100%;
+        }
+        .ruler-y {
+            background-image: linear-gradient(to bottom, #E6E5EC 1px, transparent 1px);
+            background-size: 100% 8px;
+        }
+      </style>
+</head>
+<body class="bg-[#FBFBFD] min-h-screen font-body-md text-on-surface bg-grid-pattern relative">
+<!-- TopNavBar -->
+<nav class="fixed top-0 w-full h-12 flex justify-between items-center px-md z-50 bg-panel border-b border-line shadow-sm">
+<div class="flex items-center h-full gap-lg">
+<div class="text-display-lg font-display-lg font-bold text-primary tracking-tight">Design Bench</div>
+<div class="hidden md:flex h-full gap-sm">
+<a class="text-primary border-b-2 border-primary h-full flex items-center px-2 font-label-sm text-label-sm hover:text-primary transition-colors duration-200 active:scale-95" href="#">Artifacts</a>
+<a class="text-on-surface-variant h-full flex items-center px-2 font-label-sm text-label-sm hover:text-primary transition-colors duration-200 active:scale-95" href="#">Compare</a>
+<a class="text-on-surface-variant h-full flex items-center px-2 font-label-sm text-label-sm hover:text-primary transition-colors duration-200 active:scale-95" href="#">Library</a>
+<a class="text-on-surface-variant h-full flex items-center px-2 font-label-sm text-label-sm hover:text-primary transition-colors duration-200 active:scale-95" href="#">History</a>
+</div>
+</div>
+<div class="flex items-center gap-sm text-on-surface-variant">
+<button class="hover:text-primary transition-colors duration-200 active:scale-95 p-1 rounded hover:bg-surface-container-low"><span class="material-symbols-outlined text-[20px]">grid_view</span></button>
+<button class="hover:text-primary transition-colors duration-200 active:scale-95 p-1 rounded hover:bg-surface-container-low"><span class="material-symbols-outlined text-[20px]">settings</span></button>
+<button class="hover:text-primary transition-colors duration-200 active:scale-95 p-1 rounded hover:bg-surface-container-low"><span class="material-symbols-outlined text-[20px]">help</span></button>
+<img alt="User profile" class="w-8 h-8 rounded-full ml-2 border border-line" src="https://lh3.googleusercontent.com/aida-public/AB6AXuC75Cd4EAjVCaWQlTNi2PfD3tqR1Hz0r-e1Rn5qoYLCu8ctqjf6FPrNc1igR6WTp0lU9HoaEzr_OtFCg0qMRl6lH0DkFzN6p5wjftg6Igyyn5suo4JWLDgx5d1D1w-JuzZdceoQf2IBa01E981DDQzkkPsiRcBH5Eq8BiBSRJvFLIxInCZ5Pho_r4_Tj8EsM7Jih37UIs2lPk6ZMmPV04ce4X0Cz9_WG3TneHJ53BqyqMtloadUuHR5NA1iTSCix9c9SfDUYrRAOS4"/>
+</div>
+</nav>
+<!-- Rulers -->
+<div class="fixed top-12 left-0 w-full h-2 ruler-x border-b border-line z-40 bg-white/80 backdrop-blur-sm"></div>
+<div class="fixed top-14 left-0 h-full w-2 ruler-y border-r border-line z-40 bg-white/80 backdrop-blur-sm"></div>
+<!-- Main Content -->
+<main class="pt-24 pl-8 pr-8 pb-24 max-w-7xl mx-auto relative z-10">
+<!-- Masthead -->
+<header class="mb-xl max-w-3xl">
+<h1 class="font-display-lg text-display-lg md:text-[48px] md:leading-[56px] font-bold mb-md text-ink bg-clip-text text-transparent bg-gradient-to-r from-ink via-primary to-tertiary">Design Bench</h1>
+<p class="font-body-md text-body-md text-on-surface-variant text-lg">Test and compare how AI design tools render the same brief — generate across tools, measure, and compare side by side.</p>
+</header>
+<!-- Case Grid -->
+<div class="grid grid-cols-1 md:grid-cols-2 gap-lg mb-xl">
+<!-- Case 1 -->
+<article class="bg-panel rounded-md border border-line shadow-[0_2px_10px_rgba(28,27,34,0.05)] p-md hover:border-primary-container transition-colors group cursor-pointer relative overflow-hidden">
+<div class="absolute inset-0 bg-accent-wash opacity-0 group-hover:opacity-20 transition-opacity pointer-events-none"></div>
+<div class="flex justify-between items-start mb-sm">
+<h2 class="font-display-lg text-[20px] leading-[24px] font-semibold">Agent Architecture</h2>
+<span class="font-data-mono text-data-mono bg-surface-container-low px-2 py-1 rounded-sm border border-line text-ink-muted">Case 01</span>
+</div>
+<p class="font-body-md text-body-md text-on-surface-variant mb-md">A seven-slide technical talk on AI agent loops.</p>
+<div class="w-full h-48 bg-surface-container rounded-sm mb-md overflow-hidden border border-line relative">
+<img alt="UI Thumbnail placeholder" class="w-full h-full object-cover grayscale opacity-80 group-hover:grayscale-0 group-hover:opacity-100 transition-all duration-300 mix-blend-multiply" src="https://lh3.googleusercontent.com/aida-public/AB6AXuC14-O5t0nQkVmvZV7mOMkTuPDRExIt4UbMqeQPA1RfFzB248r3Sc6obEvN_A74jK-am1CJoFWXGh-uBD4VSuNwrYw64wMjfeIZsZAynqhq5X5EGqjLOS5PokN0EilCufVBsh7F7k_SkrEgHWMgi1i9WmCzKHxdrNKMk-9qkyRoeCrpR89CQM8deP71zTBDWjDJ7bf1M-nZuLG6IELenJU3-wXMC-f9HAZGPpUExIFj_RozUs__W2YvYV4MaGA07FlEHTKdoojNrHQ"/>
+</div>
+<div class="bg-surface-bright p-sm rounded-sm border border-line">
+<p class="font-body-md text-[13px] leading-[20px] text-on-surface-variant">
+                        Claim: Naming one real object — a graduate CS lecture handout — moved results <span class="font-data-mono text-data-mono font-medium text-primary-container bg-accent-wash px-1 rounded">0.64</span> farther from the model's default look than adjectives did.
+                    </p>
+</div>
+</article>
+<!-- Case 2 -->
+<article class="bg-panel rounded-md border border-line shadow-[0_2px_10px_rgba(28,27,34,0.05)] p-md hover:border-primary-container transition-colors group cursor-pointer relative overflow-hidden">
+<div class="absolute inset-0 bg-accent-wash opacity-0 group-hover:opacity-20 transition-opacity pointer-events-none"></div>
+<div class="flex justify-between items-start mb-sm">
+<h2 class="font-display-lg text-[20px] leading-[24px] font-semibold">Auralis</h2>
+<span class="font-data-mono text-data-mono bg-surface-container-low px-2 py-1 rounded-sm border border-line text-ink-muted">Case 02</span>
+</div>
+<p class="font-body-md text-body-md text-on-surface-variant mb-md">A marketing site for an AI voice platform.</p>
+<div class="w-full h-48 bg-surface-container rounded-sm mb-md overflow-hidden border border-line relative">
+<img alt="UI Thumbnail placeholder" class="w-full h-full object-cover grayscale opacity-80 group-hover:grayscale-0 group-hover:opacity-100 transition-all duration-300 mix-blend-multiply" src="https://lh3.googleusercontent.com/aida-public/AB6AXuC14-O5t0nQkVmvZV7mOMkTuPDRExIt4UbMqeQPA1RfFzB248r3Sc6obEvN_A74jK-am1CJoFWXGh-uBD4VSuNwrYw64wMjfeIZsZAynqhq5X5EGqjLOS5PokN0EilCufVBsh7F7k_SkrEgHWMgi1i9WmCzKHxdrNKMk-9qkyRoeCrpR89CQM8deP71zTBDWjDJ7bf1M-nZuLG6IELenJU3-wXMC-f9HAZGPpUExIFj_RozUs__W2YvYV4MaGA07FlEHTKdoojNrHQ"/>
+</div>
+<div class="bg-surface-bright p-sm rounded-sm border border-line">
+<p class="font-body-md text-[13px] leading-[20px] text-on-surface-variant">
+                        Claim: The object grounding outperformed adjectives by <span class="font-data-mono text-data-mono font-medium text-primary-container bg-accent-wash px-1 rounded">0.36</span> across 18 renderings.
+                    </p>
+</div>
+</article>
+<!-- Case 3 -->
+<article class="bg-panel rounded-md border border-line shadow-[0_2px_10px_rgba(28,27,34,0.05)] p-md hover:border-primary-container transition-colors group cursor-pointer relative overflow-hidden">
+<div class="absolute inset-0 bg-accent-wash opacity-0 group-hover:opacity-20 transition-opacity pointer-events-none"></div>
+<div class="flex justify-between items-start mb-sm">
+<h2 class="font-display-lg text-[20px] leading-[24px] font-semibold">DC Tracks</h2>
+<span class="font-data-mono text-data-mono bg-surface-container-low px-2 py-1 rounded-sm border border-line text-ink-muted">Case 03</span>
+</div>
+<p class="font-body-md text-body-md text-on-surface-variant mb-md">An editorial music publication for Washington, DC.</p>
+<div class="w-full h-48 bg-surface-container rounded-sm mb-md overflow-hidden border border-line relative">
+<img alt="UI Thumbnail placeholder" class="w-full h-full object-cover grayscale opacity-80 group-hover:grayscale-0 group-hover:opacity-100 transition-all duration-300 mix-blend-multiply" src="https://lh3.googleusercontent.com/aida-public/AB6AXuC14-O5t0nQkVmvZV7mOMkTuPDRExIt4UbMqeQPA1RfFzB248r3Sc6obEvN_A74jK-am1CJoFWXGh-uBD4VSuNwrYw64wMjfeIZsZAynqhq5X5EGqjLOS5PokN0EilCufVBsh7F7k_SkrEgHWMgi1i9WmCzKHxdrNKMk-9qkyRoeCrpR89CQM8deP71zTBDWjDJ7bf1M-nZuLG6IELenJU3-wXMC-f9HAZGPpUExIFj_RozUs__W2YvYV4MaGA07FlEHTKdoojNrHQ"/>
+</div>
+<div class="bg-surface-bright p-sm rounded-sm border border-line">
+<p class="font-body-md text-[13px] leading-[20px] text-on-surface-variant">
+                        Claim: The metaphor grounding led at <span class="font-data-mono text-data-mono font-medium text-primary-container bg-accent-wash px-1 rounded">0.21</span> over adjectives across 42 renderings.
+                    </p>
+</div>
+</article>
+<!-- Case 4 -->
+<article class="bg-panel rounded-md border border-line shadow-[0_2px_10px_rgba(28,27,34,0.05)] p-md border-dashed hover:border-solid hover:border-primary-container transition-colors group cursor-pointer relative overflow-hidden">
+<div class="absolute inset-0 bg-accent-wash opacity-0 group-hover:opacity-20 transition-opacity pointer-events-none"></div>
+<div class="flex justify-between items-start mb-sm">
+<h2 class="font-display-lg text-[20px] leading-[24px] font-semibold">Urban Nocturnal Field Guide</h2>
+<span class="font-data-mono text-data-mono bg-surface-container-low px-2 py-1 rounded-sm border border-line text-ink-muted">Case 04</span>
+</div>
+<p class="font-body-md text-body-md text-on-surface-variant mb-md">A field-notes site for night birding in the city.</p>
+<div class="w-full h-48 bg-surface-container rounded-sm mb-md overflow-hidden border border-line relative flex items-center justify-center">
+<div class="text-center text-on-surface-variant flex flex-col items-center">
+<span class="material-symbols-outlined text-[32px] mb-xs animate-pulse opacity-50">hourglass_empty</span>
+<span class="font-label-sm text-label-sm">Generating...</span>
+</div>
+</div>
+<div class="bg-surface-bright p-sm rounded-sm border border-line">
+<p class="font-body-md text-[13px] leading-[20px] text-on-surface-variant">
+                        Claim: Newest case; measurement in progress.
+                    </p>
+</div>
+</article>
+</div>
+<!-- Info Panel & Links Area -->
+<div class="flex flex-col md:flex-row justify-between items-start md:items-end gap-lg">
+<!-- Info Panel -->
+<div class="bg-panel p-md rounded-md border border-line shadow-[0_2px_10px_rgba(28,27,34,0.05)] max-w-md">
+<h3 class="font-label-sm text-label-sm font-semibold mb-xs flex items-center gap-xs"><span class="material-symbols-outlined text-[16px]">info</span> How to read this</h3>
+<div class="space-y-xs font-body-md text-[13px] leading-[20px] text-on-surface-variant">
+<p><strong class="font-medium text-ink">Treatment:</strong> The specific prompt constraint applied.</p>
+<p><strong class="font-medium text-ink">Default Look:</strong> The baseline visual output without constraints.</p>
+<p><strong class="font-medium text-ink">Adjectives:</strong> Standard descriptive prompting (e.g. "modern, clean").</p>
+</div>
+</div>
+<!-- Links -->
+<div class="flex gap-md font-label-sm text-label-sm">
+<a class="text-primary-container hover:text-primary transition-colors flex items-center gap-xs" href="#"><span class="material-symbols-outlined text-[16px]">add_circle</span> Start a new case from a spark</a>
+<a class="text-on-surface-variant hover:text-primary transition-colors flex items-center gap-xs" href="#"><span class="material-symbols-outlined text-[16px]">format_list_bulleted</span> All measurements</a>
+</div>
+</div>
+</main>
+</body></html>

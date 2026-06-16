@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Design Bench - New Case</title>
+<!-- Material Symbols -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        .material-symbols-outlined {
+            font-family: 'Material Symbols Outlined';
+            font-weight: normal;
+            font-style: normal;
+            font-size: 24px;
+            line-height: 1;
+            letter-spacing: normal;
+            text-transform: none;
+            display: inline-block;
+            white-space: nowrap;
+            word-wrap: normal;
+            direction: ltr;
+            -webkit-font-feature-settings: 'liga';
+            -webkit-font-smoothing: antialiased;
+        }
+    </style>
+<!-- Google Fonts -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600&amp;family=IBM+Plex+Sans:wght@400;500;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind CSS -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<!-- Tailwind Config -->
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "secondary-fixed": "#dee0ff",
+                        "on-primary-fixed": "#1d0061",
+                        "surface-container-high": "#e8e8eb",
+                        "tertiary-fixed-dim": "#f3aeff",
+                        "tertiary-fixed": "#fdd6ff",
+                        "surface-container-highest": "#e2e2e5",
+                        "surface-bright": "#f9f9fc",
+                        "outline": "#797586",
+                        "surface-dim": "#dadadd",
+                        "primary-fixed": "#e6deff",
+                        "secondary-container": "#798dff",
+                        "on-secondary": "#ffffff",
+                        "on-secondary-fixed": "#00105c",
+                        "primary": "#542fca",
+                        "on-primary": "#ffffff",
+                        "surface-tint": "#6240d8",
+                        "on-tertiary": "#ffffff",
+                        "on-tertiary-fixed": "#340042",
+                        "surface-container": "#eeedf0",
+                        "ink": "#1C1B22",
+                        "error": "#ba1a1a",
+                        "outline-variant": "#cac4d7",
+                        "tertiary-container": "#9a44b0",
+                        "background": "#f9f9fc",
+                        "ink-muted": "#6B6A74",
+                        "primary-fixed-dim": "#cbbeff",
+                        "on-tertiary-container": "#ffe1ff",
+                        "inverse-on-surface": "#f0f0f3",
+                        "secondary-fixed-dim": "#bac3ff",
+                        "on-surface-variant": "#484554",
+                        "paper": "#FFFFFF",
+                        "inverse-primary": "#cbbeff",
+                        "error-container": "#ffdad6",
+                        "line": "#D8D8DC",
+                        "on-secondary-container": "#001d8c",
+                        "on-background": "#1a1c1e",
+                        "on-tertiary-fixed-variant": "#731b8a",
+                        "inverse-surface": "#2f3033",
+                        "on-error": "#ffffff",
+                        "surface-variant": "#e2e2e5",
+                        "surface-container-low": "#f3f3f6",
+                        "surface-container-lowest": "#ffffff",
+                        "on-error-container": "#93000a",
+                        "on-primary-fixed-variant": "#4a20bf",
+                        "tertiary": "#7f2995",
+                        "on-secondary-fixed-variant": "#2339ab",
+                        "primary-container": "#6d4de3",
+                        "secondary": "#3f53c3",
+                        "on-surface": "#1a1c1e",
+                        "surface": "#f9f9fc",
+                        "accent-wash": "#EFEBFD",
+                        "on-primary-container": "#ede6ff"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0px",
+                        "lg": "0px",
+                        "xl": "0px",
+                        "full": "0px"
+                    },
+                    "spacing": {
+                        "md": "16px",
+                        "lg": "24px",
+                        "xs": "4px",
+                        "xl": "40px",
+                        "rail-height": "48px",
+                        "sm": "8px"
+                    },
+                    "fontFamily": {
+                        "data-bold": ["IBM Plex Mono"],
+                        "label": ["IBM Plex Sans"],
+                        "body": ["IBM Plex Sans"],
+                        "display": ["IBM Plex Sans"],
+                        "data": ["IBM Plex Mono"]
+                    },
+                    "fontSize": {
+                        "data-bold": ["12.5px", {"lineHeight": "1.5", "fontWeight": "600"}],
+                        "label": ["12px", {"lineHeight": "1.3", "letterSpacing": "0.04em", "fontWeight": "500"}],
+                        "body": ["15px", {"lineHeight": "1.55", "fontWeight": "400"}],
+                        "display": ["28px", {"lineHeight": "1.2", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                        "data": ["12.5px", {"lineHeight": "1.5", "fontWeight": "400"}]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        /* Custom styles for the easel layout and registration marks */
+        body {
+            background-color: #E9E9EC; /* Neutral gray surround */
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+        }
+
+        .crop-mark {
+            position: absolute;
+            width: 12px;
+            height: 12px;
+            pointer-events: none;
+        }
+
+        .crop-top-left { top: -1px; left: -1px; border-top: 1px solid #1C1B22; border-left: 1px solid #1C1B22; }
+        .crop-top-right { top: -1px; right: -1px; border-top: 1px solid #1C1B22; border-right: 1px solid #1C1B22; }
+        .crop-bottom-left { bottom: -1px; left: -1px; border-bottom: 1px solid #1C1B22; border-left: 1px solid #1C1B22; }
+        .crop-bottom-right { bottom: -1px; right: -1px; border-bottom: 1px solid #1C1B22; border-right: 1px solid #1C1B22; }
+
+        input:focus, textarea:focus {
+            outline: none;
+            border-color: #1C1B22 !important;
+            box-shadow: none !important;
+        }
+    </style>
+</head>
+<body class="font-body text-body text-ink antialiased">
+<!-- TopNavBar (Rendered from JSON) -->
+<nav class="fixed top-0 left-0 w-full z-50 flex items-center justify-between px-lg h-rail-height bg-background dark:bg-surface-dim border-b border-line dark:border-outline-variant flat no shadows font-label text-label uppercase tracking-widest">
+<!-- Brand -->
+<div class="flex items-center space-x-xl">
+<span class="font-display text-display font-bold text-ink dark:text-inverse-on-surface">DESIGN BENCH</span>
+<!-- Navigation Links -->
+<div class="hidden md:flex items-center space-x-lg h-full">
+<!-- Using generic matching, New Case falls under JOBS -->
+<a class="h-full flex items-center text-primary dark:text-primary-fixed-dim border-b border-primary dark:border-primary-fixed-dim hover:text-primary dark:hover:text-primary-fixed-dim transition-colors duration-150 cursor-crosshair active:opacity-70 px-sm" href="#">
+                    JOBS
+                </a>
+<a class="h-full flex items-center text-ink-muted dark:text-outline hover:text-primary dark:hover:text-primary-fixed-dim transition-colors duration-150 cursor-crosshair active:opacity-70 px-sm border-b border-transparent" href="#">
+                    INSPECT
+                </a>
+<a class="h-full flex items-center text-ink-muted dark:text-outline hover:text-primary dark:hover:text-primary-fixed-dim transition-colors duration-150 cursor-crosshair active:opacity-70 px-sm border-b border-transparent" href="#">
+                    ARCHIVE
+                </a>
+<a class="h-full flex items-center text-ink-muted dark:text-outline hover:text-primary dark:hover:text-primary-fixed-dim transition-colors duration-150 cursor-crosshair active:opacity-70 px-sm border-b border-transparent" href="#">
+                    SETTINGS
+                </a>
+</div>
+</div>
+<!-- Actions -->
+<div class="flex items-center space-x-md">
+<button class="text-ink-muted hover:text-primary transition-colors cursor-crosshair">RE-CHECK</button>
+<button class="text-ink hover:text-primary transition-colors cursor-crosshair font-bold">EXPORT</button>
+</div>
+</nav>
+<!-- Main Easel Area -->
+<main class="pt-[80px] pb-xl px-lg flex justify-center items-start min-h-screen">
+<!-- The Sheet (Core Container) -->
+<article class="relative w-full max-w-[800px] bg-paper border border-line shadow-sm rounded-none">
+<!-- Crop Marks -->
+<div class="crop-mark crop-top-left"></div>
+<div class="crop-mark crop-top-right"></div>
+<div class="crop-mark crop-bottom-left"></div>
+<div class="crop-mark crop-bottom-right"></div>
+<!-- Wayfinding Header -->
+<header class="border-b border-line px-xl py-lg flex items-center justify-between">
+<div class="flex items-center space-x-sm font-label text-label uppercase">
+<a class="text-ink-muted hover:text-primary flex items-center group" href="#">
+<span class="material-symbols-outlined text-[14px] mr-xs group-hover:-translate-x-1 transition-transform">arrow_left</span>
+                        JOBS
+                    </a>
+<span class="text-line">/</span>
+<h1 class="text-ink tracking-widest">NEW CASE</h1>
+</div>
+<div class="font-data text-data text-ink-muted">
+                    ID: 009-NC-A
+                </div>
+</header>
+<div class="p-xl space-y-xl">
+<!-- Primary Action Section: The Spark -->
+<section class="space-y-md">
+<div class="space-y-xs">
+<label class="block font-label text-label text-ink uppercase tracking-wider" for="spark-input">Start with a spark</label>
+<p class="font-body text-body text-ink-muted leading-relaxed max-w-[90%]">
+                            — a fragment is enough; an ideation agent helps you find the world before any files exist
+                        </p>
+</div>
+<div class="relative">
+<input class="w-full bg-surface-container-lowest border border-line font-data text-data text-ink px-md py-[14px] placeholder-ink-muted/50 focus:border-ink transition-colors rounded-none" id="spark-input" placeholder="a tide chart for surfers · a zine for a synth meetup · my grandmother's recipe box…" type="text"/>
+<!-- Technical accent line -->
+<div class="absolute bottom-0 left-0 w-full h-[1px] bg-line"></div>
+</div>
+<div class="flex items-start justify-between pt-sm">
+<p class="font-label text-label text-ink-muted uppercase max-w-[60%] leading-relaxed">
+                            A conversation, not a generator — diverge on worlds, converge on a brief and a direction, commit when it's yours.
+                        </p>
+<button class="bg-primary-container text-on-primary-container font-label text-label uppercase tracking-widest px-lg py-sm border border-primary-container hover:bg-surface-tint hover:text-on-primary transition-colors cursor-crosshair">
+                            Start ideating
+                        </button>
+</div>
+</section>
+<hr class="border-line"/>
+<!-- Secondary Section (Semi-collapsed state) -->
+<section class="space-y-md opacity-80 hover:opacity-100 transition-opacity">
+<div class="flex items-center justify-between cursor-crosshair group" onclick="document.getElementById('manual-draft-form').classList.toggle('hidden')">
+<h2 class="font-label text-label text-ink uppercase tracking-wider group-hover:text-primary transition-colors">
+                            You already know the world — create a draft directly
+                        </h2>
+<span class="material-symbols-outlined text-ink-muted group-hover:text-primary transition-colors">unfold_more</span>
+</div>
+<!-- Revealed Form Content -->
+<div class="hidden space-y-lg pt-sm border-l border-line pl-md ml-[6px]" id="manual-draft-form">
+<div class="space-y-xs">
+<label class="font-label text-label text-ink-muted uppercase">Case short name</label>
+<input class="w-full md:w-1/2 bg-surface border border-line font-data text-data text-ink px-sm py-xs placeholder-ink-muted/50 rounded-none" placeholder="e.g., recipe-card" type="text"/>
+</div>
+<div class="space-y-sm">
+<label class="font-label text-label text-ink-muted uppercase">Target Device</label>
+<div class="flex space-x-[-1px]">
+<button class="px-md py-xs border border-ink bg-ink text-paper font-data-bold text-data-bold">Desktop</button>
+<button class="px-md py-xs border border-line bg-surface hover:bg-surface-variant text-ink font-data text-data">Tablet</button>
+<button class="px-md py-xs border border-line bg-surface hover:bg-surface-variant text-ink font-data text-data">Mobile</button>
+</div>
+</div>
+<div class="space-y-xs">
+<label class="font-label text-label text-ink-muted uppercase">The brief</label>
+<textarea class="w-full h-32 bg-surface border border-line font-data text-data text-ink p-sm placeholder-ink-muted/50 rounded-none resize-none" placeholder="Everything the deliverable must contain..."></textarea>
+</div>
+<div class="pt-sm">
+<button class="bg-surface border border-line text-ink font-label text-label uppercase tracking-widest px-lg py-sm hover:bg-surface-variant hover:border-ink transition-colors cursor-crosshair">
+                                Create draft
+                            </button>
+</div>
+</div>
+</section>
+</div>
+<!-- Footer Color Bar & Meta -->
+<footer class="border-t border-line mt-xl flex items-stretch h-[24px]">
+<div class="flex-1 bg-surface-variant flex items-center px-md">
+<span class="font-data-bold text-[10px] text-ink-muted uppercase tracking-widest">STATUS: WAITING INPUT</span>
+</div>
+<div class="w-[24px] bg-[#6D4DE3] border-l border-line"></div>
+<div class="w-[24px] bg-[#5B6FE0] border-l border-line"></div>
+<div class="w-[24px] bg-[#B45CC9] border-l border-line"></div>
+<div class="w-[24px] bg-ink border-l border-line"></div>
+</footer>
+</article>
+</main>
+</body></html>

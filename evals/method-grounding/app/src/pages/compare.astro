@@ -1,0 +1,80 @@
+---
+import Base from "../layouts/Base.astro";
+import TopRail from "../components/TopRail.astro";
+import BrowserFrame from "../components/BrowserFrame.astro";
+import { compareView } from "../lib/runs";
+const v = compareView();
+const pct = (n: number) => `${Math.round(n * 100)}%`;
+const top = v?.tools[0];
+const bottom = v?.tools[v.tools.length - 1];
+---
+<Base title="Same brief, two tools — Design Bench">
+  <TopRail active="Compare tools" />
+  <main class="max-w-6xl mx-auto px-lg py-xl">
+    {!v ? (
+      <p class="text-body text-ink-muted">No tool-comparison run is present.</p>
+    ) : (
+      <>
+        <div class="font-label text-label uppercase text-ink-muted mb-sm">Same brief, two tools</div>
+        <h1 class="text-display font-display tracking-tight">{v.caseTitle}</h1>
+        <p class="text-body text-ink-muted mt-xs max-w-prose">
+          {v.world} Both tools got the identical brief — same words, same palette, same type. The only thing
+          that changed is which tool drew it. So any difference below is the tool, not the instructions.
+        </p>
+
+        {top && bottom && top.tool !== bottom.tool && (
+          <p class="text-body mt-lg max-w-prose border-l-2 border-primary pl-md">
+            {top.toolName} put <b>{pct(top.fidelity)}</b> of the handed palette on the screen.
+            {" "}{bottom.toolName} reached <b>{pct(bottom.fidelity)}</b> from the very same brief.
+          </p>
+        )}
+
+        <div class="mt-xl grid grid-cols-1 md:grid-cols-2 gap-xl">
+          {v.tools.map((t) => (
+            <div>
+              <div class="flex items-baseline justify-between border-b border-line pb-xs mb-md">
+                <span class="font-display font-semibold text-base text-ink">{t.toolName}</span>
+                <span class="font-label text-label uppercase text-ink-muted">palette fidelity</span>
+              </div>
+
+              <BrowserFrame
+                src={t.samplePath}
+                address={`design-bench.local/compare/${t.tool}`}
+                title={`${t.toolName} — ${v.caseTitle}`}
+                bodyStyle="aspect-ratio:16/10"
+                iframeStyle="width:1280px;height:800px;transform:scale(0.46);"
+              />
+
+              <!-- fidelity shown ON the render, not asserted in prose -->
+              <div class="mt-md flex items-baseline gap-sm">
+                <span class="font-data text-ink" style="font-size:34px;line-height:1">{pct(t.fidelity)}</span>
+                <span class="font-label text-label uppercase text-ink-muted">of the palette reproduced</span>
+              </div>
+              <div class="mt-xs h-2 bg-neutral overflow-hidden" style="border-radius:2px">
+                <div class="h-full bg-primary" style={`width:${pct(t.fidelity)}`}></div>
+              </div>
+              <p class="font-data text-data text-ink-muted mt-sm">
+                type matched {pct(t.fontMatch)} · {v.samplesPerTool} renderings
+              </p>
+            </div>
+          ))}
+        </div>
+
+        <div class="mt-xl border-t border-line pt-md max-w-prose">
+          <div class="font-label text-label uppercase text-ink-muted mb-sm">What fidelity means</div>
+          <p class="text-body" style="font-size:13.5px">
+            The brief hands the tool a fixed palette and typeface. <b>Palette fidelity</b> is how much of that
+            palette actually showed up in what the tool rendered — measured by perceptual color difference, so a
+            near-match still counts. A higher number means the tool followed the colors it was given instead of
+            reaching for its own house look. Same idea for type: did the handed typeface survive.
+          </p>
+        </div>
+
+        <div class="mt-lg border-t border-line pt-sm font-data text-data text-ink-muted">
+          same brief to {v.tools.map((t) => t.toolName).join(" and ")} · direction: {v.direction} ·
+          {" "}{v.samplesPerTool} renderings each · definitions {v.evalHash} · metric: fidelity to direction
+        </div>
+      </>
+    )}
+  </main>
+</Base>

@@ -1,0 +1,11 @@
+{
+  "title": "Pocket Tides",
+  "deviceType": "MOBILE",
+  "genericCenter": "A soft-blue gradient weather app layout with rounded card modules, drop shadows, and a generic smooth sine-wave tide graphic. Type is standard system sans-serif (SF Pro). Icons are thin-line illustrative weather symbols.",
+  "prohibitions": [
+    "gradients",
+    "shadows",
+    "roundedCorners"
+  ],
+  "requirements": []
+}

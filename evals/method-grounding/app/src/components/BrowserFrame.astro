@@ -1,0 +1,112 @@
+---
+// A real-looking (but light) browser window around a live rendering. `mini`
+// (thumbnails) shows just the title-bar dots; the full chrome adds a tab strip
+// and a toolbar with nav buttons, an address pill, and a full-screen button.
+// The full-screen button — and, as an easter egg, the green "maximize" dot —
+// open the real rendering large and interactive in an overlay.
+const { src, address, title, width, bodyStyle, iframeStyle, mini } = Astro.props;
+const id = mini ? undefined : "bf-" + Math.abs(hash(`${src}|${title}`)).toString(36);
+function hash(s: string) { let h = 0; for (let i = 0; i < s.length; i++) h = (h * 31 + s.charCodeAt(i)) | 0; return h; }
+---
+<div class="border border-line bg-paper overflow-hidden" style={width ? `width:${width};border-radius:8px` : "border-radius:8px"}>
+  {mini ? (
+    <div class="flex items-center gap-1.5 bg-neutral border-b border-line px-sm" style="height:22px">
+      <span class="bf-dot" style="background:#ff5f57"></span>
+      <span class="bf-dot" style="background:#febc2e"></span>
+      <span class="bf-dot" style="background:#28c840"></span>
+    </div>
+  ) : (
+    <div>
+      <!-- tab strip; tab bottom-aligned so it sits flush on the toolbar -->
+      <div class="flex items-end gap-sm bg-neutral px-sm" style="height:36px">
+        <span class="flex gap-2 self-center">
+          <span class="bf-dot" style="background:#ff5f57"></span>
+          <span class="bf-dot" style="background:#febc2e"></span>
+          <button class="bf-dot bf-open" style="background:#28c840" data-bf-open={id} title="Open full screen" aria-label="Open full screen"></button>
+        </span>
+        <div class="bf-tab">
+          <span class="font-body text-ink truncate" style="font-size:12px">{title ?? "rendering"}</span>
+        </div>
+      </div>
+      <!-- toolbar -->
+      <div class="flex items-center gap-sm bg-paper border-b border-line px-sm" style="height:42px">
+        <span class="flex items-center gap-1 shrink-0 bf-nav">
+          <svg viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6"/></svg>
+          <svg viewBox="0 0 24 24" style="opacity:.4"><path d="M9 18l6-6-6-6"/></svg>
+          <svg viewBox="0 0 24 24"><path d="M21 12a9 9 0 1 1-2.6-6.4M21 3.5V9h-5.5"/></svg>
+        </span>
+        <div class="flex-1 min-w-0 flex items-center gap-xs bg-neutral px-sm" style="height:28px;border-radius:9999px">
+          <svg class="bf-lock shrink-0" viewBox="0 0 24 24"><rect x="5" y="11" width="14" height="9" rx="1.5"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>
+          <span class="font-body text-ink-muted truncate" style="font-size:12.5px">{address}</span>
+        </div>
+        <button class="bf-nav bf-open shrink-0" data-bf-open={id} title="Full screen" aria-label="Full screen">
+          <svg viewBox="0 0 24 24"><path d="M8 3H5a2 2 0 0 0-2 2v3M16 3h3a2 2 0 0 1 2 2v3M8 21H5a2 2 0 0 1-2-2v-3M16 21h3a2 2 0 0 0 2-2v-3"/></svg>
+        </button>
+      </div>
+    </div>
+  )}
+  <div class="relative overflow-hidden bg-paper" style={bodyStyle}>
+    {src ? (
+      <iframe src={src} title={title ?? "rendering"} scrolling="no" tabindex="-1" loading="lazy"
+        class="absolute top-0 left-0 origin-top-left border-0 pointer-events-none" style={iframeStyle}></iframe>
+    ) : (
+      <div class="absolute inset-0 flex items-center justify-center font-label text-label text-ink-muted">no rendering</div>
+    )}
+  </div>
+</div>
+
+{!mini && src && (
+  <dialog id={id} class="bf-overlay">
+    <div class="bf-overlay-bar">
+      <span class="flex gap-2 shrink-0">
+        <button class="bf-dot" style="background:#ff5f57" data-bf-close title="Close" aria-label="Close full screen"></button>
+        <span class="bf-dot" style="background:#febc2e"></span>
+        <span class="bf-dot" style="background:#28c840"></span>
+      </span>
+      <span class="bf-overlay-addr font-body truncate">{address}</span>
+      <button class="bf-close" data-bf-close aria-label="Close full screen">
+        <svg viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></svg>
+      </button>
+    </div>
+    <iframe src={src} title={title ?? "rendering"} class="bf-overlay-frame" loading="lazy"></iframe>
+  </dialog>
+)}
+
+<style>
+  .bf-dot { width: 11px; height: 11px; border-radius: 9999px; display: block; padding: 0; border: 0; }
+  button.bf-dot { cursor: pointer; }
+  button.bf-dot:hover { filter: brightness(1.08); }
+  /* Chrome-style active tab: borderless, fills to the toolbar, concave bottom flares. */
+  .bf-tab { position: relative; display: flex; align-items: center; height: 30px; max-width: 240px; padding: 0 12px; margin-bottom: -1px; background: #ffffff; border-radius: 9px 9px 0 0; }
+  .bf-tab::before, .bf-tab::after { content: ""; position: absolute; bottom: 0; width: 9px; height: 9px; }
+  .bf-tab::before { left: -9px; background: radial-gradient(circle at top left, transparent 9px, #ffffff 9px); }
+  .bf-tab::after { right: -9px; background: radial-gradient(circle at top right, transparent 9px, #ffffff 9px); }
+  .bf-nav { background: none; border: 0; padding: 0; cursor: default; }
+  button.bf-nav.bf-open { cursor: pointer; }
+  .bf-nav svg { width: 17px; height: 17px; fill: none; stroke: #6b6a74; stroke-width: 1.7; stroke-linecap: round; stroke-linejoin: round; }
+  button.bf-nav.bf-open:hover svg { stroke: #6d4de3; }
+  .bf-lock { width: 13px; height: 13px; fill: none; stroke: #6b6a74; stroke-width: 1.7; }
+
+  .bf-overlay { width: 92vw; max-width: 1400px; height: 90vh; padding: 0; border: 1px solid #d8d8dc; border-radius: 8px; overflow: hidden; background: #ffffff; }
+  .bf-overlay::backdrop { background: rgba(28, 27, 34, 0.45); }
+  .bf-overlay-bar { display: flex; align-items: center; gap: 8px; height: 38px; padding: 0 12px; background: #e9e9ec; border-bottom: 1px solid #d8d8dc; }
+  .bf-overlay-addr { flex: 1; min-width: 0; font-size: 12.5px; color: #6b6a74; }
+  .bf-close { background: none; border: 0; padding: 4px; cursor: pointer; line-height: 0; }
+  .bf-close svg { width: 16px; height: 16px; fill: none; stroke: #6b6a74; stroke-width: 1.8; stroke-linecap: round; }
+  .bf-close:hover svg { stroke: #6d4de3; }
+  .bf-overlay-frame { width: 100%; height: calc(100% - 38px); border: 0; display: block; background: #ffffff; }
+</style>
+
+<script>
+  // Wire full-screen triggers (the green dot + the toolbar button) to their overlay.
+  for (const el of document.querySelectorAll<HTMLElement>("[data-bf-open]")) {
+    el.addEventListener("click", () => {
+      const d = document.getElementById(el.dataset.bfOpen!) as HTMLDialogElement | null;
+      d?.showModal();
+    });
+  }
+  for (const d of document.querySelectorAll<HTMLDialogElement>("dialog.bf-overlay")) {
+    for (const c of d.querySelectorAll("[data-bf-close]")) c.addEventListener("click", () => d.close());
+    d.addEventListener("click", (e) => { if (e.target === d) d.close(); }); // click backdrop
+  }
+</script>
