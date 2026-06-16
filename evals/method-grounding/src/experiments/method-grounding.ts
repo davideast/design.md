@@ -24,10 +24,13 @@ export const methodGrounding: Experiment = {
     const want = (key: string) => !options.arms || options.arms.includes(key);
     for (const c of cases) {
       // The no-direction control has no document to inject, so it runs exactly
-      // once per case (design-system channel by convention, though nothing is
-      // delivered through it).
+      // once per case. Its channel is cosmetic (nothing is delivered through it),
+      // so tag it with a channel the run actually uses — otherwise a tool that
+      // doesn't support design-system (e.g. the direct Gemini tool) can't
+      // generate the control and the whole ladder is blocked.
       if (want(CONTROL)) {
-        cells.push({ caseKey: c.key, cell: CONTROL, tool: options.defaultTool, armKey: CONTROL, directionArm: null, armFile: null, channel: "design-system" });
+        const controlChannel = options.channels.includes("design-system") ? "design-system" : options.channels[0];
+        cells.push({ caseKey: c.key, cell: CONTROL, tool: options.defaultTool, armKey: CONTROL, directionArm: null, armFile: null, channel: controlChannel });
       }
       for (const [armKey, armFile] of c.armFiles) {
         if (!want(armKey)) continue;
