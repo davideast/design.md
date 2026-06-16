@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kettle and Leaf</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400&family=Libre+Franklin:wght@700&family=Source+Serif+4:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            border-radius: 0;
+        }
+
+        body {
+            background-color: #F4EFE6;
+            color: #1B1B1B;
+            padding: 64px;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        header {
+            margin-bottom: 32px;
+        }
+
+        h1 {
+            font-family: 'Libre Franklin', sans-serif;
+            font-size: 44px;
+            font-weight: 700;
+            line-height: 1.05;
+            letter-spacing: -0.01em;
+            text-transform: uppercase;
+        }
+
+        .welcome {
+            font-family: 'Libre Franklin', sans-serif;
+            font-size: 44px;
+            font-weight: 700;
+            line-height: 1.05;
+            letter-spacing: -0.01em;
+            margin-bottom: 8px;
+        }
+
+        .title-rule {
+            height: 4px;
+            background-color: #E8590C;
+            border: none;
+            margin: 16px 0 64px 0;
+            width: 100%;
+        }
+
+        main {
+            display: grid;
+            grid-template-columns: 1.2fr 1fr;
+            gap: 64px;
+            margin-bottom: 64px;
+        }
+
+        .track-listing h2 {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 12px;
+            font-weight: 400;
+            line-height: 1.4;
+            letter-spacing: 0.08em;
+            color: #6E675C;
+            margin-bottom: 32px;
+            display: flex;
+            align-items: center;
+        }
+
+        .track-listing h2::before {
+            content: "•";
+            color: #E8590C;
+            margin-right: 8px;
+            font-size: 18px;
+        }
+
+        .tea-item {
+            font-family: 'Source Serif 4', serif;
+            font-size: 16px;
+            line-height: 1.65;
+            margin-bottom: 16px;
+        }
+
+        .tea-name {
+            font-weight: 700;
+        }
+
+        .tea-origin, .tea-note {
+            font-weight: 400;
+        }
+
+        .tea-item span::after {
+            content: " — ";
+        }
+
+        .tea-item span:last-child::after {
+            content: "";
+        }
+
+        .liner-essay {
+            font-family: 'Source Serif 4', serif;
+            font-size: 16px;
+            font-weight: 700;
+            line-height: 1.65;
+            text-align: justify;
+        }
+
+        .catalogue-data {
+            margin-top: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 32px;
+        }
+
+        table {
+            border-collapse: collapse;
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 12px;
+            font-weight: 400;
+            line-height: 1.4;
+            letter-spacing: 0.08em;
+            color: #6E675C;
+            width: fit-content;
+        }
+
+        table td {
+            padding-right: 32px;
+            padding-bottom: 4px;
+            text-transform: uppercase;
+        }
+
+        .address {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 12px;
+            font-weight: 400;
+            line-height: 1.4;
+            letter-spacing: 0.08em;
+            color: #1B1B1B;
+            text-transform: uppercase;
+        }
+
+        footer {
+            margin-top: 32px;
+            padding-top: 8px;
+            border-top: 1px solid #6E675C;
+            display: flex;
+            justify-content: space-between;
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 12px;
+            font-weight: 400;
+            line-height: 1.4;
+            letter-spacing: 0.08em;
+            color: #6E675C;
+            text-transform: uppercase;
+        }
+
+        .footer-credits {
+            display: flex;
+            gap: 16px;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>Kettle and Leaf</h1>
+        <div class="welcome">A neighborhood tea house.</div>
+        <hr class="title-rule">
+    </header>
+
+    <main>
+        <section class="track-listing">
+            <h2>TODAY'S BREWED TEAS</h2>
+            <div class="tea-item">
+                <span class="tea-name">Amber Oolong</span>
+                <span class="tea-origin">Nantou, Taiwan</span>
+                <span class="tea-note">Toasted walnut and wildflower honey</span>
+            </div>
+            <div class="tea-item">
+                <span class="tea-name">Purple Leaf</span>
+                <span class="tea-origin">Mt. Kenya</span>
+                <span class="tea-note">Tart plum and sweet gardenia</span>
+            </div>
+            <div class="tea-item">
+                <span class="tea-name">High Mountain Green</span>
+                <span class="tea-origin">Alishan, Taiwan</span>
+                <span class="tea-note">Crisp asparagus and fresh lily</span>
+            </div>
+        </section>
+
+        <section class="liner-essay">
+            <p>Our tea is the result of long-distance relationships. Every spring, we travel from the high-elevation gardens of Nantou, Taiwan, to the volcanic red soils of Mt. Kenya. We source directly from smallholder farmers who prioritize soil health and traditional processing. These trips allow us to select specific lots that reflect the weather and character of each season, ensuring every cup poured in our shop tells the honest story of the land it came from.</p>
+        </section>
+    </main>
+
+    <div class="catalogue-data">
+        <table>
+            <tr>
+                <td>Mon–Fri</td>
+                <td>08:00 – 10:00</td>
+                <td>QUIET HOURS</td>
+            </tr>
+            <tr>
+                <td>Sat–Sun</td>
+                <td>14:00 – 16:00</td>
+                <td>QUIET HOURS</td>
+            </tr>
+        </table>
+        
+        <div class="address">412 Maple Row</div>
+    </div>
+
+    <footer>
+        <div class="footer-hours">MON–SAT 8AM–6PM / SUN 9AM–4PM</div>
+        <div class="footer-credits">
+            <span>PH: 555-0129</span>
+        </div>
+    </footer>
+
+</body>
+</html>

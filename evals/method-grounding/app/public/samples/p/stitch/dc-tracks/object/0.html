@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+
+<html class="scroll-smooth" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>The Tracks of Washington DC</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&amp;family=IBM+Plex+Mono:wght@400;500&amp;family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,700;1,8..60,400&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "track-terracotta": "#B5491C",
+                      "outline-variant": "#c2c8c2",
+                      "tertiary": "#300a00",
+                      "error": "#ba1a1a",
+                      "on-secondary-fixed-variant": "#524436",
+                      "secondary": "#6b5c4c",
+                      "background": "#fff9ee",
+                      "on-secondary-container": "#716252",
+                      "club-green": "#1B3026",
+                      "surface-container-highest": "#e8e2d8",
+                      "surface": "#fff9ee",
+                      "primary-container": "#1b3026",
+                      "surface-tint": "#4d6357",
+                      "weathered-slate": "#7A6A5A",
+                      "outline": "#727874",
+                      "on-primary-fixed-variant": "#364b40",
+                      "surface-dim": "#dfd9d0",
+                      "primary-fixed": "#d0e8d9",
+                      "on-error-container": "#93000a",
+                      "error-container": "#ffdad6",
+                      "surface-container": "#f3ede3",
+                      "secondary-fixed-dim": "#d7c3b0",
+                      "on-surface": "#1d1b16",
+                      "tertiary-fixed-dim": "#ffb59b",
+                      "surface-bright": "#fff9ee",
+                      "on-error": "#ffffff",
+                      "inverse-primary": "#b4ccbe",
+                      "on-tertiary-fixed": "#380d00",
+                      "on-secondary": "#ffffff",
+                      "heavy-cream": "#F2ECE2",
+                      "inverse-on-surface": "#f6f0e6",
+                      "on-tertiary-fixed-variant": "#812900",
+                      "tertiary-container": "#531700",
+                      "secondary-fixed": "#f4dfcb",
+                      "on-background": "#1d1b16",
+                      "surface-container-high": "#ede7dd",
+                      "primary": "#061b12",
+                      "secondary-container": "#f4dfcb",
+                      "on-surface-variant": "#424844",
+                      "surface-container-lowest": "#ffffff",
+                      "primary-fixed-dim": "#b4ccbe",
+                      "on-secondary-fixed": "#241a0e",
+                      "inverse-surface": "#33302a",
+                      "surface-container-low": "#f9f3e9",
+                      "on-primary-container": "#81988b",
+                      "on-primary-fixed": "#0a1f16",
+                      "tertiary-fixed": "#ffdbcf",
+                      "on-tertiary-container": "#e96f3f",
+                      "surface-variant": "#e8e2d8",
+                      "on-tertiary": "#ffffff",
+                      "on-primary": "#ffffff"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0rem",
+                      "lg": "0rem",
+                      "xl": "0rem",
+                      "full": "0rem"
+              },
+              "spacing": {
+                      "margin-page": "64px",
+                      "gutter": "24px",
+                      "section-gap": "128px",
+                      "margin-mobile": "24px",
+                      "baseline": "8px"
+              },
+              "fontFamily": {
+                      "label-caps": [
+                              "IBM Plex Mono"
+                      ],
+                      "headline-lg": [
+                              "DM Serif Display"
+                      ],
+                      "body-sm": [
+                              "\"Source Serif 4\""
+                      ],
+                      "display-lg": [
+                              "DM Serif Display"
+                      ],
+                      "data-mono": [
+                              "IBM Plex Mono"
+                      ],
+                      "body-md": [
+                              "\"Source Serif 4\""
+                      ],
+                      "headline-lg-mobile": [
+                              "DM Serif Display"
+                      ],
+                      "headline-md": [
+                              "DM Serif Display"
+                      ],
+                      "body-lg": [
+                              "\"Source Serif 4\""
+                      ]
+              },
+              "fontSize": {
+                      "label-caps": [
+                              "12px",
+                              {
+                                      "lineHeight": "1.5",
+                                      "letterSpacing": "0.15em",
+                                      "fontWeight": "500"
+                              }
+                      ],
+                      "headline-lg": [
+                              "48px",
+                              {
+                                      "lineHeight": "1.1",
+                                      "letterSpacing": "-0.01em",
+                                      "fontWeight": "400"
+                              }
+                      ],
+                      "body-sm": [
+                              "15px",
+                              {
+                                      "lineHeight": "1.6",
+                                      "fontWeight": "400"
+                              }
+                      ],
+                      "display-lg": [
+                              "64px",
+                              {
+                                      "lineHeight": "1.0",
+                                      "letterSpacing": "-0.02em",
+                                      "fontWeight": "400"
+                              }
+                      ],
+                      "data-mono": [
+                              "14px",
+                              {
+                                      "lineHeight": "1.5",
+                                      "fontWeight": "400"
+                              }
+                      ],
+                      "body-md": [
+                              "17px",
+                              {
+                                      "lineHeight": "1.7",
+                                      "fontWeight": "400"
+                              }
+                      ],
+                      "headline-lg-mobile": [
+                              "36px",
+                              {
+                                      "lineHeight": "1.1",
+                                      "fontWeight": "400"
+                              }
+                      ],
+                      "headline-md": [
+                              "32px",
+                              {
+                                      "lineHeight": "1.2",
+                                      "fontWeight": "400"
+                              }
+                      ],
+                      "body-lg": [
+                              "20px",
+                              {
+                                      "lineHeight": "1.6",
+                                      "fontWeight": "400"
+                              }
+                      ]
+              }
+            },
+          },
+        }
+      </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .fill-icon .material-symbols-outlined {
+             font-variation-settings: 'FILL' 1;
+        }
+        
+        /* Editorial geometry specifics */
+        .hairline-b { border-bottom: 1px solid #1B3026; }
+        .hairline-t { border-top: 1px solid #1B3026; }
+        .hairline-l { border-left: 1px solid #1B3026; }
+        .hairline-r { border-right: 1px solid #1B3026; }
+        .double-rule-t { border-top: 3px double #1B3026; }
+        
+        /* Typography utilities for precise rendering */
+        .text-rendering-optimize { text-rendering: optimizeLegibility; -webkit-font-smoothing: antialiased; }
+    </style>
+</head>
+<body class="bg-heavy-cream text-club-green antialiased text-rendering-optimize overflow-x-hidden selection:bg-track-terracotta selection:text-heavy-cream">
+<!-- Top AppBar (From JSON Blueprint) -->
+<header class="fixed top-0 w-full flex justify-between items-center px-margin-mobile md:px-margin-page h-baseline*8 z-50 bg-heavy-cream border-b border-club-green flat no shadows py-4">
+<div class="font-headline-md text-headline-md text-club-green font-bold tracking-tight">The Tracks of Washington DC</div>
+<div class="flex gap-6 items-center">
+<nav class="hidden md:flex gap-8 font-label-caps text-label-caps uppercase">
+<a class="text-track-terracotta hover:text-track-terracotta transition-colors cursor-pointer active:opacity-70" href="#introduction">Introduction</a>
+<a class="text-weathered-slate hover:text-track-terracotta transition-colors cursor-pointer active:opacity-70" href="#the-archives">The Archives</a>
+<a class="text-weathered-slate hover:text-track-terracotta transition-colors cursor-pointer active:opacity-70" href="#the-circuit">The Circuit</a>
+</nav>
+<button aria-label="menu" class="text-club-green hover:text-track-terracotta transition-colors cursor-pointer active:opacity-70">
+<span class="material-symbols-outlined text-2xl">menu</span>
+</button>
+</div>
+</header>
+<main class="pt-[65px] md:pt-[73px]">
+<!-- Panel 1: Hero -->
+<section class="relative w-full h-[calc(100vh-73px)] min-h-[600px] flex items-center justify-center border-b border-club-green bg-club-green" id="introduction">
+<div class="absolute inset-0 w-full h-full">
+<img alt="" class="w-full h-full object-cover opacity-80 mix-blend-multiply" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDvYW-MsbT5S1FnPT2tBp7A8ixhkDg9F0UEARmBFxLUjp1r3JOLwfQX6IIkgpC-T1mpaG8BJq9QCXelL9AYS2mPnwCA0zIjlTh_q6n4inWWYgOUsgg-0Zz2Y3DKs-GmD1HqGgbRjF6Y7aWWLividnIkZI9ieJSqobRdwjRKts8Z_g6_zDu1OvQU_5Bxsi2ls5KQHCam-uQWlOVZv9u5nzsvLUyEf6EsCJnUo6R_VuoAT6lYkH0vtIyDv6w3R8DxlhOU5jJEaJW632xP"/>
+</div>
+<div class="relative z-10 text-center px-margin-mobile md:px-margin-page max-w-4xl flex flex-col items-center gap-6">
+<h1 class="font-display-lg text-display-lg text-heavy-cream drop-shadow-[0_2px_4px_rgba(0,0,0,0.5)]">The Tracks of Washington DC</h1>
+<p class="font-body-lg text-body-lg text-heavy-cream/90 max-w-2xl mx-auto drop-shadow-[0_1px_2px_rgba(0,0,0,0.8)]">A field guide to the city's ovals — their surfaces, their histories, their regulars.</p>
+<div class="mt-8">
+<a class="inline-flex items-center justify-center px-8 py-4 bg-heavy-cream text-club-green font-label-caps text-label-caps uppercase tracking-widest hover:bg-track-terracotta hover:text-heavy-cream transition-colors duration-300 border border-transparent" href="#georgetown">
+                        Begin the Circuit
+                    </a>
+</div>
+</div>
+</section>
+<!-- Panel 2: Georgetown Waterfront Track -->
+<section class="relative w-full min-h-screen flex items-center border-b border-club-green bg-heavy-cream" id="georgetown">
+<div class="absolute inset-0 w-full h-full md:w-2/3 md:right-0 md:left-auto">
+<img alt="" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuB8LTIdc5GauwyW4x6EN1znnVeWuZ3Jx1SdEUXHuTq5QwwsRA0Eq0F0V1Yp6HQ1ZZiEIBMraLJflUJfdCLgggilWYctRfBho5YlogB21faGGwSPWei1Y3m6DuM7KCWSY8mMbzAsqPBGSR-cYDMVirLZ8OrVGeT8tpDLYrddgHA62EYHEFeZEB5Cs6Cdj6eFmG209LZyOe1yv2GPotcVThZ_vQ1i0Ws0_bg6iUzyYq1LrhEtqKo04qbP5lur7JoFyDCXlJHtkcMBOV9S"/>
+</div>
+<div class="relative z-10 w-full md:w-5/12 h-full flex flex-col justify-center bg-heavy-cream/95 md:bg-heavy-cream p-margin-mobile md:p-margin-page md:border-r border-club-green">
+<div class="flex flex-col gap-8 max-w-md">
+<div class="flex flex-col gap-2">
+<span class="font-label-caps text-label-caps text-weathered-slate uppercase tracking-widest hairline-b pb-2 inline-block w-max">GEORGETOWN WATERFRONT</span>
+<h2 class="font-headline-lg-mobile md:font-headline-lg text-headline-lg-mobile md:text-headline-lg text-club-green mt-4">The Morning Mist on the Potomac</h2>
+</div>
+<p class="font-body-md text-body-md text-club-green/80">A 400-meter loop that feels like a shared secret between the river and the runners. Here, the sunrise reflects off the water as much as the pavement.</p>
+<div class="mt-8 flex flex-col gap-3 hairline-t pt-6">
+<div class="flex justify-between font-data-mono text-data-mono text-club-green">
+<span class="text-weathered-slate uppercase">DISTANCE</span>
+<span>400M</span>
+</div>
+<div class="flex justify-between font-data-mono text-data-mono text-club-green border-t border-club-green/20 pt-3">
+<span class="text-weathered-slate uppercase">SURFACE</span>
+<span>ASPHALT</span>
+</div>
+<div class="flex justify-between font-data-mono text-data-mono text-club-green border-t border-club-green/20 pt-3">
+<span class="text-weathered-slate uppercase">WARD</span>
+<span>2</span>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Panel 3: Action Quote -->
+<section class="relative w-full h-[60vh] min-h-[500px] flex items-center justify-center border-b border-club-green bg-club-green overflow-hidden">
+<div class="absolute inset-0 w-full h-full">
+<img alt="" class="w-full h-full object-cover opacity-60 mix-blend-luminosity" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBF-GTeo1hK2EsqFhxdr6FrS3qjuo1_kz1kUPTB_bqBsFFCEYhOnc-k0RfUC17gRZNi3i28qA-wfiUUQEUtt0IAvZGbDFt8pEiekYbc4FLypz0QKgOKvFpUNiP16RPEAZEOZKxpXKhLqDqH1VaEbKc4HZmQFPd66OKU0m02lpto9OmizkilNWIG-D9PPkABQeRjb9NqvU7B3x09Kq1wkaOyNz6sXUvcYpgba7h-06UTnMNXL4HtUZmLcitH17v6Po1-sgfGXwl9fucM"/>
+</div>
+<div class="relative z-10 px-margin-mobile md:px-margin-page max-w-5xl text-center">
+<blockquote class="font-headline-lg-mobile md:font-headline-lg text-headline-lg-mobile md:text-headline-lg text-heavy-cream leading-tight">
+                    "The oval is a clock you run against, <br class="hidden md:block"/>and a mirror you run into."
+                </blockquote>
+</div>
+</section>
+<!-- Panel 4: Anacostia Park Track -->
+<section class="relative w-full min-h-screen flex items-center border-b border-club-green bg-heavy-cream justify-end" id="anacostia">
+<div class="absolute inset-0 w-full h-full md:w-2/3 md:left-0 md:right-auto">
+<img alt="" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAPR1kEOMCf2XR1DG_Dd9Qrc3eOqwegiEci94bcSEfiaUsVHMfxlWZhOj46vbT02Zpzp3jhmY9E6sQKz908YhSRROJJM-vkH6fPHt2MpaE8Ia2ohsq3ib_p_MDx82NXuX7oR5c8V0x6Zfe9M6kE4aI0dO_NpBhfYwZ5U5YQ7KiYbzEAd5Wz6qJMn3FIvY2vGb6UqrDnHbw-ql6RtvIiXLuMbv2S9siiSmLzwjtmU-YySZljvz4DmvOPIqAtgHZwJX6EHmo-nWqJkJ6V"/>
+</div>
+<div class="relative z-10 w-full md:w-5/12 h-full flex flex-col justify-center bg-heavy-cream/95 md:bg-heavy-cream p-margin-mobile md:p-margin-page md:border-l border-club-green">
+<div class="flex flex-col gap-8 max-w-md">
+<div class="flex flex-col gap-2">
+<span class="font-label-caps text-label-caps text-weathered-slate uppercase tracking-widest hairline-b pb-2 inline-block w-max">ANACOSTIA PARK</span>
+<h2 class="font-headline-lg-mobile md:font-headline-lg text-headline-lg-mobile md:text-headline-lg text-club-green mt-4">The Resilience of the East</h2>
+</div>
+<p class="font-body-md text-body-md text-club-green/80">Surrounded by the deep greens of the park, this track is where the neighborhood's heartbeat is fastest. A place of legacy and relentless forward motion.</p>
+<div class="mt-8 flex flex-col gap-3 hairline-t pt-6">
+<div class="flex justify-between font-data-mono text-data-mono text-club-green">
+<span class="text-weathered-slate uppercase">DISTANCE</span>
+<span>400M</span>
+</div>
+<div class="flex justify-between font-data-mono text-data-mono text-club-green border-t border-club-green/20 pt-3">
+<span class="text-weathered-slate uppercase">SURFACE</span>
+<span>RUBBER</span>
+</div>
+<div class="flex justify-between font-data-mono text-data-mono text-club-green border-t border-club-green/20 pt-3">
+<span class="text-weathered-slate uppercase">WARD</span>
+<span>8</span>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Panel 5: Map -->
+<section class="relative w-full min-h-screen flex flex-col items-center justify-center border-b border-club-green bg-heavy-cream py-section-gap px-margin-mobile md:px-margin-page" id="the-circuit">
+<div class="w-full max-w-6xl flex flex-col gap-12 items-center">
+<div class="text-center flex flex-col gap-4">
+<h2 class="font-display-lg text-display-lg text-club-green">The Washington Circuit</h2>
+<div class="w-24 h-px bg-track-terracotta mx-auto"></div>
+</div>
+<div class="w-full aspect-[4/3] md:aspect-[16/9] border border-club-green p-4 bg-white relative">
+<img alt="" class="w-full h-full object-cover grayscale opacity-90 mix-blend-multiply" data-location="Washington DC" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAUlsPZWEGACIUzIidwHEEiM_YBrM6AbQwNkTML_xwzFu83NB7dFsBN0bJqQccW2P8jvl9D5k8CaNUvrEMJ1UlnAKDphU-GzOJWnX9DKdQ0VyGvmPLfFGwfB4pnyDi-IjGvOr4hAO1UhmsIWpAn7jZKDNUw7sKU3-zIITh7AaMb1GZE9C7qzzgWV2tOz_KxHLriOUBZpDt-LKmmbiVDH_hB1DaacCWX0Wcxd9YfONeqphaTwUjhaRbXiqBrgPKgpqNxnochLw1yzUp7"/>
+<div class="absolute bottom-8 right-8 bg-heavy-cream border border-club-green p-4 hidden md:block">
+<div class="font-label-caps text-label-caps text-club-green uppercase mb-2 hairline-b pb-1">Legend</div>
+<div class="flex flex-col gap-2 font-data-mono text-[10px] text-weathered-slate">
+<div class="flex items-center gap-2"><div class="w-3 h-3 bg-club-green"></div><span>Rubber Surface</span></div>
+<div class="flex items-center gap-2"><div class="w-3 h-3 bg-weathered-slate"></div><span>Asphalt/Concrete</span></div>
+<div class="flex items-center gap-2"><div class="w-3 h-3 bg-track-terracotta"></div><span>Cinder/Dirt</span></div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Panel 6: The Guide (Newsletter) -->
+<section class="relative w-full min-h-[60vh] flex items-center justify-center bg-heavy-cream overflow-hidden">
+<div class="absolute inset-0 w-full h-full opacity-30">
+<img alt="" class="w-full h-full object-cover mix-blend-multiply" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAFmjatOVCpjr059WapXN6Yit_cYvvPWdHCUCMoiPxTgsCEF1KMsVdWMcW4bHKnZibQ8BBRb6HD3prp4HkF8rhYihVUg0H4Eo8UqPaylHBHB0-LIvxs_NKdSvnTM0r-csQcSZEUk5t-4op-cXxWz4xKxkPxaVVedIvW8YcmwmFHPkEQRAY4mq2LX7MrKelesD0bs1YAzwwrStKTy80o2__MsSoaXj7LdRrKlnhZAM-85nxIx02XAPcJGJwJH3BlWNnX3rx_8t1Pr6Dt"/>
+</div>
+<div class="relative z-10 w-full max-w-xl mx-auto px-margin-mobile md:px-margin-page py-24 text-center flex flex-col items-center gap-8">
+<div class="w-16 h-16 border border-club-green flex items-center justify-center rotate-45 mb-4">
+<span class="material-symbols-outlined text-3xl text-track-terracotta -rotate-45">mail</span>
+</div>
+<h2 class="font-headline-lg-mobile md:font-headline-lg text-headline-lg-mobile md:text-headline-lg text-club-green">Know every oval.</h2>
+<p class="font-body-md text-body-md text-club-green/80">Subscribe to the dispatch. Dispatches on new surfaces, local records, and the quietest times to run.</p>
+<form class="w-full flex flex-col md:flex-row gap-0 mt-4 border border-club-green bg-heavy-cream">
+<input class="flex-grow bg-transparent border-none focus:ring-0 font-label-caps text-label-caps text-club-green placeholder:text-weathered-slate p-4 outline-none text-center md:text-left" placeholder="YOUR EMAIL ADDRESS" required="" type="email"/>
+<button class="bg-club-green text-heavy-cream font-label-caps text-label-caps uppercase px-8 py-4 hover:bg-track-terracotta transition-colors border-l-0 md:border-l border-t md:border-t-0 border-club-green" type="submit">
+                        Get the Guide
+                    </button>
+</form>
+</div>
+</section>
+</main>
+<!-- Footer (From JSON Blueprint) -->
+<footer class="flex flex-col items-center gap-baseline py-section-gap px-margin-page w-full bg-heavy-cream border-t-2 border-double border-club-green">
+<div class="font-label-caps text-label-caps text-club-green mb-8 tracking-widest">THE TRACKS OF WASHINGTON DC</div>
+<div class="flex flex-wrap justify-center gap-8 mb-12">
+<a class="font-data-mono text-data-mono text-weathered-slate hover:text-club-green underline transition-colors" href="#">Archives</a>
+<a class="font-data-mono text-data-mono text-weathered-slate hover:text-club-green underline transition-colors" href="#">The Circuit</a>
+<a class="font-data-mono text-data-mono text-weathered-slate hover:text-club-green underline transition-colors" href="#">Terms</a>
+<a class="font-data-mono text-data-mono text-weathered-slate hover:text-club-green underline transition-colors" href="#">Privacy</a>
+</div>
+<div class="font-data-mono text-data-mono text-weathered-slate text-xs uppercase opacity-70">
+            © MCMXXIV THE TRACKS OF WASHINGTON DC. ALL RIGHTS RESERVED.
+        </div>
+</footer>
+</body></html>

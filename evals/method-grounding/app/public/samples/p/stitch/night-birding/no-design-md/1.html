@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Urban Nocturnal - Field Notes</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;700;800&amp;family=JetBrains+Mono:wght@500;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+  tailwind.config = {
+    darkMode: "class",
+    theme: {
+      extend: {
+        "colors": {
+                "primary-container": "#ffd300",
+                "surface-tint": "#ecc300",
+                "error-container": "#93000a",
+                "on-error-container": "#ffdad6",
+                "surface-variant": "#353436",
+                "tertiary-container": "#d7d6da",
+                "error": "#ffb4ab",
+                "on-secondary-fixed-variant": "#004f54",
+                "primary": "#fff3d4",
+                "on-secondary-fixed": "#002022",
+                "surface-container-lowest": "#0e0e0f",
+                "on-tertiary-container": "#5c5d60",
+                "tertiary": "#f4f2f7",
+                "on-secondary-container": "#00686f",
+                "surface-container": "#201f20",
+                "outline": "#999077",
+                "on-tertiary": "#2f3033",
+                "on-error": "#690005",
+                "on-tertiary-fixed-variant": "#46474a",
+                "surface-container-low": "#1c1b1c",
+                "tertiary-fixed-dim": "#c7c6ca",
+                "inverse-surface": "#e5e2e3",
+                "inverse-primary": "#715c00",
+                "primary-fixed-dim": "#ecc300",
+                "on-tertiary-fixed": "#1a1b1e",
+                "secondary": "#d3fbff",
+                "primary-fixed": "#ffe17a",
+                "on-primary-fixed": "#231b00",
+                "on-surface-variant": "#d0c6ab",
+                "on-primary": "#3b2f00",
+                "surface": "#131314",
+                "inverse-on-surface": "#313031",
+                "secondary-fixed": "#7df4ff",
+                "on-primary-container": "#705b00",
+                "surface-dim": "#131314",
+                "background": "#131314",
+                "on-surface": "#e5e2e3",
+                "outline-variant": "#4d4632",
+                "on-background": "#e5e2e3",
+                "secondary-container": "#00eefc",
+                "surface-bright": "#3a393a",
+                "tertiary-fixed": "#e3e2e6",
+                "surface-container-highest": "#353436",
+                "on-secondary": "#00363a",
+                "on-primary-fixed-variant": "#554500",
+                "surface-container-high": "#2a2a2b",
+                "secondary-fixed-dim": "#00dbe9"
+        },
+        "borderRadius": {
+                "DEFAULT": "0.125rem",
+                "lg": "0.25rem",
+                "xl": "0.5rem",
+                "full": "0.75rem"
+        },
+        "spacing": {
+                "margin-mobile": "16px",
+                "gutter": "16px",
+                "xs": "4px",
+                "base": "4px",
+                "sm": "8px",
+                "lg": "24px",
+                "xl": "48px",
+                "md": "16px",
+                "margin-desktop": "32px"
+        },
+        "fontFamily": {
+                "headline-lg": ["Hanken Grotesk"],
+                "data-mono": ["JetBrains Mono"],
+                "headline-lg-mobile": ["Hanken Grotesk"],
+                "label-caps": ["JetBrains Mono"],
+                "display": ["Hanken Grotesk"],
+                "body-md": ["Hanken Grotesk"]
+        },
+        "fontSize": {
+                "headline-lg": ["32px", { "lineHeight": "1.2", "fontWeight": "700" }],
+                "data-mono": ["14px", { "lineHeight": "1.4", "letterSpacing": "0.02em", "fontWeight": "500" }],
+                "headline-lg-mobile": ["24px", { "lineHeight": "1.2", "fontWeight": "700" }],
+                "label-caps": ["12px", { "lineHeight": "1", "letterSpacing": "0.1em", "fontWeight": "700" }],
+                "display": ["40px", { "lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "800" }],
+                "body-md": ["16px", { "lineHeight": "1.6", "fontWeight": "400" }]
+        }
+},
+    },
+  }
+</script>
+<style>
+  body {
+    background-color: #0A0A0B; /* Deepest dark for body */
+    color: #e5e2e3;
+  }
+  .card-border {
+    border: 1px solid rgba(255, 211, 0, 0.2); /* Muted primary border */
+  }
+  .focus-border:focus-within {
+    border-bottom: 1px solid #00eefc; /* Cyan glow on focus */
+  }
+  .status-pip {
+    box-shadow: 0 0 8px 2px rgba(255, 211, 0, 0.6);
+  }
+</style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+</head>
+<body class="bg-background text-on-background font-body-md antialiased pb-24 md:pb-0">
+<!-- TopAppBar -->
+<header class="w-full top-0 sticky bg-background dark:bg-background border-b border-outline-variant/20 flex justify-between items-center px-margin-mobile py-sm w-full z-50">
+<button class="text-on-surface-variant hover:bg-surface-variant/50 transition-colors active:scale-95 duration-150 p-2 rounded-full">
+<span class="material-symbols-outlined">nightlight</span>
+</button>
+<h1 class="font-display text-display text-primary-container tracking-tighter">Urban Nocturnal</h1>
+<button class="text-on-surface-variant hover:bg-surface-variant/50 transition-colors active:scale-95 duration-150 p-2 rounded-full">
+<span class="material-symbols-outlined">sensors</span>
+</button>
+</header>
+<main class="max-w-[1200px] mx-auto px-margin-mobile md:px-margin-desktop py-lg space-y-lg">
+<!-- Moon & Light Conditions Section -->
+<section class="bg-surface-container rounded-lg p-md card-border">
+<h2 class="font-label-caps text-label-caps text-on-surface-variant mb-md uppercase tracking-widest">Environmental Conditions</h2>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-md">
+<div class="flex items-center space-x-md">
+<span class="material-symbols-outlined text-primary-container text-3xl" style="font-variation-settings: 'FILL' 1;">bedtime</span>
+<div>
+<p class="font-data-mono text-data-mono text-on-background">Waxing Gibbous</p>
+<p class="font-label-caps text-label-caps text-on-surface-variant mt-xs">82% Illumination</p>
+</div>
+</div>
+<div class="flex items-center space-x-md">
+<span class="material-symbols-outlined text-primary-container text-3xl">routine</span>
+<div>
+<p class="font-data-mono text-data-mono text-on-background">Moonrise</p>
+<p class="font-label-caps text-label-caps text-on-surface-variant mt-xs">17:42</p>
+</div>
+</div>
+<div class="flex items-center space-x-md">
+<span class="material-symbols-outlined text-primary-container text-3xl">blur_on</span>
+<div>
+<p class="font-data-mono text-data-mono text-on-background">Bortle 8</p>
+<p class="font-label-caps text-label-caps text-on-surface-variant mt-xs">Inner City Sky</p>
+</div>
+</div>
+</div>
+</section>
+<!-- Sightings Log (Recent) -->
+<section>
+<div class="flex items-center justify-between mb-md">
+<h2 class="font-headline-lg-mobile text-headline-lg-mobile md:font-headline-lg md:text-headline-lg text-primary-container">Recent Logs</h2>
+<button class="bg-primary-container text-on-primary-container font-label-caps text-label-caps px-4 py-2 rounded uppercase tracking-widest hover:bg-surface-tint transition-colors active:scale-95 flex items-center space-x-2">
+<span class="material-symbols-outlined text-sm">add</span>
+<span>New Log</span>
+</button>
+</div>
+<div class="space-y-sm">
+<!-- Log Entry 1 -->
+<article class="bg-[#1A1B1E] rounded-lg p-md card-border flex flex-col md:flex-row md:items-center justify-between gap-md group hover:border-primary-container/50 transition-colors">
+<div class="flex-1">
+<div class="flex items-center space-x-sm mb-sm">
+<div class="w-2 h-2 rounded-full bg-primary-container status-pip"></div>
+<span class="font-data-mono text-data-mono text-primary-container">23:14</span>
+<span class="font-data-mono text-data-mono text-on-surface-variant block md:inline">| West Side Railyards</span>
+</div>
+<h3 class="font-body-md text-body-md text-on-background font-bold mb-xs">Common Nighthawk (2)</h3>
+<p class="font-body-md text-body-md text-on-surface-variant">Aerial foraging under stadium lights; erratic, bat-like flight pattern.</p>
+</div>
+<button class="text-on-surface-variant hover:text-primary-container transition-colors hidden md:block opacity-0 group-hover:opacity-100">
+<span class="material-symbols-outlined">arrow_forward</span>
+</button>
+</article>
+<!-- Log Entry 2 (Dummy) -->
+<article class="bg-[#1A1B1E] rounded-lg p-md card-border flex flex-col md:flex-row md:items-center justify-between gap-md group hover:border-primary-container/50 transition-colors">
+<div class="flex-1">
+<div class="flex items-center space-x-sm mb-sm">
+<div class="w-2 h-2 rounded-full bg-surface-variant"></div>
+<span class="font-data-mono text-data-mono text-on-surface-variant">21:05</span>
+<span class="font-data-mono text-data-mono text-on-surface-variant block md:inline">| Central Park South</span>
+</div>
+<h3 class="font-body-md text-body-md text-on-background font-bold mb-xs">Raccoon (1)</h3>
+<p class="font-body-md text-body-md text-on-surface-variant">Scavenging near vendor carts.</p>
+</div>
+<button class="text-on-surface-variant hover:text-primary-container transition-colors hidden md:block opacity-0 group-hover:opacity-100">
+<span class="material-symbols-outlined">arrow_forward</span>
+</button>
+</article>
+</div>
+</section>
+<!-- Tonight’s Likely Species -->
+<section>
+<h2 class="font-headline-lg-mobile text-headline-lg-mobile md:font-headline-lg md:text-headline-lg text-primary-container mb-md">Likely Tonight</h2>
+<div class="flex overflow-x-auto space-x-md pb-sm snap-x snap-mandatory hide-scrollbar">
+<!-- Species Card 1 -->
+<div class="snap-start shrink-0 w-72 bg-surface-container rounded-lg card-border overflow-hidden">
+<div class="h-32 bg-surface-variant relative overflow-hidden group">
+<img alt="Black-crowned Night Heron" class="w-full h-full object-cover opacity-80 group-hover:opacity-100 transition-opacity duration-300" data-alt="A detailed, moody photograph of a Black-crowned Night Heron perched on a concrete waterfront piling at night. The scene is illuminated by distant, warm sodium vapor city lights creating deep shadows and stark highlights on the bird's plumage. The overall aesthetic is gritty, technical, and atmospheric, utilizing a palette of deep blacks, charcoal greys, and electric yellow accents reflecting off the rippling water below." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAvs3xecQBLQq1tthKBpADZGNHdcaKQ17wW0BcfMNYaYCk7vw19mkuK22l_4TKwhWnXOH6bV2rYS1JfR4Py3BhO6dTMbBe9v8V2tNZ4hw9KPIEODQITzcCu5jQFs_G2WtOsNf9oaUXW-Ms5mLOUKuDnIH_r0J5xFBcGurVqmVJUUTF5bCo1wd86VPT4HKrgmxrHpdwipUqMCblxvf0An2XzFLfeaWpArr1deuXlDZgRMIwBaNDAqlEWOTHRiWJEp_Odc58fvVhI3VFb"/>
+<div class="absolute inset-0 bg-gradient-to-t from-surface-container to-transparent opacity-80"></div>
+</div>
+<div class="p-md relative">
+<h3 class="font-body-md text-body-md text-on-background font-bold mb-xs">Black-crowned Night Heron</h3>
+<p class="font-data-mono text-data-mono text-primary-container mb-sm text-sm">Nycticorax nycticorax</p>
+<div class="space-y-xs">
+<p class="font-label-caps text-label-caps text-on-surface-variant">Context:</p>
+<p class="font-body-md text-body-md text-on-background text-sm">Waterfront construction, park ponds. Field Marks: Stocky build, black crown and back, contrasting grey wings. In Flight: Thick neck tucked, feet barely extending beyond tail.</p>
+</div>
+</div>
+</div>
+<!-- Species Card 2 (Dummy) -->
+<div class="snap-start shrink-0 w-72 bg-surface-container rounded-lg card-border overflow-hidden">
+<div class="h-32 bg-surface-variant relative overflow-hidden group">
+<img alt="Opossum" class="w-full h-full object-cover opacity-80 group-hover:opacity-100 transition-opacity duration-300" data-alt="A gritty, low-light photograph of an opossum navigating a dark urban alleyway. The scene is lit by a single, flickering streetlamp overhead, casting long, harsh shadows against a brick wall. The aesthetic is technical and nocturnal, emphasizing high contrast between the deep black environment and the pale, stark white of the opossum's face, with subtle cyan reflections in wet puddles on the ground." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAoX4VJHK0F9aPKIFMgLoyt8Q0Z1SA3QRUUx_oqIZZ5BMNV12oY6YaONg-zvNc-zlM0ltG703fshJzs5w__9q44hw2SZ7ZXqTbme-vhDqWmvS2LX-rOqZlTs5L_fkYeAKwIuqyI3XqP4YKXh74eF2uy5YIJE4gvNenSFaUO-Gq5NqPc0MsjG-l1zhdGPH1E2O_m6_e_zZziGcMwU8iWwKnlY6n3uLj_qWvkOinNjvCaQUFRm_EvLBg2sTA26keNx5E_cU1Wlm69D33P"/>
+<div class="absolute inset-0 bg-gradient-to-t from-surface-container to-transparent opacity-80"></div>
+</div>
+<div class="p-md relative">
+<h3 class="font-body-md text-body-md text-on-background font-bold mb-xs">Virginia Opossum</h3>
+<p class="font-data-mono text-data-mono text-primary-container mb-sm text-sm">Didelphis virginiana</p>
+<div class="space-y-xs">
+<p class="font-label-caps text-label-caps text-on-surface-variant">Context:</p>
+<p class="font-body-md text-body-md text-on-background text-sm">Alleyways, dense shrubbery near waste bins.</p>
+</div>
+</div>
+</div>
+</div>
+<style>
+        .hide-scrollbar::-webkit-scrollbar { display: none; }
+        .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+      </style>
+</section>
+<!-- Guide to Listening -->
+<section class="bg-surface-container rounded-lg p-md card-border">
+<h2 class="font-headline-lg-mobile text-headline-lg-mobile md:font-headline-lg md:text-headline-lg text-primary-container mb-md">The Urban Filter</h2>
+<p class="font-body-md text-body-md text-on-surface-variant mb-lg">A guide to auditory observation in high-noise environments.</p>
+<div class="space-y-md">
+<!-- Step 1 -->
+<div class="flex items-start space-x-md">
+<div class="w-8 h-8 rounded border border-primary-container/50 flex items-center justify-center shrink-0">
+<span class="font-data-mono text-data-mono text-primary-container">01</span>
+</div>
+<div>
+<h3 class="font-body-md text-body-md text-on-background font-bold mb-xs">The Base</h3>
+<p class="font-body-md text-body-md text-on-surface-variant text-sm">Ignore the low-frequency rumble of the expressway or subway vents.</p>
+</div>
+</div>
+<!-- Step 2 -->
+<div class="flex items-start space-x-md">
+<div class="w-8 h-8 rounded border border-primary-container/50 flex items-center justify-center shrink-0">
+<span class="font-data-mono text-data-mono text-primary-container">02</span>
+</div>
+<div>
+<h3 class="font-body-md text-body-md text-on-background font-bold mb-xs">The Signal</h3>
+<p class="font-body-md text-body-md text-on-surface-variant text-sm">Focus on the 'Peent'—a sharp, nasal electric buzz cutting through the hum.</p>
+</div>
+</div>
+<!-- Step 3 -->
+<div class="flex items-start space-x-md">
+<div class="w-8 h-8 rounded border border-primary-container/50 flex items-center justify-center shrink-0">
+<span class="font-data-mono text-data-mono text-primary-container">03</span>
+</div>
+<div>
+<h3 class="font-body-md text-body-md text-on-background font-bold mb-xs">The Physical</h3>
+<p class="font-body-md text-body-md text-on-surface-variant text-sm">Listen for the 'Whoosh' of air through primary feathers during a territorial dive.</p>
+</div>
+</div>
+</div>
+</section>
+</main>
+<!-- BottomNavBar (Mobile Only) -->
+<nav class="fixed bottom-0 w-full z-50 md:hidden bg-surface-container dark:bg-surface-container border-t border-outline-variant/20 flex justify-around items-center px-4 h-16 w-full shadow-[0_-4px_20px_rgba(0,0,0,0.5)]">
+<button class="flex flex-col items-center justify-center bg-primary-container text-on-primary-container rounded-full px-4 py-1 active:scale-90 duration-200">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">edit_note</span>
+<span class="font-label-caps text-label-caps mt-1">Logs</span>
+</button>
+<button class="flex flex-col items-center justify-center text-on-surface-variant hover:text-primary-container transition-all active:scale-90 duration-200">
+<span class="material-symbols-outlined">menu_book</span>
+<span class="font-label-caps text-label-caps mt-1">Guide</span>
+</button>
+<button class="flex flex-col items-center justify-center text-on-surface-variant hover:text-primary-container transition-all active:scale-90 duration-200">
+<span class="material-symbols-outlined">explore</span>
+<span class="font-label-caps text-label-caps mt-1">Map</span>
+</button>
+<button class="flex flex-col items-center justify-center text-on-surface-variant hover:text-primary-container transition-all active:scale-90 duration-200">
+<span class="material-symbols-outlined">person</span>
+<span class="font-label-caps text-label-caps mt-1">Profile</span>
+</button>
+</nav>
+</body></html>

@@ -1,0 +1,429 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Tracks of Washington DC</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --color-terracotta: #C05A3E;
+            --color-cream: #F9F7F2;
+            --color-charcoal: #1A1A1A;
+            --color-slate: #4A4A4A;
+            --spacing-unit: 1rem;
+            --font-serif: 'Playfair Display', serif;
+            --font-sans: 'Inter', sans-serif;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: var(--color-cream);
+            color: var(--color-charcoal);
+            font-family: var(--font-sans);
+            scroll-snap-type: y mandatory;
+            overflow-y: scroll;
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        section {
+            height: 100vh;
+            width: 100vw;
+            scroll-snap-align: start;
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* Hero Section */
+        .hero {
+            background: linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.3)), url('https://images.unsplash.com/photo-1526676037777-05a232554f77?q=80&w=2070') center/cover no-repeat;
+            color: white;
+            text-align: center;
+            flex-direction: column;
+        }
+
+        .hero h1 {
+            font-family: var(--font-serif);
+            font-size: clamp(3rem, 8vw, 6rem);
+            font-weight: 400;
+            margin-bottom: 1.5rem;
+            max-width: 900px;
+            line-height: 1.1;
+        }
+
+        .hero p {
+            font-size: 1.25rem;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+            font-weight: 300;
+            margin-bottom: 3rem;
+            max-width: 600px;
+        }
+
+        .cta-button {
+            padding: 1rem 2.5rem;
+            background: transparent;
+            border: 1px solid white;
+            color: white;
+            text-transform: uppercase;
+            letter-spacing: 0.2em;
+            font-size: 0.8rem;
+            cursor: pointer;
+            transition: all 0.4s ease;
+            text-decoration: none;
+        }
+
+        .cta-button:hover {
+            background: white;
+            color: var(--color-charcoal);
+        }
+
+        /* Editorial Panels (2 & 4) */
+        .editorial-panel {
+            display: flex;
+            width: 100%;
+            height: 100%;
+        }
+
+        .editorial-image {
+            flex: 1;
+            height: 100%;
+            background-size: cover;
+            background-position: center;
+        }
+
+        .editorial-content {
+            flex: 1;
+            padding: 10% 8%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            background-color: var(--color-cream);
+        }
+
+        .eyebrow {
+            font-size: 0.8rem;
+            letter-spacing: 0.3em;
+            text-transform: uppercase;
+            color: var(--color-terracotta);
+            margin-bottom: 2rem;
+            font-weight: 600;
+        }
+
+        .editorial-content h2 {
+            font-family: var(--font-serif);
+            font-size: clamp(2rem, 4vw, 3.5rem);
+            margin-bottom: 2rem;
+            line-height: 1.2;
+            color: var(--color-charcoal);
+        }
+
+        .editorial-content p {
+            font-size: 1.15rem;
+            line-height: 1.8;
+            color: var(--color-slate);
+            margin-bottom: 3rem;
+            max-width: 450px;
+        }
+
+        .data-labels {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            border-top: 1px solid rgba(0,0,0,0.1);
+            padding-top: 2rem;
+        }
+
+        .data-item span:first-child {
+            display: block;
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: #999;
+            margin-bottom: 0.5rem;
+        }
+
+        .data-item span:last-child {
+            font-family: var(--font-serif);
+            font-size: 1.1rem;
+            font-style: italic;
+        }
+
+        /* Cinematic Quote Section (3) */
+        .cinematic {
+            background: linear-gradient(rgba(0,0,0,0.2), rgba(0,0,0,0.4)), url('https://images.unsplash.com/photo-1461896759624-f6b502405995?q=80&w=2070') center/cover no-repeat;
+            display: flex;
+            align-items: flex-end;
+            padding-bottom: 10vh;
+        }
+
+        .pull-quote {
+            color: white;
+            font-family: var(--font-serif);
+            font-size: clamp(1.5rem, 3vw, 2.5rem);
+            text-align: center;
+            width: 100%;
+            padding: 0 10%;
+            font-style: italic;
+            opacity: 0.9;
+        }
+
+        /* Map Section (5) */
+        .map-section {
+            background-color: #f0ede8;
+            flex-direction: column;
+            padding: 5% 10%;
+        }
+
+        .map-container {
+            width: 100%;
+            max-width: 1100px;
+            height: 60vh;
+            position: relative;
+            background: white;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.05);
+            border: 1px solid #e0e0e0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-top: 2rem;
+        }
+
+        .map-header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .map-header h2 {
+            font-family: var(--font-serif);
+            font-size: 2.5rem;
+        }
+
+        .map-svg {
+            width: 90%;
+            height: 90%;
+            stroke: #ddd;
+            stroke-width: 1;
+            fill: none;
+        }
+
+        .map-point {
+            position: absolute;
+            cursor: pointer;
+        }
+
+        .point-dot {
+            width: 10px;
+            height: 10px;
+            background: var(--color-terracotta);
+            border-radius: 50%;
+        }
+
+        .point-label {
+            position: absolute;
+            top: 15px;
+            left: -50px;
+            width: 120px;
+            text-align: center;
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            font-weight: 600;
+        }
+
+        .point-details {
+            font-size: 0.6rem;
+            color: #777;
+            font-weight: 400;
+            margin-top: 2px;
+        }
+
+        /* Newsletter Section (6) */
+        .newsletter {
+            background-color: var(--color-charcoal);
+            color: var(--color-cream);
+            flex-direction: column;
+            text-align: center;
+        }
+
+        .newsletter h2 {
+            font-family: var(--font-serif);
+            font-size: 4rem;
+            margin-bottom: 3rem;
+        }
+
+        .signup-form {
+            display: flex;
+            gap: 0;
+            border-bottom: 1px solid rgba(255,255,255,0.3);
+            width: 100%;
+            max-width: 500px;
+        }
+
+        .signup-form input {
+            background: transparent;
+            border: none;
+            color: white;
+            padding: 1rem 0;
+            font-family: var(--font-sans);
+            font-size: 1rem;
+            flex-grow: 1;
+            outline: none;
+        }
+
+        .signup-form button {
+            background: transparent;
+            border: none;
+            color: var(--color-terracotta);
+            text-transform: uppercase;
+            letter-spacing: 0.2em;
+            font-weight: 600;
+            padding: 1rem 0 1rem 2rem;
+            cursor: pointer;
+        }
+
+        /* Responsive Layouts */
+        @media (max-width: 768px) {
+            .editorial-panel {
+                flex-direction: column !important;
+            }
+            .editorial-image {
+                height: 40%;
+            }
+            .editorial-content {
+                padding: 2rem;
+            }
+            .data-labels {
+                grid-template-columns: 1fr;
+                gap: 1rem;
+            }
+            .hero h1 { font-size: 3rem; }
+            .newsletter h2 { font-size: 2.5rem; }
+        }
+
+        .mirror {
+            flex-direction: row-reverse;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- 1. Hero -->
+    <section class="hero">
+        <p>The Tracks of Washington DC</p>
+        <h1>A field guide to the city's ovals — their surfaces, their histories, their regulars.</h1>
+        <a href="#georgetown" class="cta-button">Begin the Circuit</a>
+    </section>
+
+    <!-- 2. Georgetown Waterfront Track -->
+    <section id="georgetown" class="editorial-panel">
+        <div class="editorial-image" style="background-image: url('https://images.unsplash.com/photo-1596720426673-e4774457fd39?q=80&w=2000');"></div>
+        <div class="editorial-content">
+            <div class="eyebrow">Georgetown Waterfront</div>
+            <h2>The River’s Edge</h2>
+            <p>Where the Potomac mist meets the morning heat. This tucked-away circuit offers a rare reprieve from the city's bustle, favored by the sunrise crowd and those who seek the rhythm of the water alongside their pace.</p>
+            <div class="data-labels">
+                <div class="data-item">
+                    <span>Distance</span>
+                    <span>400 Meters</span>
+                </div>
+                <div class="data-item">
+                    <span>Surface</span>
+                    <span>Synthetic</span>
+                </div>
+                <div class="data-item">
+                    <span>Ward</span>
+                    <span>Two</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 3. Cinematic Quote -->
+    <section class="cinematic">
+        <div class="pull-quote">"The oval is the only place where the start is the finish and the journey is the point."</div>
+    </section>
+
+    <!-- 4. Anacostia Park Track -->
+    <section class="editorial-panel mirror">
+        <div class="editorial-image" style="background-image: url('https://images.unsplash.com/photo-1552674605-db6ffd4facb5?q=80&w=2070');"></div>
+        <div class="editorial-content">
+            <div class="eyebrow">Anacostia Park</div>
+            <h2>The Community Hearth</h2>
+            <p>A sprawling expanse under the vast DC sky. Here, the track is more than a lane—it’s a meeting place where generations of the city’s fastest legs have left their mark against a backdrop of sweeping parkland.</p>
+            <div class="data-labels">
+                <div class="data-item">
+                    <span>Distance</span>
+                    <span>400 Meters</span>
+                </div>
+                <div class="data-item">
+                    <span>Surface</span>
+                    <span>Rubberized</span>
+                </div>
+                <div class="data-item">
+                    <span>Ward</span>
+                    <span>Eight</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 5. The Washington Circuit Map -->
+    <section class="map-section">
+        <div class="map-header">
+            <div class="eyebrow">The Circuit</div>
+            <h2>A Geography of Pace</h2>
+        </div>
+        <div class="map-container">
+            <svg class="map-svg" viewBox="0 0 800 500">
+                <!-- Abstract DC Shape -->
+                <path d="M400,50 L700,350 L400,450 L100,350 Z" opacity="0.1" fill="var(--color-charcoal)"/>
+            </svg>
+            
+            <div class="map-point" style="top: 20%; left: 45%;">
+                <div class="point-dot"></div>
+                <div class="point-label">Cardozo High<div class="point-details">400m | Polyurethane</div></div>
+            </div>
+
+            <div class="map-point" style="top: 35%; left: 55%;">
+                <div class="point-dot"></div>
+                <div class="point-label">Banneker<div class="point-details">400m | Synthetic</div></div>
+            </div>
+
+            <div class="map-point" style="top: 45%; left: 25%;">
+                <div class="point-dot"></div>
+                <div class="point-label">Georgetown<div class="point-details">400m | Synthetic</div></div>
+            </div>
+
+            <div class="map-point" style="top: 75%; left: 70%;">
+                <div class="point-dot"></div>
+                <div class="point-label">Anacostia<div class="point-details">400m | Rubber</div></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 6. The Guide / Newsletter -->
+    <section class="newsletter">
+        <div class="eyebrow" style="color: white; opacity: 0.6;">The Newsletter</div>
+        <h2>Know every oval.</h2>
+        <div class="signup-form">
+            <input type="email" placeholder="Email Address">
+            <button type="submit">Get the Guide</button>
+        </div>
+        <div style="margin-top: 5rem; font-size: 0.7rem; opacity: 0.4; letter-spacing: 0.1em; text-transform: uppercase;">
+            © 2024 The Tracks of Washington DC • A Prestige Editorial Publication
+        </div>
+    </section>
+
+</body>
+</html>

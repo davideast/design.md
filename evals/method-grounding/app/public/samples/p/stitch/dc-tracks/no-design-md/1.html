@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+
+<html class="scroll-smooth" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>The Tracks of Washington DC</title>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400..900;1,6..96,400..900&amp;family=Hanken+Grotesk:ital,wght@0,100..900;1,100..900&amp;family=Source+Serif+4:ital,opsz,wght@0,8..60,200..900;1,8..60,200..900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "secondary": "#5f5e5e",
+                        "inverse-on-surface": "#f2f0f0",
+                        "secondary-fixed-dim": "#c8c6c5",
+                        "on-error-container": "#93000a",
+                        "on-surface-variant": "#594238",
+                        "surface-bright": "#fbf9f8",
+                        "on-tertiary-container": "#fefcff",
+                        "surface": "#fbf9f8",
+                        "surface-tint": "#a23f00",
+                        "inverse-surface": "#303031",
+                        "error": "#ba1a1a",
+                        "on-error": "#ffffff",
+                        "on-primary-container": "#fffbff",
+                        "tertiary-fixed": "#d8e2ff",
+                        "secondary-container": "#e2dfde",
+                        "surface-container-highest": "#e4e2e2",
+                        "surface-container-high": "#e9e8e7",
+                        "on-secondary-fixed": "#1c1b1b",
+                        "on-surface": "#1b1c1c",
+                        "on-primary": "#ffffff",
+                        "on-primary-fixed-variant": "#7c2e00",
+                        "error-container": "#ffdad6",
+                        "on-background": "#1b1c1c",
+                        "on-secondary-container": "#636262",
+                        "tertiary-fixed-dim": "#adc6ff",
+                        "inverse-primary": "#ffb595",
+                        "on-secondary": "#ffffff",
+                        "primary": "#9e3d00",
+                        "surface-dim": "#dbdad9",
+                        "primary-fixed-dim": "#ffb595",
+                        "on-tertiary": "#ffffff",
+                        "on-tertiary-fixed-variant": "#004494",
+                        "outline-variant": "#e0c0b2",
+                        "primary-fixed": "#ffdbcd",
+                        "on-secondary-fixed-variant": "#474746",
+                        "surface-variant": "#e4e2e2",
+                        "secondary-fixed": "#e5e2e1",
+                        "primary-container": "#c64f00",
+                        "outline": "#8c7166",
+                        "tertiary": "#0058bd",
+                        "tertiary-container": "#0070ec",
+                        "surface-container": "#efeded",
+                        "surface-container-low": "#f5f3f3",
+                        "on-tertiary-fixed": "#001a41",
+                        "background": "#fbf9f8",
+                        "surface-container-lowest": "#ffffff",
+                        "on-primary-fixed": "#351000"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "unit": "8px",
+                        "margin-desktop": "64px",
+                        "gutter": "32px",
+                        "container-max": "1280px",
+                        "margin-mobile": "20px",
+                        "section-gap": "120px"
+                    },
+                    "fontFamily": {
+                        "headline-xl": ["Bodoni Moda"],
+                        "data-ui": ["Hanken Grotesk"],
+                        "headline-xl-mobile": ["Bodoni Moda"],
+                        "headline-lg": ["Bodoni Moda"],
+                        "label-caps": ["Hanken Grotesk"],
+                        "body-lg": ["\"Source Serif 4\""],
+                        "display-lg": ["Bodoni Moda"],
+                        "body-md": ["\"Source Serif 4\""]
+                    },
+                    "fontSize": {
+                        "headline-xl": ["48px", { "lineHeight": "1.1", "fontWeight": "600" }],
+                        "data-ui": ["14px", { "lineHeight": "1.4", "fontWeight": "500" }],
+                        "headline-xl-mobile": ["32px", { "lineHeight": "1.1", "fontWeight": "600" }],
+                        "headline-lg": ["32px", { "lineHeight": "1.2", "fontWeight": "500" }],
+                        "label-caps": ["12px", { "lineHeight": "1.2", "letterSpacing": "0.15em", "fontWeight": "700" }],
+                        "body-lg": ["20px", { "lineHeight": "1.6", "fontWeight": "400" }],
+                        "display-lg": ["80px", { "lineHeight": "1.0", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+                        "body-md": ["16px", { "lineHeight": "1.5", "fontWeight": "400" }]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        .glass-panel {
+            background-color: rgba(251, 249, 248, 0.85); /* surface bright */
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+        }
+        .section-panel {
+            min-height: 100vh;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+    </style>
+</head>
+<body class="bg-background text-on-background font-body-md antialiased selection:bg-primary-container selection:text-on-primary-container">
+<!-- TopNavBar -->
+<nav class="fixed top-0 w-full z-50 flex justify-between items-center px-margin-mobile md:px-margin-desktop py-unit bg-transparent flat no shadows no-border-no-shadow">
+<a class="font-headline-lg-mobile text-headline-lg-mobile md:font-headline-lg md:text-headline-lg font-bold text-on-surface dark:text-inverse-on-surface cursor-pointer active:opacity-70" href="#">The Tracks of Washington DC</a>
+<div class="hidden md:flex gap-8 items-center">
+<a class="font-headline-lg-mobile text-headline-lg-mobile md:font-headline-lg md:text-headline-lg text-primary dark:text-primary-fixed border-b border-primary hover:text-primary dark:hover:text-primary-fixed transition-colors duration-300 cursor-pointer active:opacity-70" href="#">Catalogue</a>
+<a class="font-headline-lg-mobile text-headline-lg-mobile md:font-headline-lg md:text-headline-lg text-on-surface-variant dark:text-secondary-fixed-dim hover:text-primary dark:hover:text-primary-fixed transition-colors duration-300 cursor-pointer active:opacity-70" href="#">Archives</a>
+<a class="font-headline-lg-mobile text-headline-lg-mobile md:font-headline-lg md:text-headline-lg text-on-surface-variant dark:text-secondary-fixed-dim hover:text-primary dark:hover:text-primary-fixed transition-colors duration-300 cursor-pointer active:opacity-70" href="#">About</a>
+</div>
+<button aria-label="Menu" class="md:hidden text-on-surface dark:text-inverse-on-surface hover:text-primary dark:hover:text-primary-fixed transition-colors duration-300 cursor-pointer active:opacity-70">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 0;">menu</span>
+</button>
+</nav>
+<!-- SideNavBar -->
+<aside class="fixed right-8 top-1/2 -translate-y-1/2 z-40 hidden md:flex flex-col items-center gap-4 bg-transparent flat no shadows no-border-no-shadow w-16">
+<div class="mb-4 text-center">
+<h2 class="font-headline-lg text-headline-lg text-on-surface dark:text-inverse-on-surface mb-1">Catalogue</h2>
+<p class="font-label-caps text-label-caps text-on-surface-variant dark:text-secondary-fixed-dim">DC Tracks</p>
+</div>
+<a aria-label="Circuit 01" class="text-primary dark:text-primary-fixed scale-125 hover:text-primary transition-all duration-500 cursor-pointer flex flex-col items-center gap-1 group" href="#hero">
+<span class="material-symbols-outlined text-xs" style="font-variation-settings: 'FILL' 1;">fiber_manual_record</span>
+</a>
+<a aria-label="Circuit 02" class="text-on-surface-variant/40 dark:text-secondary-fixed-dim/40 hover:text-primary transition-all duration-500 cursor-pointer flex flex-col items-center gap-1 group" href="#georgetown">
+<span class="material-symbols-outlined text-xs" style="font-variation-settings: 'FILL' 1;">fiber_manual_record</span>
+</a>
+<a aria-label="Circuit 03" class="text-on-surface-variant/40 dark:text-secondary-fixed-dim/40 hover:text-primary transition-all duration-500 cursor-pointer flex flex-col items-center gap-1 group" href="#quote">
+<span class="material-symbols-outlined text-xs" style="font-variation-settings: 'FILL' 1;">fiber_manual_record</span>
+</a>
+<a aria-label="Circuit 04" class="text-on-surface-variant/40 dark:text-secondary-fixed-dim/40 hover:text-primary transition-all duration-500 cursor-pointer flex flex-col items-center gap-1 group" href="#anacostia">
+<span class="material-symbols-outlined text-xs" style="font-variation-settings: 'FILL' 1;">fiber_manual_record</span>
+</a>
+<a aria-label="Circuit 05" class="text-on-surface-variant/40 dark:text-secondary-fixed-dim/40 hover:text-primary transition-all duration-500 cursor-pointer flex flex-col items-center gap-1 group" href="#map">
+<span class="material-symbols-outlined text-xs" style="font-variation-settings: 'FILL' 1;">fiber_manual_record</span>
+</a>
+<a aria-label="Circuit 06" class="text-on-surface-variant/40 dark:text-secondary-fixed-dim/40 hover:text-primary transition-all duration-500 cursor-pointer flex flex-col items-center gap-1 group" href="#guide">
+<span class="material-symbols-outlined text-xs" style="font-variation-settings: 'FILL' 1;">fiber_manual_record</span>
+</a>
+</aside>
+<main>
+<!-- Panel 1: Hero -->
+<section class="section-panel bg-cover bg-center" id="hero" style="background-image: url('https://lh3.googleusercontent.com/aida/AP1WRLtoC4-7KM9wuCAURbMSyws8oZdSrTa11Guc54CkqMRVKAKWepXdXsDVys99rUgO2HjH31xk-c69blkOyJspu4hcOD-yPwhOreY4gZ3g09zKJgzreg3b-qOeMpGCYqIra94xdT7KGmMD1VYid-iXcGaLAkXJL__4R7I0AslvExPwLq8duQo8cAbMMVyMaLeRWAPlW82fUyfxhlDJApAmbZd1TeLjwSxwOyr1I17JQ_0YjJ_SdfvpZyso6wc');">
+<div class="absolute inset-0 bg-inverse-surface/30"></div>
+<div class="relative z-10 container mx-auto px-margin-mobile md:px-margin-desktop h-full flex flex-col justify-end pb-section-gap">
+<div class="max-w-3xl glass-panel p-8 md:p-12 border-l border-outline-variant">
+<h1 class="font-display-lg text-display-lg text-on-surface mb-6 uppercase tracking-tight">THE TRACKS OF WASHINGTON DC</h1>
+<p class="font-body-lg text-body-lg text-on-surface-variant mb-10 max-w-xl">A field guide to the city's ovals — their surfaces, their histories, their regulars.</p>
+<a class="inline-block bg-inverse-surface text-surface font-label-caps text-label-caps px-8 py-4 uppercase tracking-widest hover:bg-primary transition-colors duration-300" href="#georgetown">BEGIN THE CIRCUIT</a>
+</div>
+</div>
+</section>
+<!-- Panel 2: Georgetown -->
+<section class="section-panel bg-cover bg-center" id="georgetown" style="background-image: url('https://lh3.googleusercontent.com/aida/AP1WRLuioLu_JrEbR_9_W1jbOqftra0Re8DiBBQ7QQfthELx3G_9-BtGWsbstpg7sJy_Zx6CmIDLH1WaJz-nbOSEFksOBBiA_DLwXGQ3NUDQPAinjRe6AHyUJNa49WI4ljbW3-fLCBt-gmgxB3pIzH2WBaCKtZSJIHp8v-f5WIePS18TYhpepg0qdTwMcRwaT3V5WgVNi9PZid0528F_jHnNT-lujEClj6r6UyuFq-j75wcIz7q76UXwKHUVQw');">
+<div class="relative z-10 container mx-auto px-margin-mobile md:px-margin-desktop h-full flex items-center">
+<div class="w-full md:w-5/12 glass-panel p-8 md:p-12 border border-outline-variant/50">
+<div class="font-label-caps text-label-caps text-primary mb-4 uppercase tracking-widest pb-2 border-b border-outline-variant">Ward 2</div>
+<h2 class="font-headline-xl-mobile md:font-headline-xl text-headline-xl-mobile md:text-headline-xl text-on-surface mb-6">The Urban Pulse</h2>
+<p class="font-body-md text-body-md text-on-surface-variant mb-8">Nestled between the Potomac and the city's modern architecture, Georgetown's track is a testament to the intersection of urban life and athletic discipline.</p>
+<div class="flex flex-col gap-2 pt-6 border-t border-outline-variant/30">
+<div class="flex justify-between items-center font-data-ui text-data-ui text-on-surface">
+<span class="text-on-surface-variant uppercase text-[10px] tracking-wider">Distance</span>
+<span>400m</span>
+</div>
+<div class="flex justify-between items-center font-data-ui text-data-ui text-on-surface">
+<span class="text-on-surface-variant uppercase text-[10px] tracking-wider">Surface</span>
+<span>Mondo Super X</span>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Panel 3: Pull Quote -->
+<section class="section-panel bg-cover bg-center" id="quote" style="background-image: url('https://lh3.googleusercontent.com/aida/AP1WRLsrm4kTe1n5mUDHxkXnMScH9WcN7JcpkBTJgLNtGub92AIixBFlRBN2HbTTtCEnsmWvZMuctY9MTqt0HRJ6s-KBJBLFkZcB81jWiXh8b_RAKOAWw0B0_3TroW52Po8VTHfBzPdAUMQVRM6CDGEmYPNLcjmvU4moPGFtI00EQlHp4Z-vZrT0AnrfKl1TOavm8KbFTQirlQdY5K7lR-DeBSPilKuVJLHoKXXGtmlUP489A4riHuqUS4HOk3c');">
+<div class="absolute inset-0 bg-inverse-surface/60"></div>
+<div class="relative z-10 container mx-auto px-margin-mobile md:px-margin-desktop h-full flex items-center justify-center">
+<div class="max-w-4xl text-center px-4">
+<blockquote class="font-headline-xl-mobile md:font-headline-xl text-headline-xl-mobile md:text-headline-xl text-surface italic font-light leading-tight">
+                        "The oval is the only space where you can run forever and never leave the start."
+                    </blockquote>
+</div>
+</div>
+</section>
+<!-- Panel 4: Anacostia -->
+<section class="section-panel bg-cover bg-center" id="anacostia" style="background-image: url('https://lh3.googleusercontent.com/aida/AP1WRLs1t_hCnEBuX_ji4o9kC39ob75fugOzY9Qq17nya7EFziTQSjAGgeuxE1eCEtGgH2achFRAnR9QtC-0wdQ-TOnV4BRZ2rPPLWH4SYiyWypGL3i3Tn8U-BClcJHs4KU2gy09sW5u_TgVso_ATooifrFpsmVxjh4NLLDeKZ9Qdw_v3BmoYb1fS3D7hoeHSSW_yW6-Y-vyQhOC3HYsBjDZD5BpygTrVMTx4ztMFgmcgbUDVYge_7rFUgUl_ak');">
+<div class="relative z-10 container mx-auto px-margin-mobile md:px-margin-desktop h-full flex items-center justify-end">
+<div class="w-full md:w-5/12 glass-panel p-8 md:p-12 border border-outline-variant/50">
+<div class="font-label-caps text-label-caps text-primary mb-4 uppercase tracking-widest pb-2 border-b border-outline-variant">Ward 8</div>
+<h2 class="font-headline-xl-mobile md:font-headline-xl text-headline-xl-mobile md:text-headline-xl text-on-surface mb-6">The Riverside Sanctuary</h2>
+<p class="font-body-md text-body-md text-on-surface-variant mb-8">Where the city fades into the river's rhythm, The Anacostia track offers a quiet, natural retreat for those seeking the purity of the long run.</p>
+<div class="flex flex-col gap-2 pt-6 border-t border-outline-variant/30">
+<div class="flex justify-between items-center font-data-ui text-data-ui text-on-surface">
+<span class="text-on-surface-variant uppercase text-[10px] tracking-wider">Distance</span>
+<span>400m</span>
+</div>
+<div class="flex justify-between items-center font-data-ui text-data-ui text-on-surface">
+<span class="text-on-surface-variant uppercase text-[10px] tracking-wider">Surface</span>
+<span>Polyurethane</span>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Panel 5: Map -->
+<section class="section-panel bg-inverse-surface relative overflow-hidden" id="map">
+<div class="absolute inset-0 opacity-10 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGNpcmNsZSBjeD0iMzAiIGN5PSIzMCIgcj0iMSIgZmlsbD0iI2ZmZmZmZiIvPjwvc3ZnPg==')]"></div>
+<div class="container mx-auto px-margin-mobile md:px-margin-desktop relative z-10 h-full flex flex-col justify-center">
+<div class="text-center mb-16">
+<h2 class="font-display-lg text-display-lg text-surface mb-4 uppercase tracking-tight">THE CIRCUIT</h2>
+<p class="font-body-lg text-body-lg text-secondary-fixed-dim max-w-2xl mx-auto">A geographic index of the city's premier synthetic and cinder surfaces.</p>
+</div>
+<div class="relative w-full max-w-4xl mx-auto aspect-video border border-outline/30 rounded-none bg-inverse-surface/50 backdrop-blur-sm p-8 flex items-center justify-center">
+<!-- Conceptual Map Elements -->
+<div class="absolute w-2 h-2 rounded-full bg-primary" style="top: 30%; left: 40%;"><span class="absolute -top-6 left-1/2 -translate-x-1/2 font-label-caps text-label-caps text-surface whitespace-nowrap">Cardozo</span></div>
+<div class="absolute w-2 h-2 rounded-full bg-surface" style="top: 20%; left: 50%;"><span class="absolute -top-6 left-1/2 -translate-x-1/2 font-label-caps text-label-caps text-surface whitespace-nowrap">Meridian Hill</span></div>
+<div class="absolute w-2 h-2 rounded-full bg-surface" style="top: 45%; left: 25%;"><span class="absolute -top-6 left-1/2 -translate-x-1/2 font-label-caps text-label-caps text-surface whitespace-nowrap">Rock Creek</span></div>
+<div class="absolute w-2 h-2 rounded-full bg-surface" style="top: 60%; left: 70%;"><span class="absolute -top-6 left-1/2 -translate-x-1/2 font-label-caps text-label-caps text-surface whitespace-nowrap">Eastern Market</span></div>
+<div class="absolute w-2 h-2 rounded-full bg-primary" style="top: 75%; left: 60%;"><span class="absolute -top-6 left-1/2 -translate-x-1/2 font-label-caps text-label-caps text-surface whitespace-nowrap">Anacostia</span></div>
+<!-- Stylized Potomac Line -->
+<svg class="absolute inset-0 w-full h-full opacity-20 pointer-events-none" preserveaspectratio="none" viewbox="0 0 100 100">
+<path class="text-outline-variant" d="M 0,20 Q 30,50 40,80 T 60,100" fill="none" stroke="currentColor" stroke-width="0.5"></path>
+</svg>
+</div>
+</div>
+</section>
+<!-- Panel 6: Newsletter -->
+<section class="section-panel bg-surface" id="guide">
+<div class="container mx-auto px-margin-mobile md:px-margin-desktop h-full flex flex-col justify-center items-center text-center">
+<div class="max-w-2xl w-full">
+<h2 class="font-headline-xl-mobile md:font-headline-xl text-headline-xl-mobile md:text-headline-xl text-on-surface mb-6">Know every oval.</h2>
+<p class="font-body-md text-body-md text-on-surface-variant mb-12">Join our community of regulars for deep dives into DC's athletic heritage, track etiquette, and long-form editorial pieces.</p>
+<form class="flex flex-col md:flex-row gap-4 justify-center items-end w-full max-w-md mx-auto">
+<div class="w-full relative">
+<label class="absolute -top-6 left-0 font-label-caps text-label-caps text-on-surface-variant uppercase" for="email">Email Address</label>
+<input class="w-full bg-transparent border-0 border-b border-inverse-surface px-0 py-2 focus:ring-0 focus:border-primary font-body-md text-on-surface placeholder-secondary-fixed-dim" id="email" placeholder="runner@example.com" required="" type="email"/>
+</div>
+<button class="w-full md:w-auto bg-inverse-surface text-surface font-label-caps text-label-caps px-8 py-3 uppercase tracking-widest hover:bg-primary transition-colors duration-300 shrink-0" type="submit">GET THE GUIDE</button>
+</form>
+</div>
+</div>
+</section>
+</main>
+<!-- Footer -->
+<footer class="w-full py-gutter px-margin-mobile md:px-margin-desktop flex flex-col md:flex-row justify-between items-center bg-surface dark:bg-inverse-surface border-t border-outline-variant/30 flat no shadows full-width bottom-0">
+<div class="mb-4 md:mb-0">
+<span class="font-headline-xl text-headline-xl text-on-surface">The Tracks of Washington DC</span>
+<p class="font-label-caps text-label-caps text-on-surface-variant mt-2">© 2024 The Tracks of Washington DC. All rights reserved.</p>
+</div>
+<div class="flex gap-6">
+<a class="font-label-caps text-label-caps text-on-surface-variant hover:text-primary dark:hover:text-primary-fixed transition-colors cursor-pointer uppercase tracking-widest" href="#">Archives</a>
+<a class="font-label-caps text-label-caps text-on-surface-variant hover:text-primary dark:hover:text-primary-fixed transition-colors cursor-pointer uppercase tracking-widest" href="#">The Guide</a>
+<a class="font-label-caps text-label-caps text-on-surface-variant hover:text-primary dark:hover:text-primary-fixed transition-colors cursor-pointer uppercase tracking-widest" href="#">Contact</a>
+<a class="font-label-caps text-label-caps text-on-surface-variant hover:text-primary dark:hover:text-primary-fixed transition-colors cursor-pointer uppercase tracking-widest" href="#">Library</a>
+</div>
+</footer>
+<script>
+        // Simple scroll spy for side nav
+        const sections = document.querySelectorAll('.section-panel');
+        const navLinks = document.querySelectorAll('aside a');
+
+        window.addEventListener('scroll', () => {
+            let current = '';
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop;
+                const sectionHeight = section.clientHeight;
+                if (scrollY >= (sectionTop - sectionHeight / 3)) {
+                    current = section.getAttribute('id');
+                }
+            });
+
+            navLinks.forEach(link => {
+                link.classList.remove('text-primary', 'dark:text-primary-fixed', 'scale-125');
+                link.classList.add('text-on-surface-variant/40', 'dark:text-secondary-fixed-dim/40');
+                if (link.getAttribute('href').includes(current)) {
+                    link.classList.add('text-primary', 'dark:text-primary-fixed', 'scale-125');
+                    link.classList.remove('text-on-surface-variant/40', 'dark:text-secondary-fixed-dim/40');
+                }
+            });
+        });
+    </script>
+</body></html>

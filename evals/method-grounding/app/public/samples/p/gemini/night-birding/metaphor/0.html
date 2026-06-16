@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Urban Nocturnal: Field Notes</title>
+    <link href="https://fonts.googleapis.com/css2?family=League+Spartan:wght@500;700&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --paper-cream: #F9F6EE;
+            --midnight-ink: #1A1A1B;
+            --field-gray: #707372;
+            --pointer-red: #C53030;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background-color: var(--paper-cream);
+            color: var(--midnight-ink);
+            font-family: "Century Schoolbook", "Libre Baskerville", serif;
+            line-height: 1.3;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+        }
+
+        .specimen-sheet {
+            width: 100%;
+            max-width: 1000px;
+            border: 1px solid var(--midnight-ink);
+            display: grid;
+            grid-template-columns: repeat(12, 1fr);
+            grid-auto-rows: auto;
+        }
+
+        /* Typography */
+        h1, h2, h3, .label {
+            font-family: 'League Spartan', sans-serif;
+            text-transform: uppercase;
+            font-weight: 700;
+            letter-spacing: 0.05em;
+        }
+
+        .label-medium {
+            font-family: 'League Spartan', sans-serif;
+            font-weight: 500;
+            font-size: 0.75rem;
+            color: var(--field-gray);
+        }
+
+        /* Grid Borders */
+        .cell {
+            border: 0.5px solid var(--midnight-ink);
+            padding: 12px;
+        }
+
+        /* Header Section */
+        header {
+            grid-column: span 12;
+            border-bottom: 2px solid var(--midnight-ink);
+            padding: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+        }
+
+        header h1 {
+            font-size: 2.5rem;
+            line-height: 0.9;
+        }
+
+        .doc-meta {
+            text-align: right;
+            font-family: 'League Spartan', sans-serif;
+            font-size: 0.8rem;
+        }
+
+        /* Moon & Light Conditions */
+        .moon-section {
+            grid-column: span 4;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+        }
+
+        .moon-item {
+            border: 0.5px solid var(--midnight-ink);
+            padding: 10px;
+        }
+
+        /* Sightings Log */
+        .sightings-log {
+            grid-column: span 8;
+            background-color: rgba(26, 26, 27, 0.02);
+        }
+
+        .log-entry {
+            display: grid;
+            grid-template-columns: 100px 1fr 1fr;
+            gap: 15px;
+            margin-top: 10px;
+        }
+
+        /* Species Spotlight */
+        .species-spotlight {
+            grid-column: span 7;
+            min-height: 350px;
+        }
+
+        .silhouette-box {
+            width: 100%;
+            height: 180px;
+            background-color: var(--midnight-ink);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 15px 0;
+            position: relative;
+        }
+
+        /* The silhouette of a heron (simplified) */
+        .heron-icon {
+            width: 120px;
+            height: 80px;
+            background-color: var(--paper-cream);
+            clip-path: polygon(20% 100%, 40% 90%, 70% 90%, 85% 70%, 90% 40%, 70% 30%, 50% 35%, 30% 0%, 15% 0%, 25% 40%, 10% 70%);
+        }
+
+        .field-marks-list {
+            list-style: none;
+            font-size: 0.9rem;
+        }
+
+        .mark-item {
+            position: relative;
+            padding-left: 20px;
+            margin-bottom: 8px;
+        }
+
+        .mark-item::before {
+            content: "→";
+            position: absolute;
+            left: 0;
+            color: var(--pointer-red);
+            font-weight: bold;
+        }
+
+        /* Urban Filter Section */
+        .urban-filter {
+            grid-column: span 5;
+        }
+
+        .filter-diagram {
+            margin-top: 15px;
+            display: flex;
+            flex-direction: column;
+            gap: 1px;
+            background-color: var(--midnight-ink);
+            border: 1px solid var(--midnight-ink);
+        }
+
+        .filter-layer {
+            background-color: var(--paper-cream);
+            padding: 12px;
+            position: relative;
+        }
+
+        .layer-base { opacity: 0.4; color: var(--field-gray); }
+        .layer-signal { color: var(--midnight-ink); border-left: 4px solid var(--pointer-red); }
+        .layer-physical { font-style: italic; }
+
+        .pointer-callout {
+            color: var(--pointer-red);
+            font-family: 'League Spartan', sans-serif;
+            font-weight: 700;
+            font-size: 0.7rem;
+            margin-bottom: 4px;
+            display: block;
+        }
+
+        /* In Flight section */
+        .in-flight {
+            grid-column: span 12;
+            border-top: 1px solid var(--midnight-ink);
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+        }
+
+        .context-note {
+            grid-column: span 12;
+            padding: 10px;
+            background-color: var(--midnight-ink);
+            color: var(--paper-cream);
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            font-family: 'League Spartan', sans-serif;
+        }
+
+        /* Data Cells */
+        .data-label {
+            display: block;
+            font-family: 'League Spartan', sans-serif;
+            font-size: 0.65rem;
+            color: var(--field-gray);
+            margin-bottom: 2px;
+        }
+
+        .data-value {
+            font-family: 'League Spartan', sans-serif;
+            font-weight: 700;
+            font-size: 0.9rem;
+        }
+
+    </style>
+</head>
+<body>
+
+<div class="specimen-sheet">
+    <header>
+        <div>
+            <span class="label-medium">Archive: NYC-662-B</span>
+            <h1>Urban Nocturnal:<br>Field Notes</h1>
+        </div>
+        <div class="doc-meta">
+            DATE: 2024.10.14<br>
+            LAT: 40.7128° N<br>
+            LONG: 74.0060° W
+        </div>
+    </header>
+
+    <div class="cell moon-section">
+        <div class="moon-item">
+            <span class="data-label">PHASE</span>
+            <span class="data-value">Waxing Gibbous</span>
+        </div>
+        <div class="moon-item">
+            <span class="data-label">ILLUM.</span>
+            <span class="data-value">82%</span>
+        </div>
+        <div class="moon-item">
+            <span class="data-label">MOONRISE</span>
+            <span class="data-value">17:42</span>
+        </div>
+        <div class="moon-item">
+            <span class="data-label">SKY QUALITY</span>
+            <span class="data-value">Bortle 8</span>
+        </div>
+    </div>
+
+    <div class="cell sightings-log">
+        <span class="label">Sightings Log</span>
+        <div class="log-entry">
+            <div>
+                <span class="data-label">TIME</span>
+                <span class="data-value">23:14</span>
+            </div>
+            <div>
+                <span class="data-label">LOCATION</span>
+                <span class="data-value">West Side Railyards</span>
+            </div>
+            <div>
+                <span class="data-label">SPECIES</span>
+                <span class="data-value">Common Nighthawk (2)</span>
+            </div>
+        </div>
+        <div style="margin-top: 10px; font-size: 0.9rem;">
+            <span class="pointer-callout">BEHAVIORAL NOTE:</span>
+            Aerial foraging under stadium lights; erratic, bat-like flight pattern.
+        </div>
+    </div>
+
+    <div class="cell species-spotlight">
+        <span class="label">Likely Species: Black-crowned Night Heron</span>
+        <div class="silhouette-box">
+            <div class="heron-icon"></div>
+            <div style="position: absolute; top: 10px; left: 10px; color: var(--pointer-red); font-family: 'League Spartan'; font-size: 0.6rem;">SPECIMEN ID: BCNH-01</div>
+        </div>
+        
+        <div class="field-marks">
+            <span class="label-medium">Field Marks</span>
+            <ul class="field-marks-list">
+                <li class="mark-item">Stocky build, short legs.</li>
+                <li class="mark-item">Black crown and back (Adult).</li>
+                <li class="mark-item">Contrasting grey wings and underparts.</li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="cell urban-filter">
+        <span class="label">Guide to Listening</span>
+        <span class="label-medium" style="display: block; margin-bottom: 10px;">The Urban Filter</span>
+        
+        <p style="font-size: 0.8rem; margin-bottom: 10px;">To identify birds by sound in the city, you must mentally subtract the machine:</p>
+
+        <div class="filter-diagram">
+            <div class="filter-layer layer-base">
+                <span class="pointer-callout" style="color: var(--field-gray);">1. THE BASE (NOISE)</span>
+                Low-frequency rumble of the expressway or subway vents.
+            </div>
+            <div class="filter-layer layer-signal">
+                <span class="pointer-callout">2. THE SIGNAL</span>
+                The "Peent"—a sharp, nasal electric buzz cutting through the hum.
+            </div>
+            <div class="filter-layer layer-physical">
+                <span class="pointer-callout" style="color: var(--midnight-ink);">3. THE PHYSICAL</span>
+                The "Whoosh" of air through primary feathers during a territorial dive.
+            </div>
+        </div>
+    </div>
+
+    <div class="in-flight">
+        <div class="cell">
+            <span class="label">In Flight Mechanics</span>
+            <p style="font-size: 0.9rem; margin-top: 5px;">Thick neck tucked tightly against shoulders; feet barely extending beyond the short, square tail.</p>
+        </div>
+        <div class="cell" style="background-color: var(--pointer-red); color: white; border-left: none;">
+            <span class="label" style="color: white;">Alert</span>
+            <p style="font-size: 0.9rem; margin-top: 5px; font-weight: bold;">Crepuscular activity peak. High probability of detection at shoreline interface.</p>
+        </div>
+    </div>
+
+    <div class="context-note">
+        Context: Often found near waterfront construction sites or park ponds.
+    </div>
+</div>
+
+</body>
+</html>

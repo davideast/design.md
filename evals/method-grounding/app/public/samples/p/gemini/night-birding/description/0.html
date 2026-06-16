@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Urban Nocturnal: Field Notes</title>
+    <link href="https://fonts.googleapis.com/css2?family=League+Spartan:wght@500;700&family=Crimson+Pro:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --background: #F9F6EE;
+            --text: #1A1A1B;
+            --primary: #1A1A1B;
+            --ui-neutral: #707372;
+            --accent: #C53030;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            border-radius: 0px;
+        }
+
+        body {
+            background-color: var(--background);
+            color: var(--text);
+            font-family: 'Crimson Pro', 'Century Schoolbook', serif;
+            line-height: 1.2;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 900px;
+            border: 1pt solid var(--primary);
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+        }
+
+        header {
+            grid-column: 1 / -1;
+            border-bottom: 1pt solid var(--primary);
+            padding: 10px;
+        }
+
+        h1 {
+            font-family: 'League Spartan', sans-serif;
+            font-weight: 700;
+            font-size: 2rem;
+            text-transform: uppercase;
+            letter-spacing: -0.02em;
+        }
+
+        .section-label {
+            font-family: 'League Spartan', sans-serif;
+            font-weight: 700;
+            font-size: 0.75rem;
+            color: var(--ui-neutral);
+            text-transform: uppercase;
+            margin-bottom: 8px;
+            display: block;
+        }
+
+        .panel {
+            padding: 15px;
+            border-bottom: 1pt solid var(--primary);
+        }
+
+        .panel:nth-child(even) {
+            border-left: 1pt solid var(--primary);
+        }
+
+        .moon-stats {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+        }
+
+        .stat-box {
+            border: 1pt solid var(--ui-neutral);
+            padding: 8px;
+        }
+
+        .stat-value {
+            font-family: 'League Spartan', sans-serif;
+            font-weight: 700;
+            font-size: 1.1rem;
+            display: block;
+        }
+
+        .accent-text {
+            color: var(--accent);
+        }
+
+        h2 {
+            font-family: 'League Spartan', sans-serif;
+            font-weight: 700;
+            font-size: 1.2rem;
+            text-transform: uppercase;
+            margin-bottom: 10px;
+            border-bottom: 1pt solid var(--text);
+            display: inline-block;
+            padding-right: 20px;
+        }
+
+        .field-mark-item {
+            margin-bottom: 10px;
+        }
+
+        .field-mark-label {
+            font-family: 'League Spartan', sans-serif;
+            font-weight: 500;
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            color: var(--ui-neutral);
+            display: block;
+        }
+
+        .sightings-log {
+            grid-column: 1 / -1;
+            padding: 15px;
+            border-bottom: 1pt solid var(--primary);
+        }
+
+        .log-entry {
+            display: grid;
+            grid-template-columns: 100px 200px 1fr;
+            border: 1pt solid var(--ui-neutral);
+            margin-top: 5px;
+        }
+
+        .log-cell {
+            padding: 8px;
+            border-right: 1pt solid var(--ui-neutral);
+        }
+
+        .log-cell:last-child {
+            border-right: none;
+        }
+
+        .guide-section {
+            grid-column: 1 / -1;
+            padding: 15px;
+        }
+
+        .step-list {
+            list-style: none;
+        }
+
+        .step-item {
+            display: flex;
+            margin-bottom: 12px;
+            align-items: flex-start;
+        }
+
+        .step-number {
+            font-family: 'League Spartan', sans-serif;
+            font-weight: 700;
+            background: var(--primary);
+            color: var(--background);
+            width: 24px;
+            height: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 15px;
+            flex-shrink: 0;
+        }
+
+        .step-content strong {
+            font-family: 'League Spartan', sans-serif;
+            font-weight: 700;
+            text-transform: uppercase;
+            font-size: 0.9rem;
+        }
+
+        .pointer-indicator {
+            color: var(--accent);
+            font-weight: 700;
+        }
+
+        .bortle-scale {
+            font-size: 0.7rem;
+            color: var(--ui-neutral);
+            margin-top: 4px;
+            display: block;
+        }
+
+        p {
+            font-size: 1rem;
+            text-align: justify;
+        }
+
+        @media (max-width: 600px) {
+            .container {
+                grid-template-columns: 1fr;
+            }
+            .panel:nth-child(even) {
+                border-left: none;
+            }
+            .log-entry {
+                grid-template-columns: 1fr;
+            }
+            .log-cell {
+                border-right: none;
+                border-bottom: 1pt solid var(--ui-neutral);
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <header>
+            <h1>Urban Nocturnal: Field Notes</h1>
+        </header>
+
+        <section class="panel">
+            <span class="section-label">Moon & Light Conditions</span>
+            <div class="moon-stats">
+                <div class="stat-box">
+                    <span class="field-mark-label">Status</span>
+                    <span class="stat-value">Waxing Gibbous</span>
+                </div>
+                <div class="stat-box">
+                    <span class="field-mark-label">Illumination</span>
+                    <span class="stat-value accent-text">82%</span>
+                </div>
+                <div class="stat-box">
+                    <span class="field-mark-label">Moonrise</span>
+                    <span class="stat-value">17:42</span>
+                </div>
+                <div class="stat-box">
+                    <span class="field-mark-label">Sky Quality</span>
+                    <span class="stat-value">Bortle 8</span>
+                    <span class="bortle-scale">(Inner City Sky)</span>
+                </div>
+            </div>
+        </section>
+
+        <section class="panel">
+            <span class="section-label">Tonight’s Likely Species</span>
+            <h2>Black-crowned Night Heron</h2>
+            <div class="field-mark-item">
+                <span class="field-mark-label">Field Marks</span>
+                <p>Stocky build, black crown and back, contrasting grey wings.</p>
+            </div>
+            <div class="field-mark-item">
+                <span class="field-mark-label">In Flight</span>
+                <p>Thick neck tucked, feet barely extending beyond tail.</p>
+            </div>
+            <div class="field-mark-item">
+                <span class="field-mark-label">Context</span>
+                <p>Often found near waterfront construction sites or park ponds.</p>
+            </div>
+        </section>
+
+        <section class="sightings-log">
+            <span class="section-label">Sightings Log</span>
+            <div class="log-entry">
+                <div class="log-cell">
+                    <span class="field-mark-label">Time</span>
+                    <span class="stat-value">23:14</span>
+                </div>
+                <div class="log-cell">
+                    <span class="field-mark-label">Location</span>
+                    <p>West Side Railyards</p>
+                </div>
+                <div class="log-cell">
+                    <span class="field-mark-label">Species & Behavior</span>
+                    <p><strong>Common Nighthawk (2)</strong> — Aerial foraging under stadium lights; erratic, bat-like flight pattern.</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="guide-section">
+            <span class="section-label">Guide to Listening: The Urban Filter</span>
+            <p style="margin-bottom: 15px;">To identify birds by sound in the city, you must mentally subtract the machine:</p>
+            
+            <div class="step-list">
+                <div class="step-item">
+                    <div class="step-number">1</div>
+                    <div class="step-content">
+                        <strong>The Base:</strong>
+                        <p>Ignore the low-frequency rumble of the expressway or subway vents.</p>
+                    </div>
+                </div>
+                <div class="step-item">
+                    <div class="step-number">2</div>
+                    <div class="step-content">
+                        <strong>The Signal:</strong>
+                        <p>Focus on the <span class="pointer-indicator">"Peent"</span>—a sharp, nasal electric buzz cutting through the hum.</p>
+                    </div>
+                </div>
+                <div class="step-item">
+                    <div class="step-number">3</div>
+                    <div class="step-content">
+                        <strong>The Physical:</strong>
+                        <p>Listen for the <span class="pointer-indicator">"Whoosh"</span> of air through primary feathers during a territorial dive.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+</body>
+</html>

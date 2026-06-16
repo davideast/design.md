@@ -1,0 +1,420 @@
+<!DOCTYPE html>
+
+<html class="scroll-smooth" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>The Tracks of Washington DC</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400..900;1,6..96,400..900&amp;family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "background": "#f9f9f9",
+                      "on-secondary": "#ffffff",
+                      "on-tertiary-fixed-variant": "#474747",
+                      "on-secondary-fixed-variant": "#474647",
+                      "on-secondary-fixed": "#1b1b1c",
+                      "on-primary-fixed-variant": "#7c2e00",
+                      "outline-variant": "#e0c0b2",
+                      "on-primary": "#ffffff",
+                      "surface-dim": "#dadada",
+                      "surface": "#f9f9f9",
+                      "inverse-surface": "#2f3131",
+                      "surface-container": "#eeeeee",
+                      "surface-tint": "#a23f00",
+                      "primary-fixed-dim": "#ffb595",
+                      "primary": "#9e3d00",
+                      "primary-fixed": "#ffdbcd",
+                      "error-container": "#ffdad6",
+                      "inverse-primary": "#ffb595",
+                      "tertiary-fixed": "#e4e2e2",
+                      "surface-variant": "#e2e2e2",
+                      "on-error-container": "#93000a",
+                      "on-surface-variant": "#594238",
+                      "surface-container-high": "#e8e8e8",
+                      "error": "#ba1a1a",
+                      "secondary-fixed": "#e5e2e3",
+                      "on-background": "#1a1c1c",
+                      "outline": "#8c7166",
+                      "tertiary-fixed-dim": "#c8c6c6",
+                      "surface-container-lowest": "#ffffff",
+                      "on-surface": "#1a1c1c",
+                      "secondary": "#5f5e5f",
+                      "surface-bright": "#f9f9f9",
+                      "on-primary-fixed": "#351000",
+                      "surface-container-highest": "#e2e2e2",
+                      "on-error": "#ffffff",
+                      "on-secondary-container": "#636263",
+                      "on-tertiary": "#ffffff",
+                      "on-primary-container": "#fffbff",
+                      "tertiary": "#5c5c5c",
+                      "secondary-container": "#e2dfe0",
+                      "primary-container": "#c64f00",
+                      "surface-container-low": "#f3f3f3",
+                      "inverse-on-surface": "#f1f1f1",
+                      "tertiary-container": "#757474",
+                      "secondary-fixed-dim": "#c8c6c7",
+                      "on-tertiary-container": "#fefcfb",
+                      "on-tertiary-fixed": "#1b1c1c"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.25rem",
+                      "lg": "0.5rem",
+                      "xl": "0.75rem",
+                      "full": "9999px"
+              },
+              "spacing": {
+                      "margin-mobile": "24px",
+                      "margin-desktop": "64px",
+                      "section-gap": "120px",
+                      "baseline": "8px",
+                      "container-max": "1280px",
+                      "gutter": "32px"
+              },
+              "fontFamily": {
+                      "body-lg": [
+                              "Inter"
+                      ],
+                      "label-technical": [
+                              "Inter"
+                      ],
+                      "body-md": [
+                              "Inter"
+                      ],
+                      "headline-lg": [
+                              "Bodoni Moda"
+                      ],
+                      "headline-lg-mobile": [
+                              "Bodoni Moda"
+                      ],
+                      "headline-md": [
+                              "Bodoni Moda"
+                      ],
+                      "headline-display": [
+                              "Bodoni Moda"
+                      ],
+                      "label-caps": [
+                              "Inter"
+                      ]
+              },
+              "fontSize": {
+                      "body-lg": [
+                              "18px",
+                              {
+                                      "lineHeight": "1.6",
+                                      "letterSpacing": "0.01em",
+                                      "fontWeight": "400"
+                              }
+                      ],
+                      "label-technical": [
+                              "11px",
+                              {
+                                      "lineHeight": "1.2",
+                                      "fontWeight": "500"
+                              }
+                      ],
+                      "body-md": [
+                              "16px",
+                              {
+                                      "lineHeight": "1.5",
+                                      "fontWeight": "400"
+                              }
+                      ],
+                      "headline-lg": [
+                              "48px",
+                              {
+                                      "lineHeight": "1.2",
+                                      "fontWeight": "600"
+                              }
+                      ],
+                      "headline-lg-mobile": [
+                              "32px",
+                              {
+                                      "lineHeight": "1.2",
+                                      "fontWeight": "600"
+                              }
+                      ],
+                      "headline-md": [
+                              "32px",
+                              {
+                                      "lineHeight": "1.3",
+                                      "fontWeight": "500"
+                              }
+                      ],
+                      "headline-display": [
+                              "80px",
+                              {
+                                      "lineHeight": "1.1",
+                                      "letterSpacing": "-0.02em",
+                                      "fontWeight": "700"
+                              }
+                      ],
+                      "label-caps": [
+                              "12px",
+                              {
+                                      "lineHeight": "1.2",
+                                      "letterSpacing": "0.15em",
+                                      "fontWeight": "600"
+                              }
+                      ]
+              }
+      },
+          },
+        }
+      </script>
+<style>
+        .material-symbols-outlined {
+          font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .fill-icon {
+            font-variation-settings: 'FILL' 1;
+        }
+        
+        /* Smooth fade-in for scroll */
+        .fade-in-section {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+            will-change: opacity, transform;
+        }
+        .fade-in-section.is-visible {
+            opacity: 1;
+            transform: none;
+        }
+
+        /* Gradient overlays for text legibility */
+        .bg-gradient-bottom {
+            background: linear-gradient(to top, rgba(26, 28, 28, 0.9) 0%, rgba(26, 28, 28, 0) 100%);
+        }
+        
+        .glass-panel {
+            background: rgba(249, 249, 249, 0.85);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+        }
+        
+        .dark-glass-panel {
+            background: rgba(26, 28, 28, 0.85);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+        }
+      </style>
+</head>
+<body class="bg-background text-on-background antialiased selection:bg-primary-container selection:text-on-primary-container overflow-x-hidden">
+<!-- TopAppBar -->
+<header class="fixed top-0 w-full z-50 bg-transparent flex justify-between items-center px-margin-mobile md:px-margin-desktop py-8 transition-colors duration-300" id="global-nav">
+<div class="flex items-center">
+<h1 class="font-headline-md text-headline-md text-primary tracking-tight uppercase cursor-pointer transition-all hover:opacity-70">
+                THE TRACKS OF WASHINGTON DC
+            </h1>
+</div>
+<!-- Search Bar (Hidden as per JSON) -->
+<div class="hidden"></div>
+<!-- Trailing Actions -->
+<div class="flex items-center gap-4 text-on-background cursor-pointer transition-all hover:opacity-70">
+<span class="material-symbols-outlined text-2xl" data-icon="menu">menu</span>
+</div>
+</header>
+<main>
+<!-- Panel 1: HERO -->
+<section class="relative w-full h-screen flex items-end pb-24 px-margin-mobile md:px-margin-desktop bg-cover bg-center" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuBgziwlbghidmC5-_lkRgxaTrv5-L4lEDfomagrPnqy-9rpaqCSnzYC5sG7HmeKMDGDadE0k_0Sq6ewMgsBBU8enV50AqOvoFB5sKtecA0sJSyA1DPqtzowLyJNfie0ILoslKRLatzPWBWiG5SGlUCtpAuy8wv9Nw2euep_v5KscyDXvKjTc6A7tjN553CA-JzCoUpxJJw5TrCeE6UclRU9OggSsjSnMciB8rsb1kn1Emv9kc4r13KM11Ae8jQWJHYiXJhf8NPYxUs');">
+<div class="absolute inset-0 bg-gradient-bottom z-0"></div>
+<div class="relative z-10 max-w-container-max mx-auto w-full text-surface-bright">
+<h2 class="font-headline-display text-headline-display md:text-[100px] leading-none mb-6 max-w-4xl text-white">
+                    THE TRACKS OF WASHINGTON DC
+                </h2>
+<p class="font-body-lg text-body-lg max-w-2xl mb-10 text-surface-container-high opacity-90">
+                    A field guide to the city's ovals — their surfaces, their histories, their regulars.
+                </p>
+<a class="inline-flex items-center justify-center px-8 py-4 bg-on-secondary-fixed text-white font-label-caps text-label-caps tracking-widest uppercase hover:bg-primary transition-colors duration-300" href="#georgetown">
+                    Begin the Circuit
+                </a>
+</div>
+</section>
+<!-- Panel 2: GEORGETOWN WATERFRONT -->
+<section class="relative w-full h-screen flex items-center px-margin-mobile md:px-margin-desktop bg-cover bg-center" id="georgetown" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuCrxPOyvwDXr5rXRnWYMkBm8vbcB1gVryEuzCu5-01LwE0SJAVFBBsskFf4pGb2L3_PuRTjwuopEG-6hCi_0PuTQwqJjnudHxZajxSFwZFqVxKoLvW_8l1fk2TbMY8qqwJN068NzzGH4xV6cXxaTKOzCLigfM6kzqGtwWG0khpF4CVhCqwyQCbwLHB-q8ZV7OTWnLgvPJbLgT-rX_MbHDR7KUxgjCpPIThLTGD8PTOeZ6a0HIEblm7jMHBfILgGzarE5c4LQuVomqo');">
+<div class="absolute inset-0 bg-black/20 z-0"></div>
+<div class="relative z-10 max-w-container-max mx-auto w-full grid grid-cols-1 md:grid-cols-12 gap-gutter fade-in-section">
+<div class="md:col-span-5 glass-panel p-10 md:p-14 border border-outline/20">
+<span class="block font-label-caps text-label-caps text-primary mb-4 flex items-center gap-2">
+<span class="w-2 h-2 bg-primary rounded-full inline-block"></span>
+                        WARD 2
+                    </span>
+<h3 class="font-headline-lg text-headline-lg-mobile md:text-headline-lg text-on-background mb-6">
+                        The Urban Pulse
+                    </h3>
+<p class="font-body-md text-body-md text-on-surface-variant mb-10">
+                        Nestled between the Potomac and the city's modern architecture, Georgetown's track is a testament to the intersection of urban life and athletic discipline.
+                    </p>
+<div class="flex flex-wrap gap-4 mt-auto">
+<div class="flex flex-col">
+<span class="font-label-technical text-label-technical text-secondary mb-1">DISTANCE</span>
+<span class="font-label-caps text-label-caps text-on-background">400m</span>
+</div>
+<div class="w-px h-8 bg-outline/30 mx-2"></div>
+<div class="flex flex-col">
+<span class="font-label-technical text-label-technical text-secondary mb-1">SURFACE</span>
+<span class="font-label-caps text-label-caps text-on-background">Mondo Super X</span>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Panel 3: CINEMATIC MOMENT -->
+<section class="relative w-full h-screen flex items-center justify-center px-margin-mobile md:px-margin-desktop bg-cover bg-center" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuCUGAFq5eN4RZCRGmsHJR2LIPzBmja3znuaRnx17vox1YRLtIleqZciRCaDPE8X7m8NgYqEBWPPsq6BEYG0WJ4LY2ifF79hC1fVFUXm2JH2EsVgfG6YqaEcG_workqIQskOBsH80EXPP4yEB73v8piuEWuYLFvxlokwQz7oRCe4w5asdJQ0EuPjm0p5yRlj0CQA0aoJVbR52vYwiJsn9YL9pR53y45-Z_shpBrd7EKGnM71vkdNytvSPuv2WamoNx1QjBXjnShKDMA');">
+<div class="absolute inset-0 bg-black/40 z-0"></div>
+<div class="relative z-10 max-w-4xl mx-auto text-center fade-in-section">
+<span class="material-symbols-outlined text-primary text-4xl mb-6 block opacity-80" data-icon="format_quote">format_quote</span>
+<blockquote class="font-headline-display text-headline-lg-mobile md:text-headline-display text-white leading-tight">
+                    "The oval is the only space where you can run forever and never leave the start."
+                </blockquote>
+</div>
+</section>
+<!-- Panel 4: ANACOSTIA PARK -->
+<section class="relative w-full h-screen flex items-center px-margin-mobile md:px-margin-desktop bg-cover bg-center" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuBSVS497B15h3fKT8lCLdzf6dPARBKQTG76hE5ano1AeburnPIM2y4Hp_SfWB2gVs66Arqv4VpUg-lEvK67SXlpNOoXKI-3PpLXftn0ie3LND8Yb20idz-1Hp3znOdqzuQ0OuFEXO_C_H3UMX1OQpcUfdswzlrSG3sJEt5XQakFs0Z0rn24sd5hx2Lh-On7ptDJutEuAVbqqpnETu6sci0xpSt3fJ-br3iu-8zH1MYB8MGZJwWy4PpAJuYsb8LMNXSX5GnbJ_MQbFI');">
+<div class="absolute inset-0 bg-black/20 z-0"></div>
+<div class="relative z-10 max-w-container-max mx-auto w-full grid grid-cols-1 md:grid-cols-12 gap-gutter fade-in-section">
+<div class="md:col-start-8 md:col-span-5 glass-panel p-10 md:p-14 border border-outline/20">
+<span class="block font-label-caps text-label-caps text-primary mb-4 flex items-center gap-2">
+<span class="w-2 h-2 bg-primary rounded-full inline-block"></span>
+                        WARD 8
+                    </span>
+<h3 class="font-headline-lg text-headline-lg-mobile md:text-headline-lg text-on-background mb-6">
+                        The Riverside Sanctuary
+                    </h3>
+<p class="font-body-md text-body-md text-on-surface-variant mb-10">
+                        Where the city fades into the river's rhythm. The Anacostia track offers a quiet, natural retreat for those seeking the purity of the long run.
+                    </p>
+<div class="flex flex-wrap gap-4 mt-auto">
+<div class="flex flex-col">
+<span class="font-label-technical text-label-technical text-secondary mb-1">DISTANCE</span>
+<span class="font-label-caps text-label-caps text-on-background">400m</span>
+</div>
+<div class="w-px h-8 bg-outline/30 mx-2"></div>
+<div class="flex flex-col">
+<span class="font-label-technical text-label-technical text-secondary mb-1">SURFACE</span>
+<span class="font-label-caps text-label-caps text-on-background">Polyurethane</span>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Panel 5: THE CIRCUIT MAP -->
+<section class="relative w-full h-screen bg-inverse-surface flex items-center justify-center px-margin-mobile md:px-margin-desktop overflow-hidden">
+<!-- Stylized Abstract Map Background -->
+<div class="absolute inset-0 opacity-20" style="background-image: radial-gradient(circle at center, #474747 1px, transparent 1px); background-size: 40px 40px;"></div>
+<div class="relative z-10 w-full max-w-5xl fade-in-section">
+<div class="text-center mb-16">
+<h3 class="font-headline-md text-headline-md text-white mb-4">THE CIRCUIT</h3>
+<p class="font-body-md text-body-md text-surface-variant max-w-xl mx-auto">
+                        A geographic index of the city's premier synthetic and cinder surfaces.
+                    </p>
+</div>
+<!-- Abstract Map Nodes -->
+<div class="relative h-[60vh] w-full border border-secondary/30 bg-on-background/50 flex items-center justify-center p-8">
+<!-- Just placing some stylized dots with labels to simulate a high-end graphic map -->
+<!-- Node 1 -->
+<div class="absolute top-1/4 left-1/4 group cursor-pointer">
+<div class="w-4 h-4 bg-primary rounded-full relative z-10 shadow-[0_0_15px_rgba(211,84,0,0.5)] transition-transform group-hover:scale-125"></div>
+<div class="absolute top-1/2 left-full ml-4 -translate-y-1/2 whitespace-nowrap opacity-70 group-hover:opacity-100 transition-opacity">
+<span class="block font-label-caps text-label-caps text-white">Cardozo</span>
+<span class="block font-label-technical text-label-technical text-secondary">WARD 1</span>
+</div>
+</div>
+<!-- Node 2 -->
+<div class="absolute top-1/2 right-1/3 group cursor-pointer">
+<div class="w-4 h-4 bg-primary rounded-full relative z-10 shadow-[0_0_15px_rgba(211,84,0,0.5)] transition-transform group-hover:scale-125"></div>
+<div class="absolute top-1/2 left-full ml-4 -translate-y-1/2 whitespace-nowrap opacity-70 group-hover:opacity-100 transition-opacity">
+<span class="block font-label-caps text-label-caps text-white">Rock Creek</span>
+<span class="block font-label-technical text-label-technical text-secondary">WARD 4</span>
+</div>
+</div>
+<!-- Node 3 -->
+<div class="absolute bottom-1/3 left-1/2 group cursor-pointer">
+<div class="w-4 h-4 bg-primary rounded-full relative z-10 shadow-[0_0_15px_rgba(211,84,0,0.5)] transition-transform group-hover:scale-125"></div>
+<div class="absolute top-1/2 right-full mr-4 -translate-y-1/2 text-right whitespace-nowrap opacity-70 group-hover:opacity-100 transition-opacity">
+<span class="block font-label-caps text-label-caps text-white">Meridian Hill</span>
+<span class="block font-label-technical text-label-technical text-secondary">WARD 1</span>
+</div>
+</div>
+<!-- Stylized connection lines (SVG) -->
+<svg class="absolute inset-0 w-full h-full pointer-events-none opacity-20" xmlns="http://www.w3.org/2000/svg">
+<path d="M 25% 25% L 50% 66% L 66% 50%" fill="none" stroke="#D35400" stroke-dasharray="4 4" stroke-width="1"></path>
+</svg>
+</div>
+</div>
+</section>
+<!-- Panel 6: THE GUIDE (Newsletter) -->
+<section class="relative w-full h-screen flex items-center justify-center px-margin-mobile md:px-margin-desktop bg-surface">
+<div class="max-w-2xl w-full text-center fade-in-section">
+<img alt="The Tracks of Washington DC Wordmark" class="h-10 mx-auto mb-12 opacity-80" src="data:image/png;base64,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"/>
+<h2 class="font-headline-lg text-headline-lg-mobile md:text-headline-lg text-on-background mb-6">
+                    Know every oval.
+                </h2>
+<p class="font-body-lg text-body-lg text-on-surface-variant mb-12">
+                    Join our community of regulars for deep dives into DC's athletic heritage, track etiquette, and long-form editorial pieces.
+                </p>
+<form class="flex flex-col md:flex-row gap-0 max-w-lg mx-auto w-full">
+<input class="flex-1 bg-transparent border-b border-secondary/50 px-0 py-4 font-label-caps text-label-caps text-on-background placeholder-secondary focus:ring-0 focus:border-primary transition-colors rounded-none outline-none" placeholder="YOUR EMAIL ADDRESS" required="" type="email"/>
+<button class="mt-8 md:mt-0 md:ml-8 px-8 py-4 bg-on-secondary-fixed text-white font-label-caps text-label-caps uppercase hover:bg-primary transition-colors duration-300 whitespace-nowrap" type="submit">
+                        Get the Guide
+                    </button>
+</form>
+</div>
+</section>
+</main>
+<!-- Shared Footer JSON Implementation -->
+<footer class="bg-background border-t border-secondary-container flex flex-col md:flex-row justify-between items-center px-margin-mobile md:px-margin-desktop py-12 w-full max-w-container-max mx-auto">
+<div class="font-headline-md text-headline-md text-primary mb-8 md:mb-0">
+            THE TRACKS OF WASHINGTON DC
+        </div>
+<nav class="flex flex-wrap justify-center gap-8 mb-8 md:mb-0">
+<a class="font-label-caps text-label-caps text-secondary hover:text-on-background transition-colors" href="#">Archives</a>
+<a class="font-label-caps text-label-caps text-secondary hover:text-on-background transition-colors" href="#">The Oval Motif</a>
+<a class="font-label-caps text-label-caps text-secondary hover:text-on-background transition-colors" href="#">About</a>
+<a class="font-label-caps text-label-caps text-secondary hover:text-on-background transition-colors" href="#">Contact</a>
+</nav>
+<div class="font-body-md text-body-md text-secondary text-sm">
+            © 2024 THE TRACKS OF WASHINGTON DC. AN EDITORIAL FIELD GUIDE.
+        </div>
+</footer>
+<script>
+        // Nav background scroll effect
+        const nav = document.getElementById('global-nav');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 50) {
+                nav.classList.add('bg-background', 'border-b', 'border-outline/10');
+                nav.classList.remove('bg-transparent', 'text-white');
+                // Ensure text colors adjust if needed based on the dark/light mode of the top panel vs scrolled
+            } else {
+                nav.classList.remove('bg-background', 'border-b', 'border-outline/10');
+                nav.classList.add('bg-transparent');
+            }
+        });
+
+        // Intersection Observer for fade-in animations
+        const observerOptions = {
+            root: null,
+            rootMargin: '0px',
+            threshold: 0.15
+        };
+
+        const observer = new IntersectionObserver((entries, observer) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('is-visible');
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.fade-in-section').forEach(section => {
+            observer.observe(section);
+        });
+    </script>
+</body></html>

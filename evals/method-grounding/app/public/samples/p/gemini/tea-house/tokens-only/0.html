@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kettle & Leaf | Neighborhood Tea House</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono&family=Libre+Franklin:wght@700&family=Source+Serif+4:wght@400&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: #F4EFE6;
+            color: #1B1B1B;
+            font-family: 'Source Serif 4', serif;
+            font-size: 16px;
+            font-weight: 400;
+            line-height: 1.65;
+            padding: 0;
+        }
+
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 0 32px;
+        }
+
+        .headline-lg {
+            font-family: 'Libre Franklin', sans-serif;
+            font-size: 44px;
+            font-weight: 700;
+            line-height: 1.05;
+            letter-spacing: -0.01em;
+            color: #1B1B1B;
+        }
+
+        .label-sm {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 12px;
+            font-weight: 400;
+            line-height: 1.4;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            color: #6E675C;
+        }
+
+        .body-md {
+            font-family: 'Source Serif 4', serif;
+            font-size: 16px;
+            font-weight: 400;
+            line-height: 1.65;
+        }
+
+        header {
+            padding-top: 64px;
+            padding-bottom: 64px;
+            border-bottom: 1px solid #6E675C;
+        }
+
+        .welcome-text {
+            margin-top: 16px;
+        }
+
+        .section-padding {
+            padding-top: 64px;
+            padding-bottom: 64px;
+        }
+
+        .tea-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 32px;
+            margin-top: 32px;
+        }
+
+        .tea-card {
+            border-left: 2px solid #E8590C;
+            padding-left: 16px;
+        }
+
+        .tea-name {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+        .origin-label {
+            display: block;
+            margin-bottom: 8px;
+        }
+
+        .middle-layout {
+            display: grid;
+            grid-template-columns: 1.5fr 1fr;
+            gap: 64px;
+            align-items: start;
+        }
+
+        .sourcing-content h2, .schedule-content h2 {
+            margin-bottom: 16px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 16px;
+        }
+
+        table tr {
+            border-bottom: 1px solid #6E675C;
+        }
+
+        table td {
+            padding: 8px 0;
+        }
+
+        .map-line {
+            padding-top: 32px;
+            padding-bottom: 32px;
+            border-top: 1px solid #6E675C;
+            border-bottom: 1px solid #6E675C;
+            color: #E8590C;
+            font-family: 'IBM Plex Mono', monospace;
+            text-align: center;
+        }
+
+        footer {
+            padding-top: 32px;
+            padding-bottom: 64px;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .footer-info {
+            color: #6E675C;
+        }
+
+        hr {
+            border: none;
+            height: 1px;
+            background-color: #6E675C;
+            margin: 0;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="container">
+            <h1 class="headline-lg">Kettle & Leaf</h1>
+            <p class="body-md welcome-text">A neighborhood sanctuary for rare harvests and intentional sipping.</p>
+        </div>
+    </header>
+
+    <section class="section-padding">
+        <div class="container">
+            <span class="label-sm">Today’s Brewed Teas</span>
+            <div class="tea-grid">
+                <div class="tea-card">
+                    <span class="body-md tea-name">Alishan High Mountain</span>
+                    <span class="label-sm origin-label">Chiayi County, Taiwan</span>
+                    <p class="body-md">Notes of wild orchid, fresh cream, and wildflower honey with a lingering floral finish.</p>
+                </div>
+                <div class="tea-card">
+                    <span class="body-md tea-name">Kericho Gold Black</span>
+                    <span class="label-sm origin-label">Kericho, Kenya</span>
+                    <p class="body-md">A robust, full-bodied brew featuring deep notes of malted cocoa and sun-ripened dark berries.</p>
+                </div>
+                <div class="tea-card">
+                    <span class="body-md tea-name">Silver Needle</span>
+                    <span class="label-sm origin-label">Fujian, China</span>
+                    <p class="body-md">An exquisite white tea offering delicate hints of honeysuckle, cucumber, and a silky mouthfeel.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="section-padding" style="background-color: #ede7db;">
+        <div class="container">
+            <div class="middle-layout">
+                <div class="sourcing-content">
+                    <span class="label-sm">Our Sourcing</span>
+                    <h2 class="body-md" style="font-weight: 600; margin-top: 16px;">Direct From the Source</h2>
+                    <p class="body-md">Our owner personally travels to the mist-covered peaks of Alishan in Taiwan and the vibrant red soils of Kericho in Kenya. By visiting these small-batch estates directly, we ensure every leaf in your cup is sourced ethically and represents the finest expression of its terroir.</p>
+                </div>
+                <div class="schedule-content">
+                    <span class="label-sm">Quiet Hours</span>
+                    <table>
+                        <tr class="body-md">
+                            <td>Mon — Fri</td>
+                            <td style="text-align: right;">08:00 AM – 10:30 AM</td>
+                        </tr>
+                        <tr class="body-md">
+                            <td>Sat — Sun</td>
+                            <td style="text-align: right;">07:00 AM – 09:00 AM</td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <div class="map-line">
+        <div class="container">
+            <span>LOCATION // 412 MAPLE ROW</span>
+        </div>
+    </div>
+
+    <footer>
+        <div class="container" style="display: flex; width: 100%; justify-content: space-between;">
+            <div class="footer-info">
+                <span class="label-sm">Hours</span>
+                <p class="body-md">Mon–Fri 8am–6pm, Sat–Sun 7am–7pm</p>
+            </div>
+            <div class="footer-info" style="text-align: right;">
+                <span class="label-sm">Contact</span>
+                <p class="body-md">(555) 234-5678</p>
+            </div>
+        </div>
+    </footer>
+
+</body>
+</html>

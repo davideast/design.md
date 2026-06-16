@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+
+<html class="light scroll-smooth" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>The Tracks of Washington DC</title>
+<!-- Fonts -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&amp;family=IBM+Plex+Mono:wght@400;500&amp;family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&amp;display=swap" rel="stylesheet"/>
+<!-- Material Icons -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<!-- Tailwind Config -->
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "secondary": "#6b5c4c",
+                      "tertiary-container": "#531700",
+                      "secondary-fixed-dim": "#d7c3b0",
+                      "outline": "#727874",
+                      "on-error": "#ffffff",
+                      "on-surface": "#1d1b16",
+                      "primary-fixed": "#d0e8d9",
+                      "background": "#fff9ee",
+                      "on-primary": "#ffffff",
+                      "on-error-container": "#93000a",
+                      "parchment": "#F2ECE2",
+                      "outline-variant": "#c2c8c2",
+                      "surface-bright": "#fff9ee",
+                      "primary-fixed-dim": "#b4ccbe",
+                      "on-primary-container": "#81988b",
+                      "terra-cotta": "#B5491C",
+                      "on-primary-fixed": "#0a1f16",
+                      "surface-tint": "#4d6357",
+                      "error-container": "#ffdad6",
+                      "tertiary-fixed": "#ffdbcf",
+                      "on-secondary-fixed-variant": "#524436",
+                      "error": "#ba1a1a",
+                      "inverse-on-surface": "#f6f0e6",
+                      "surface-container-lowest": "#ffffff",
+                      "on-secondary-fixed": "#241a0e",
+                      "on-tertiary-fixed-variant": "#812900",
+                      "monument-sand": "#7A6A5A",
+                      "inverse-primary": "#b4ccbe",
+                      "on-secondary": "#ffffff",
+                      "secondary-container": "#f4dfcb",
+                      "surface": "#fff9ee",
+                      "secondary-fixed": "#f4dfcb",
+                      "tertiary-fixed-dim": "#ffb59b",
+                      "on-secondary-container": "#716252",
+                      "on-primary-fixed-variant": "#364b40",
+                      "inverse-surface": "#33302a",
+                      "on-tertiary-container": "#e96f3f",
+                      "surface-container-high": "#ede7dd",
+                      "surface-container": "#f3ede3",
+                      "heritage-green": "#1B3026",
+                      "primary-container": "#1b3026",
+                      "surface-container-highest": "#e8e2d8",
+                      "on-tertiary-fixed": "#380d00",
+                      "on-background": "#1d1b16",
+                      "surface-variant": "#e8e2d8",
+                      "on-surface-variant": "#424844",
+                      "on-tertiary": "#ffffff",
+                      "surface-dim": "#dfd9d0",
+                      "primary": "#061b12",
+                      "tertiary": "#300a00",
+                      "surface-container-low": "#f9f3e9"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.25rem",
+                      "lg": "0.5rem",
+                      "xl": "0.75rem",
+                      "full": "9999px"
+              },
+              "spacing": {
+                      "margin-mobile": "16px",
+                      "gutter": "24px",
+                      "xs": "4px",
+                      "lg": "32px",
+                      "sm": "8px",
+                      "margin-desktop": "48px",
+                      "xl": "64px",
+                      "md": "16px"
+              },
+              "fontFamily": {
+                      "display-xl": [
+                              "DM Serif Display"
+                      ],
+                      "headline-lg": [
+                              "DM Serif Display"
+                      ],
+                      "body-md": [
+                              "\"Source Serif 4\""
+                      ],
+                      "body-lg": [
+                              "\"Source Serif 4\""
+                      ],
+                      "body-sm": [
+                              "\"Source Serif 4\""
+                      ],
+                      "label-sm": [
+                              "IBM Plex Mono"
+                      ],
+                      "headline-lg-mobile": [
+                              "DM Serif Display"
+                      ],
+                      "label-md": [
+                              "IBM Plex Mono"
+                      ],
+                      "headline-md": [
+                              "DM Serif Display"
+                      ]
+              },
+              "fontSize": {
+                      "display-xl": [
+                              "72px",
+                              {
+                                      "lineHeight": "1.1",
+                                      "letterSpacing": "-0.02em",
+                                      "fontWeight": "400"
+                              }
+                      ],
+                      "headline-lg": [
+                              "48px",
+                              {
+                                      "lineHeight": "1.1",
+                                      "letterSpacing": "-0.01em",
+                                      "fontWeight": "400"
+                              }
+                      ],
+                      "body-md": [
+                              "17px",
+                              {
+                                      "lineHeight": "1.7",
+                                      "fontWeight": "400"
+                              }
+                      ],
+                      "body-lg": [
+                              "20px",
+                              {
+                                      "lineHeight": "1.6",
+                                      "fontWeight": "400"
+                              }
+                      ],
+                      "body-sm": [
+                              "15px",
+                              {
+                                      "lineHeight": "1.6",
+                                      "fontWeight": "400"
+                              }
+                      ],
+                      "label-sm": [
+                              "12px",
+                              {
+                                      "lineHeight": "1.5",
+                                      "letterSpacing": "0.12em",
+                                      "fontWeight": "400"
+                              }
+                      ],
+                      "headline-lg-mobile": [
+                              "36px",
+                              {
+                                      "lineHeight": "1.2",
+                                      "letterSpacing": "-0.01em",
+                                      "fontWeight": "400"
+                              }
+                      ],
+                      "label-md": [
+                              "14px",
+                              {
+                                      "lineHeight": "1.4",
+                                      "letterSpacing": "0.1em",
+                                      "fontWeight": "500"
+                              }
+                      ],
+                      "headline-md": [
+                              "32px",
+                              {
+                                      "lineHeight": "1.2",
+                                      "fontWeight": "400"
+                              }
+                      ]
+              }
+      },
+          },
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        /* Custom scroll snap for panels */
+        main {
+            height: 100vh;
+            overflow-y: scroll;
+            scroll-snap-type: y mandatory;
+        }
+        section {
+            scroll-snap-align: start;
+        }
+        
+        /* Subtle fade-in animation for content */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .fade-in-content {
+            animation: fadeIn 1s ease-out forwards;
+            opacity: 0;
+        }
+        
+        /* Staggered animation delays */
+        .delay-100 { animation-delay: 100ms; }
+        .delay-300 { animation-delay: 300ms; }
+        .delay-500 { animation-delay: 500ms; }
+    </style>
+</head>
+<body class="bg-background text-on-surface antialiased overflow-hidden">
+<!-- TopAppBar -->
+<header class="fixed top-0 w-full z-50 px-margin-mobile md:px-margin-desktop py-md max-w-7xl mx-auto flex justify-between items-center transition-all duration-300" id="top-nav">
+<a class="font-display-xl text-headline-md md:text-display-xl tracking-tighter text-parchment hover:opacity-80 transition-opacity" href="#">The Tracks of DC</a>
+<button aria-label="Menu" class="text-parchment hover:text-terra-cotta transition-colors duration-300">
+<span class="material-symbols-outlined text-3xl">menu</span>
+</button>
+</header>
+<!-- Vertical Scroll Indicator -->
+<div class="fixed right-margin-mobile md:right-margin-desktop top-1/2 -translate-y-1/2 z-40 hidden md:flex flex-col gap-sm items-center">
+<div class="w-px h-12 bg-parchment/30"></div>
+<span class="font-label-sm text-label-sm text-parchment uppercase rotate-90 my-8 tracking-widest opacity-70">Scroll</span>
+<div class="w-px h-12 bg-parchment/30"></div>
+</div>
+<!-- Main Content - Snap Scrolling -->
+<main class="h-screen w-full relative">
+<!-- Panel 1: Hero -->
+<section class="h-screen w-full relative flex items-center justify-center snap-start" id="panel-1">
+<div class="absolute inset-0 z-0">
+<img alt="A high-fidelity, full-bleed aerial photograph of a terracotta running track at dawn in Washington DC. The lighting is soft and golden, highlighting the texture of the red track surface and the crisp white lane lines. Cinematic, prestige editorial style, clean and architectural." class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuC6N1ef7r8FrRX46BUdZWKOG4UUJUI7_xU-LB6YOzg2xWkK_CRyGBHPxtqaBYIgxdOhIAGkjqdxT4jnhaDqjt17M4KDwF8NsrWj7Ebqm7UTv40ivAo10vv1qkG2ASiUHW3FsDsv_u9BRSaBfzZ8SPSNAQvmWIVZ2dJGmJAXmku-lLk2TI8vSsDsg1_mlhQcH59ES8m2Ok_IFa47ywaK5v6ZkNy1AY8lkRqIOv3IzEuoix-NA0OUCqJ5JyfXOHq474c161DQiiz776QO"/>
+<div class="absolute inset-0 bg-heritage-green/40 mix-blend-multiply"></div>
+</div>
+<div class="relative z-10 text-center px-margin-mobile md:px-margin-desktop max-w-4xl mx-auto flex flex-col items-center gap-lg">
+<h1 class="font-display-xl text-headline-lg-mobile md:text-display-xl text-parchment fade-in-content">The Tracks of Washington DC</h1>
+<p class="font-body-lg text-body-lg text-parchment/90 max-w-2xl fade-in-content delay-300">A field guide to the city's ovals — their surfaces, their histories, their regulars.</p>
+<a class="mt-lg inline-block border border-parchment text-parchment font-label-md text-label-md px-lg py-sm uppercase tracking-widest hover:bg-parchment hover:text-heritage-green transition-colors duration-300 fade-in-content delay-500" href="#panel-2">Begin the Circuit</a>
+</div>
+</section>
+<!-- Panel 2: Georgetown Waterfront -->
+<section class="h-screen w-full relative flex items-center snap-start" id="panel-2">
+<div class="absolute inset-0 z-0">
+<img alt="A beautiful, cinematic photograph of the Georgetown Waterfront running track in Washington DC at golden hour. The Potomac river is visible in the background. The track surface is a modern blue synthetic. High-end editorial photography for a sports magazine." class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDR9s1h-9GtjgbT4a_kyk9v1fTy8MIEQm3B2pZoKpNCqEMjw6RID3iylUu8HBTPzW1fJNO5IbWBsydKSnhzREFkF9dMk3mAERWWAVqFOKvOKaxHIK2149207_mDeEFz25pkWn0jLZu1J3fYEi2TSCg2mn0S_PW5ctPfo4VzLQeWP6sx5TYxycDGGvupj0YS5VOjtbBuJQIS7rs5cKXX3042XtX7cdUnBGG4KyyaCgKcijz0aWSOaLQAG7sstfHlG9S7mwShnjVn9Mrt"/>
+</div>
+<div class="relative z-10 w-full px-margin-mobile md:px-margin-desktop max-w-7xl mx-auto flex justify-start">
+<div class="bg-parchment/90 backdrop-blur-sm p-xl max-w-md border border-secondary/20 fade-in-content">
+<span class="font-label-sm text-label-sm text-terra-cotta uppercase tracking-widest mb-md block">Ward 2</span>
+<h2 class="font-headline-lg text-headline-lg-mobile md:text-headline-lg text-heritage-green mb-md">The Riverside Oval</h2>
+<p class="font-body-md text-body-md text-secondary mb-lg">Where the Potomac meets the pavement. This modern synthetic circuit offers the city's most dramatic views, catching the golden hour light as rowers glide past the Key Bridge.</p>
+<div class="flex gap-md font-label-sm text-label-sm text-monument-sand uppercase tracking-wider border-t border-secondary/20 pt-sm">
+<span>400m</span>
+<span class="text-secondary/30">|</span>
+<span>Synthetic</span>
+<span class="text-secondary/30">|</span>
+<span>Georgetown</span>
+</div>
+</div>
+</div>
+</section>
+<!-- Panel 3: The Motion -->
+<section class="h-screen w-full relative flex items-center justify-center snap-start" id="panel-3">
+<div class="absolute inset-0 z-0 bg-heritage-green">
+<img alt="A cinematic, wide-angle photograph of a runner mid-stride on the back straight of a running track. Dramatic lighting, focused on the motion and the texture of the track. The background is slightly blurred to emphasize the athlete. Minimalist, high-end athletic aesthetic." class="w-full h-full object-cover opacity-60" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBb6Fsp4kIGqRiou1xMgd_MLZ58OSqiZnevFsizi9k579BkXZT1f6MKA_ULuhIWB3_taLKK6Uns1I_olT3ukr1ac35DRMk5bAnQAdFQvDoxsd5IhtLrZdg12W90ZcwaVr6ogpl-3nR-K-FYh0VhhP7X-CsSFCZfmUB98JZ4lzSDgWgnMXYEuEUBu5XyqCYGYs9TxjKygL0dtdmX0ecXxhxOnAMJ2lfKPmqKOLYw1xYbOxGD2Px1bBjA6zhsI4fdYqUeQ5VxugmuW28Z"/>
+</div>
+<div class="relative z-10 text-center px-margin-mobile md:px-margin-desktop max-w-3xl mx-auto fade-in-content">
+<blockquote class="font-headline-lg text-headline-lg-mobile md:text-headline-lg text-parchment leading-tight">
+                    "The oval is the purest form of athletic space."
+                </blockquote>
+</div>
+</section>
+<!-- Panel 4: Anacostia Park -->
+<section class="h-screen w-full relative flex items-center snap-start" id="panel-4">
+<div class="absolute inset-0 z-0">
+<img alt="A cinematic photograph of the Anacostia Park running track in Washington DC. The setting is lush and green, with the track winding through the park. Warm afternoon light, editorial style." class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCy0t8I9T4TTKYRjBl0D9uzdggEJ7igBZ1l_bl0W1BnA-WAty1nDXWa3XVDxt-CXhqPUSwr4WPPJ-h6JSfOioyOTU4qFB8f-28oDKFlAGDUgYo_bHoFjZ3OLIWcYGeQ3HiZHIjfElJqzIy7uCtamSwE7meOPkrcBOu3-Yu8EBFj4FLLFf5Hu4h0I2IqrquEt7DnHPtUMsmY-ShLyOrEwoG971iuWwz5FEriFhMxt0STNy2jXS7U5842BHmciyqVOMjNRAFEjr8LmtEZ"/>
+</div>
+<div class="relative z-10 w-full px-margin-mobile md:px-margin-desktop max-w-7xl mx-auto flex justify-end">
+<div class="bg-parchment/90 backdrop-blur-sm p-xl max-w-md border border-secondary/20 fade-in-content">
+<span class="font-label-sm text-label-sm text-terra-cotta uppercase tracking-widest mb-md block">Ward 8</span>
+<h2 class="font-headline-lg text-headline-lg-mobile md:text-headline-lg text-heritage-green mb-md">The Garden Circuit</h2>
+<p class="font-body-md text-body-md text-secondary mb-lg">Winding through the lush greenery of Anacostia Park, this track offers a peaceful escape from the urban core. A favorite for locals seeking a quiet rhythm beneath the canopy.</p>
+<div class="flex gap-md font-label-sm text-label-sm text-monument-sand uppercase tracking-wider border-t border-secondary/20 pt-sm">
+<span>400m</span>
+<span class="text-secondary/30">|</span>
+<span>Asphalt</span>
+<span class="text-secondary/30">|</span>
+<span>Anacostia</span>
+</div>
+</div>
+</div>
+</section>
+<!-- Panel 5: The Map -->
+<section class="h-screen w-full relative flex items-center justify-center snap-start bg-surface-container-lowest" id="panel-5">
+<div class="w-full h-full p-margin-mobile md:p-margin-desktop flex flex-col fade-in-content">
+<div class="mb-lg text-center">
+<h2 class="font-headline-md text-headline-md text-heritage-green">The Circuit Map</h2>
+</div>
+<div class="flex-grow relative border border-secondary/10 bg-parchment/20">
+<img alt="A minimal, high-end editorial map of Washington DC showing various running tracks as elegant points. The map is clean, using a limited palette of cream, charcoal, and terracotta. Labels for track names, distances, and surface types are clear and typographically refined. Architectural style." class="w-full h-full object-contain" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDq7GbkfCLPIxXd61M2ygKqim0hjlqb03582ZYMmwJss1ZWN96WvxqsXAyys9gQjVz0lKNf1Pn1qT6x-EeMw8pCpf7h-smRqz7CesuVgsXq8k2aBlu5w6KpqfH2Icy_WOGiiOuqiVNmQNG_CYMEZ6W1eglUS5KQxUEBHx6BvapCY5FOgS0WfkKco3N9TT4QGwEmrUqpEMxb4XbxBmDq0oFrRbivjNJPFsTjTx_pKfRAKRvSjFkc-bhmPaRonOwgpCsThDuw7hlxS9G2"/>
+</div>
+</div>
+</section>
+<!-- Panel 6: Newsletter & Footer area -->
+<section class="h-screen w-full relative flex flex-col justify-center snap-start bg-parchment" id="panel-6">
+<div class="flex-grow flex items-center justify-center px-margin-mobile md:px-margin-desktop fade-in-content">
+<div class="max-w-xl text-center w-full">
+<h2 class="font-display-xl text-headline-lg-mobile md:text-display-xl text-heritage-green mb-md">Know every oval.</h2>
+<p class="font-body-lg text-body-lg text-secondary mb-xl">Join our community of runners and historians as we document the city's tracks.</p>
+<form class="flex flex-col sm:flex-row gap-0 max-w-md mx-auto relative">
+<input class="w-full bg-transparent border-b border-secondary/30 px-0 py-sm font-label-md text-label-md text-heritage-green focus:outline-none focus:border-terra-cotta focus:ring-0 placeholder-monument-sand/50 transition-colors" placeholder="Email Address" required="" type="email"/>
+<button class="mt-md sm:mt-0 sm:absolute sm:right-0 sm:bottom-sm font-label-md text-label-md text-terra-cotta uppercase tracking-widest hover:text-heritage-green transition-colors" type="submit">Get the Guide</button>
+</form>
+</div>
+</div>
+<!-- Footer from JSON -->
+<footer class="border-t border-secondary/20 bg-heritage-green text-parchment py-xl px-margin-mobile md:px-margin-desktop w-full flex flex-col md:flex-row justify-between items-center z-10">
+<div class="mb-lg md:mb-0">
+<span class="font-display-xl text-headline-md text-parchment block mb-xs">The Tracks of DC</span>
+<p class="font-body-sm text-body-sm text-secondary-fixed-dim">© 2024 The Tracks of Washington DC. An Archival Project.</p>
+</div>
+<nav class="flex gap-lg font-label-sm text-label-sm uppercase tracking-wider">
+<a class="text-secondary-fixed-dim hover:text-parchment transition-colors opacity-90 hover:opacity-100" href="#">Archives</a>
+<a class="text-secondary-fixed-dim hover:text-parchment transition-colors opacity-90 hover:opacity-100" href="#">Methodology</a>
+<a class="text-secondary-fixed-dim hover:text-parchment transition-colors opacity-90 hover:opacity-100" href="#">Newsletter</a>
+<a class="text-secondary-fixed-dim hover:text-parchment transition-colors opacity-90 hover:opacity-100" href="#">Contact</a>
+</nav>
+</footer>
+</section>
+</main>
+<script>
+        // Simple Intersection Observer to handle TopNav text color based on section background
+        const topNav = document.getElementById('top-nav');
+        const navBrand = topNav.querySelector('a');
+        const navMenu = topNav.querySelector('button');
+        const sections = document.querySelectorAll('section');
+
+        const observerOptions = {
+            root: null,
+            rootMargin: '0px',
+            threshold: 0.5 // Trigger when 50% of the section is visible
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    // Check if we are on a light background section (Panel 5 or 6)
+                    if (entry.target.id === 'panel-5' || entry.target.id === 'panel-6') {
+                        navBrand.classList.remove('text-parchment');
+                        navBrand.classList.add('text-heritage-green');
+                        navMenu.classList.remove('text-parchment');
+                        navMenu.classList.add('text-heritage-green');
+                    } else {
+                        navBrand.classList.remove('text-heritage-green');
+                        navBrand.classList.add('text-parchment');
+                        navMenu.classList.remove('text-heritage-green');
+                        navMenu.classList.add('text-parchment');
+                    }
+                    
+                    // Trigger fade-in animations for children of intersecting section
+                    const animatableElements = entry.target.querySelectorAll('.fade-in-content');
+                    animatableElements.forEach(el => {
+                        // Reset animation to re-trigger if needed, or just let it play once
+                        el.style.animation = 'none';
+                        el.offsetHeight; /* trigger reflow */
+                        el.style.animation = null; 
+                    });
+                }
+            });
+        }, observerOptions);
+
+        sections.forEach(section => {
+            observer.observe(section);
+        });
+    </script>
+</body></html>

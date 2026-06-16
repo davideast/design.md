@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kettle & Leaf | Neighborhood Tea House</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono&family=Libre+Franklin:wght@700&family=Source+Serif+4:opsz,wght@8..60,400&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: #F4EFE6;
+            color: #1B1B1B;
+            font-family: 'Source Serif 4', serif;
+            font-size: 16px;
+            font-weight: 400;
+            line-height: 1.65;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 64px 32px;
+        }
+
+        header {
+            margin-bottom: 64px;
+            text-align: left;
+        }
+
+        h1 {
+            font-family: 'Libre Franklin', sans-serif;
+            font-size: 44px;
+            font-weight: 700;
+            line-height: 1.05;
+            letter-spacing: -0.01em;
+            margin-bottom: 8px;
+            text-transform: capitalize;
+        }
+
+        .welcome {
+            color: #6E675C;
+            font-family: 'Source Serif 4', serif;
+            font-size: 16px;
+        }
+
+        .label {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 12px;
+            font-weight: 400;
+            line-height: 1.4;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            color: #E8590C;
+            margin-bottom: 16px;
+            display: block;
+        }
+
+        .daily-teas {
+            margin-bottom: 64px;
+        }
+
+        .tea-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 32px;
+            margin-top: 32px;
+        }
+
+        .tea-item h3 {
+            font-family: 'Libre Franklin', sans-serif;
+            font-size: 16px;
+            font-weight: 700;
+            margin-bottom: 8px;
+            color: #1B1B1B;
+        }
+
+        .tea-origin {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 12px;
+            color: #6E675C;
+            margin-bottom: 8px;
+            display: block;
+        }
+
+        .tea-note {
+            font-style: italic;
+            font-size: 15px;
+            color: #6E675C;
+        }
+
+        .mid-content {
+            display: grid;
+            grid-template-columns: 1.5fr 1fr;
+            gap: 64px;
+            margin-bottom: 64px;
+            align-items: start;
+        }
+
+        .sourcing p {
+            margin-bottom: 16px;
+        }
+
+        .quiet-hours table {
+            width: 100%;
+            border-collapse: collapse;
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 12px;
+            color: #1B1B1B;
+        }
+
+        .quiet-hours th {
+            text-align: left;
+            padding-bottom: 8px;
+            color: #6E675C;
+            font-weight: 400;
+        }
+
+        .quiet-hours td {
+            padding: 8px 0;
+            border-bottom: 1px solid rgba(110, 103, 92, 0.1);
+        }
+
+        .map-line {
+            margin-top: 64px;
+            padding-top: 32px;
+            border-top: 1px solid rgba(110, 103, 92, 0.1);
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 12px;
+            color: #6E675C;
+        }
+
+        footer {
+            margin-top: 8px;
+            padding-bottom: 64px;
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 12px;
+            color: #6E675C;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .accent-text {
+            color: #E8590C;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <header>
+            <h1>Kettle & Leaf</h1>
+            <p class="welcome">A quiet space for lingering over exceptional leaves.</p>
+        </header>
+
+        <section class="daily-teas">
+            <span class="label">Today's Brewed Teas</span>
+            <div class="tea-grid">
+                <div class="tea-item">
+                    <span class="tea-origin">Alishan, Taiwan</span>
+                    <h3>High Mountain Oolong</h3>
+                    <p class="tea-note">Creamy, orchid, light honey.</p>
+                </div>
+                <div class="tea-item">
+                    <span class="tea-origin">Nandi Hills, Kenya</span>
+                    <h3>Kenyan Purple Tea</h3>
+                    <p class="tea-note">Sweet plum, woodsmoke, earthy.</p>
+                </div>
+                <div class="tea-item">
+                    <span class="tea-origin">Fujian, China</span>
+                    <h3>Silver Needle</h3>
+                    <p class="tea-note">Honeysuckle, cucumber, delicate.</p>
+                </div>
+            </div>
+        </section>
+
+        <div class="mid-content">
+            <section class="sourcing">
+                <span class="label">Our Sourcing</span>
+                <p>Our tea is born from quiet journeys. I travel annually to the mist-shrouded slopes of Taiwan and the high-altitude gardens of Kenya to source leaves directly from families who have tended the same soil for generations. These trips aren't just about the harvest; they're about the slow conversations and shared pots that define the spirit of Kettle & Leaf.</p>
+            </section>
+
+            <section class="quiet-hours">
+                <span class="label">Quiet Hours</span>
+                <table>
+                    <tr>
+                        <td>Mon—Wed</td>
+                        <td>2:00 PM — 4:00 PM</td>
+                    </tr>
+                    <tr>
+                        <td>Thu—Fri</td>
+                        <td>9:00 AM — 11:00 AM</td>
+                    </tr>
+                    <tr>
+                        <td>Sat—Sun</td>
+                        <td>8:00 AM — 10:00 AM</td>
+                    </tr>
+                </table>
+            </section>
+        </div>
+
+        <div class="map-line">
+            412 Maple Row
+        </div>
+
+        <footer>
+            <span>Daily 8:00 AM — 6:00 PM</span>
+            <span>(555) 123-4567</span>
+        </footer>
+    </div>
+
+</body>
+</html>

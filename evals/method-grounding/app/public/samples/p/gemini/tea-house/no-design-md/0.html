@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kettle and Leaf | Neighborhood Tea House</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Lora:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-color: #fdfbf7;
+            --text-color: #2c2c2c;
+            --accent-green: #4a5d23;
+            --border-color: #e0dcd0;
+            --serif-font: 'Playfair Display', serif;
+            --body-font: 'Lora', serif;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            font-family: var(--body-font);
+            line-height: 1.6;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+            padding: 40px 20px;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 60px;
+            max-width: 800px;
+        }
+
+        h1 {
+            font-family: var(--serif-font);
+            font-size: 3.5rem;
+            font-weight: 700;
+            color: var(--accent-green);
+            margin-bottom: 10px;
+            letter-spacing: -1px;
+        }
+
+        .welcome {
+            font-style: italic;
+            font-size: 1.2rem;
+            color: #555;
+        }
+
+        main {
+            max-width: 900px;
+            width: 100%;
+        }
+
+        .section-title {
+            font-family: var(--serif-font);
+            font-size: 1.8rem;
+            text-align: center;
+            margin-bottom: 30px;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 10px;
+        }
+
+        .tea-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 30px;
+            margin-bottom: 60px;
+        }
+
+        .tea-card {
+            text-align: center;
+            padding: 20px;
+            background: #fff;
+            border: 1px solid var(--border-color);
+        }
+
+        .tea-name {
+            font-family: var(--serif-font);
+            font-weight: 700;
+            font-size: 1.2rem;
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        .tea-origin {
+            text-transform: uppercase;
+            font-size: 0.75rem;
+            letter-spacing: 1px;
+            color: var(--accent-green);
+            font-weight: 500;
+            margin-bottom: 10px;
+            display: block;
+        }
+
+        .tea-note {
+            font-size: 0.95rem;
+            color: #666;
+        }
+
+        .quiet-hours {
+            margin-bottom: 60px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        table {
+            width: 100%;
+            max-width: 500px;
+            border-collapse: collapse;
+            font-size: 0.9rem;
+        }
+
+        th, td {
+            padding: 12px;
+            border-bottom: 1px solid var(--border-color);
+            text-align: left;
+        }
+
+        th {
+            font-family: var(--serif-font);
+            font-weight: 700;
+        }
+
+        .sourcing {
+            text-align: center;
+            max-width: 700px;
+            margin: 0 auto 60px auto;
+        }
+
+        .sourcing p {
+            font-size: 1.1rem;
+            color: #444;
+        }
+
+        .map-line {
+            text-align: center;
+            font-family: var(--serif-font);
+            font-size: 1.1rem;
+            margin-bottom: 60px;
+            padding: 20px;
+            border-top: 1px solid var(--border-color);
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        footer {
+            text-align: center;
+            font-size: 0.9rem;
+            color: #777;
+            border-top: 1px solid var(--border-color);
+            padding-top: 40px;
+            width: 100%;
+            max-width: 900px;
+        }
+
+        footer p {
+            margin-bottom: 5px;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>Kettle and Leaf</h1>
+        <p class="welcome">A neighborhood sanctuary for slow afternoons and exceptional single-origin steeps.</p>
+    </header>
+
+    <main>
+        <h2 class="section-title">Today's Brewed Teas</h2>
+        <div class="tea-grid">
+            <div class="tea-card">
+                <span class="tea-name">Alishan High Mountain</span>
+                <span class="tea-origin">Taiwan</span>
+                <p class="tea-note">Creamy and buttery with lingering floral notes of lilac and a sweet honey finish.</p>
+            </div>
+            <div class="tea-card">
+                <span class="tea-name">Nandi Hills Black</span>
+                <span class="tea-origin">Kenya</span>
+                <p class="tea-note">A bold, full-bodied cup with distinct malty sweetness and bright citrus undertones.</p>
+            </div>
+            <div class="tea-card">
+                <span class="tea-name">Purple Leaf Orthodox</span>
+                <span class="tea-origin">Kenya</span>
+                <p class="tea-note">Earthy and complex, offering a unique profile of woodsmoke and tart wild plum.</p>
+            </div>
+        </div>
+
+        <div class="quiet-hours">
+            <h2 class="section-title">Weekly Quiet Hours</h2>
+            <table>
+                <tr>
+                    <th>Days</th>
+                    <th>Hours</th>
+                </tr>
+                <tr>
+                    <td>Monday – Thursday</td>
+                    <td>8:00 AM – 10:00 AM</td>
+                </tr>
+                <tr>
+                    <td>Friday</td>
+                    <td>2:00 PM – 4:00 PM</td>
+                </tr>
+                <tr>
+                    <td>Saturday – Sunday</td>
+                    <td>No designated quiet hours</td>
+                </tr>
+            </table>
+        </div>
+
+        <div class="sourcing">
+            <h2 class="section-title">Our Sourcing</h2>
+            <p>Our owner personally embarks on annual sourcing trips to the high-altitude gardens of Taiwan and the vibrant tea estates of Kenya. By fostering direct relationships with small-scale growers, we ensure that every leaf is ethically harvested and represents the true character of its landscape.</p>
+        </div>
+
+        <div class="map-line">
+            Find us at 412 Maple Row
+        </div>
+    </main>
+
+    <footer>
+        <p>Open daily from 8:00 AM to 6:00 PM</p>
+        <p>Phone: (555) 123-4567</p>
+    </footer>
+
+</body>
+</html>

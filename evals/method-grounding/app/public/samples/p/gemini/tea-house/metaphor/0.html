@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kettle & Leaf | Neighborhood Tea House</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono&family=Libre+Franklin:wght@700&family=Source+Serif+4:ital,wght@0,400;1,400&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        body {
+            background-color: #F4EFE6;
+            color: #1B1B1B;
+            font-family: 'Source Serif 4', serif;
+            font-size: 16px;
+            line-height: 1.65;
+            padding: 64px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 900px;
+            display: flex;
+            flex-direction: column;
+            gap: 64px;
+        }
+
+        /* Header Section */
+        header {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        h1 {
+            font-family: 'Libre Franklin', sans-serif;
+            font-size: 44px;
+            font-weight: 700;
+            line-height: 1.05;
+            letter-spacing: -0.01em;
+            color: #1B1B1B;
+        }
+
+        .bloom {
+            width: 48px;
+            height: 3px;
+            background-color: #E8590C;
+        }
+
+        .welcome {
+            font-family: 'Source Serif 4', serif;
+            font-size: 16px;
+            color: #1B1B1B;
+        }
+
+        /* Tea Flight Section */
+        .tea-flight {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 32px;
+        }
+
+        .tea-steep {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .tea-name {
+            font-weight: 400;
+        }
+
+        .tea-name::first-letter {
+            color: #E8590C;
+        }
+
+        .tea-origin {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            color: #6E675C;
+        }
+
+        .tea-notes {
+            font-style: italic;
+        }
+
+        /* Sourcing Essay Section */
+        .sourcing-essay {
+            max-width: 700px;
+        }
+
+        /* Table Section */
+        .quiet-hours {
+            width: fit-content;
+        }
+
+        table {
+            border-collapse: collapse;
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 12px;
+            color: #6E675C;
+            letter-spacing: 0.08em;
+        }
+
+        th {
+            text-align: left;
+            padding-bottom: 8px;
+            font-weight: 400;
+            text-transform: uppercase;
+        }
+
+        td {
+            padding: 4px 16px 4px 0;
+            border-top: 1px solid #6E675C;
+        }
+
+        /* Footer Section */
+        footer {
+            border-top: 1px solid #6E675C;
+            padding-top: 16px;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 12px;
+            font-weight: 400;
+            line-height: 1.4;
+            letter-spacing: 0.08em;
+            color: #6E675C;
+            text-transform: uppercase;
+        }
+
+        .sediment-group {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .map-line {
+            color: #6E675C;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <header>
+            <h1>Kettle & Leaf</h1>
+            <div class="bloom"></div>
+            <p class="welcome">A neighborhood tea house for slow steeps and quiet thoughts.</p>
+        </header>
+
+        <section class="tea-flight">
+            <article class="tea-steep">
+                <p class="tea-origin">Nantou, Taiwan</p>
+                <p class="tea-name">Alishan High Mountain Oolong</p>
+                <p class="tea-notes">Notes of sweet cream, orchid, and morning mist.</p>
+            </article>
+            <article class="tea-steep">
+                <p class="tea-origin">Nandi, Kenya</p>
+                <p class="tea-name">Mount Kenya Highland Black</p>
+                <p class="tea-notes">Notes of sun-dried plum, malt, and red earth.</p>
+            </article>
+            <article class="tea-steep">
+                <p class="tea-origin">Fujian, China</p>
+                <p class="tea-name">Silver Needle White Tea</p>
+                <p class="tea-notes">Notes of honeydew melon, fresh hay, and silk.</p>
+            </article>
+        </section>
+
+        <section class="sourcing-essay">
+            <p>Our tea is a record of travel. Every year, we return to the high-altitude gardens of Taiwan to source oolongs that capture the specific clarity of the mountain air. From there, we journey to the highlands of Kenya, where the mineral-rich soil produces black teas of singular depth and warmth. These trips are not merely for procurement; we visit these farms as guests, sitting for hours over shared cups to ensure every leaf reflects the integrity of the land and the hands that harvest it.</p>
+        </section>
+
+        <section class="quiet-hours">
+            <table>
+                <thead>
+                    <tr>
+                        <th colspan="2">Weekly Quiet Hours</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Mon — Fri</td>
+                        <td>08:00 — 10:00</td>
+                    </tr>
+                    <tr>
+                        <td>Sat — Sun</td>
+                        <td>09:00 — 11:00</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <footer class="footer">
+            <div class="sediment-group">
+                <span class="map-line">412 Maple Row</span>
+            </div>
+            <div class="sediment-group">
+                <span>Daily 08:00 — 18:00</span>
+            </div>
+            <div class="sediment-group">
+                <span>555-0124</span>
+            </div>
+        </footer>
+    </div>
+
+</body>
+</html>

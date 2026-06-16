@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Urban Nocturnal: Field Notes</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=League+Spartan:wght@500;700&family=Libre+Baskerville&display=swap" rel="stylesheet">
+    <style>
+        * {
+            box-sizing: border-box;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        body {
+            background-color: #F9F6EE;
+            color: #1A1A1B;
+            font-family: 'Libre Baskerville', serif;
+            margin: 0;
+            padding: 20px;
+            line-height: 1.4;
+            display: flex;
+            justify-content: center;
+        }
+
+        .container {
+            max-width: 900px;
+            width: 100%;
+            border: 2px solid #1A1A1B;
+            padding: 0;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            grid-gap: 0;
+        }
+
+        header {
+            grid-column: 1 / span 2;
+            border-bottom: 2px solid #1A1A1B;
+            padding: 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+        }
+
+        h1 {
+            font-family: 'League Spartan', sans-serif;
+            font-weight: 700;
+            text-transform: uppercase;
+            font-size: 2.2rem;
+            margin: 0;
+            letter-spacing: -1px;
+            line-height: 0.9;
+        }
+
+        .edition-label {
+            font-family: 'League Spartan', sans-serif;
+            font-weight: 500;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            color: #707372;
+            letter-spacing: 1px;
+        }
+
+        .section {
+            border-bottom: 1px solid #1A1A1B;
+            padding: 15px;
+        }
+
+        .col-left {
+            border-right: 1px solid #1A1A1B;
+        }
+
+        h2 {
+            font-family: 'League Spartan', sans-serif;
+            font-weight: 700;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            margin: 0 0 10px 0;
+            letter-spacing: 1px;
+            background-color: #1A1A1B;
+            color: #F9F6EE;
+            padding: 2px 6px;
+            display: inline-block;
+        }
+
+        .label-group {
+            margin-bottom: 12px;
+        }
+
+        .label {
+            font-family: 'League Spartan', sans-serif;
+            font-weight: 500;
+            font-size: 0.65rem;
+            text-transform: uppercase;
+            color: #707372;
+            display: block;
+            margin-bottom: 2px;
+        }
+
+        .value {
+            font-size: 1rem;
+            font-weight: bold;
+        }
+
+        .species-card {
+            padding: 0;
+        }
+
+        .species-name {
+            font-family: 'League Spartan', sans-serif;
+            font-weight: 700;
+            font-size: 1.4rem;
+            margin: 0 0 15px 0;
+            border-bottom: 1px solid #1A1A1B;
+            padding-bottom: 5px;
+        }
+
+        .field-mark {
+            position: relative;
+            padding-left: 25px;
+            margin-bottom: 8px;
+            font-size: 0.9rem;
+        }
+
+        .field-mark::before {
+            content: '→';
+            position: absolute;
+            left: 0;
+            color: #C53030;
+            font-weight: bold;
+            font-size: 1.2rem;
+            line-height: 1;
+        }
+
+        .context-box {
+            background-color: rgba(112, 115, 114, 0.1);
+            padding: 10px;
+            margin-top: 15px;
+            font-size: 0.85rem;
+            border: 1px dashed #707372;
+        }
+
+        .sightings-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.85rem;
+        }
+
+        .sightings-table tr {
+            border-bottom: 1px solid #707372;
+        }
+
+        .sightings-table td {
+            padding: 8px 0;
+            vertical-align: top;
+        }
+
+        .time-cell {
+            font-family: 'League Spartan', sans-serif;
+            font-weight: 700;
+            width: 60px;
+        }
+
+        .location-tag {
+            color: #C53030;
+            font-family: 'League Spartan', sans-serif;
+            font-weight: 700;
+            font-size: 0.7rem;
+            text-transform: uppercase;
+        }
+
+        .listening-guide {
+            grid-column: 1 / span 2;
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            border-bottom: none;
+        }
+
+        .guide-step {
+            padding: 15px;
+            border-right: 1px solid #1A1A1B;
+        }
+
+        .guide-step:last-child {
+            border-right: none;
+        }
+
+        .step-num {
+            font-family: 'League Spartan', sans-serif;
+            font-weight: 700;
+            font-size: 2rem;
+            color: #C53030;
+            display: block;
+            margin-bottom: 5px;
+            line-height: 1;
+        }
+
+        .step-title {
+            font-family: 'League Spartan', sans-serif;
+            font-weight: 700;
+            text-transform: uppercase;
+            font-size: 0.8rem;
+            display: block;
+            margin-bottom: 8px;
+            border-bottom: 1px solid #1A1A1B;
+        }
+
+        .guide-text {
+            font-size: 0.85rem;
+            margin: 0;
+        }
+
+        .bortle-scale {
+            height: 8px;
+            background: linear-gradient(to right, #1A1A1B 80%, #707372 80%);
+            margin-top: 5px;
+            border: 1px solid #1A1A1B;
+        }
+
+        @media (max-width: 600px) {
+            .container {
+                grid-template-columns: 1fr;
+            }
+            header, .col-left, .listening-guide {
+                grid-column: 1;
+                border-right: none;
+            }
+            .listening-guide {
+                grid-template-columns: 1fr;
+            }
+            .guide-step {
+                border-right: none;
+                border-bottom: 1px solid #1A1A1B;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <header>
+            <div>
+                <span class="edition-label">Field Notes / Vol. 04</span>
+                <h1>Urban Nocturnal</h1>
+            </div>
+            <div style="text-align: right">
+                <span class="edition-label">Plate No. 12</span>
+            </div>
+        </header>
+
+        <div class="section col-left">
+            <h2>Moon & Light Conditions</h2>
+            <div class="label-group">
+                <span class="label">Current Status</span>
+                <span class="value">Waxing Gibbous</span>
+            </div>
+            <div class="label-group">
+                <span class="label">Illumination</span>
+                <span class="value" style="color: #C53030;">82%</span>
+            </div>
+            <div class="label-group">
+                <span class="label">Moonrise</span>
+                <span class="value">17:42</span>
+            </div>
+            <div class="label-group">
+                <span class="label">Sky Quality</span>
+                <span class="value">Bortle 8</span>
+                <div class="label" style="margin-top:4px;">Inner City Sky</div>
+                <div class="bortle-scale"></div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>Sightings Log</h2>
+            <table class="sightings-table">
+                <tr>
+                    <td class="time-cell">23:14</td>
+                    <td>
+                        <div class="location-tag">West Side Railyards</div>
+                        <div style="font-weight:bold;">Common Nighthawk (2)</div>
+                        <div style="font-size: 0.75rem; color: #707372;">Aerial foraging under stadium lights; erratic, bat-like flight pattern.</div>
+                    </td>
+                </tr>
+            </table>
+        </div>
+
+        <div class="section col-left">
+            <h2>Tonight’s Likely Species</h2>
+            <div class="species-card">
+                <div class="species-name">Black-crowned Night Heron</div>
+                <div class="field-mark">Stocky build, black crown and back, contrasting grey wings.</div>
+                <div class="field-mark">In Flight: Thick neck tucked, feet barely extending beyond tail.</div>
+                <div class="context-box">
+                    <span class="label">Habitual Context</span>
+                    Often found near waterfront construction sites or park ponds.
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <div style="border: 1px solid #1A1A1B; height: 100%; display: flex; align-items: center; justify-content: center; background: repeating-linear-gradient(45deg, transparent, transparent 10px, rgba(112,115,114,0.05) 10px, rgba(112,115,114,0.05) 20px);">
+                <span class="label" style="padding: 20px; text-align: center;">Illustration: Nycticorax nycticorax<br>[See Printed Plate 8B]</span>
+            </div>
+        </div>
+
+        <div class="section listening-guide">
+            <div class="guide-step">
+                <span class="step-num">01</span>
+                <span class="step-title">The Base</span>
+                <p class="guide-text">Ignore the low-frequency rumble of the expressway or subway vents.</p>
+            </div>
+            <div class="guide-step">
+                <span class="step-num">02</span>
+                <span class="step-title">The Signal</span>
+                <p class="guide-text">Focus on the "Peent"—a sharp, nasal electric buzz cutting through the hum.</p>
+            </div>
+            <div class="guide-step">
+                <span class="step-num">03</span>
+                <span class="step-title">The Physical</span>
+                <p class="guide-text">Listen for the "Whoosh" of air through primary feathers during a territorial dive.</p>
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>
