@@ -15,14 +15,29 @@ const RUNS = resolve(process.cwd(), "..", "runs");
 export interface Provider {
   key: string;
   label: string;
-  run: string;
+  runs: string[]; // method-grounding runs backing this column (merged); empty = no key/data yet
 }
 
-/** Providers, each backed by one run. Add a row to widen the grid. */
+/** The six tool columns. Stitch and Gemini have keys and runs here; the rest are
+ *  named targets with no key in this environment, shown as awaiting columns. */
 export const PROVIDERS: Provider[] = [
-  { key: "stitch", label: "Stitch · Gemini 3.1 Pro", run: "demo" },
-  { key: "gemini", label: "Gemini 3.1 Pro · direct", run: "gemini-grid" },
+  { key: "stitch", label: "Stitch", runs: ["demo", "stitch-new"] },
+  { key: "gemini", label: "Gemini · direct", runs: ["gemini-grid", "gemini-new"] },
+  { key: "opus", label: "Opus 4.8", runs: [] },
+  { key: "gpt", label: "GPT 5.5", runs: [] },
+  { key: "kimi", label: "Kimi K2.7", runs: [] },
+  { key: "glm", label: "GLM 5.1", runs: [] },
 ];
+
+/** The report case for a provider × case, from the first of its runs that has it. */
+function providerCase(provider: Provider, caseKey: string): any | null {
+  for (const run of provider.runs) {
+    const rep = readJson(join(RUNS, run, "report.json"));
+    const c = rep?.cases?.find((x: any) => x.case === caseKey);
+    if (c) return { c, run };
+  }
+  return null;
+}
 
 function readJson(p: string): any {
   return existsSync(p) ? JSON.parse(readFileSync(p, "utf8")) : null;
@@ -44,9 +59,9 @@ export interface Arm {
 export function armsFor(providerKey: string, caseKey: string): Arm[] {
   const provider = PROVIDERS.find((p) => p.key === providerKey);
   if (!provider) return [];
-  const rep = readJson(join(RUNS, provider.run, "report.json"));
-  const c = rep?.cases?.find((x: any) => x.case === caseKey);
-  if (!c) return [];
+  const found = providerCase(provider, caseKey);
+  if (!found) return [];
+  const c = found.c;
   // Normalize channel-suffixed cells to arms; prefer the design-system (bare) cell.
   const byArm = new Map<string, any>();
   for (const cell of c.cells ?? []) {
@@ -101,10 +116,12 @@ export function gridTiles(): Tile[] {
   // Cases are whatever any provider has measured, in a stable order.
   const caseKeys = Array.from(
     new Set(
-      PROVIDERS.flatMap((p) => {
-        const rep = readJson(join(RUNS, p.run, "report.json"));
-        return (rep?.cases ?? []).map((c: any) => c.case);
-      }),
+      PROVIDERS.flatMap((p) =>
+        p.runs.flatMap((run) => {
+          const rep = readJson(join(RUNS, run, "report.json"));
+          return (rep?.cases ?? []).map((c: any) => c.case);
+        }),
+      ),
     ),
   );
   for (const caseKey of caseKeys) {

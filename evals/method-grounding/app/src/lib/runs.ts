@@ -20,12 +20,14 @@ export const CASE_TITLES: Record<string, string> = {
   auralis: "Auralis",
   "dc-tracks": "DC Tracks",
   "night-birding": "Urban Nocturnal Field Guide",
+  "tea-house": "Kettle & Leaf",
 };
 export const CASE_WORLDS: Record<string, string> = {
   "agent-slides": "A seven-slide technical talk on AI agent loops.",
   auralis: "A marketing site for an AI voice platform.",
   "dc-tracks": "An editorial music publication for Washington, DC.",
   "night-birding": "A field-notes site for night birding in the city.",
+  "tea-house": "A home page for a neighborhood tea house.",
 };
 export const TREATMENTS: Record<string, { name: string; blurb: string }> = {
   "no-design-md": { name: "No direction", blurb: "The brief alone — the default look everything else is measured from." },

@@ -53,9 +53,11 @@ if (existsSync(compareDir)) {
 //   p/<provider>/<case>/<arm>/<n>.html
 // Arm-normalized (channel suffix stripped), preferring the design-system channel
 // when a run carries both. One method-grounding run per provider.
-const PROVIDER_RUNS = [
+const PROVIDER_RUNS: { provider: string; run: string }[] = [
   { provider: "stitch", run: "demo" },
+  { provider: "stitch", run: "stitch-new" },
   { provider: "gemini", run: "gemini-grid" },
+  { provider: "gemini", run: "gemini-new" },
 ];
 for (const { provider, run } of PROVIDER_RUNS) {
   const dir = join(RUNS, run);
