@@ -9,7 +9,9 @@ const { title = "Design Bench" } = Astro.props;
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>{title}</title>
   </head>
-  <body class="bg-neutral text-ink font-body min-h-screen">
+  <!-- Warm worktable surround (not the cool clinical gray) — white proof sheets
+       read as paper on it; the bg-neutral token stays for render backgrounds. -->
+  <body class="text-ink font-body min-h-screen" style="background:#ebe5da">
     <slot />
   </body>
 </html>
