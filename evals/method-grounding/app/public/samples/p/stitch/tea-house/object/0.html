@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Kettle &amp; Leaf - A sanctuary for the art of the steep</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;700&amp;family=Libre+Franklin:wght@700&amp;family=Source+Serif+4:wght@400;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "inverse-surface": "#32302a",
+                        "tertiary-fixed-dim": "#ffb598",
+                        "tertiary-fixed": "#ffdbce",
+                        "inverse-on-surface": "#f5f0e7",
+                        "on-tertiary-container": "#e35606",
+                        "primary-fixed-dim": "#c8c6c5",
+                        "on-secondary": "#ffffff",
+                        "catalogue-grey": "#6E675C",
+                        "background": "#fef9f0",
+                        "tertiary": "#000000",
+                        "on-primary": "#ffffff",
+                        "surface-container-low": "#f8f3ea",
+                        "surface-variant": "#e7e2d9",
+                        "primary": "#000000",
+                        "surface-container-lowest": "#ffffff",
+                        "surface-tint": "#5f5e5e",
+                        "secondary-fixed-dim": "#cfc5b8",
+                        "error": "#ba1a1a",
+                        "surface-container-high": "#ece8df",
+                        "surface-bright": "#fef9f0",
+                        "surface": "#fef9f0",
+                        "spot-brick": "#E8590C",
+                        "surface-dim": "#ded9d1",
+                        "inverse-primary": "#c8c6c5",
+                        "surface-container-highest": "#e7e2d9",
+                        "secondary": "#645d53",
+                        "on-tertiary-fixed-variant": "#7f2b00",
+                        "primary-container": "#1b1b1b",
+                        "on-secondary-fixed-variant": "#4c463c",
+                        "outline": "#747878",
+                        "primary-fixed": "#e5e2e1",
+                        "on-error": "#ffffff",
+                        "surface-container": "#f2ede4",
+                        "on-secondary-fixed": "#1f1b13",
+                        "on-error-container": "#93000a",
+                        "on-primary-fixed-variant": "#474746",
+                        "outline-variant": "#c4c7c7",
+                        "on-tertiary-fixed": "#370e00",
+                        "on-background": "#1d1c16",
+                        "on-primary-container": "#858383",
+                        "tertiary-container": "#370e00",
+                        "on-tertiary": "#ffffff",
+                        "jacket-paper": "#F4EFE6",
+                        "liner-ink": "#1B1B1B",
+                        "error-container": "#ffdad6",
+                        "secondary-container": "#ebe1d3",
+                        "on-secondary-container": "#6a6359",
+                        "on-surface": "#1d1c16",
+                        "on-surface-variant": "#444748",
+                        "secondary-fixed": "#ebe1d3",
+                        "on-primary-fixed": "#1b1b1b"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "stack-md": "16px",
+                        "margin-page": "64px",
+                        "stack-xl": "64px",
+                        "stack-lg": "32px",
+                        "stack-sm": "8px",
+                        "gutter": "32px"
+                    },
+                    "fontFamily": {
+                        "label-xs": ["IBM Plex Mono", "monospace"],
+                        "label-sm": ["IBM Plex Mono", "monospace"],
+                        "headline-md": ["Libre Franklin", "sans-serif"],
+                        "headline-lg-mobile": ["Libre Franklin", "sans-serif"],
+                        "body-md": ["\"Source Serif 4\"", "serif"],
+                        "body-md-bold": ["\"Source Serif 4\"", "serif"],
+                        "headline-lg": ["Libre Franklin", "sans-serif"]
+                    },
+                    "fontSize": {
+                        "label-xs": ["10px", { "lineHeight": "1.2", "letterSpacing": "0.1em", "fontWeight": "500" }],
+                        "label-sm": ["12px", { "lineHeight": "1.4", "letterSpacing": "0.08em", "fontWeight": "400" }],
+                        "headline-md": ["24px", { "lineHeight": "1.2", "letterSpacing": "0em", "fontWeight": "700" }],
+                        "headline-lg-mobile": ["32px", { "lineHeight": "1.1", "letterSpacing": "-0.01em", "fontWeight": "700" }],
+                        "body-md": ["16px", { "lineHeight": "1.65", "letterSpacing": "0em", "fontWeight": "400" }],
+                        "body-md-bold": ["16px", { "lineHeight": "1.65", "letterSpacing": "0em", "fontWeight": "700" }],
+                        "headline-lg": ["44px", { "lineHeight": "1.05", "letterSpacing": "-0.01em", "fontWeight": "700" }]
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-background text-primary min-h-screen flex flex-col antialiased selection:bg-spot-brick selection:text-background">
+<!-- Top Navigation (Shared Component Shell) -->
+<nav class="bg-background dark:bg-background text-primary dark:text-primary font-headline-md text-headline-md uppercase tracking-tight w-full border-b-2 border-spot-brick flex justify-between items-center px-margin-page py-stack-md shrink-0">
+<div class="font-headline-md text-headline-md font-bold text-primary dark:text-primary tracking-tighter cursor-pointer hover:bg-primary hover:text-background transition-colors duration-100 px-2 py-1">
+            BLUE NOTE TEA ROOM
+        </div>
+<div class="hidden md:flex gap-gutter items-center">
+<a class="text-primary dark:text-primary font-label-sm text-label-sm hover:bg-primary hover:text-background transition-colors duration-100 px-2 py-1 cursor-pointer active:opacity-80" href="#">CATALOGUE</a>
+<a class="text-primary dark:text-primary font-label-sm text-label-sm hover:bg-primary hover:text-background transition-colors duration-100 px-2 py-1 cursor-pointer active:opacity-80" href="#">SESSIONS</a>
+<a class="text-spot-brick font-bold border-b-2 border-spot-brick pb-1 font-label-sm text-label-sm hover:bg-primary hover:text-background transition-colors duration-100 px-2 cursor-pointer active:opacity-80" href="#">LINER NOTES</a>
+<button class="bg-transparent border border-primary text-primary hover:bg-primary hover:text-background font-label-sm text-label-sm uppercase tracking-widest px-4 py-2 transition-colors duration-100 cursor-pointer active:opacity-80">RESERVE</button>
+</div>
+</nav>
+<!-- Main Content Canvas -->
+<main class="flex-grow px-margin-page py-stack-xl flex flex-col gap-stack-xl max-w-7xl mx-auto w-full">
+<!-- Header Area -->
+<header class="flex flex-col gap-stack-sm">
+<h1 class="font-headline-lg text-headline-lg uppercase text-primary tracking-tighter">KETTLE &amp; LEAF</h1>
+<p class="font-body-md text-body-md text-primary max-w-2xl">A sanctuary for the art of the steep.</p>
+</header>
+<!-- Main Grid Layout (Asymmetrical) -->
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-gutter items-start">
+<!-- Left Column: Track List (4 cols) -->
+<section class="lg:col-span-4 flex flex-col gap-stack-lg border-r border-catalogue-grey pr-gutter h-full">
+<h2 class="font-label-sm text-label-sm uppercase text-catalogue-grey tracking-widest border-b border-catalogue-grey pb-2">SIDE A: CURRENT STEEPS</h2>
+<ul class="flex flex-col gap-stack-md">
+<li class="flex flex-col gap-1 relative pl-6">
+<span class="absolute left-0 top-2 w-2 h-2 rounded-none bg-spot-brick"></span>
+<span class="font-body-md-bold text-body-md-bold uppercase">HIGH MOUNTAIN OOLONG</span>
+<span class="font-body-md text-body-md text-primary">Alishan, Taiwan. Notes of honey, orchid, and mountain mist.</span>
+</li>
+<li class="flex flex-col gap-1 relative pl-6">
+<span class="absolute left-0 top-2 w-2 h-2 rounded-none bg-catalogue-grey"></span>
+<span class="font-body-md-bold text-body-md-bold uppercase">SATEMWA BLACK</span>
+<span class="font-body-md text-body-md text-primary">Thyolo, Malawi. Notes of dark chocolate, hibiscus, and cedar.</span>
+</li>
+<li class="flex flex-col gap-1 relative pl-6">
+<span class="absolute left-0 top-2 w-2 h-2 rounded-none bg-catalogue-grey"></span>
+<span class="font-body-md-bold text-body-md-bold uppercase">RUBY 18</span>
+<span class="font-body-md text-body-md text-primary">Sun Moon Lake, Taiwan. Notes of cinnamon, menthol, and black cherry.</span>
+</li>
+</ul>
+</section>
+<!-- Middle Column: Liner Notes (5 cols) -->
+<section class="lg:col-span-5 flex flex-col gap-stack-lg pr-gutter lg:border-r border-catalogue-grey h-full">
+<h2 class="font-label-sm text-label-sm uppercase text-catalogue-grey tracking-widest border-b border-catalogue-grey pb-2">LINER NOTES</h2>
+<div class="font-body-md-bold text-body-md-bold text-primary leading-relaxed text-justify">
+                    Our sourcing is a matter of mileage and patience. Each spring, we travel from the mist-shrouded peaks of Alishan, Taiwan, to the sun-drenched gardens of Kenya, sitting with growers to select the season’s most singular harvests. We don’t just buy tea; we document the weather, the soil, and the hands that pluck every leaf.
+                </div>
+<div class="mt-auto pt-stack-md border-t border-catalogue-grey">
+<button class="w-full bg-transparent border border-primary text-primary hover:bg-primary hover:text-background font-label-sm text-label-sm uppercase tracking-widest px-4 py-3 transition-colors duration-100">READ FULL SOURCING REPORT</button>
+</div>
+</section>
+<!-- Right Column: Catalogue Data (3 cols) -->
+<section class="lg:col-span-3 flex flex-col gap-stack-lg h-full">
+<h2 class="font-label-sm text-label-sm uppercase text-catalogue-grey tracking-widest border-b border-catalogue-grey pb-2">SESSION DATA</h2>
+<div class="flex flex-col gap-stack-md font-label-sm text-label-sm text-primary uppercase">
+<div class="flex flex-col gap-1">
+<span class="text-catalogue-grey">QUIET HOURS</span>
+<span>MON-WED 8AM-11AM</span>
+<span>THU-FRI 2PM-5PM</span>
+</div>
+<div class="flex flex-col gap-1 mt-stack-sm">
+<span class="text-catalogue-grey">LOCATION</span>
+<span>412 MAPLE ROW</span>
+<span>CITY DISTRICT, 10012</span>
+</div>
+</div>
+</section>
+</div>
+</main>
+<!-- Footer / Credits Block (Shared Component Shell) -->
+<footer class="bg-background dark:bg-background text-catalogue-grey dark:text-catalogue-grey font-label-sm text-label-sm uppercase tracking-widest w-full border-t border-primary border-t-2 mt-stack-xl flex flex-col md:flex-row justify-between items-center px-margin-page py-stack-lg shrink-0">
+<div class="font-label-xs text-label-xs text-primary mb-4 md:mb-0">
+            © 1959 BLUE NOTE TEA ROOM. RECORDED AT VAN GELDER STUDIO.
+        </div>
+<div class="flex gap-gutter items-center">
+<span class="text-catalogue-grey">8AM — 8PM DAILY</span>
+<span class="text-catalogue-grey border-l border-catalogue-grey pl-gutter">(555) 012-4122</span>
+</div>
+<div class="flex gap-stack-md mt-4 md:mt-0">
+<a class="text-catalogue-grey hover:text-spot-brick transition-colors duration-100" href="#">INSTAGRAM</a>
+<a class="text-catalogue-grey hover:text-spot-brick transition-colors duration-100" href="#">DIRECTIONS</a>
+<a class="text-catalogue-grey hover:text-spot-brick transition-colors duration-100" href="#">MAILING LIST</a>
+</div>
+</footer>
+</body></html>

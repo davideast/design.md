@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Kettle &amp; Leaf | Home</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400..800;1,400..800&amp;family=Source+Sans+3:ital,wght@0,200..900;1,200..900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "secondary-fixed-dim": "#ffb5a1",
+                      "surface": "#fff8f6",
+                      "inverse-surface": "#33302f",
+                      "on-secondary": "#ffffff",
+                      "on-background": "#1d1b1a",
+                      "background": "#fff8f6",
+                      "surface-container-highest": "#e8e1df",
+                      "tertiary-fixed-dim": "#b9ccb0",
+                      "surface-container-lowest": "#ffffff",
+                      "surface-dim": "#dfd9d7",
+                      "outline-variant": "#c3c8c1",
+                      "on-tertiary-fixed": "#101f0d",
+                      "on-primary": "#ffffff",
+                      "secondary": "#8b4e3d",
+                      "error-container": "#ffdad6",
+                      "tertiary-fixed": "#d5e8cb",
+                      "on-secondary-fixed-variant": "#6e3728",
+                      "on-primary-container": "#c0d5c2",
+                      "on-primary-fixed": "#0e1f13",
+                      "tertiary": "#354530",
+                      "surface-bright": "#fff8f6",
+                      "inverse-primary": "#b7ccb9",
+                      "on-error-container": "#93000a",
+                      "surface-container": "#f3ecea",
+                      "tertiary-container": "#4c5d46",
+                      "primary-fixed-dim": "#b7ccb9",
+                      "inverse-on-surface": "#f6efed",
+                      "surface-container-high": "#ede7e5",
+                      "on-tertiary": "#ffffff",
+                      "on-tertiary-fixed-variant": "#3b4b36",
+                      "on-surface-variant": "#434843",
+                      "secondary-container": "#fdae98",
+                      "outline": "#737872",
+                      "primary-container": "#4a5d4e",
+                      "on-secondary-fixed": "#370d03",
+                      "secondary-fixed": "#ffdbd1",
+                      "error": "#ba1a1a",
+                      "primary": "#334537",
+                      "on-error": "#ffffff",
+                      "primary-fixed": "#d3e8d5",
+                      "surface-container-low": "#f9f2f0",
+                      "on-tertiary-container": "#c2d5b8",
+                      "on-secondary-container": "#783f2f",
+                      "on-primary-fixed-variant": "#394b3d",
+                      "surface-variant": "#e8e1df",
+                      "surface-tint": "#506354",
+                      "on-surface": "#1d1b1a"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.25rem",
+                      "lg": "0.5rem",
+                      "xl": "0.75rem",
+                      "full": "9999px"
+              },
+              "spacing": {
+                      "unit": "8px",
+                      "margin-mobile": "20px",
+                      "stack-sm": "16px",
+                      "container-max": "1120px",
+                      "margin-desktop": "64px",
+                      "gutter": "24px",
+                      "stack-md": "32px",
+                      "stack-lg": "64px"
+              },
+              "fontFamily": {
+                      "headline-sm": [
+                              "EB Garamond"
+                      ],
+                      "body-lg": [
+                              "\"Source Sans 3\""
+                      ],
+                      "label-md": [
+                              "\"Source Sans 3\""
+                      ],
+                      "display-lg": [
+                              "EB Garamond"
+                      ],
+                      "headline-md": [
+                              "EB Garamond"
+                      ],
+                      "body-md": [
+                              "\"Source Sans 3\""
+                      ],
+                      "display-lg-mobile": [
+                              "EB Garamond"
+                      ],
+                      "caption": [
+                              "\"Source Sans 3\""
+                      ]
+              },
+              "fontSize": {
+                      "headline-sm": [
+                              "24px",
+                              {
+                                      "lineHeight": "32px",
+                                      "fontWeight": "500"
+                              }
+                      ],
+                      "body-lg": [
+                              "18px",
+                              {
+                                      "lineHeight": "28px",
+                                      "fontWeight": "400"
+                              }
+                      ],
+                      "label-md": [
+                              "14px",
+                              {
+                                      "lineHeight": "20px",
+                                      "letterSpacing": "0.05em",
+                                      "fontWeight": "600"
+                              }
+                      ],
+                      "display-lg": [
+                              "48px",
+                              {
+                                      "lineHeight": "56px",
+                                      "letterSpacing": "-0.01em",
+                                      "fontWeight": "500"
+                              }
+                      ],
+                      "headline-md": [
+                              "32px",
+                              {
+                                      "lineHeight": "40px",
+                                      "fontWeight": "500"
+                              }
+                      ],
+                      "body-md": [
+                              "16px",
+                              {
+                                      "lineHeight": "24px",
+                                      "fontWeight": "400"
+                              }
+                      ],
+                      "display-lg-mobile": [
+                              "36px",
+                              {
+                                      "lineHeight": "42px",
+                                      "fontWeight": "500"
+                              }
+                      ],
+                      "caption": [
+                              "12px",
+                              {
+                                      "lineHeight": "16px",
+                                      "fontWeight": "400"
+                              }
+                      ]
+              }
+      },
+          },
+        }
+      </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+      </style>
+</head>
+<body class="bg-surface text-on-surface font-body-md antialiased selection:bg-secondary-fixed selection:text-on-secondary-fixed">
+<!-- TopNavBar -->
+<nav class="w-full top-0 sticky bg-surface dark:bg-surface z-50">
+<div class="flex justify-between items-center max-w-container-max mx-auto px-margin-mobile md:px-margin-desktop py-stack-md">
+<a class="font-headline-sm text-headline-sm text-primary dark:text-primary-fixed-dim tracking-tight" href="#">Kettle &amp; Leaf</a>
+<div class="hidden md:flex items-center space-x-gutter">
+<a class="font-body-md text-body-md text-on-surface-variant dark:text-on-surface-variant hover:text-primary transition-colors duration-300 cursor-pointer transition-all" href="#">Shop</a>
+<a class="font-body-md text-body-md text-on-surface-variant dark:text-on-surface-variant hover:text-primary transition-colors duration-300 cursor-pointer transition-all" href="#">Ritual</a>
+<a class="font-body-md text-body-md text-on-surface-variant dark:text-on-surface-variant hover:text-primary transition-colors duration-300 cursor-pointer transition-all" href="#">Journal</a>
+<a class="font-body-md text-body-md text-on-surface-variant dark:text-on-surface-variant hover:text-primary transition-colors duration-300 cursor-pointer transition-all" href="#">Origins</a>
+</div>
+<div class="flex items-center space-x-stack-sm">
+<button class="text-on-surface-variant hover:text-primary transition-colors">
+<span class="material-symbols-outlined">search</span>
+</button>
+<button class="text-on-surface-variant hover:text-primary transition-colors">
+<span class="material-symbols-outlined">account_circle</span>
+</button>
+<button class="bg-primary text-on-primary px-gutter py-unit rounded-full font-label-md text-label-md hover:bg-primary-fixed-variant transition-colors ml-stack-sm hidden md:block">
+                    Cart
+                </button>
+<button class="md:hidden text-on-surface-variant">
+<span class="material-symbols-outlined">menu</span>
+</button>
+</div>
+</div>
+</nav>
+<!-- Hero Section -->
+<header class="max-w-container-max mx-auto px-margin-mobile md:px-margin-desktop pt-stack-md pb-stack-lg">
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-gutter items-center">
+<div class="lg:col-span-5 flex flex-col space-y-stack-md z-10">
+<h1 class="font-display-lg-mobile text-display-lg-mobile md:font-display-lg md:text-display-lg text-primary">
+                    A neighborhood tea house for quiet moments and slow sips.
+                </h1>
+<p class="font-body-lg text-body-lg text-on-surface-variant max-w-md">
+                    Experience the art of tea in a space designed for reflection, connection, and the simple joy of a well-brewed cup.
+                </p>
+<div>
+<button class="bg-primary text-on-primary px-gutter py-3 rounded-full font-label-md text-label-md hover:bg-primary-fixed-variant transition-colors shadow-[0_8px_24px_rgba(74,93,78,0.08)]">
+                        Explore Our Menu
+                    </button>
+</div>
+</div>
+<div class="lg:col-span-7 relative h-[512px] min-h-[400px] lg:h-[716px] rounded-xl overflow-hidden mt-stack-md lg:mt-0 shadow-[0_8px_24px_rgba(74,93,78,0.08)]">
+<img alt="Steaming tea cup" class="absolute inset-0 w-full h-full object-cover" data-alt="A serene, high-quality photograph of a steaming ceramic tea cup resting on a rustic wooden table. The scene is illuminated by soft, natural sunlight streaming through a nearby window, casting gentle shadows. The mood is calm, slow, and contemplative, perfectly embodying a refined minimalist aesthetic. The color palette features warm creams, rich wood tones, and subtle earthy greens, aligning with a quiet, artisanal tea house environment." src="https://lh3.googleusercontent.com/aida-public/AB6AXuB1rMw9NFg8SQEwTcXbU06F6NPiUmrbPxvkDqHp1laTBF53WknvaQfleE9jPTomkTmxCq3fkVVpIP2SvCiQcrP9NB5_LK-xvlEIIqT3lnxk_D18u7W3Im3RUK6DoGoIvhvXE8bS194M2WMZZMuaYDNmTv_SDTMl6D1BcGoDDDqQiqYBXJDnuG3Z0h-JlqhfKWHAhkbnVbrKa98GmlLFcaAjL5IsaAxFClPg0neWeznRuYBjk4MaTfALn-WeaXB96l1limws6loJvvjs"/>
+</div>
+</div>
+</header>
+<!-- Brewed Teas Section -->
+<section class="max-w-container-max mx-auto px-margin-mobile md:px-margin-desktop py-stack-lg">
+<div class="flex flex-col items-center text-center mb-stack-lg">
+<span class="font-label-md text-label-md text-secondary tracking-widest uppercase mb-unit">Daily Selection</span>
+<h2 class="font-headline-md text-headline-md text-primary">Today's Brewed Teas</h2>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-gutter">
+<!-- Tea Card 1 -->
+<div class="bg-surface-container-lowest rounded-xl p-stack-md border border-primary-container/10 hover:shadow-[0_8px_24px_rgba(74,93,78,0.08)] transition-shadow duration-300 flex flex-col items-center text-center group">
+<div class="w-16 h-16 rounded-full bg-surface-container flex items-center justify-center mb-stack-sm text-secondary group-hover:scale-110 transition-transform duration-300">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">eco</span>
+</div>
+<div class="inline-block px-3 py-1 bg-tertiary-fixed text-on-tertiary-fixed rounded-full font-caption text-caption mb-stack-sm">Oolong</div>
+<h3 class="font-headline-sm text-headline-sm text-primary mb-unit">High Mountain Oolong</h3>
+<p class="font-caption text-caption text-on-surface-variant mb-stack-sm">Alishan, Taiwan</p>
+<div class="w-8 h-px bg-outline-variant mb-stack-sm"></div>
+<p class="font-body-md text-body-md text-on-surface-variant italic">
+                    "Creamy, floral, with a buttery finish."
+                </p>
+</div>
+<!-- Tea Card 2 -->
+<div class="bg-surface-container-lowest rounded-xl p-stack-md border border-primary-container/10 hover:shadow-[0_8px_24px_rgba(74,93,78,0.08)] transition-shadow duration-300 flex flex-col items-center text-center group">
+<div class="w-16 h-16 rounded-full bg-surface-container flex items-center justify-center mb-stack-sm text-secondary group-hover:scale-110 transition-transform duration-300">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">spa</span>
+</div>
+<div class="inline-block px-3 py-1 bg-tertiary-fixed text-on-tertiary-fixed rounded-full font-caption text-caption mb-stack-sm">Purple Tea</div>
+<h3 class="font-headline-sm text-headline-sm text-primary mb-unit">Kenyan Purple Tea</h3>
+<p class="font-caption text-caption text-on-surface-variant mb-stack-sm">Nandi Hills, Kenya</p>
+<div class="w-8 h-px bg-outline-variant mb-stack-sm"></div>
+<p class="font-body-md text-body-md text-on-surface-variant italic">
+                    "Vibrant berry, earthy undertones, and high antioxidants."
+                </p>
+</div>
+<!-- Tea Card 3 -->
+<div class="bg-surface-container-lowest rounded-xl p-stack-md border border-primary-container/10 hover:shadow-[0_8px_24px_rgba(74,93,78,0.08)] transition-shadow duration-300 flex flex-col items-center text-center group">
+<div class="w-16 h-16 rounded-full bg-surface-container flex items-center justify-center mb-stack-sm text-secondary group-hover:scale-110 transition-transform duration-300">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">yard</span>
+</div>
+<div class="inline-block px-3 py-1 bg-tertiary-fixed text-on-tertiary-fixed rounded-full font-caption text-caption mb-stack-sm">White Tea</div>
+<h3 class="font-headline-sm text-headline-sm text-primary mb-unit">Silver Needle</h3>
+<p class="font-caption text-caption text-on-surface-variant mb-stack-sm">Fuding, China</p>
+<div class="w-8 h-px bg-outline-variant mb-stack-sm"></div>
+<p class="font-body-md text-body-md text-on-surface-variant italic">
+                    "Delicate honeysuckle, crisp, and naturally sweet."
+                </p>
+</div>
+</div>
+</section>
+<!-- Sourcing Section (Asymmetric Split) -->
+<section class="max-w-container-max mx-auto px-margin-mobile md:px-margin-desktop py-stack-lg">
+<div class="grid grid-cols-1 md:grid-cols-12 gap-gutter items-center bg-surface-container-low rounded-xl overflow-hidden">
+<div class="md:col-span-5 h-[400px] md:h-full relative">
+<img alt="Tea fields" class="absolute inset-0 w-full h-full object-cover" data-alt="A lush, mist-covered hillside of a tea plantation in the early morning light. The verdant green tea bushes cascade down the gentle slopes in neat, curved rows. The atmosphere is tranquil, deeply connected to nature, and organic, reflecting a profound respect for artisanal farming and slow living. The visual style uses earthy greens and soft, diffused natural lighting." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDi79J6TzKFaG6f5O5eOyVU7_x1SNP1iajdHfeVgtsPI37vrIi1t-irKISH8rMvAEBydfg_0PTZd6SLuTf8ClyDG32DFFDjfSj7aQreEDLUQ97G5P78q-hPHKt2gjDGbSHHQni_FCvRXX7CmP_b7VN2f4GsoHGhIzY0jic4AbVmiksCtyE_1U1gNP7lOmsTt2-KALOZhRvoGsPx8sIjo2Pq9lEY-CMaX7eDn18-Xq7ySvyv4kq0OOdDwSJYfwCwmoJDUj8_OFiFjPF8"/>
+</div>
+<div class="md:col-span-7 p-stack-md md:p-stack-lg lg:p-[80px]">
+<h2 class="font-headline-md text-headline-md text-primary mb-stack-sm">From Garden to Kettle</h2>
+<p class="font-body-lg text-body-lg text-on-surface-variant leading-relaxed">
+                    Our journey begins in the mist-covered hills of Taiwan and the sun-drenched gardens of Kenya. Every leaf is hand-selected during the owner's annual sourcing trips, where we partner directly with small-batch farmers who share our commitment to soil health and traditional craftsmanship. We bring these stories back to your cup.
+                </p>
+<button class="mt-stack-md border border-secondary text-secondary px-gutter py-3 rounded-full font-label-md text-label-md hover:bg-secondary/5 transition-colors">
+                    Read Our Story
+                </button>
+</div>
+</div>
+</section>
+<!-- Quiet Hours & Find Us (Bento Layout) -->
+<section class="max-w-container-max mx-auto px-margin-mobile md:px-margin-desktop py-stack-lg">
+<div class="grid grid-cols-1 lg:grid-cols-2 gap-gutter">
+<!-- Quiet Hours -->
+<div class="bg-surface-container-lowest border border-primary-container/10 p-stack-md md:p-stack-lg rounded-xl flex flex-col justify-center">
+<div class="mb-stack-md flex items-center space-x-unit text-secondary">
+<span class="material-symbols-outlined">volume_mute</span>
+<span class="font-label-md text-label-md tracking-widest uppercase">Sanctuary</span>
+</div>
+<h2 class="font-headline-md text-headline-md text-primary mb-stack-sm">Weekly Quiet Hours</h2>
+<div class="space-y-stack-sm mb-stack-md">
+<div class="flex justify-between items-center border-b border-outline-variant pb-unit">
+<span class="font-label-md text-label-md text-on-surface">Monday - Friday</span>
+<span class="font-body-md text-body-md text-on-surface-variant">8:00 AM - 10:00 AM</span>
+</div>
+<div class="flex justify-between items-center border-b border-outline-variant pb-unit">
+<span class="font-label-md text-label-md text-on-surface">Saturday - Sunday</span>
+<span class="font-body-md text-body-md text-on-surface-variant">9:00 AM - 11:00 AM</span>
+</div>
+</div>
+<div class="bg-surface-container-low p-stack-sm rounded-lg flex space-x-stack-sm items-start">
+<span class="material-symbols-outlined text-secondary mt-1">info</span>
+<p class="font-caption text-caption text-on-surface-variant italic">
+                        During these times, we ask for whispered conversations and no laptop use to maintain a serene atmosphere.
+                    </p>
+</div>
+</div>
+<!-- Find Us -->
+<div class="bg-primary text-on-primary p-stack-md md:p-stack-lg rounded-xl flex flex-col justify-between relative overflow-hidden">
+<div class="relative z-10">
+<h2 class="font-headline-md text-headline-md text-on-primary mb-unit">Find Us</h2>
+<p class="font-body-lg text-body-lg text-on-primary-container mb-stack-md">412 Maple Row</p>
+<a class="inline-flex items-center space-x-unit text-on-primary font-label-md text-label-md hover:text-secondary-fixed-dim transition-colors group" href="#">
+<span>Get Directions</span>
+<span class="material-symbols-outlined group-hover:translate-x-1 transition-transform">arrow_forward</span>
+</a>
+</div>
+<!-- Stylized map background hint -->
+<div class="absolute -bottom-20 -right-20 w-96 h-96 opacity-10 pointer-events-none">
+<svg viewbox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+<path d="M44.7,-76.4C58.8,-69.2,71.8,-59.1,81.3,-46.3C90.8,-33.5,96.8,-18.1,97.2,-2.5C97.6,13.1,92.5,29.1,82.8,42.4C73.2,55.8,59,66.6,43.9,73.5C28.8,80.4,12.8,83.4,-2.4,87.6C-17.6,91.8,-32,97.2,-44.7,91.8C-57.4,86.4,-68.4,70.2,-77.2,54.1C-86,38,-92.6,22,-94.1,5.6C-95.6,-10.8,-92,-27.6,-83.4,-41.8C-74.8,-56,-61.2,-67.6,-46.8,-74.6C-32.4,-81.6,-17.2,-84,-1,-82.3C15.2,-80.6,30.6,-83.6,44.7,-76.4Z" fill="#ffffff" transform="translate(100 100)"></path>
+</svg>
+</div>
+</div>
+</div>
+</section>
+<!-- Footer -->
+<footer class="w-full mt-stack-lg bg-surface-container dark:bg-surface-container">
+<div class="grid grid-cols-1 md:grid-cols-3 gap-gutter max-w-container-max mx-auto px-margin-mobile md:px-margin-desktop py-stack-lg text-center md:text-left">
+<div class="flex flex-col space-y-stack-sm items-center md:items-start">
+<span class="font-headline-sm text-headline-sm text-primary dark:text-primary-fixed-dim">Kettle &amp; Leaf</span>
+<p class="font-body-md text-body-md text-on-surface-variant">A neighborhood tea house.</p>
+</div>
+<div class="flex flex-col space-y-unit items-center md:items-start">
+<span class="font-label-md text-label-md text-secondary">Visit</span>
+<p class="font-body-md text-body-md text-on-surface-variant">412 Maple Row</p>
+<p class="font-body-md text-body-md text-on-surface-variant">Daily: 8:00 AM – 8:00 PM</p>
+<p class="font-body-md text-body-md text-on-surface-variant mt-unit">(555) 0123</p>
+</div>
+<div class="flex flex-col space-y-unit items-center md:items-start">
+<span class="font-label-md text-label-md text-secondary">Legal</span>
+<a class="font-body-md text-body-md text-on-surface-variant hover:text-secondary transition-colors transition-opacity duration-200" href="#">Shipping Policy</a>
+<a class="font-body-md text-body-md text-on-surface-variant hover:text-secondary transition-colors transition-opacity duration-200" href="#">Privacy</a>
+<a class="font-body-md text-body-md text-on-surface-variant hover:text-secondary transition-colors transition-opacity duration-200" href="#">Terms</a>
+</div>
+</div>
+<div class="border-t border-outline-variant/20 py-stack-sm text-center">
+<p class="font-caption text-caption text-on-surface-variant">© 2024 Kettle &amp; Leaf Tea House. All rights reserved.</p>
+</div>
+</footer>
+</body></html>

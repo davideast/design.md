@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Urban Nocturnal: Field Notes</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;600;700;800&amp;family=Source+Serif+4:wght@400;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          "colors": {
+                  "surface": "#fcf9f1",
+                  "surface-container-high": "#ebe8e0",
+                  "surface-bright": "#fcf9f1",
+                  "surface-dim": "#dcdad2",
+                  "surface-tint": "#5f5e5f",
+                  "secondary-fixed-dim": "#ffb3ad",
+                  "error": "#ba1a1a",
+                  "surface-container-lowest": "#ffffff",
+                  "primary": "#000000",
+                  "surface-variant": "#e5e2db",
+                  "field-gray": "#707372",
+                  "surface-container-low": "#f6f3eb",
+                  "tertiary": "#000000",
+                  "on-primary": "#ffffff",
+                  "background": "#fcf9f1",
+                  "on-secondary": "#ffffff",
+                  "primary-fixed-dim": "#c8c6c7",
+                  "on-tertiary-container": "#868380",
+                  "tertiary-fixed-dim": "#cac6c2",
+                  "tertiary-fixed": "#e6e2de",
+                  "inverse-on-surface": "#f3f1e9",
+                  "inverse-surface": "#31312b",
+                  "on-surface-variant": "#46474a",
+                  "on-surface": "#1c1c17",
+                  "on-primary-fixed": "#1b1b1c",
+                  "secondary-fixed": "#ffdad6",
+                  "secondary-container": "#ff5a55",
+                  "on-secondary-container": "#600008",
+                  "error-container": "#ffdad6",
+                  "tertiary-container": "#1c1b19",
+                  "on-tertiary": "#ffffff",
+                  "paper-cream": "#F9F6EE",
+                  "on-primary-container": "#858384",
+                  "on-tertiary-fixed": "#1c1b19",
+                  "on-background": "#1c1c17",
+                  "midnight-ink": "#1A1A1B",
+                  "outline-variant": "#c7c6ca",
+                  "on-primary-fixed-variant": "#474647",
+                  "on-error-container": "#93000a",
+                  "on-secondary-fixed": "#410003",
+                  "primary-fixed": "#e5e2e3",
+                  "outline": "#76777b",
+                  "surface-container": "#f1eee6",
+                  "on-error": "#ffffff",
+                  "on-secondary-fixed-variant": "#920212",
+                  "primary-container": "#1b1b1c",
+                  "pointer-red": "#C53030",
+                  "secondary": "#b52426",
+                  "on-tertiary-fixed-variant": "#484644",
+                  "inverse-primary": "#c8c6c7",
+                  "surface-container-highest": "#e5e2db"
+          },
+          "borderRadius": {
+                  "DEFAULT": "0.25rem",
+                  "lg": "0.5rem",
+                  "xl": "0.75rem",
+                  "full": "9999px"
+          },
+          "spacing": {
+                  "unit": "4px",
+                  "margin-mobile": "16px",
+                  "margin-desktop": "32px",
+                  "gutter": "16px",
+                  "rule-weight": "1px"
+          },
+          "fontFamily": {
+                  "headline-sm": [
+                          "Hanken Grotesk"
+                  ],
+                  "body-md": [
+                          "\"Source Serif 4\""
+                  ],
+                  "label-sm": [
+                          "Hanken Grotesk"
+                  ],
+                  "body-lg": [
+                          "\"Source Serif 4\""
+                  ],
+                  "label-md": [
+                          "Hanken Grotesk"
+                  ],
+                  "label-lg": [
+                          "Hanken Grotesk"
+                  ],
+                  "headline-md": [
+                          "Hanken Grotesk"
+                  ],
+                  "headline-lg-mobile": [
+                          "Hanken Grotesk"
+                  ],
+                  "body-sm": [
+                          "\"Source Serif 4\""
+                  ],
+                  "headline-lg": [
+                          "Hanken Grotesk"
+                  ]
+          },
+          "fontSize": {
+                  "headline-sm": [
+                          "18px",
+                          {
+                                  "lineHeight": "22px",
+                                  "fontWeight": "800"
+                          }
+                  ],
+                  "body-md": [
+                          "16px",
+                          {
+                                  "lineHeight": "24px",
+                                  "fontWeight": "400"
+                          }
+                  ],
+                  "label-sm": [
+                          "10px",
+                          {
+                                  "lineHeight": "12px",
+                                  "letterSpacing": "0.1em",
+                                  "fontWeight": "600"
+                          }
+                  ],
+                  "body-lg": [
+                          "18px",
+                          {
+                                  "lineHeight": "28px",
+                                  "fontWeight": "400"
+                          }
+                  ],
+                  "label-md": [
+                          "12px",
+                          {
+                                  "lineHeight": "14px",
+                                  "letterSpacing": "0.05em",
+                                  "fontWeight": "600"
+                          }
+                  ],
+                  "label-lg": [
+                          "14px",
+                          {
+                                  "lineHeight": "16px",
+                                  "fontWeight": "700"
+                          }
+                  ],
+                  "headline-md": [
+                          "24px",
+                          {
+                                  "lineHeight": "28px",
+                                  "letterSpacing": "-0.01em",
+                                  "fontWeight": "800"
+                          }
+                  ],
+                  "headline-lg-mobile": [
+                          "28px",
+                          {
+                                  "lineHeight": "32px",
+                                  "fontWeight": "800"
+                          }
+                  ],
+                  "body-sm": [
+                          "14px",
+                          {
+                                  "lineHeight": "20px",
+                                  "fontWeight": "400"
+                          }
+                  ],
+                  "headline-lg": [
+                          "32px",
+                          {
+                                  "lineHeight": "40px",
+                                  "letterSpacing": "-0.02em",
+                                  "fontWeight": "800"
+                          }
+                  ]
+          }
+  },
+      },
+    }
+  </script>
+<style>
+    body {
+      background-color: theme('colors.surface');
+      color: theme('colors.midnight-ink');
+    }
+    .rule-b { border-bottom: 1px solid theme('colors.midnight-ink'); }
+    .rule-t { border-top: 1px solid theme('colors.midnight-ink'); }
+    .rule-l { border-left: 1px solid theme('colors.midnight-ink'); }
+    .rule-r { border-right: 1px solid theme('colors.midnight-ink'); }
+    .rule-all { border: 1px solid theme('colors.midnight-ink'); }
+    
+    .pointer-line {
+      position: absolute;
+      background-color: theme('colors.pointer-red');
+      height: 1px;
+    }
+    .pointer-arrow {
+      position: absolute;
+      width: 0;
+      height: 0;
+      border-top: 4px solid transparent;
+      border-bottom: 4px solid transparent;
+      border-left: 6px solid theme('colors.pointer-red');
+      transform: translateY(-50%);
+    }
+  </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="antialiased min-h-screen flex flex-col pt-14 pb-16 md:pb-0 md:pl-80">
+<!-- Navigation Drawer (Desktop) -->
+<aside class="hidden md:flex flex-col h-full bg-surface dark:bg-surface border-r border-primary dark:border-primary-fixed-dim h-full w-80 max-w-[80vw] fixed top-0 left-0 z-40">
+<div class="px-margin-desktop py-6 border-b border-primary dark:border-primary-fixed-dim">
+<h2 class="font-headline-md text-headline-md text-primary">SYSTEMS MANUAL v1.0</h2>
+</div>
+<nav class="flex-1 overflow-y-auto">
+<ul>
+<li>
+<a class="block bg-primary dark:bg-primary-fixed-dim text-on-primary dark:text-on-primary-fixed px-4 py-3 font-bold font-label-lg text-label-lg uppercase" href="#">Field Marks Index</a>
+</li>
+<li>
+<a class="block text-primary dark:text-primary-fixed px-4 py-3 border-b border-surface-container-high hover:bg-surface-container-low dark:hover:bg-surface-container-high transition-colors font-label-lg text-label-lg uppercase" href="#">Audio Spectrograms</a>
+</li>
+<li>
+<a class="block text-primary dark:text-primary-fixed px-4 py-3 border-b border-surface-container-high hover:bg-surface-container-low dark:hover:bg-surface-container-high transition-colors font-label-lg text-label-lg uppercase" href="#">Habitat Safety</a>
+</li>
+<li>
+<a class="block text-primary dark:text-primary-fixed px-4 py-3 border-b border-surface-container-high hover:bg-surface-container-low dark:hover:bg-surface-container-high transition-colors font-label-lg text-label-lg uppercase" href="#">Equipment Check</a>
+</li>
+<li>
+<a class="block text-primary dark:text-primary-fixed px-4 py-3 border-b border-surface-container-high hover:bg-surface-container-low dark:hover:bg-surface-container-high transition-colors font-label-lg text-label-lg uppercase" href="#">Manual Preface</a>
+</li>
+</ul>
+</nav>
+</aside>
+<!-- TopAppBar (Mobile) -->
+<header class="md:hidden flex justify-between items-center w-full px-margin-mobile h-14 bg-surface dark:bg-surface border-b border-primary dark:border-primary-fixed-dim fixed top-0 left-0 z-50">
+<button class="text-primary dark:text-primary-fixed hover:bg-surface-container-high dark:hover:bg-surface-container-highest transition-colors opacity-80 scale-95 transition-all duration-75">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">menu</span>
+</button>
+<h1 class="font-headline-sm text-headline-sm uppercase tracking-tighter text-primary dark:text-primary-fixed">NOCTURNAL FIELD GUIDE</h1>
+<button class="text-primary dark:text-primary-fixed hover:bg-surface-container-high dark:hover:bg-surface-container-highest transition-colors">
+<span class="material-symbols-outlined">settings_brightness</span>
+</button>
+</header>
+<!-- Main Content Canvas -->
+<main class="flex-1 w-full max-w-7xl mx-auto md:px-margin-desktop p-4 md:py-8">
+<!-- Header Section -->
+<section class="rule-all mb-4">
+<div class="bg-field-gray text-surface rule-b p-2">
+<h2 class="font-headline-sm text-headline-sm uppercase">Moon &amp; Light Conditions</h2>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-3">
+<div class="p-4 md:rule-r flex items-center gap-4">
+<span class="material-symbols-outlined text-4xl" data-icon="dark_mode" style="font-variation-settings: 'FILL' 1;">dark_mode</span>
+<div>
+<span class="block font-label-md text-label-md uppercase text-surface-tint">Current Status</span>
+<span class="block font-body-md text-body-md font-bold">Waxing Gibbous. 82% Illumination.</span>
+</div>
+</div>
+<div class="p-4 rule-t md:rule-t-0 md:rule-r flex flex-col justify-center">
+<span class="block font-label-md text-label-md uppercase text-surface-tint">Moonrise</span>
+<span class="block font-body-md text-body-md">17:42</span>
+</div>
+<div class="p-4 rule-t md:rule-t-0 flex flex-col justify-center">
+<span class="block font-label-md text-label-md uppercase text-surface-tint">Sky Quality</span>
+<span class="block font-body-md text-body-md">Bortle 8 (Inner City Sky)</span>
+</div>
+</div>
+</section>
+<!-- Species Identification Grid -->
+<section class="grid grid-cols-1 lg:grid-cols-12 gap-0 rule-all mb-4">
+<!-- Text Col -->
+<div class="lg:col-span-5 rule-b lg:rule-b-0 lg:rule-r flex flex-col">
+<div class="bg-field-gray text-surface rule-b p-2">
+<h2 class="font-headline-sm text-headline-sm uppercase">Tonight’s Likely Species</h2>
+</div>
+<div class="p-6 flex-1">
+<h3 class="font-headline-md text-headline-md mb-4">Black-crowned Night Heron</h3>
+<div class="mb-6">
+<h4 class="font-label-md text-label-md uppercase text-surface-tint mb-1">Field Marks</h4>
+<p class="font-body-md text-body-md">Stocky build, black crown and back, contrasting grey wings.</p>
+</div>
+<div class="mb-6">
+<h4 class="font-label-md text-label-md uppercase text-surface-tint mb-1">In Flight</h4>
+<p class="font-body-md text-body-md">Thick neck tucked, feet barely extending beyond tail.</p>
+</div>
+<div>
+<h4 class="font-label-md text-label-md uppercase text-surface-tint mb-1">Context</h4>
+<p class="font-body-md text-body-md">Often found near waterfront construction sites or park ponds.</p>
+</div>
+</div>
+</div>
+<!-- Image Col with Pointer System -->
+<div class="lg:col-span-7 relative bg-surface-container p-4 min-h-[400px] flex items-center justify-center">
+<!-- Technical placeholder image -->
+<div class="relative w-full max-w-md h-64 bg-surface rule-all overflow-hidden" data-alt="A vintage, mid-century scientific field guide illustration of a Black-crowned Night Heron perched on a rugged branch. The art style is stark, instructional, and highly detailed, resembling an ink lithograph on heavy paper cream stock. Sharp lines delineate the black crown and grey wings. The background is a flat, off-white void, emphasizing the subject for identification purposes. The overall aesthetic is serious, academic, and slightly brutalist." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuBk68gK9U3QwUe9QOhkAOgAkdmn81jml3UEuVfVRATVnd3j1_d3nE349VYsCqVrpBEA63zqfYiE2noylkLC3wucFVe1rxABSiReNKmVZKND5_-InZ9kvoGwIXrS8nqyL_zMNz7-zE1SKtIKMYzpzH8Z-4ZQykRojg_dEzWAVKH2fXg9iYjiXNUj4oCPlrlC1oVeTppZ3GjoPhqX7plzh4DxBO50w-fVg8Bsxsu1tis53X89tBan-iatfLudeBqr9GPFPym3oVbLdKDI'); background-size: cover; background-position: center;">
+<!-- Pointer System Overlays -->
+<!-- Black Crown Pointer -->
+<div class="absolute top-[20%] left-[10%] w-[40%] flex items-center">
+<div class="pointer-line w-full"></div>
+<div class="pointer-arrow left-full"></div>
+<span class="absolute -top-6 left-0 font-label-md text-label-md text-pointer-red uppercase bg-surface px-1">Black Crown</span>
+</div>
+<!-- Grey Wings Pointer -->
+<div class="absolute top-[60%] right-[10%] w-[30%] flex items-center flex-row-reverse">
+<div class="pointer-line w-full"></div>
+<div class="pointer-arrow right-full border-r-[6px] border-r-pointer-red border-l-0 border-y-[4px]"></div>
+<span class="absolute -top-6 right-0 font-label-md text-label-md text-pointer-red uppercase bg-surface px-1">Grey Wings</span>
+</div>
+</div>
+</div>
+</section>
+<!-- Lower Section: Split Columns -->
+<div class="grid grid-cols-1 lg:grid-cols-2 gap-0 rule-all">
+<!-- Sightings Log -->
+<section class="rule-b lg:rule-b-0 lg:rule-r">
+<div class="bg-field-gray text-surface rule-b p-2">
+<h2 class="font-headline-sm text-headline-sm uppercase">Sightings Log</h2>
+</div>
+<!-- Table Header -->
+<div class="grid grid-cols-12 rule-b bg-surface-container-low font-label-sm text-label-sm uppercase text-surface-tint">
+<div class="col-span-2 p-2 rule-r">Time</div>
+<div class="col-span-4 p-2 rule-r">Location</div>
+<div class="col-span-6 p-2">Species / Notes</div>
+</div>
+<!-- Table Row -->
+<div class="grid grid-cols-12 rule-b font-body-sm text-body-sm hover:bg-surface-container-high transition-colors cursor-pointer">
+<div class="col-span-2 p-3 rule-r font-label-md">23:14</div>
+<div class="col-span-4 p-3 rule-r">West Side Railyards</div>
+<div class="col-span-6 p-3">
+<strong>Common Nighthawk (2)</strong><br/>
+            Aerial foraging under stadium lights; erratic, bat-like flight pattern.
+          </div>
+</div>
+<!-- Empty Row for visual continuity -->
+<div class="grid grid-cols-12 rule-b font-body-sm text-body-sm">
+<div class="col-span-2 p-6 rule-r"></div>
+<div class="col-span-4 p-6 rule-r"></div>
+<div class="col-span-6 p-6"></div>
+</div>
+<div class="grid grid-cols-12 font-body-sm text-body-sm">
+<div class="col-span-2 p-6 rule-r"></div>
+<div class="col-span-4 p-6 rule-r"></div>
+<div class="col-span-6 p-6"></div>
+</div>
+</section>
+<!-- Guide to Listening -->
+<section>
+<div class="bg-field-gray text-surface rule-b p-2">
+<h2 class="font-headline-sm text-headline-sm uppercase">Guide to Listening: The Urban Filter</h2>
+</div>
+<div class="p-6">
+<p class="font-body-md text-body-md mb-6 font-bold">To identify birds by sound in the city, you must mentally subtract the machine:</p>
+<ol class="space-y-4">
+<li class="flex items-start gap-4">
+<span class="flex-shrink-0 w-8 h-8 flex items-center justify-center bg-midnight-ink text-surface font-label-md text-label-md">1</span>
+<div>
+<strong class="font-label-lg text-label-lg block uppercase mb-1">The Base</strong>
+<p class="font-body-md text-body-md">Ignore the low-frequency rumble of the expressway or subway vents.</p>
+</div>
+</li>
+<li class="flex items-start gap-4 pt-4 rule-t">
+<span class="flex-shrink-0 w-8 h-8 flex items-center justify-center bg-midnight-ink text-surface font-label-md text-label-md">2</span>
+<div>
+<strong class="font-label-lg text-label-lg block uppercase mb-1">The Signal</strong>
+<p class="font-body-md text-body-md">Focus on the "Peent"—a sharp, nasal electric buzz cutting through the hum.</p>
+</div>
+</li>
+<li class="flex items-start gap-4 pt-4 rule-t">
+<span class="flex-shrink-0 w-8 h-8 flex items-center justify-center bg-midnight-ink text-surface font-label-md text-label-md">3</span>
+<div>
+<strong class="font-label-lg text-label-lg block uppercase mb-1">The Physical</strong>
+<p class="font-body-md text-body-md">Listen for the "Whoosh" of air through primary feathers during a territorial dive.</p>
+</div>
+</li>
+</ol>
+</div>
+</section>
+</div>
+</main>
+<!-- BottomNavBar (Mobile) -->
+<nav class="md:hidden fixed bottom-0 w-full z-50 bg-surface dark:bg-surface border-t border-primary dark:border-primary-fixed-dim fixed bottom-0 left-0 w-full z-50 flex h-16">
+<a class="flex flex-col items-center justify-center bg-primary dark:bg-primary-fixed-dim text-on-primary dark:text-on-primary-fixed w-full h-full scale-100 no-animation" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">visibility</span>
+<span class="font-label-sm text-label-sm uppercase tracking-widest mt-1">IDENTIFY</span>
+</a>
+<a class="flex flex-col items-center justify-center text-primary dark:text-primary-fixed w-full h-full hover:bg-surface-container-high dark:hover:bg-surface-container-highest" href="#">
+<span class="material-symbols-outlined">history_edu</span>
+<span class="font-label-sm text-label-sm uppercase tracking-widest mt-1">LOG</span>
+</a>
+<a class="flex flex-col items-center justify-center text-primary dark:text-primary-fixed w-full h-full hover:bg-surface-container-high dark:hover:bg-surface-container-highest" href="#">
+<span class="material-symbols-outlined">hearing</span>
+<span class="font-label-sm text-label-sm uppercase tracking-widest mt-1">LISTEN</span>
+</a>
+<a class="flex flex-col items-center justify-center text-primary dark:text-primary-fixed w-full h-full hover:bg-surface-container-high dark:hover:bg-surface-container-highest" href="#">
+<span class="material-symbols-outlined">dark_mode</span>
+<span class="font-label-sm text-label-sm uppercase tracking-widest mt-1">MOON</span>
+</a>
+</nav>
+</body></html>

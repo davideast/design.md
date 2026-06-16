@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Urban Nocturnal Field Notes</title>
+<!-- Fonts & Icons -->
+<link href="https://fonts.googleapis.com/css2?family=League+Spartan:wght@400;600;700&amp;family=Source+Serif+4:wght@400;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind CSS -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "pointer-red": "#C53030",
+                        "paper-cream": "#F9F6EE",
+                        "midnight-ink": "#1A1A1B",
+                        "field-gray": "#707372",
+                        "surface-container-low": "#f2f4f2",
+                        "surface-bright": "#f8faf8",
+                        "on-background": "#191c1c",
+                        "primary": "#000000",
+                        "on-primary": "#ffffff"
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0px",
+                        "lg": "0px",
+                        "xl": "0px",
+                        "full": "0px"
+                    },
+                    spacing: {
+                        "unit": "4px",
+                        "margin": "24px",
+                        "gutter": "16px",
+                        "rule-weight": "1px"
+                    },
+                    fontFamily: {
+                        "caption": ["\"Source Serif 4\""],
+                        "body-lg": ["\"Source Serif 4\""],
+                        "body-md": ["\"Source Serif 4\""],
+                        "label-md": ["League Spartan"],
+                        "label-lg": ["League Spartan"],
+                        "headline-lg": ["League Spartan"],
+                        "headline-md": ["League Spartan"],
+                        "headline-xl": ["League Spartan"]
+                    },
+                    fontSize: {
+                        "caption": ["12px", { "lineHeight": "1.4", "fontWeight": "400" }],
+                        "body-lg": ["18px", { "lineHeight": "1.6", "fontWeight": "400" }],
+                        "body-md": ["16px", { "lineHeight": "1.5", "fontWeight": "400" }],
+                        "label-md": ["12px", { "lineHeight": "1.2", "letterSpacing": "0.05em", "fontWeight": "600" }],
+                        "label-lg": ["14px", { "lineHeight": "1.2", "letterSpacing": "0.1em", "fontWeight": "600" }],
+                        "headline-lg": ["32px", { "lineHeight": "1.2", "fontWeight": "700" }],
+                        "headline-md": ["24px", { "lineHeight": "1.2", "fontWeight": "700" }],
+                        "headline-xl": ["48px", { "lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "700" }]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        body { background-color: #F9F6EE; color: #1A1A1B; }
+        .grid-cell { border: 1px solid #1A1A1B; }
+        .rule-b { border-bottom: 1px solid #1A1A1B; }
+        .rule-r { border-right: 1px solid #1A1A1B; }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="font-body-md text-midnight-ink bg-paper-cream antialiased min-h-screen pb-20 md:pb-0 md:pl-80 pt-16">
+<!-- TopAppBar -->
+<header class="bg-paper-cream dark:bg-midnight-ink text-primary dark:text-on-primary font-headline-md text-headline-md font-bold uppercase fixed top-0 w-full border-b border-primary dark:border-on-primary flex justify-between items-center px-margin h-16 z-50">
+<div class="flex items-center gap-4">
+<span class="material-symbols-outlined cursor-pointer hover:bg-primary hover:text-paper-cream transition-none active:invert">grid_view</span>
+<span class="font-headline-md text-headline-md tracking-tighter text-primary dark:text-on-primary">STRIX_ARCHIVE.v1</span>
+</div>
+<div class="flex items-center gap-6 font-label-md text-label-md">
+<span>ILLUMINATION: 82% WAXING GIBBOUS</span>
+<span>SQM: BORTLE 8</span>
+<span class="material-symbols-outlined cursor-pointer hover:bg-primary hover:text-paper-cream transition-none active:invert">location_on</span>
+</div>
+</header>
+<!-- SideNav (Desktop) -->
+<nav class="hidden md:flex h-full w-80 border-r border-primary dark:border-on-primary bg-paper-cream dark:bg-midnight-ink flex-col pt-margin fixed left-0 top-0 z-40">
+<div class="px-margin mb-8 mt-16 font-headline-lg text-headline-lg text-primary">OBSERVATION_SYSTEM</div>
+<div class="flex flex-col font-label-md text-label-md uppercase">
+<a class="px-margin py-3 text-primary dark:text-on-primary hover:bg-field-gray hover:text-paper-cream transition-none flex items-center gap-3" href="#"><span class="material-symbols-outlined">folder_open</span> ARCHIVE_ROOT</a>
+<a class="px-margin py-3 text-primary dark:text-on-primary hover:bg-field-gray hover:text-paper-cream transition-none flex items-center gap-3" href="#"><span class="material-symbols-outlined">explore</span> COORDINATES</a>
+<a class="px-margin py-3 text-primary dark:text-on-primary hover:bg-field-gray hover:text-paper-cream transition-none flex items-center gap-3" href="#"><span class="material-symbols-outlined">settings_input_component</span> SENSOR_CALIBRATION</a>
+<a class="px-margin py-3 bg-primary text-paper-cream font-bold transition-none flex items-center gap-3" href="#"><span class="material-symbols-outlined">analytics</span> SPECIMEN_DATA</a>
+<a class="px-margin py-3 text-primary dark:text-on-primary hover:bg-field-gray hover:text-paper-cream transition-none flex items-center gap-3" href="#"><span class="material-symbols-outlined">download</span> EXPORT_CSV</a>
+<a class="px-margin py-3 text-primary dark:text-on-primary hover:bg-field-gray hover:text-paper-cream transition-none flex items-center gap-3" href="#"><span class="material-symbols-outlined">terminal</span> SYSTEM_LOG</a>
+</div>
+</nav>
+<!-- BottomNavBar (Mobile) -->
+<nav class="md:hidden fixed bottom-0 left-0 w-full z-50 flex justify-around items-stretch h-16 bg-paper-cream dark:bg-midnight-ink border-t border-primary dark:border-on-primary font-label-lg text-label-lg uppercase tracking-widest">
+<a class="flex flex-col items-center justify-center bg-primary dark:bg-on-primary text-paper-cream dark:text-midnight-ink h-full px-4 active:bg-pointer-red w-1/4" href="#">
+<span class="material-symbols-outlined mb-1">analytics</span> SPECIMEN
+        </a>
+<a class="flex flex-col items-center justify-center text-primary dark:text-on-primary h-full px-4 hover:bg-surface-container-highest active:bg-pointer-red w-1/4" href="#">
+<span class="material-symbols-outlined mb-1">database</span> LOG
+        </a>
+<a class="flex flex-col items-center justify-center text-primary dark:text-on-primary h-full px-4 hover:bg-surface-container-highest active:bg-pointer-red w-1/4" href="#">
+<span class="material-symbols-outlined mb-1">graphic_eq</span> AUDIO
+        </a>
+<a class="flex flex-col items-center justify-center text-primary dark:text-on-primary h-full px-4 hover:bg-surface-container-highest active:bg-pointer-red w-1/4" href="#">
+<span class="material-symbols-outlined mb-1">filter_list</span> FILTER
+        </a>
+</nav>
+<!-- Main Canvas -->
+<main class="p-margin max-w-7xl mx-auto">
+<div class="mb-margin">
+<h1 class="font-headline-xl text-headline-xl mb-2">URBAN NOCTURNAL</h1>
+<p class="font-caption text-caption uppercase tracking-widest text-field-gray border-b border-primary pb-2">FIELD NOTES :: ANALYTICAL SPECIMEN SHEET</p>
+</div>
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-0 border border-primary bg-primary">
+<!-- Section 1: Likely Species -->
+<section class="lg:col-span-8 bg-paper-cream grid-cell">
+<div class="p-gutter rule-b font-label-lg text-label-lg uppercase flex justify-between items-center">
+<span>SEC.01 :: LIKELY SPECIES</span>
+<span class="material-symbols-outlined text-pointer-red">target</span>
+</div>
+<div class="p-margin grid grid-cols-1 md:grid-cols-2 gap-margin">
+<div class="relative">
+<img alt="Black-crowned Night Heron" class="w-full h-auto grayscale contrast-125 border border-primary" data-alt="A highly detailed, starkly lit photograph of a Black-crowned Night Heron in an urban setting at night. The bird is perched stoically on concrete, illuminated by a harsh, artificial spotlight against an inky black background. The color palette is restricted to cool grays, deep blacks, and a subtle yellowish-white from the streetlamp, maintaining a moody, documentarian aesthetic. The composition emphasizes the stocky build and distinct black crown of the specimen." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAi0dn2NrFOADH8HbIt1rbot1F1vt0ssHlixcUZTGRkYDx0avlcdn8YLVU30Wl1bZULZdkmbd5UVFEsWXwPqXa-hcoMxQp3ejNTXEAK1J0WAqiD23sSCteTVasGc0jeuoKxj91ibV7MeDnKpJFvA_HUKGhJM7TLsvPWhOoTX6TE52BglbwG_SgZwDhnDpkrXhQ1cmI_0Gv0sLa9cFfkTFB7ElALZ9HHR8K3d4mleJ9P9AuhTjjSXJz83jMKpyI7JPfi6-xCwaXKiG93"/>
+<!-- Callouts -->
+<div class="absolute top-1/4 left-0 -translate-x-4">
+<div class="flex items-center">
+<div class="bg-paper-cream border border-primary p-1 font-label-md text-label-md uppercase whitespace-nowrap z-10">FIELD MARKS: Stocky build, black crown</div>
+<div class="h-[1px] w-12 bg-pointer-red"></div>
+<div class="w-0 h-0 border-y-4 border-y-transparent border-l-8 border-l-pointer-red"></div>
+</div>
+</div>
+</div>
+<div class="flex flex-col justify-between">
+<div>
+<h2 class="font-headline-md text-headline-md mb-2 uppercase">Black-crowned Night Heron</h2>
+<p class="font-body-md text-body-md mb-4 text-field-gray font-serif italic">Nycticorax nycticorax</p>
+<p class="font-body-md text-body-md mb-4">A stocky, thick-billed heron of wetlands and urban waterways. Predominantly nocturnal or crepuscular. Adapts to artificial light sources for foraging.</p>
+</div>
+<div class="border border-primary p-gutter bg-surface-container-low">
+<div class="font-label-md text-label-md uppercase mb-2 text-pointer-red flex items-center gap-2">
+<span class="material-symbols-outlined">flight</span> IN FLIGHT BEHAVIOR
+                            </div>
+<p class="font-body-md text-body-md">Direct, purposeful flight with deep wingbeats. Often emits a harsh, flat "quok" call while transiting between roosts and foraging grounds.</p>
+</div>
+</div>
+</div>
+</section>
+<!-- Section 3: Guide to Listening -->
+<section class="lg:col-span-4 bg-paper-cream grid-cell flex flex-col">
+<div class="p-gutter rule-b font-label-lg text-label-lg uppercase bg-midnight-ink text-paper-cream flex justify-between items-center">
+<span>SEC.03 :: URBAN FILTER</span>
+<span class="material-symbols-outlined">hearing</span>
+</div>
+<div class="p-margin flex-grow">
+<p class="font-body-md text-body-md mb-6">Acoustic isolation protocol in high-noise environments.</p>
+<div class="space-y-4 font-body-md text-body-md">
+<div class="border border-field-gray p-3 text-field-gray opacity-60 flex gap-3 items-start">
+<span class="font-label-md text-label-md">01.</span>
+<div>
+<span class="uppercase font-label-md text-label-md block mb-1">THE BASE</span>
+                                Low-frequency machine rumble. Constant ambient hum. (Subtracted)
+                            </div>
+</div>
+<div class="border-2 border-pointer-red p-3 bg-white flex gap-3 items-start shadow-[2px_2px_0px_#C53030]">
+<span class="font-label-md text-label-md text-pointer-red">02.</span>
+<div>
+<span class="uppercase font-label-md text-label-md block mb-1 text-pointer-red">THE SIGNAL</span>
+                                The "Peent" nasal buzz. Sharp, distinct, penetrating. (Isolated)
+                            </div>
+</div>
+<div class="border border-primary p-3 flex gap-3 items-start">
+<span class="font-label-md text-label-md">03.</span>
+<div>
+<span class="uppercase font-label-md text-label-md block mb-1">THE PHYSICAL</span>
+                                Feather "Whoosh" during terminal dive phase. Air displacement.
+                            </div>
+</div>
+</div>
+</div>
+</section>
+<!-- Section 2: Sightings Log -->
+<section class="lg:col-span-12 bg-paper-cream grid-cell">
+<div class="p-gutter rule-b font-label-lg text-label-lg uppercase flex justify-between items-center bg-surface-container-low">
+<span>SEC.02 :: SIGHTINGS LOG</span>
+<span class="material-symbols-outlined">table_rows</span>
+</div>
+<div class="overflow-x-auto">
+<table class="w-full text-left font-body-md text-body-md border-collapse">
+<thead>
+<tr class="rule-b bg-surface-bright font-label-md text-label-md uppercase">
+<th class="p-3 rule-r">Time</th>
+<th class="p-3 rule-r">Location</th>
+<th class="p-3 rule-r">Species</th>
+<th class="p-3">Behavior</th>
+</tr>
+</thead>
+<tbody>
+<tr class="rule-b hover:bg-field-gray hover:text-paper-cream transition-none cursor-pointer">
+<td class="p-3 rule-r font-mono">23:14</td>
+<td class="p-3 rule-r">West Side Railyards</td>
+<td class="p-3 rule-r">Common Nighthawk</td>
+<td class="p-3">Aerial foraging above light stanchions.</td>
+</tr>
+<tr class="rule-b hover:bg-field-gray hover:text-paper-cream transition-none cursor-pointer">
+<td class="p-3 rule-r font-mono">01:42</td>
+<td class="p-3 rule-r">East River Promenade</td>
+<td class="p-3 rule-r">Black-crowned Night Heron</td>
+<td class="p-3">Stationary hunting at outflow pipe.</td>
+</tr>
+<tr class="hover:bg-field-gray hover:text-paper-cream transition-none cursor-pointer">
+<td class="p-3 rule-r font-mono">03:05</td>
+<td class="p-3 rule-r">Central Park Reservoir</td>
+<td class="p-3 rule-r">Eastern Screech-Owl</td>
+<td class="p-3">Vocalization (trill) from mid-canopy.</td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+</div>
+</main>
+</body></html>

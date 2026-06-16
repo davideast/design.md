@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Kettle &amp; Leaf - Artisanal Tea House</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Libre+Franklin:wght@400;600;700&amp;family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&amp;family=IBM+Plex+Mono:wght@400;500&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "primary-fixed": "#e5e2e1",
+                      "parchment": "#F4EFE6",
+                      "on-error": "#ffffff",
+                      "tertiary-container": "#370e00",
+                      "surface-container-highest": "#e7e2d9",
+                      "on-primary-fixed": "#1b1b1b",
+                      "primary-fixed-dim": "#c8c6c5",
+                      "ember": "#E8590C",
+                      "secondary": "#645d53",
+                      "on-surface": "#1d1c16",
+                      "inverse-surface": "#32302a",
+                      "on-background": "#1d1c16",
+                      "tertiary-fixed-dim": "#ffb598",
+                      "secondary-fixed-dim": "#cfc5b8",
+                      "on-tertiary-fixed-variant": "#7f2b00",
+                      "secondary-container": "#ebe1d3",
+                      "surface-tint": "#5f5e5e",
+                      "on-error-container": "#93000a",
+                      "surface-dim": "#ded9d1",
+                      "on-surface-variant": "#444748",
+                      "surface-bright": "#fef9f0",
+                      "error-container": "#ffdad6",
+                      "surface-container-low": "#f8f3ea",
+                      "on-tertiary-container": "#e35606",
+                      "background": "#fef9f0",
+                      "outline-variant": "#c4c7c7",
+                      "on-primary": "#ffffff",
+                      "error": "#ba1a1a",
+                      "on-primary-fixed-variant": "#474746",
+                      "ink": "#1B1B1B",
+                      "on-secondary": "#ffffff",
+                      "primary-container": "#1b1b1b",
+                      "on-secondary-fixed-variant": "#4c463c",
+                      "primary": "#000000",
+                      "on-tertiary-fixed": "#370e00",
+                      "inverse-primary": "#c8c6c5",
+                      "secondary-fixed": "#ebe1d3",
+                      "inverse-on-surface": "#f5f0e7",
+                      "surface": "#fef9f0",
+                      "surface-container": "#f2ede4",
+                      "outline": "#747878",
+                      "on-secondary-container": "#6a6359",
+                      "tertiary-fixed": "#ffdbce",
+                      "surface-variant": "#e7e2d9",
+                      "surface-container-lowest": "#ffffff",
+                      "on-secondary-fixed": "#1f1b13",
+                      "surface-container-high": "#ece8df",
+                      "earth": "#6E675C",
+                      "on-primary-container": "#858383",
+                      "on-tertiary": "#ffffff",
+                      "tertiary": "#000000"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.25rem",
+                      "lg": "0.5rem",
+                      "xl": "0.75rem",
+                      "full": "9999px"
+              },
+              "spacing": {
+                      "margin-mobile": "20px",
+                      "md": "16px",
+                      "container-max": "1280px",
+                      "base": "8px",
+                      "sm": "8px",
+                      "gutter": "24px",
+                      "xl": "64px",
+                      "margin-desktop": "48px",
+                      "lg": "32px"
+              },
+              "fontFamily": {
+                      "headline-md": [
+                              "Libre Franklin"
+                      ],
+                      "headline-xl": [
+                              "Libre Franklin"
+                      ],
+                      "headline-lg": [
+                              "Libre Franklin"
+                      ],
+                      "body-sm": [
+                              "\"Source Serif 4\""
+                      ],
+                      "label-md": [
+                              "IBM Plex Mono"
+                      ],
+                      "body-lg": [
+                              "\"Source Serif 4\""
+                      ],
+                      "headline-lg-mobile": [
+                              "Libre Franklin"
+                      ],
+                      "label-sm": [
+                              "IBM Plex Mono"
+                      ],
+                      "body-md": [
+                              "\"Source Serif 4\""
+                      ]
+              },
+              "fontSize": {
+                      "headline-md": [
+                              "24px",
+                              {
+                                      "lineHeight": "1.2",
+                                      "letterSpacing": "-0.01em",
+                                      "fontWeight": "600"
+                              }
+                      ],
+                      "headline-xl": [
+                              "64px",
+                              {
+                                      "lineHeight": "1.05",
+                                      "letterSpacing": "-0.02em",
+                                      "fontWeight": "700"
+                              }
+                      ],
+                      "headline-lg": [
+                              "44px",
+                              {
+                                      "lineHeight": "1.05",
+                                      "letterSpacing": "-0.01em",
+                                      "fontWeight": "700"
+                              }
+                      ],
+                      "body-sm": [
+                              "14px",
+                              {
+                                      "lineHeight": "1.6",
+                                      "fontWeight": "400"
+                              }
+                      ],
+                      "label-md": [
+                              "14px",
+                              {
+                                      "lineHeight": "1.4",
+                                      "letterSpacing": "0.05em",
+                                      "fontWeight": "500"
+                              }
+                      ],
+                      "body-lg": [
+                              "18px",
+                              {
+                                      "lineHeight": "1.7",
+                                      "fontWeight": "400"
+                              }
+                      ],
+                      "headline-lg-mobile": [
+                              "32px",
+                              {
+                                      "lineHeight": "1.1",
+                                      "letterSpacing": "-0.01em",
+                                      "fontWeight": "700"
+                              }
+                      ],
+                      "label-sm": [
+                              "12px",
+                              {
+                                      "lineHeight": "1.4",
+                                      "letterSpacing": "0.08em",
+                                      "fontWeight": "400"
+                              }
+                      ],
+                      "body-md": [
+                              "16px",
+                              {
+                                      "lineHeight": "1.65",
+                                      "fontWeight": "400"
+                              }
+                      ]
+              }
+      },
+          },
+        }
+    </script>
+<style>
+        body {
+            background-color: theme('colors.parchment');
+            color: theme('colors.ink');
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+    </style>
+</head>
+<body class="antialiased min-h-screen flex flex-col selection:bg-ember selection:text-parchment">
+<header class="w-full top-0 sticky bg-parchment dark:bg-ink border-b border-earth dark:border-secondary z-50 transition-all duration-300">
+<div class="flex justify-between items-center w-full px-margin-mobile md:px-margin-desktop py-4 max-w-container-max mx-auto">
+<div class="font-headline-lg text-headline-lg-mobile md:text-headline-lg text-ink dark:text-parchment tracking-tight">
+                Kettle &amp; Leaf
+            </div>
+<nav aria-label="Main Navigation" class="hidden md:flex gap-gutter items-center">
+<a aria-current="page" class="font-label-md text-label-md text-ember font-bold border-b-2 border-ember pb-1 opacity-80 scale-95 transition-transform" href="#">Home</a>
+<a class="font-label-md text-label-md text-ink dark:text-parchment hover:text-ember transition-colors hover:text-ember dark:hover:text-ember transition-all duration-200" href="#">Menu</a>
+<a class="font-label-md text-label-md text-ink dark:text-parchment hover:text-ember transition-colors hover:text-ember dark:hover:text-ember transition-all duration-200" href="#">Our Story</a>
+<a class="font-label-md text-label-md text-ink dark:text-parchment hover:text-ember transition-colors hover:text-ember dark:hover:text-ember transition-all duration-200" href="#">Contact</a>
+</nav>
+<button class="hidden md:block bg-ink text-parchment font-label-md text-label-md px-6 py-3 hover:bg-ember transition-colors duration-300 uppercase tracking-widest">
+                Shop Now
+            </button>
+<button aria-label="Open menu" class="md:hidden text-ink dark:text-parchment p-2">
+<span class="material-symbols-outlined" style="font-size: 28px;">menu</span>
+</button>
+</div>
+</header>
+<main class="flex-grow">
+<section class="relative w-full h-[70vh] min-h-[500px] border-b-2 border-ink flex items-end">
+<div class="absolute inset-0 w-full h-full">
+<img alt="A serene and minimalist tea house interior, featuring warm light filtering through large windows. Wood tables, ceramic teaware, and a peaceful atmosphere." class="w-full h-full object-cover grayscale-[20%] sepia-[10%]" src="https://lh3.googleusercontent.com/aida-public/AB6AXuD3bjTFDEUA2y888iZOVocx32jo29EOW1X0A6sEHDYR-k5MmH4TAIE9xgzXpVJD14td8i0q7QPjSt0P_XJnFHi56eJy9Ef55QCTJkayiloasztr2fB3_P5-YfqqWh3nJolYt-jOgFo9_7OF91mfnAUZaYuflqdgjCzwMWa8ANMRFFeOfr9bd2GPhPi5Ut0iNmeKSnXQoABKsyXnj6Zmy_Fg2XFiyRTnOhgSGWw9MLSrBygnBlUUmCGk5UTbXoQJqW-fDMe2DzzT6RJ9"/>
+</div>
+<div class="absolute inset-0 bg-gradient-to-t from-ink/90 to-transparent"></div>
+<div class="relative z-10 w-full px-margin-mobile md:px-margin-desktop py-xl max-w-container-max mx-auto text-parchment">
+<div class="max-w-2xl border-l-4 border-ember pl-6 py-2">
+<h1 class="font-headline-xl text-headline-xl text-parchment mb-4 leading-tight">A Quiet Place for Exceptional Tea</h1>
+<p class="font-body-lg text-body-lg text-parchment/90">A curated neighborhood space dedicated to the slow craft of artisanal brewing.</p>
+</div>
+</div>
+</section>
+<section class="py-xl px-margin-mobile md:px-margin-desktop max-w-container-max mx-auto">
+<div class="mb-lg border-b border-earth pb-4 flex justify-between items-end">
+<h2 class="font-headline-lg text-headline-lg text-ink">Today's Brewed Teas</h2>
+<a class="font-label-md text-label-md text-ember hover:text-ink transition-colors flex items-center gap-2 group" href="#">
+                    Full Menu
+                    <span class="material-symbols-outlined group-hover:translate-x-1 transition-transform">arrow_forward</span>
+</a>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+<article class="border border-earth p-6 hover:border-ink hover:border-2 transition-all group bg-surface-bright relative">
+<div class="absolute top-0 right-0 bg-secondary-container px-3 py-1 font-label-sm text-label-sm text-ink border-b border-l border-earth">Oolong</div>
+<h3 class="font-headline-md text-headline-md text-ink mt-4 mb-2 group-hover:text-ember transition-colors">Alishan High Mountain</h3>
+<p class="font-body-sm text-body-sm text-earth mb-4">Chiayi, Taiwan</p>
+<div class="border-t border-earth/30 pt-4 mt-auto">
+<span class="font-label-sm text-label-sm text-ink block mb-1">Tasting Notes:</span>
+<p class="font-body-md text-body-md text-ink">Orchid, cream, and wild honey.</p>
+</div>
+</article>
+<article class="border border-earth p-6 hover:border-ink hover:border-2 transition-all group bg-surface-bright relative">
+<div class="absolute top-0 right-0 bg-secondary-container px-3 py-1 font-label-sm text-label-sm text-ink border-b border-l border-earth">Purple Tea</div>
+<h3 class="font-headline-md text-headline-md text-ink mt-4 mb-2 group-hover:text-ember transition-colors">Kangaita Purple</h3>
+<p class="font-body-sm text-body-sm text-earth mb-4">Kirinyaga, Kenya</p>
+<div class="border-t border-earth/30 pt-4 mt-auto">
+<span class="font-label-sm text-label-sm text-ink block mb-1">Tasting Notes:</span>
+<p class="font-body-md text-body-md text-ink">Plum, cocoa, and sweet wood.</p>
+</div>
+</article>
+<article class="border border-earth p-6 hover:border-ink hover:border-2 transition-all group bg-surface-bright relative">
+<div class="absolute top-0 right-0 bg-secondary-container px-3 py-1 font-label-sm text-label-sm text-ink border-b border-l border-earth">White Tea</div>
+<h3 class="font-headline-md text-headline-md text-ink mt-4 mb-2 group-hover:text-ember transition-colors">Moonlight White</h3>
+<p class="font-body-sm text-body-sm text-earth mb-4">Pu'er, Yunnan</p>
+<div class="border-t border-earth/30 pt-4 mt-auto">
+<span class="font-label-sm text-label-sm text-ink block mb-1">Tasting Notes:</span>
+<p class="font-body-md text-body-md text-ink">Jasmine, honeydew, and fresh hay.</p>
+</div>
+</article>
+</div>
+</section>
+<section class="border-y-2 border-ink bg-surface-container-low py-xl">
+<div class="px-margin-mobile md:px-margin-desktop max-w-container-max mx-auto grid grid-cols-1 lg:grid-cols-2 gap-xl items-center">
+<div class="relative order-2 lg:order-1 h-[500px] border border-ink p-2 bg-parchment">
+<img alt="Close-up of a tea master carefully pouring hot water over loose tea leaves in a traditional clay teapot. The setting is rustic and artisanal." class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBanjNPLMJ0srTBqouCIcjiwnpHhBqMZ_w28gWS7e23qRNJ_53n8kcSruOr2KT2LhvoanosXK_2TtU03g-1UBOO8JxDtcPa5ogmb-iGomVmyeuT1oSJgC9uMys9BhuG__R0bJLNgiLiO8tChO4JVdNoOojSS9lGn7atgy1lwZElG4VHrNNZAgsFSb2UlfmqJ4URf6pgQD2wenx8sURPvb_vNHcJ0DwVug2Netm7ASvURKOjPabCJ3I1koWbal8d6bnF2cvJAFBR8XRB"/>
+<div class="absolute -bottom-4 -right-4 bg-ink text-parchment p-4 font-label-md text-label-md border-2 border-parchment hidden md:block">
+                        Est. 2024
+                    </div>
+</div>
+<div class="order-1 lg:order-2 space-y-8">
+<div>
+<span class="font-label-md text-label-md text-ember uppercase tracking-widest block mb-4">Our Sourcing</span>
+<h2 class="font-headline-lg text-headline-lg text-ink mb-6">From Mountain to Kettle</h2>
+<p class="font-body-lg text-body-lg text-on-surface-variant leading-relaxed">
+                            Every leaf we serve is the result of direct relationships with farmers. From the high-elevation gardens hidden in the misty peaks of Taiwan to the innovative smallholder farms cultivating rare varieties in Kenya, our sourcing trips are focused entirely on quality, sustainability, and fair trade. We bring the world's most exceptional, unblended teas directly to your cup.
+                        </p>
+</div>
+<div class="bg-surface-bright border border-earth p-6">
+<div class="flex items-center gap-3 mb-4">
+<span class="material-symbols-outlined text-ember" style="font-size: 24px;">schedule</span>
+<h3 class="font-headline-md text-headline-md text-ink">Quiet Hours</h3>
+</div>
+<p class="font-body-sm text-body-sm text-earth mb-6">A designated time for reading, working quietly, or simple reflection. No laptops at the bar.</p>
+<div class="space-y-3 font-label-md text-label-md text-ink">
+<div class="flex justify-between border-b border-earth/20 pb-2">
+<span>Mon - Fri</span>
+<span class="text-ember">8am - 10am &amp; 2pm - 4pm</span>
+</div>
+<div class="flex justify-between">
+<span>Sat - Sun</span>
+<span class="text-ember">9am - 11am</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section class="py-xl px-margin-mobile md:px-margin-desktop max-w-container-max mx-auto">
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+<div class="lg:col-span-1 space-y-6">
+<h2 class="font-headline-lg text-headline-lg text-ink">Visit Us</h2>
+<div class="space-y-4 font-body-lg text-body-lg text-ink">
+<p class="flex items-start gap-3">
+<span class="material-symbols-outlined text-ember mt-1">location_on</span>
+<span>412 Maple Row<br/>Steeptown, ST 12345</span>
+</p>
+<p class="flex items-center gap-3">
+<span class="material-symbols-outlined text-ember">phone</span>
+<span>555-0123</span>
+</p>
+</div>
+<button class="mt-4 border-2 border-ink px-6 py-3 font-label-md text-label-md text-ink hover:bg-ink hover:text-parchment transition-colors duration-300 uppercase tracking-widest w-full md:w-auto">
+                        Get Directions
+                    </button>
+</div>
+<div class="lg:col-span-2 h-[400px] border-2 border-ink bg-surface-container-high relative overflow-hidden group">
+<img alt="A stylized, minimalist map showing the location of 412 Maple Row in a quiet neighborhood. The map uses high-contrast lines and muted earth tones, indicating a premium, artisanal destination." class="w-full h-full object-cover opacity-80 group-hover:scale-105 transition-transform duration-700 ease-in-out mix-blend-multiply" data-location="Steeptown" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBTDzeJcWAe4ODaGsigLCwtwJQ4sOvF4NGvvyOjhdsNIyduOLU23gknkgcgM5lJHmOhfOurYjX-eIhgCJwrfpUODRAk2q3rAd-INiG9siakGwzu-cYwOHyt4dYRAY15sUSydEVbgVv2Ux57ggCS3H4GSOQwnw6GWxMDuL0QKM254Ap7bYv3KSfJifENzx49XUvjiArUjsj2UgYvXk-_GTUYrbL-Rfcp__a_yv7ZEupJPFd3AeYeCzojUykQY-EJ03BU6g4tTR7n5NRf"/>
+<div class="absolute inset-0 bg-ink/10"></div>
+</div>
+</div>
+</section>
+</main>
+<footer class="w-full mt-xl bg-ink dark:bg-surface-container-highest border-t-2 border-earth">
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-gutter px-margin-mobile md:px-margin-desktop py-lg max-w-container-max mx-auto">
+<div class="space-y-4">
+<div class="font-headline-md text-headline-md text-ember">
+                    Kettle &amp; Leaf
+                </div>
+<p class="font-body-sm text-body-sm text-parchment/80 dark:text-ink/80">
+                    Artisanal teas thoughtfully sourced and meticulously brewed.
+                </p>
+</div>
+<div class="space-y-2">
+<h4 class="font-label-sm text-label-sm text-earth uppercase tracking-widest mb-4">Visit</h4>
+<p class="font-body-sm text-body-sm text-parchment dark:text-ink">123 Brew Lane, Steeptown</p>
+<p class="font-body-sm text-body-sm text-parchment dark:text-ink">Hours: 8am - 8pm Daily</p>
+</div>
+<div class="space-y-2 flex flex-col">
+<h4 class="font-label-sm text-label-sm text-earth uppercase tracking-widest mb-4">Explore</h4>
+<a class="font-body-sm text-body-sm text-parchment/80 dark:text-ink/80 hover:text-ember transition-colors focus:outline-none focus:text-ember w-fit" href="#">Menu</a>
+<a class="font-body-sm text-body-sm text-parchment/80 dark:text-ink/80 hover:text-ember transition-colors focus:outline-none focus:text-ember w-fit" href="#">Our Story</a>
+<a class="font-body-sm text-body-sm text-parchment/80 dark:text-ink/80 hover:text-ember transition-colors focus:outline-none focus:text-ember w-fit" href="#">Journal</a>
+</div>
+<div class="space-y-2 flex flex-col">
+<h4 class="font-label-sm text-label-sm text-earth uppercase tracking-widest mb-4">Connect</h4>
+<a class="font-body-sm text-body-sm text-parchment/80 dark:text-ink/80 hover:text-ember transition-colors focus:outline-none focus:text-ember w-fit" href="#">Contact Us</a>
+<a class="font-body-sm text-body-sm text-parchment/80 dark:text-ink/80 hover:text-ember transition-colors focus:outline-none focus:text-ember w-fit" href="#">Instagram</a>
+<a class="font-body-sm text-body-sm text-parchment/80 dark:text-ink/80 hover:text-ember transition-colors focus:outline-none focus:text-ember w-fit" href="#">Privacy Policy</a>
+</div>
+<div class="col-span-1 md:col-span-2 lg:col-span-4 mt-8 pt-8 border-t border-earth/30">
+<p class="font-body-sm text-body-sm text-parchment/60 dark:text-ink/60 text-center">
+                    © 2024 Kettle &amp; Leaf Artisanal Tea. All rights reserved.
+                </p>
+</div>
+</div>
+</footer>
+</body></html>

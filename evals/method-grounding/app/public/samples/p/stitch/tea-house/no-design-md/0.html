@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+
+<html class="scroll-smooth" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Kettle &amp; Leaf</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&amp;family=EB+Garamond:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "on-tertiary-fixed-variant": "#474741",
+                      "inverse-on-surface": "#fdeee8",
+                      "on-secondary": "#ffffff",
+                      "primary-fixed-dim": "#b7ccb9",
+                      "error-container": "#ffdad6",
+                      "surface-bright": "#fff8f6",
+                      "tertiary": "#41423c",
+                      "surface": "#fff8f6",
+                      "error": "#ba1a1a",
+                      "surface-dim": "#e6d7d2",
+                      "on-tertiary-container": "#d1d0c8",
+                      "on-primary-fixed": "#0e1f13",
+                      "on-surface": "#211a17",
+                      "surface-variant": "#eedfda",
+                      "surface-container-lowest": "#ffffff",
+                      "tertiary-container": "#595953",
+                      "surface-container": "#faebe6",
+                      "on-error-container": "#93000a",
+                      "inverse-primary": "#b7ccb9",
+                      "on-secondary-fixed-variant": "#623f18",
+                      "primary-fixed": "#d3e8d5",
+                      "secondary-fixed": "#ffdcbd",
+                      "secondary-container": "#ffca98",
+                      "outline-variant": "#c3c8c1",
+                      "on-secondary-fixed": "#2c1600",
+                      "primary": "#334537",
+                      "inverse-surface": "#372f2b",
+                      "on-secondary-container": "#7a532a",
+                      "tertiary-fixed": "#e4e2db",
+                      "surface-container-low": "#fff1ec",
+                      "secondary-fixed-dim": "#f0bd8b",
+                      "on-tertiary-fixed": "#1b1c17",
+                      "surface-container-highest": "#eedfda",
+                      "tertiary-fixed-dim": "#c8c7bf",
+                      "on-primary": "#ffffff",
+                      "on-primary-fixed-variant": "#394b3d",
+                      "background": "#fff8f6",
+                      "on-surface-variant": "#434843",
+                      "on-error": "#ffffff",
+                      "primary-container": "#4a5d4e",
+                      "surface-container-high": "#f4e5e0",
+                      "on-tertiary": "#ffffff",
+                      "surface-tint": "#506354",
+                      "secondary": "#7d562d",
+                      "on-background": "#211a17",
+                      "outline": "#737872",
+                      "on-primary-container": "#c0d5c2"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.25rem",
+                      "lg": "0.5rem",
+                      "xl": "0.75rem",
+                      "full": "9999px"
+              },
+              "spacing": {
+                      "container-padding": "24px",
+                      "gutter": "24px",
+                      "base": "8px",
+                      "section-gap-mobile": "48px",
+                      "section-gap-desktop": "80px"
+              },
+              "fontFamily": {
+                      "label-md": [
+                              "plusJakartaSans"
+                      ],
+                      "display-lg": [
+                              "ebGaramond"
+                      ],
+                      "headline-sm": [
+                              "ebGaramond"
+                      ],
+                      "display-lg-mobile": [
+                              "ebGaramond"
+                      ],
+                      "body-md": [
+                              "plusJakartaSans"
+                      ],
+                      "body-lg": [
+                              "plusJakartaSans"
+                      ],
+                      "headline-md": [
+                              "ebGaramond"
+                      ]
+              },
+              "fontSize": {
+                      "label-md": [
+                              "14px",
+                              {
+                                      "lineHeight": "20px",
+                                      "letterSpacing": "0.05em",
+                                      "fontWeight": "600"
+                              }
+                      ],
+                      "display-lg": [
+                              "48px",
+                              {
+                                      "lineHeight": "56px",
+                                      "letterSpacing": "-0.01em",
+                                      "fontWeight": "500"
+                              }
+                      ],
+                      "headline-sm": [
+                              "24px",
+                              {
+                                      "lineHeight": "32px",
+                                      "fontWeight": "600"
+                              }
+                      ],
+                      "display-lg-mobile": [
+                              "36px",
+                              {
+                                      "lineHeight": "44px",
+                                      "fontWeight": "500"
+                              }
+                      ],
+                      "body-md": [
+                              "16px",
+                              {
+                                      "lineHeight": "24px",
+                                      "fontWeight": "400"
+                              }
+                      ],
+                      "body-lg": [
+                              "18px",
+                              {
+                                      "lineHeight": "28px",
+                                      "fontWeight": "400"
+                              }
+                      ],
+                      "headline-md": [
+                              "32px",
+                              {
+                                      "lineHeight": "40px",
+                                      "fontWeight": "500"
+                              }
+                      ]
+              }
+      },
+          },
+        }
+      </script>
+<style>
+        .texture-overlay {
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.05'/%3E%3C/svg%3E");
+            pointer-events: none;
+        }
+        .soft-inset {
+            box-shadow: inset 0 2px 10px rgba(44, 36, 33, 0.03);
+        }
+        .organic-shadow {
+            box-shadow: 0 10px 40px -10px rgba(44, 36, 33, 0.08);
+        }
+      </style>
+</head>
+<body class="bg-background text-on-background font-body-md antialiased min-h-screen relative overflow-x-hidden selection:bg-primary-container selection:text-on-primary-container">
+<div class="fixed inset-0 texture-overlay z-50 mix-blend-multiply"></div>
+<!-- TopNavBar -->
+<nav class="bg-surface/90 docked full-width top-0 sticky backdrop-blur-md border-b border-outline-variant/30 z-40 transition-all duration-300">
+<div class="max-w-7xl mx-auto flex justify-between items-center px-container-padding py-base w-full">
+<div class="flex items-center gap-6 hidden md:flex">
+<a class="text-primary border-b-2 border-primary pb-1 font-label-md text-label-md" href="#">Shop</a>
+<a class="text-on-surface-variant pb-1 font-label-md text-label-md hover:text-secondary transition-colors duration-300" href="#">Ritual</a>
+<a class="text-on-surface-variant pb-1 font-label-md text-label-md hover:text-secondary transition-colors duration-300" href="#">Journal</a>
+<a class="text-on-surface-variant pb-1 font-label-md text-label-md hover:text-secondary transition-colors duration-300" href="#">Origins</a>
+</div>
+<a class="font-display-lg text-display-lg text-primary text-center flex-grow md:flex-grow-0" href="#">Kettle &amp; Leaf</a>
+<div class="flex items-center gap-4 text-primary">
+<button class="hover:text-secondary transition-colors duration-300 active:opacity-80 active:scale-95 transition-all">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 0;">shopping_bag</span>
+</button>
+<button class="hover:text-secondary transition-colors duration-300 active:opacity-80 active:scale-95 transition-all hidden md:block">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 0;">local_library</span>
+</button>
+</div>
+</div>
+</nav>
+<main class="max-w-[1200px] mx-auto px-container-padding md:px-0">
+<!-- Hero Section -->
+<section class="py-section-gap-mobile md:py-section-gap-desktop grid grid-cols-1 md:grid-cols-12 gap-gutter items-center min-h-[716px]">
+<div class="md:col-span-5 md:col-start-2 flex flex-col gap-6 z-10">
+<h1 class="font-display-lg-mobile md:font-display-lg text-display-lg-mobile md:text-display-lg text-primary">
+                    Kettle and Leaf
+                </h1>
+<p class="font-body-lg text-body-lg text-on-surface-variant max-w-md leading-relaxed">
+                    A neighborhood tea house for quiet moments and slow sips.
+                </p>
+<div class="pt-4 flex gap-4">
+<button class="bg-primary text-on-primary font-label-md text-label-md px-6 py-3 rounded-DEFAULT hover:bg-primary/90 transition-colors">
+                        Explore Our Teas
+                    </button>
+<button class="border border-secondary text-secondary font-label-md text-label-md px-6 py-3 rounded-DEFAULT hover:bg-surface-container transition-colors">
+                        Visit Us
+                    </button>
+</div>
+</div>
+<div class="md:col-span-6 relative h-[400px] md:h-[600px] rounded-xl overflow-hidden organic-shadow mt-8 md:mt-0">
+<img alt="Hero Image" class="w-full h-full object-cover" data-alt="A beautifully crafted ceramic teapot resting on a worn, dark wooden table next to a small cup of pale green tea. Soft, diffused natural light streams through an unseen window, highlighting the steam rising gently from the cup. The aesthetic is organic minimalism with earthy greens, soft creams, and wood browns. The atmosphere feels calm, artisanal, and intentional." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCDgA5jw5_GXjVQUBdMxq0ScW7H1klpcReJqYl3jH5QWzJnednIfgN7GMq3XpZpFUmwF35ajpwtGeyRC314OBgPqQjT6B_-92wk4IeAHzlGMyVuuTIw6HygETg5yFgq-v760kaWXcQNIiYoH3cSTrhjNx30GwH5A_ndjy7B6BPRd6snzAmfL_O_RKspboRVdEzP7f6X78O9pdY3H_pb5bx22OL4KQp8aeD3AsvcXlvx5Kj341s9CjsW9rk33NmZRBrY6RrKxLIEFUBR"/>
+</div>
+</section>
+<!-- Today's Brewed Teas -->
+<section class="py-section-gap-mobile md:py-section-gap-desktop">
+<div class="text-center mb-12">
+<h2 class="font-headline-md text-headline-md text-primary mb-4">Today's Brewed Teas</h2>
+<div class="w-12 h-[1px] bg-outline-variant mx-auto"></div>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-8 md:px-[8%]">
+<!-- Card 1 -->
+<div class="bg-surface-container-low rounded-xl p-8 flex flex-col items-center text-center organic-shadow transition-transform hover:-translate-y-1 duration-500">
+<div class="w-16 h-16 rounded-full bg-surface-container flex items-center justify-center mb-6 text-primary">
+<span class="material-symbols-outlined text-3xl" style="font-variation-settings: 'FILL' 0;">eco</span>
+</div>
+<h3 class="font-headline-sm text-headline-sm text-primary mb-2">High Mountain Oolong</h3>
+<p class="font-label-md text-label-md text-secondary mb-4 uppercase tracking-wider">From Alishan, Taiwan</p>
+<p class="font-body-md text-body-md text-on-surface-variant flex-grow">
+                        Tasting notes: Creamy, floral, with a buttery finish.
+                    </p>
+</div>
+<!-- Card 2 -->
+<div class="bg-surface-container-low rounded-xl p-8 flex flex-col items-center text-center organic-shadow transition-transform hover:-translate-y-1 duration-500">
+<div class="w-16 h-16 rounded-full bg-surface-container flex items-center justify-center mb-6 text-primary">
+<span class="material-symbols-outlined text-3xl" style="font-variation-settings: 'FILL' 0;">local_drink</span>
+</div>
+<h3 class="font-headline-sm text-headline-sm text-primary mb-2">Kenyan Purple Tea</h3>
+<p class="font-label-md text-label-md text-secondary mb-4 uppercase tracking-wider">From Nandi Hills, Kenya</p>
+<p class="font-body-md text-body-md text-on-surface-variant flex-grow">
+                        Tasting notes: Vibrant berry, earthy undertones, and high antioxidants.
+                    </p>
+</div>
+<!-- Card 3 -->
+<div class="bg-surface-container-low rounded-xl p-8 flex flex-col items-center text-center organic-shadow transition-transform hover:-translate-y-1 duration-500">
+<div class="w-16 h-16 rounded-full bg-surface-container flex items-center justify-center mb-6 text-primary">
+<span class="material-symbols-outlined text-3xl" style="font-variation-settings: 'FILL' 0;">spa</span>
+</div>
+<h3 class="font-headline-sm text-headline-sm text-primary mb-2">Silver Needle</h3>
+<p class="font-label-md text-label-md text-secondary mb-4 uppercase tracking-wider">From Fuding, China</p>
+<p class="font-body-md text-body-md text-on-surface-variant flex-grow">
+                        Tasting notes: Delicate honeysuckle, crisp, and naturally sweet.
+                    </p>
+</div>
+</div>
+</section>
+<!-- Sourcing & Quiet Hours Bento -->
+<section class="py-section-gap-mobile md:py-section-gap-desktop">
+<div class="grid grid-cols-1 md:grid-cols-12 gap-gutter md:px-[4%]">
+<!-- Sourcing Story -->
+<div class="md:col-span-7 bg-surface-container rounded-xl p-8 md:p-12 relative overflow-hidden soft-inset">
+<div class="relative z-10 h-full flex flex-col justify-center">
+<h2 class="font-headline-md text-headline-md text-primary mb-6">From Garden to Kettle</h2>
+<p class="font-body-lg text-body-lg text-on-surface-variant leading-relaxed mb-6">
+                            Our journey begins in the mist-covered hills of Taiwan and the sun-drenched gardens of Kenya. Every leaf is hand-selected during the owner's annual sourcing trips, where we partner directly with small-batch farmers who share our commitment to soil health and traditional craftsmanship. We bring these stories back to your cup.
+                        </p>
+<div class="mt-auto">
+<a class="inline-flex items-center gap-2 text-secondary font-label-md text-label-md hover:text-primary transition-colors group" href="#">
+                                Read our full story
+                                <span class="material-symbols-outlined group-hover:translate-x-1 transition-transform" style="font-variation-settings: 'FILL' 0;">arrow_right_alt</span>
+</a>
+</div>
+</div>
+<!-- Decorative element -->
+<div class="absolute -right-20 -bottom-20 opacity-5 pointer-events-none">
+<span class="material-symbols-outlined text-[200px]" style="font-variation-settings: 'FILL' 1;">potted_plant</span>
+</div>
+</div>
+<!-- Quiet Hours -->
+<div class="md:col-span-5 bg-surface-container-high rounded-xl p-8 md:p-12 border border-outline-variant/20 flex flex-col">
+<div class="flex items-center gap-3 mb-8">
+<span class="material-symbols-outlined text-secondary" style="font-variation-settings: 'FILL' 0;">volume_off</span>
+<h2 class="font-headline-sm text-headline-sm text-primary">Weekly Quiet Hours</h2>
+</div>
+<ul class="flex-grow flex flex-col gap-6 font-body-md text-body-md text-on-surface-variant">
+<li class="flex justify-between items-end border-b border-outline-variant/30 pb-2">
+<span class="font-medium text-on-surface">Monday–Friday</span>
+<span class="text-secondary font-label-md text-label-md">8:00 AM – 10:00 AM</span>
+</li>
+<li class="flex justify-between items-end border-b border-outline-variant/30 pb-2">
+<span class="font-medium text-on-surface">Saturday–Sunday</span>
+<span class="text-secondary font-label-md text-label-md">9:00 AM – 11:00 AM</span>
+</li>
+</ul>
+<div class="mt-8 bg-surface-container-low p-4 rounded-lg flex items-start gap-3">
+<span class="material-symbols-outlined text-primary mt-1" style="font-variation-settings: 'FILL' 0;">info</span>
+<p class="font-body-md text-body-md text-on-surface-variant text-sm italic">
+                            During these times, we ask for whispered conversations and no laptop use to maintain a serene atmosphere.
+                        </p>
+</div>
+</div>
+</div>
+</section>
+<!-- Location -->
+<section class="py-section-gap-mobile md:py-section-gap-desktop pb-24">
+<div class="grid grid-cols-1 md:grid-cols-12 gap-gutter items-center md:px-[8%]">
+<div class="md:col-span-4 flex flex-col gap-4">
+<h2 class="font-headline-sm text-headline-sm text-primary">Find Us</h2>
+<p class="font-body-lg text-body-lg text-on-surface-variant">412 Maple Row</p>
+<p class="font-body-md text-body-md text-on-surface-variant mt-2">Nestled in the historic district, our doors are open to those seeking a moment of respite.</p>
+<a class="inline-flex items-center gap-2 text-secondary font-label-md text-label-md mt-4 hover:underline decoration-dotted decoration-outline-variant w-fit" href="#">
+                        Get Directions
+                    </a>
+</div>
+<div class="md:col-span-8 h-[300px] bg-surface-container rounded-xl overflow-hidden relative soft-inset">
+<!-- Stylized Map Placeholder -->
+<img alt="Map Location" class="w-full h-full object-cover opacity-80 mix-blend-luminosity" data-alt="A top-down, slightly stylized map view of a quiet historic neighborhood street lined with trees. The map is rendered in an artisanal, minimalist style using an earthy palette of soft sage greens, subtle creams, and deep wood browns. A simple, elegant marker indicates a location on 'Maple Row'. The overall aesthetic is clean, organic, and calm." data-location="Kettle and Leaf Neighborhood Map" src="https://lh3.googleusercontent.com/aida-public/AB6AXuD8FUky91iDa1lpfczp1m9wLBbrCzW8gA3dgSKihHWbxCZpnBkBPAyx-t3-IcrLc27MevppbQesHUnulapD_WSgaK_HluDDn3zVISjLTIpIrmEEyIIJsdjEOQ7Vh8QRGsVhW7ygyyhA9edbBzdnN7_YA2JVmPk8JX0bPkfDlK_LWOLfHkEPzwxB5DiX133u2Q-Vb5oRPY0spO9ZRMM_-vRt7ZOLz7fUpcuDRZ8Dx9Wc1ncxIPWKIYHKuONv4wIvcvdE-nNOK4jF-Fqa"/>
+<div class="absolute inset-0 bg-primary/5 mix-blend-overlay"></div>
+</div>
+</div>
+</section>
+</main>
+<!-- Footer -->
+<footer class="bg-surface-container full-width rounded-t-xl bg-surface-container-low mt-auto border-t border-outline-variant/10">
+<div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 lg:flex lg:justify-between items-start px-container-padding py-section-gap-mobile md:py-section-gap-desktop w-full gap-gutter">
+<div class="flex flex-col gap-4 max-w-sm">
+<span class="font-display-lg text-display-lg text-secondary">Kettle &amp; Leaf</span>
+<p class="font-body-md text-body-md text-on-surface-variant">
+                    Daily: 8:00 AM – 8:00 PM<br/>
+                    Phone: (555) 0123<br/>
+                    Address: 412 Maple Row
+                </p>
+<p class="font-label-md text-label-md text-on-tertiary-container mt-4">
+                    © 2024 Kettle &amp; Leaf. 412 Maple Row.
+                </p>
+</div>
+<div class="flex flex-col gap-3">
+<a class="font-label-md text-label-md text-on-surface-variant hover:text-primary transition-colors focus:underline decoration-dotted decoration-outline-variant" href="#">Sourcing</a>
+<a class="font-label-md text-label-md text-on-surface-variant hover:text-primary transition-colors focus:underline decoration-dotted decoration-outline-variant" href="#">Private Tastings</a>
+<a class="font-label-md text-label-md text-on-surface-variant hover:text-primary transition-colors focus:underline decoration-dotted decoration-outline-variant" href="#">Terms</a>
+<a class="font-label-md text-label-md text-on-surface-variant hover:text-primary transition-colors focus:underline decoration-dotted decoration-outline-variant" href="#">Shipping</a>
+</div>
+</div>
+</footer>
+</body></html>

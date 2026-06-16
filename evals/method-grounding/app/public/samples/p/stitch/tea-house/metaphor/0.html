@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Kettle &amp; Leaf - Home</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Libre+Franklin:wght@700&amp;family=IBM+Plex+Mono:wght@400&amp;family=Source+Serif+4:wght@400&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "on-tertiary": "#ffffff",
+                        "on-primary": "#ffffff",
+                        "tertiary-fixed-dim": "#ffb598",
+                        "surface-dim": "#ded9d1",
+                        "secondary": "#645d53",
+                        "primary-fixed-dim": "#c8c6c5",
+                        "error": "#ba1a1a",
+                        "outline": "#747878",
+                        "on-error-container": "#93000a",
+                        "on-surface-variant": "#444748",
+                        "on-primary-container": "#858383",
+                        "surface-container": "#f2ede4",
+                        "primary-container": "#1b1b1b",
+                        "on-secondary-fixed": "#1f1b13",
+                        "surface-bright": "#fef9f0",
+                        "on-background": "#1d1c16",
+                        "surface-variant": "#e7e2d9",
+                        "surface-tint": "#5f5e5e",
+                        "inverse-surface": "#32302a",
+                        "surface-container-high": "#ece8df",
+                        "surface": "#fef9f0",
+                        "surface-container-lowest": "#ffffff",
+                        "surface-container-low": "#f8f3ea",
+                        "on-secondary-container": "#6a6359",
+                        "surface-container-highest": "#e7e2d9",
+                        "secondary-fixed": "#ebe1d3",
+                        "primary-fixed": "#e5e2e1",
+                        "on-error": "#ffffff",
+                        "on-tertiary-fixed-variant": "#7f2b00",
+                        "tertiary-fixed": "#ffdbce",
+                        "secondary-fixed-dim": "#cfc5b8",
+                        "primary": "#000000",
+                        "on-tertiary-container": "#e35606",
+                        "on-secondary-fixed-variant": "#4c463c",
+                        "inverse-on-surface": "#f5f0e7",
+                        "on-primary-fixed-variant": "#474746",
+                        "tertiary-container": "#370e00",
+                        "on-primary-fixed": "#1b1b1b",
+                        "secondary-container": "#ebe1d3",
+                        "outline-variant": "#c4c7c7",
+                        "inverse-primary": "#c8c6c5",
+                        "tertiary": "#000000",
+                        "background": "#fef9f0",
+                        "on-tertiary-fixed": "#370e00",
+                        "on-surface": "#1d1c16",
+                        "error-container": "#ffdad6",
+                        "on-secondary": "#ffffff"
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    spacing: {
+                        "xl": "64px",
+                        "margin-desktop": "80px",
+                        "md": "16px",
+                        "gutter": "24px",
+                        "lg": "32px",
+                        "xs": "4px",
+                        "sm": "8px"
+                    },
+                    fontFamily: {
+                        "headline-lg-mobile": ["Libre Franklin"],
+                        "headline-lg": ["Libre Franklin"],
+                        "label-sm": ["IBM Plex Mono"],
+                        "body-md": ["Source Serif 4"]
+                    },
+                    fontSize: {
+                        "headline-lg-mobile": ["32px", { "lineHeight": "1.1", "letterSpacing": "-0.01em", "fontWeight": "700" }],
+                        "headline-lg": ["44px", { "lineHeight": "1.05", "letterSpacing": "-0.01em", "fontWeight": "700" }],
+                        "label-sm": ["12px", { "lineHeight": "1.4", "letterSpacing": "0.08em", "fontWeight": "400" }],
+                        "body-md": ["16px", { "lineHeight": "1.65", "fontWeight": "400" }]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+    </style>
+</head>
+<body class="bg-surface text-on-surface antialiased flex flex-col min-h-screen">
+<!-- TopAppBar Component -->
+<header class="bg-surface dark:bg-surface w-full top-0 left-0 bg-surface dark:bg-surface flat no shadows flex flex-col md:flex-row justify-between items-center py-lg px-margin-desktop w-full max-w-full">
+<div class="font-headline-lg text-headline-lg text-primary dark:text-on-surface uppercase tracking-widest">
+            Kettle &amp; Leaf
+        </div>
+<nav class="hidden md:flex gap-gutter font-label-sm text-label-sm">
+<!-- Active state manually set for Home conceptual match, though not explicitly in the nav links. Defaulting first item as active for layout demonstration as per shared components content if it was a generic page, but since this is Home and links are specific, let's just render them. -->
+<a class="text-secondary dark:text-on-secondary-fixed-variant hover:text-tertiary-container transition-colors duration-300 cursor-pointer transition-opacity active:opacity-70" href="#">Our Story</a>
+<a class="text-secondary dark:text-on-secondary-fixed-variant hover:text-tertiary-container transition-colors duration-300 cursor-pointer transition-opacity active:opacity-70" href="#">The Flight</a>
+<a class="text-secondary dark:text-on-secondary-fixed-variant hover:text-tertiary-container transition-colors duration-300 cursor-pointer transition-opacity active:opacity-70" href="#">Steeping Room</a>
+<a class="text-secondary dark:text-on-secondary-fixed-variant hover:text-tertiary-container transition-colors duration-300 cursor-pointer transition-opacity active:opacity-70" href="#">Ceremony</a>
+</nav>
+<div class="hidden md:flex items-center gap-md">
+<span class="material-symbols-outlined cursor-pointer hover:text-tertiary-container transition-colors duration-300" data-icon="shopping_bag">shopping_bag</span>
+</div>
+</header>
+<!-- Main Canvas -->
+<main class="flex-grow flex flex-col px-md md:px-margin-desktop py-xl gap-xl max-w-7xl mx-auto w-full">
+<!-- Welcome Narrative -->
+<section class="flex flex-col gap-md items-start max-w-2xl">
+<h1 class="font-headline-lg text-headline-lg text-primary">Kettle &amp; Leaf</h1>
+<p class="font-body-md text-body-md text-secondary">Tea for quiet hours.</p>
+</section>
+<!-- The Flight (Horizontal Stack on Desktop, Vertical on Mobile) -->
+<section class="flex flex-col gap-lg border-t border-secondary-fixed-dim pt-lg">
+<h2 class="font-label-sm text-label-sm text-secondary uppercase tracking-widest">The Flight</h2>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-xl">
+<!-- Tea 1 -->
+<div class="flex flex-col gap-sm">
+<div class="flex items-center gap-sm">
+<div class="w-2 h-2 bg-on-tertiary-container"></div>
+<h3 class="font-body-md text-body-md text-primary font-bold">Silver Needle</h3>
+</div>
+<p class="font-label-sm text-label-sm text-secondary">Fujian, China</p>
+<p class="font-body-md text-body-md text-on-surface-variant mt-sm">Honeysuckle, nectar, silk.</p>
+</div>
+<!-- Tea 2 -->
+<div class="flex flex-col gap-sm">
+<div class="flex items-center gap-sm">
+<div class="w-2 h-2 bg-on-tertiary-container"></div>
+<h3 class="font-body-md text-body-md text-primary font-bold">Alishan Oolong</h3>
+</div>
+<p class="font-label-sm text-label-sm text-secondary">Chiayi, Taiwan</p>
+<p class="font-body-md text-body-md text-on-surface-variant mt-sm">High-mountain cream, gardenia, pine.</p>
+</div>
+<!-- Tea 3 -->
+<div class="flex flex-col gap-sm">
+<div class="flex items-center gap-sm">
+<div class="w-2 h-2 bg-on-tertiary-container"></div>
+<h3 class="font-body-md text-body-md text-primary font-bold">Kenyan Purple</h3>
+</div>
+<p class="font-label-sm text-label-sm text-secondary">Nandi Hills, Kenya</p>
+<p class="font-body-md text-body-md text-on-surface-variant mt-sm">Sweet plum, woodsmoke, earth.</p>
+</div>
+</div>
+</section>
+<!-- The Water (Essay) -->
+<section class="flex flex-col md:flex-row gap-xl border-t border-secondary-fixed-dim pt-lg items-start">
+<div class="w-full md:w-1/3">
+<h2 class="font-label-sm text-label-sm text-secondary uppercase tracking-widest">The Water</h2>
+</div>
+<div class="w-full md:w-2/3 max-w-2xl">
+<p class="font-body-md text-body-md text-primary leading-relaxed">
+                    A calm prose block about sourcing trips to Taiwan and Kenya, finding leaves that hold the light. The quiet dedication to the steep. We travel to the mist-shrouded peaks of Chiayi and the vibrant red soils of the Nandi Hills, seeking out small-lot harvests. It is about transparency, clarity, and allowing the suspended color to speak for itself.
+                </p>
+</div>
+</section>
+<!-- Quiet Hours (Table) -->
+<section class="flex flex-col md:flex-row gap-xl border-t border-secondary-fixed-dim pt-lg items-start">
+<div class="w-full md:w-1/3">
+<h2 class="font-label-sm text-label-sm text-secondary uppercase tracking-widest">Quiet Hours</h2>
+</div>
+<div class="w-full md:w-2/3">
+<table class="w-full max-w-sm text-left border-collapse">
+<tbody>
+<tr class="border-b border-surface-variant">
+<td class="font-label-sm text-label-sm text-secondary py-sm pr-md w-24">Mon-Fri</td>
+<td class="font-label-sm text-label-sm text-primary py-sm">8am – 10am, 3pm – 5pm</td>
+</tr>
+<tr>
+<td class="font-label-sm text-label-sm text-secondary py-sm pr-md w-24">Sat-Sun</td>
+<td class="font-label-sm text-label-sm text-primary py-sm">9am – 11am</td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+</main>
+<!-- Footer Component -->
+<footer class="bg-surface dark:bg-surface w-full bottom-0 border-t border-secondary dark:border-on-secondary-fixed-variant flat no shadows flex flex-col md:flex-row justify-between items-center py-md px-margin-desktop w-full mt-xl">
+<div class="flex flex-col md:flex-row gap-md items-center md:items-start font-label-sm text-label-sm text-primary dark:text-on-surface">
+<span>© 2024 Kettle &amp; Leaf. All rights reserved.</span>
+<span class="hidden md:inline text-secondary">|</span>
+<span class="text-secondary">412 Maple Row</span>
+<span class="hidden md:inline text-secondary">|</span>
+<span class="text-secondary">555-0124</span>
+</div>
+<nav class="flex gap-gutter mt-md md:mt-0 font-label-sm text-label-sm">
+<a class="text-secondary dark:text-on-secondary-fixed-variant hover:text-on-tertiary-container transition-colors transition-all duration-200" href="#">Contact</a>
+<a class="text-secondary dark:text-on-secondary-fixed-variant hover:text-on-tertiary-container transition-colors transition-all duration-200" href="#">Hours</a>
+<a class="text-secondary dark:text-on-secondary-fixed-variant hover:text-on-tertiary-container transition-colors transition-all duration-200" href="#">Wholesale</a>
+<a class="text-secondary dark:text-on-secondary-fixed-variant hover:text-on-tertiary-container transition-colors transition-all duration-200" href="#">Privacy</a>
+</nav>
+</footer>
+</body></html>
