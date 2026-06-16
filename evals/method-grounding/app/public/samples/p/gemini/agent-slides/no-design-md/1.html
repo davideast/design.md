@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Agent Architecture Slide Deck</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #ffffff;
+            --text: #1a1a1a;
+            --muted: #666666;
+            --accent: #2563eb;
+            --border: #e5e7eb;
+            --code-bg: #f8fafc;
+            --font-sans: 'Inter', system-ui, sans-serif;
+            --font-mono: 'JetBrains Mono', monospace;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background-color: #f3f4f6;
+            font-family: var(--font-sans);
+            color: var(--text);
+            line-height: 1.5;
+        }
+
+        .slide {
+            width: 100vw;
+            height: 100vh;
+            background: var(--bg);
+            padding: 4rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            position: relative;
+            overflow: hidden;
+            border-bottom: 1px solid var(--border);
+            page-break-after: always;
+        }
+
+        h1 {
+            font-size: 4rem;
+            font-weight: 700;
+            letter-spacing: -0.02em;
+            margin-bottom: 1rem;
+        }
+
+        h2 {
+            font-size: 1.5rem;
+            font-weight: 400;
+            color: var(--muted);
+            margin-bottom: 3rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+        }
+
+        .standfirst {
+            font-size: 1.5rem;
+            color: var(--muted);
+            max-width: 600px;
+        }
+
+        .meta {
+            margin-top: auto;
+            font-size: 1.1rem;
+            color: var(--muted);
+        }
+
+        .content-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            align-items: center;
+            height: 100%;
+        }
+
+        .diagram-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+        }
+
+        .caption {
+            margin-top: 2rem;
+            font-size: 0.9rem;
+            color: var(--muted);
+            max-width: 400px;
+            line-height: 1.4;
+        }
+
+        /* Slide 2 Diagram */
+        .loop-svg {
+            width: 100%;
+            max-width: 400px;
+        }
+
+        /* Slide 3 Trace */
+        .trace-container {
+            font-family: var(--font-mono);
+            font-size: 0.85rem;
+            background: var(--code-bg);
+            padding: 2rem;
+            border-radius: 8px;
+            border: 1px solid var(--border);
+            position: relative;
+        }
+
+        .trace-line {
+            margin-bottom: 0.5rem;
+            display: flex;
+        }
+
+        .trace-label {
+            font-weight: 700;
+            min-width: 100px;
+            color: var(--accent);
+        }
+
+        .annotation {
+            position: absolute;
+            left: calc(100% + 2rem);
+            width: 200px;
+            font-family: var(--font-sans);
+            font-size: 0.8rem;
+            color: var(--muted);
+            border-left: 2px solid var(--accent);
+            padding-left: 1rem;
+        }
+
+        /* Slide 4 2x2 Grid */
+        .arch-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            grid-template-rows: 1fr 1fr;
+            gap: 2rem;
+            height: 100%;
+        }
+
+        .arch-card {
+            border: 1px solid var(--border);
+            padding: 1.5rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .arch-card h3 {
+            font-size: 0.9rem;
+            margin-bottom: 1rem;
+            text-transform: uppercase;
+        }
+
+        /* Slide 5 Plot */
+        .plot-container {
+            width: 100%;
+            height: 300px;
+            position: relative;
+            margin-top: 2rem;
+        }
+
+        .inflection-label {
+            position: absolute;
+            top: 20%;
+            right: 10%;
+            width: 250px;
+            font-size: 0.85rem;
+            color: var(--muted);
+            background: rgba(255,255,255,0.9);
+            padding: 1rem;
+            border: 1px solid var(--border);
+        }
+
+        /* Slide 6 Code */
+        .code-block {
+            font-family: var(--font-mono);
+            background: #1e293b;
+            color: #f8fafc;
+            padding: 2rem;
+            border-radius: 8px;
+            font-size: 0.9rem;
+            line-height: 1.6;
+            position: relative;
+            white-space: pre;
+        }
+
+        .code-annotation {
+            position: absolute;
+            left: 102%;
+            width: 220px;
+            color: var(--text);
+            font-family: var(--font-sans);
+            font-size: 0.8rem;
+            background: #f1f5f9;
+            padding: 0.75rem;
+            border-radius: 4px;
+        }
+
+        /* Slide 7 References */
+        .ref-list {
+            list-style: none;
+            margin-top: 4rem;
+        }
+
+        .ref-item {
+            font-family: var(--font-mono);
+            font-size: 0.9rem;
+            margin-bottom: 1rem;
+            color: var(--muted);
+        }
+
+        .ref-item span {
+            color: var(--text);
+        }
+
+        .closing-statement {
+            font-size: 2rem;
+            font-weight: 500;
+            max-width: 800px;
+            line-height: 1.3;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Slide 1: Title -->
+    <section class="slide">
+        <h2>Slide 1</h2>
+        <h1>Agent Architecture</h1>
+        <p class="standfirst">On loops, traces, and the structures by which language models act.</p>
+        <div class="meta">
+            <p>Dr. Aris Thorne, Vector Research Collective</p>
+            <p>14 October 2026</p>
+        </div>
+    </section>
+
+    <!-- Slide 2: The Loop -->
+    <section class="slide">
+        <h2>§ 1. The Loop</h2>
+        <div class="content-grid">
+            <div class="text-content">
+                <p>The ReAct (Reason + Act) loop is the fundamental pattern of autonomous agents. It breaks the generation process into discrete steps where the model interleaves textual reasoning with external actions. Instead of generating a single completion, the model predicts a thought process, selects a tool, and pauses execution. The system then executes that tool and feeds the result back into the model's context. This closes the feedback loop, allowing the model to adapt its strategy based on real-world feedback rather than relying solely on internal weights, transforming the static LLM into a dynamic controller.</p>
+            </div>
+            <div class="diagram-container">
+                <svg viewBox="0 0 400 200" class="loop-svg">
+                    <defs>
+                        <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="0" refY="3.5" orient="auto">
+                            <polygon points="0 0, 10 3.5, 0 7" fill="#2563eb" />
+                        </marker>
+                    </defs>
+                    <!-- Nodes -->
+                    <rect x="20" y="70" width="80" height="40" rx="4" fill="none" stroke="#2563eb" stroke-width="2"/>
+                    <text x="60" y="95" text-anchor="middle" font-weight="bold" font-size="12">THINK</text>
+                    
+                    <rect x="160" y="70" width="80" height="40" rx="4" fill="none" stroke="#2563eb" stroke-width="2"/>
+                    <text x="200" y="95" text-anchor="middle" font-weight="bold" font-size="12">ACT</text>
+                    
+                    <rect x="300" y="70" width="80" height="40" rx="4" fill="none" stroke="#2563eb" stroke-width="2"/>
+                    <text x="340" y="95" text-anchor="middle" font-weight="bold" font-size="12">OBSERVE</text>
+
+                    <!-- Edges -->
+                    <line x1="100" y1="90" x2="150" y2="90" stroke="#2563eb" stroke-width="2" marker-end="url(#arrowhead)"/>
+                    <line x1="240" y1="90" x2="290" y2="90" stroke="#2563eb" stroke-width="2" marker-end="url(#arrowhead)"/>
+                    <path d="M 340 70 Q 340 20 180 20 Q 60 20 60 60" fill="none" stroke="#2563eb" stroke-width="2" marker-end="url(#arrowhead)"/>
+                </svg>
+                <p class="caption">Fig. 1. The basic loop. Note that OBSERVE returns to THINK; this is what makes the architecture a controller, not a pipeline.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Slide 3: A Worked Trace -->
+    <section class="slide">
+        <h2>§ 2. A Worked Trace</h2>
+        <div style="margin-top: 1rem; font-size: 1.1rem; margin-bottom: 2rem;">
+            <strong>Query:</strong> "What was the closing price of NVDA the day after Jensen Huang's 2024 keynote?"
+        </div>
+        <div class="trace-container" style="max-width: 800px;">
+            <div class="trace-line">
+                <span class="trace-label">THOUGHT:</span> I need to find the date of Jensen Huang's 2024 GTC keynote.
+                <div class="annotation" style="top: 10px;">Step 1: Identifying the missing temporal anchor.</div>
+            </div>
+            <div class="trace-line">
+                <span class="trace-label">ACTION:</span> search("Jensen Huang 2024 keynote date")
+            </div>
+            <div class="trace-line">
+                <span class="trace-label">OBSERVE:</span> "Jensen Huang delivered the GTC keynote on March 18, 2024."
+            </div>
+            <div class="trace-line">
+                <span class="trace-label">THOUGHT:</span> The keynote was March 18. The day after is March 19, 2024.
+                <div class="annotation" style="top: 100px;">Step 2: Logical deduction from observation.</div>
+            </div>
+            <div class="trace-line">
+                <span class="trace-label">ACTION:</span> finance_lookup("NVDA", "2024-03-19")
+            </div>
+            <div class="trace-line">
+                <span class="trace-label">OBSERVE:</span> "NVDA closed at $893.98 on March 19, 2024."
+            </div>
+            <div class="trace-line">
+                <span class="trace-label">THOUGHT:</span> I have the closing price. I can now answer the user.
+                <div class="annotation" style="top: 190px;">Step 3: Terminal condition met.</div>
+            </div>
+            <div class="trace-line">
+                <span class="trace-label">ANSWER:</span> The closing price of NVDA on March 19, 2024, was $893.98.
+            </div>
+        </div>
+    </section>
+
+    <!-- Slide 4: Four Architectures -->
+    <section class="slide">
+        <h2>§ 3. Four Architectures</h2>
+        <div class="arch-grid">
+            <div class="arch-card">
+                <h3>REACT</h3>
+                <svg width="120" height="60" viewBox="0 0 120 60">
+                    <circle cx="20" cy="30" r="10" fill="none" stroke="#2563eb" />
+                    <circle cx="60" cy="30" r="10" fill="none" stroke="#2563eb" />
+                    <circle cx="100" cy="30" r="10" fill="none" stroke="#2563eb" />
+                    <path d="M 100 20 Q 60 0 20 20" fill="none" stroke="#2563eb" stroke-width="1" />
+                </svg>
+                <p class="caption" style="font-size: 0.7rem; text-align: center;">Direct cycle between reasoning and tool execution.</p>
+            </div>
+            <div class="arch-card">
+                <h3>REFLEXION</h3>
+                <svg width="120" height="80" viewBox="0 0 120 80">
+                    <circle cx="20" cy="40" r="10" fill="none" stroke="#2563eb" />
+                    <circle cx="60" cy="40" r="10" fill="none" stroke="#2563eb" />
+                    <circle cx="100" cy="40" r="10" fill="none" stroke="#2563eb" />
+                    <rect x="50" y="5" width="20" height="15" fill="none" stroke="#2563eb" />
+                    <path d="M 60 20 L 60 30" stroke="#2563eb" />
+                </svg>
+                <p class="caption" style="font-size: 0.7rem; text-align: center;">Reflexion adds a MEMORY node to store critiques and past failures.</p>
+            </div>
+            <div class="arch-card">
+                <h3>PLAN-AND-EXECUTE</h3>
+                <svg width="120" height="60" viewBox="0 0 120 60">
+                    <rect x="5" y="25" width="20" height="10" fill="none" stroke="#2563eb" />
+                    <circle cx="50" cy="30" r="10" fill="none" stroke="#2563eb" />
+                    <circle cx="90" cy="30" r="10" fill="none" stroke="#2563eb" />
+                    <path d="M 25 30 L 40 30" stroke="#2563eb" />
+                </svg>
+                <p class="caption" style="font-size: 0.7rem; text-align: center;">Plan-and-Execute adds a PLAN node that decomposes tasks before the cycle.</p>
+            </div>
+            <div class="arch-card">
+                <h3>TREE-OF-THOUGHTS</h3>
+                <svg width="120" height="60" viewBox="0 0 120 60">
+                    <circle cx="20" cy="30" r="10" fill="none" stroke="#2563eb" />
+                    <circle cx="60" cy="15" r="8" fill="none" stroke="#2563eb" />
+                    <circle cx="60" cy="45" r="8" fill="none" stroke="#2563eb" />
+                    <circle cx="100" cy="30" r="10" fill="none" stroke="#2563eb" />
+                </svg>
+                <p class="caption" style="font-size: 0.7rem; text-align: center;">Tree-of-Thoughts branches THINK into multiple potential paths before acting.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Slide 5: Where Loops Fail -->
+    <section class="slide">
+        <h2>§ 4. Where Loops Fail</h2>
+        <div class="content-grid">
+            <div class="text-content">
+                <p>Agent loops are inherently resource-intensive. Every iteration appends the previous thought, action, and observation to the prompt, leading to linear growth in context size but a non-linear degradation in reasoning quality. As the history grows, "lost in the middle" phenomena and attention degradation occur. Context-window exhaustion isn't just about hitting a hard limit; it's about the erosion of the model's ability to reason over its own history, leading to repetitive loops or hallucinated tool outputs.</p>
+            </div>
+            <div class="plot-container">
+                <svg width="100%" height="100%" viewBox="0 0 400 200">
+                    <!-- Axes -->
+                    <line x1="40" y1="180" x2="380" y2="180" stroke="#1a1a1a" stroke-width="2" />
+                    <line x1="40" y1="180" x2="40" y2="20" stroke="#1a1a1a" stroke-width="2" />
+                    
+                    <!-- Labels -->
+                    <text x="380" y="195" text-anchor="end" font-size="10">ITERATIONS (0...25)</text>
+                    <text x="35" y="30" text-anchor="end" font-size="10" transform="rotate(-90, 35, 30)">TOKENS</text>
+
+                    <!-- The Curve -->
+                    <path d="M 40 180 Q 200 170 360 40" fill="none" stroke="#2563eb" stroke-width="3" />
+                    
+                    <!-- Inflection Point -->
+                    <circle cx="280" cy="100" r="5" fill="#ef4444" />
+                </svg>
+                <div class="inflection-label">
+                    Most production agents fail somewhere in this region — not because the model is incapable, but because the context has become longer than the model's effective attention.
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Slide 6: The Loop, in Code -->
+    <section class="slide">
+        <h2>§ 5. The Loop, in Code</h2>
+        <div style="display: flex; gap: 4rem;">
+            <div class="code-block">
+def run_agent(prompt):
+    context = [SystemMessage(prompt)]
+    while True:
+        # THINK
+        thought = model.gen(context, stop=["ACT:"])
+        context.append(thought)
+        
+        # ACT
+        action = extract_action(thought)
+        if not action: break
+        
+        # OBSERVE
+        result = tools.execute(action)
+        context.append(f"OBSERVE: {result}")
+        
+    return context.last()
+
+# The structure strictly interleaves reasoning and action.
+# Forcing the model to externalize its thought before acting 
+# gives the system interpretability and reduces hallucinated 
+# state changes.</div>
+            <div style="position: relative; width: 300px; margin-top: 2rem;">
+                <div class="code-annotation" style="top: 20px;"><strong>THINK:</strong> The model generates internal monologue, predicting the next necessary step.</div>
+                <div class="code-annotation" style="top: 110px;"><strong>ACT:</strong> Execution is paused; the host environment intercepts the tool call.</div>
+                <div class="code-annotation" style="top: 200px;"><strong>OBSERVE:</strong> External reality is injected back into the immutable prompt history.</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Slide 7: Ending -->
+    <section class="slide">
+        <h2>§ 6. Ending</h2>
+        <div style="flex-grow: 1; display: flex; flex-direction: column; justify-content: center;">
+            <p class="closing-statement">
+                "The architecture is the loop. Everything else is a refinement of how the loop decides what to do next."
+            </p>
+            <ul class="ref-list">
+                <li class="ref-item">[01] <span>Smith et al. (1983).</span> The Cybernetic Loop.</li>
+                <li class="ref-item">[02] <span>Yao et al. (2022).</span> ReAct: Synergizing Reasoning and Acting in Language Models.</li>
+                <li class="ref-item">[03] <span>Shinn et al. (2023).</span> Reflexion: Language Agents with Verbal Reinforcement Learning.</li>
+            </ul>
+        </div>
+    </section>
+
+</body>
+</html>

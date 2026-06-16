@@ -1,0 +1,731 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Auralis — Making digital experiences sound human</title>
+    <style>
+        @import url('https://api.fontshare.com/v2/css?f[]=geist@400,500,600&display=swap');
+
+        :root {
+            --primary: #111111;
+            --secondary: #6B6B6B;
+            --tertiary: #9958ff;
+            --neutral: #F7F7F5;
+            --surface-elevated: #ffffff;
+            --outline-muted: #E5E5E3;
+            
+            --h1-size: 72px;
+            --h2-size: 42px;
+            --body-md: 16px;
+            --label-caps: 12px;
+            --button-size: 14px;
+
+            --rounded-sm: 0.25rem;
+            --rounded-md: 0.75rem;
+            --rounded-lg: 1.5rem;
+            --rounded-full: 9999px;
+
+            --space-sm: 8px;
+            --space-md: 24px;
+            --space-lg: 64px;
+            --space-xl: 140px;
+            --gutter: 24px;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Geist', sans-serif;
+            background-color: var(--neutral);
+            color: var(--primary);
+            line-height: 1.5;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        h1 {
+            font-size: var(--h1-size);
+            font-weight: 600;
+            line-height: 0.95;
+            letter-spacing: -0.04em;
+        }
+
+        h2 {
+            font-size: var(--h2-size);
+            font-weight: 600;
+            line-height: 1.1;
+            letter-spacing: -0.02em;
+        }
+
+        .label-caps {
+            font-size: var(--label-caps);
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            color: var(--secondary);
+        }
+
+        .body-md {
+            font-size: var(--body-md);
+            color: var(--secondary);
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        ul {
+            list-style: none;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 var(--gutter);
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 12px 24px;
+            font-size: var(--button-size);
+            font-weight: 500;
+            border-radius: var(--rounded-full);
+            cursor: pointer;
+            transition: opacity 0.2s;
+            border: none;
+        }
+
+        .btn-primary {
+            background-color: var(--primary);
+            color: var(--neutral);
+        }
+
+        .btn-outline {
+            background-color: transparent;
+            border: 1px solid var(--outline-muted);
+            color: var(--primary);
+        }
+
+        .btn-white {
+            background-color: var(--surface-elevated);
+            color: var(--primary);
+        }
+
+        /* Navigation */
+        nav {
+            height: 80px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-bottom: 1px solid var(--outline-muted);
+            background-color: var(--neutral);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: var(--space-md);
+            align-items: center;
+        }
+
+        .nav-links a {
+            font-size: var(--button-size);
+            font-weight: 500;
+            color: var(--secondary);
+        }
+
+        .nav-links a:hover {
+            color: var(--primary);
+        }
+
+        .wordmark {
+            font-weight: 600;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            font-size: 18px;
+        }
+
+        /* Hero */
+        .hero {
+            padding: var(--space-xl) 0;
+            text-align: center;
+        }
+
+        .hero h1 {
+            max-width: 900px;
+            margin: 0 auto var(--space-lg);
+        }
+
+        .hero-actions {
+            display: flex;
+            gap: var(--space-sm);
+            justify-content: center;
+        }
+
+        /* Product Demo Panel */
+        .demo-section {
+            padding-bottom: var(--space-xl);
+        }
+
+        .workstation {
+            background: var(--surface-elevated);
+            border: 1px solid var(--outline-muted);
+            border-radius: var(--rounded-lg);
+            overflow: hidden;
+            max-width: 1100px;
+            margin: 0 auto;
+        }
+
+        .workstation-tabs {
+            display: flex;
+            border-bottom: 1px solid var(--outline-muted);
+            background: #fcfcfc;
+        }
+
+        .tab {
+            padding: 16px 32px;
+            font-size: var(--label-caps);
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            border-right: 1px solid var(--outline-muted);
+            color: var(--secondary);
+            cursor: pointer;
+        }
+
+        .tab.active {
+            background: var(--surface-elevated);
+            color: var(--primary);
+        }
+
+        .workstation-header {
+            padding: 12px 24px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-bottom: 1px solid var(--outline-muted);
+        }
+
+        .status-pill {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 11px;
+            font-weight: 600;
+            text-transform: uppercase;
+            color: var(--secondary);
+        }
+
+        .live-indicator {
+            width: 6px;
+            height: 6px;
+            background: #FF4B4B;
+            border-radius: 50%;
+            box-shadow: 0 0 8px rgba(255, 75, 75, 0.5);
+        }
+
+        .preview-area {
+            height: 480px;
+            background: radial-gradient(circle at center, #9958ff22 0%, transparent 70%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .voice-bloom {
+            width: 300px;
+            height: 300px;
+            background: linear-gradient(135deg, var(--tertiary) 0%, #ff58e2 50%, #58e2ff 100%);
+            filter: blur(80px);
+            opacity: 0.6;
+            border-radius: 50%;
+            position: absolute;
+        }
+
+        .play-switch {
+            width: 80px;
+            height: 80px;
+            background: var(--surface-elevated);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 2;
+            cursor: pointer;
+            border: 1px solid var(--outline-muted);
+        }
+
+        .play-switch::after {
+            content: '';
+            border-top: 10px solid transparent;
+            border-bottom: 10px solid transparent;
+            border-left: 16px solid var(--primary);
+            margin-left: 6px;
+        }
+
+        .workstation-footer {
+            padding: 12px 24px;
+            border-top: 1px solid var(--outline-muted);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: #fcfcfc;
+        }
+
+        .mode-links {
+            display: flex;
+            gap: 24px;
+        }
+
+        .mode-link {
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--secondary);
+        }
+
+        .mode-link.active {
+            color: var(--primary);
+            text-decoration: underline;
+            text-underline-offset: 4px;
+        }
+
+        /* Trust Strip */
+        .trust-strip {
+            padding: var(--space-lg) 0;
+            text-align: center;
+            border-top: 1px solid var(--outline-muted);
+        }
+
+        .trust-strip h3 {
+            font-size: var(--label-caps);
+            color: var(--secondary);
+            margin-bottom: var(--space-md);
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+        }
+
+        .brand-grid {
+            display: flex;
+            justify-content: center;
+            gap: var(--space-lg);
+            opacity: 0.5;
+            font-weight: 600;
+            font-size: 18px;
+            letter-spacing: -0.02em;
+        }
+
+        /* Platform Overview - Dark Section */
+        .platform-overview {
+            background-color: var(--primary);
+            color: var(--neutral);
+            padding: var(--space-xl) 0;
+        }
+
+        .platform-header {
+            max-width: 600px;
+            margin-bottom: var(--space-lg);
+        }
+
+        .platform-header h2 {
+            margin-bottom: var(--space-md);
+        }
+
+        .platform-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: var(--space-md);
+            margin-bottom: var(--space-lg);
+        }
+
+        .feature-blurb h4 {
+            font-size: var(--label-caps);
+            margin-bottom: var(--space-sm);
+            color: var(--tertiary);
+        }
+
+        .dashboard-mockup {
+            background: #1a1a1a;
+            border: 1px solid #333;
+            border-radius: var(--rounded-md);
+            padding: var(--space-md);
+            position: relative;
+        }
+
+        .dash-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: var(--space-md);
+            border-bottom: 1px solid #333;
+            padding-bottom: var(--space-sm);
+        }
+
+        .dash-badge {
+            font-size: 10px;
+            padding: 4px 8px;
+            border: 1px solid #444;
+            border-radius: var(--rounded-full);
+            color: var(--secondary);
+        }
+
+        .metrics-row {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: var(--space-md);
+            margin-bottom: var(--space-lg);
+        }
+
+        .metric-widget {
+            border-left: 1px solid #333;
+            padding-left: 12px;
+        }
+
+        .metric-label {
+            font-size: 10px;
+            color: var(--secondary);
+            display: block;
+            margin-bottom: 4px;
+        }
+
+        .metric-value {
+            font-size: 18px;
+            font-weight: 600;
+            color: var(--neutral);
+        }
+
+        .waveform-container {
+            height: 120px;
+            display: flex;
+            align-items: center;
+            gap: 3px;
+            margin-bottom: var(--space-md);
+        }
+
+        .wave-bar {
+            flex: 1;
+            background: var(--tertiary);
+            border-radius: 2px;
+            min-height: 4px;
+        }
+
+        .transport-controls {
+            display: flex;
+            gap: 16px;
+            justify-content: center;
+            border-top: 1px solid #333;
+            padding-top: var(--space-md);
+        }
+
+        /* Auralis Studio Section */
+        .studio-section {
+            padding: var(--space-xl) 0;
+        }
+
+        .section-intro {
+            max-width: 600px;
+            margin-bottom: var(--space-lg);
+        }
+
+        .studio-cards {
+            display: grid;
+            grid-template-columns: 1.5fr 1fr;
+            gap: var(--space-md);
+            margin-bottom: var(--space-lg);
+        }
+
+        .card {
+            background: var(--surface-elevated);
+            border: 1px solid var(--outline-muted);
+            border-radius: var(--rounded-lg);
+            padding: var(--space-md);
+        }
+
+        .card-label {
+            font-size: var(--label-caps);
+            margin-bottom: var(--space-sm);
+            display: block;
+        }
+
+        .editor-ui-mockup {
+            height: 240px;
+            background: #f9f9f9;
+            border-radius: var(--rounded-md);
+            border: 1px solid var(--outline-muted);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .timeline-track {
+            height: 40px;
+            background: #eee;
+            margin: 10px;
+            border-radius: 4px;
+            position: relative;
+        }
+
+        .timeline-clip {
+            position: absolute;
+            height: 100%;
+            width: 60%;
+            background: var(--tertiary);
+            opacity: 0.2;
+            left: 10%;
+            border-radius: 4px;
+            border-left: 2px solid var(--tertiary);
+        }
+
+        .modes-row {
+            display: flex;
+            gap: var(--space-md);
+            border-top: 1px solid var(--outline-muted);
+            padding-top: var(--space-md);
+        }
+
+        .mode-item {
+            flex: 1;
+            padding: 16px;
+            border: 1px solid var(--outline-muted);
+            border-radius: var(--rounded-md);
+            font-size: var(--button-size);
+            font-weight: 500;
+            text-align: center;
+        }
+
+        /* Auralis Agents */
+        .agents-section {
+            padding: var(--space-xl) 0;
+            background: var(--neutral);
+        }
+
+        .chat-interface {
+            background: var(--surface-elevated);
+            border: 1px solid var(--outline-muted);
+            border-radius: var(--rounded-lg);
+            max-width: 600px;
+            overflow: hidden;
+        }
+
+        .chat-header {
+            padding: 16px;
+            border-bottom: 1px solid var(--outline-muted);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .chat-body {
+            padding: 24px;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .bubble {
+            max-width: 80%;
+            padding: 12px 16px;
+            border-radius: var(--rounded-md);
+            font-size: 14px;
+        }
+
+        .bubble-bot {
+            align-self: flex-start;
+            background: var(--neutral);
+            color: var(--primary);
+            border-bottom-left-radius: 2px;
+        }
+
+        .bubble-user {
+            align-self: flex-end;
+            background: var(--primary);
+            color: var(--neutral);
+            border-bottom-right-radius: 2px;
+        }
+
+        .typing {
+            font-size: 12px;
+            color: var(--secondary);
+            display: flex;
+            gap: 4px;
+            align-items: center;
+        }
+
+        .typing span {
+            width: 4px;
+            height: 4px;
+            background: var(--secondary);
+            border-radius: 50%;
+            animation: blink 1s infinite;
+        }
+
+        @keyframes blink { 0%, 100% { opacity: 0; } 50% { opacity: 1; } }
+
+        /* Final CTA */
+        .cta-section {
+            padding: var(--space-xl) 0;
+            text-align: center;
+            border-top: 1px solid var(--outline-muted);
+        }
+
+        .cta-section h2 {
+            margin-bottom: var(--space-lg);
+        }
+
+        /* Footer */
+        footer {
+            padding: var(--space-lg) 0;
+            border-top: 1px solid var(--outline-muted);
+        }
+
+        .footer-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .footer-info {
+            font-size: 12px;
+            color: var(--secondary);
+        }
+
+        .footer-links {
+            display: flex;
+            gap: var(--space-md);
+            font-size: 12px;
+            color: var(--secondary);
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            :root {
+                --h1-size: 48px;
+                --h2-size: 32px;
+            }
+            .platform-grid, .studio-cards, .brand-grid {
+                grid-template-columns: 1fr;
+                flex-wrap: wrap;
+            }
+            .nav-links {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Navigation -->
+    <nav>
+        <div class="container" style="display: flex; justify-content: space-between; width: 100%; align-items: center;">
+            <div class="wordmark">Auralis</div>
+            <div class="nav-links">
+                <a href="#">Studio</a>
+                <a href="#">Agents</a>
+                <a href="#">API</a>
+                <a href="#">Resources</a>
+                <a href="#">Enterprise</a>
+                <a href="#">Pricing</a>
+                <button class="btn btn-primary" style="margin-left: var(--space-md);">Sign up</button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Section 1 — Hero -->
+    <section class="hero">
+        <div class="container">
+            <h1>Making digital experiences sound human</h1>
+            <div class="hero-actions">
+                <button class="btn btn-primary">Sign up</button>
+                <button class="btn btn-outline">Contact sales</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Section 2 — Product demo panel -->
+    <section class="demo-section">
+        <div class="container">
+            <div class="workstation">
+                <div class="workstation-tabs">
+                    <div class="tab active">Auralis Studio</div>
+                    <div class="tab">Auralis Agents</div>
+                    <div class="tab">Auralis API</div>
+                </div>
+                <div class="workstation-header">
+                    <div class="status-pill">
+                        <span class="live-indicator"></span>
+                        AI Voice Generator
+                    </div>
+                </div>
+                <div class="preview-area">
+                    <div class="voice-bloom"></div>
+                    <div class="play-switch"></div>
+                </div>
+                <div class="workstation-footer">
+                    <div class="mode-links">
+                        <a href="#" class="mode-link active">AI Voice Generator</a>
+                        <a href="#" class="mode-link">Text to Speech</a>
+                        <a href="#" class="mode-link">Music</a>
+                        <a href="#" class="mode-link">Sound Effects</a>
+                        <a href="#" class="mode-link">Voice Cloning</a>
+                    </div>
+                    <button class="btn btn-primary">Sign up</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Section 3 — Trust strip -->
+    <section class="trust-strip">
+        <div class="container">
+            <h3>Trusted by teams building modern audio experiences</h3>
+            <div class="brand-grid">
+                <span>Velocity</span>
+                <span>Nexus</span>
+                <span>Lumina</span>
+                <span>Stack</span>
+                <span>Quanta</span>
+                <span>Orbital</span>
+                <span>Scalar</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- Section 4 — Platform overview -->
+    <section class="platform-overview">
+        <div class="container">
+            <div class="platform-header">
+                <h2>Two systems, one shared intelligence layer</h2>
+                <p class="body-md">Our neural architecture unifies creation and conversation, providing the backbone for the next generation of voice-first applications.</p>
+            </div>
+            <div class="platform-grid">
+                <div class="feature-blurb">
+                    <h4>Precision Generation</h4>
+                    <p class="body-md">Synthesize audio with frame-level control over prosody, emotion, and cadence.</p>
+                </div>
+                <div class="feature-blurb">
+                    <h4>Agentic Architecture</h4>
+                    <p class="body-md">Deploy voice agents that reason in real-time, maintaining context and low-latency delivery.</p>
+                </div>
+            </div>
+
+            <div class="dashboard-mockup">
+                <div class="dash-header">
+                    <span class="label-caps" style="color: var(--neutral)">NEURAL ENGINE V4.2 PRO</span>
+                    <span class="dash-badge">STUDIO MODE</span>
+                </div>
+                <div class="metrics-row">
+                    <div class="metric-widget">
+                        <span class="metric-label">LATENCY</span>
+                        <span class="metric-value">12 ms</span>
+                    </div>
+                    <div class="metric-widget">
+                        <span class="metric-label">CONFIDENCE</span>

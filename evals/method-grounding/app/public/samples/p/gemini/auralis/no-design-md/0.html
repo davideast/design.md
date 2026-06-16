@@ -1,0 +1,749 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Auralis | Making digital experiences sound human</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #050505;
+            --surface: #0f0f0f;
+            --surface-light: #1a1a1a;
+            --border: #262626;
+            --text: #ffffff;
+            --text-muted: #a1a1aa;
+            --accent: #6366f1;
+            --accent-glow: rgba(99, 102, 241, 0.15);
+            --success: #10b981;
+            --font-main: 'Inter', sans-serif;
+            --font-mono: 'JetBrains Mono', monospace;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background-color: var(--bg);
+            color: var(--text);
+            font-family: var(--font-main);
+            line-height: 1.5;
+            -webkit-font-smoothing: antialiased;
+            overflow-x: hidden;
+        }
+
+        /* Navigation */
+        nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1.5rem 4rem;
+            background: rgba(5, 5, 5, 0.8);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid var(--border);
+            z-index: 100;
+        }
+
+        .wordmark {
+            font-weight: 700;
+            font-size: 1.25rem;
+            letter-spacing: -0.02em;
+            text-decoration: none;
+            color: var(--text);
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            font-weight: 500;
+            transition: color 0.2s;
+        }
+
+        .nav-links a:hover {
+            color: var(--text);
+        }
+
+        .nav-actions .btn-signup {
+            background: var(--text);
+            color: var(--bg);
+            padding: 0.5rem 1.25rem;
+            border-radius: 6px;
+            font-weight: 600;
+            font-size: 0.85rem;
+            text-decoration: none;
+        }
+
+        /* Section Spacing */
+        section {
+            padding: 8rem 4rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        /* Hero */
+        .hero {
+            text-align: center;
+            padding-top: 12rem;
+            padding-bottom: 6rem;
+        }
+
+        .hero h1 {
+            font-size: 4.5rem;
+            font-weight: 700;
+            letter-spacing: -0.04em;
+            line-height: 1.1;
+            margin-bottom: 3rem;
+            background: linear-gradient(to bottom, #fff 40%, #a1a1aa);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .hero-actions {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+        }
+
+        .btn {
+            padding: 0.8rem 2rem;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 1rem;
+            text-decoration: none;
+            transition: all 0.2s;
+        }
+
+        .btn-primary {
+            background: var(--text);
+            color: var(--bg);
+        }
+
+        .btn-secondary {
+            background: transparent;
+            color: var(--text);
+            border: 1px solid var(--border);
+        }
+
+        .btn-secondary:hover {
+            background: var(--surface-light);
+        }
+
+        /* Product Demo Panel */
+        .demo-panel {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 40px 100px rgba(0,0,0,0.5);
+            margin-top: -2rem;
+        }
+
+        .demo-header {
+            background: var(--surface-light);
+            padding: 0 1rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .demo-tabs {
+            display: flex;
+        }
+
+        .demo-tab {
+            padding: 1rem 1.5rem;
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            border-bottom: 2px solid transparent;
+            cursor: pointer;
+        }
+
+        .demo-tab.active {
+            color: var(--text);
+            border-bottom-color: var(--accent);
+        }
+
+        .status-pill {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-family: var(--font-mono);
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            background: rgba(0,0,0,0.3);
+            padding: 0.4rem 0.8rem;
+            border-radius: 100px;
+            border: 1px solid var(--border);
+        }
+
+        .indicator {
+            width: 6px;
+            height: 6px;
+            background: var(--success);
+            border-radius: 50%;
+            box-shadow: 0 0 8px var(--success);
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% { opacity: 1; }
+            50% { opacity: 0.4; }
+            100% { opacity: 1; }
+        }
+
+        .demo-content {
+            height: 400px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: radial-gradient(circle at center, #1a1a1a 0%, #0f0f0f 100%);
+            position: relative;
+        }
+
+        .play-button {
+            width: 80px;
+            height: 80px;
+            background: var(--text);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+
+        .play-button:hover {
+            transform: scale(1.05);
+        }
+
+        .play-icon {
+            width: 0;
+            height: 0;
+            border-top: 12px solid transparent;
+            border-bottom: 12px solid transparent;
+            border-left: 18px solid var(--bg);
+            margin-left: 4px;
+        }
+
+        .demo-footer {
+            padding: 1rem 1.5rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-top: 1px solid var(--border);
+        }
+
+        .mode-links {
+            display: flex;
+            gap: 1.5rem;
+        }
+
+        .mode-link {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            text-decoration: none;
+        }
+
+        .mode-link.active {
+            color: var(--accent);
+            font-weight: 600;
+        }
+
+        /* Trust Strip */
+        .trust-strip {
+            text-align: center;
+            padding: 4rem 0;
+        }
+
+        .trust-strip h3 {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            margin-bottom: 3rem;
+        }
+
+        .brands {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            opacity: 0.6;
+        }
+
+        .brand {
+            font-family: var(--font-mono);
+            font-weight: 700;
+            font-size: 1.2rem;
+            letter-spacing: -0.02em;
+        }
+
+        /* Platform Overview */
+        .platform-overview .header-group {
+            max-width: 600px;
+            margin-bottom: 4rem;
+        }
+
+        .platform-overview h2 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .platform-overview p {
+            color: var(--text-muted);
+            font-size: 1.1rem;
+        }
+
+        .blurbs {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            margin-bottom: 4rem;
+        }
+
+        .blurb h4 {
+            font-size: 1.1rem;
+            margin-bottom: 0.5rem;
+            color: var(--accent);
+        }
+
+        .blurb p {
+            font-size: 0.95rem;
+        }
+
+        .dashboard-mockup {
+            background: #000;
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 2rem;
+            font-family: var(--font-mono);
+        }
+
+        .dash-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 2rem;
+            align-items: center;
+        }
+
+        .dash-title {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+        }
+
+        .badge {
+            background: var(--accent-glow);
+            color: var(--accent);
+            padding: 0.2rem 0.6rem;
+            border-radius: 4px;
+            font-size: 0.7rem;
+            border: 1px solid var(--accent);
+        }
+
+        .metrics {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .metric-card {
+            background: var(--surface);
+            padding: 1rem;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+        }
+
+        .metric-label {
+            font-size: 0.6rem;
+            color: var(--text-muted);
+            margin-bottom: 0.5rem;
+        }
+
+        .metric-value {
+            font-size: 1.2rem;
+            color: var(--text);
+        }
+
+        .waveform-container {
+            height: 100px;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            margin-bottom: 2rem;
+        }
+
+        .wave-bar {
+            flex: 1;
+            background: var(--accent);
+            height: 20%;
+            border-radius: 2px;
+            animation: wave 1.5s ease-in-out infinite;
+        }
+
+        @keyframes wave {
+            0%, 100% { height: 20%; }
+            50% { height: 80%; }
+        }
+
+        .transport {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+        }
+
+        .transport-btn {
+            color: var(--text-muted);
+            font-size: 0.8rem;
+        }
+
+        /* Sections Studio & Agents */
+        .product-section h2 {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            letter-spacing: -0.03em;
+        }
+
+        .sub-copy {
+            color: var(--text-muted);
+            font-size: 1.2rem;
+            margin-bottom: 4rem;
+            max-width: 700px;
+        }
+
+        .grid-cards {
+            display: grid;
+            grid-template-columns: 1.5fr 1fr;
+            gap: 2rem;
+            margin-bottom: 4rem;
+        }
+
+        .card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 2rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .card-label {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            font-family: var(--font-mono);
+            margin-bottom: 1.5rem;
+            display: block;
+        }
+
+        .editor-ui-mockup {
+            height: 200px;
+            background: repeating-linear-gradient(45deg, #1a1a1a, #1a1a1a 10px, #151515 10px, #151515 20px);
+            border-radius: 8px;
+            border: 1px solid var(--border);
+        }
+
+        .mode-row {
+            display: flex;
+            gap: 2rem;
+            padding: 2rem 0;
+            border-top: 1px solid var(--border);
+        }
+
+        .mode-item {
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+
+        /* Agents Section */
+        .chat-interface {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .chat-bubble {
+            padding: 0.8rem 1.2rem;
+            border-radius: 12px;
+            max-width: 80%;
+            font-size: 0.9rem;
+        }
+
+        .bot-bubble {
+            background: var(--surface-light);
+            align-self: flex-start;
+            border-bottom-left-radius: 2px;
+        }
+
+        .user-bubble {
+            background: var(--accent);
+            align-self: flex-end;
+            border-bottom-right-radius: 2px;
+        }
+
+        .typing {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            font-style: italic;
+        }
+
+        /* Final CTA */
+        .final-cta {
+            text-align: center;
+            padding: 10rem 4rem;
+            background: radial-gradient(circle at center, #111 0%, #050505 100%);
+        }
+
+        .final-cta h2 {
+            font-size: 3.5rem;
+            margin-bottom: 3rem;
+            letter-spacing: -0.04em;
+        }
+
+        /* Footer */
+        footer {
+            border-top: 1px solid var(--border);
+            padding: 4rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+        }
+
+        .footer-brand .wordmark {
+            display: block;
+            margin-bottom: 1rem;
+        }
+
+        .footer-brand p {
+            color: var(--text-muted);
+            font-size: 0.85rem;
+        }
+
+        .footer-links {
+            display: flex;
+            gap: 2rem;
+        }
+
+        .footer-links a {
+            color: var(--text-muted);
+            text-decoration: none;
+            font-size: 0.85rem;
+        }
+
+        .footer-links a:hover {
+            color: var(--text);
+        }
+    </style>
+</head>
+<body>
+
+    <nav>
+        <a href="#" class="wordmark">AURALIS</a>
+        <div class="nav-links">
+            <a href="#">Studio</a>
+            <a href="#">Agents</a>
+            <a href="#">API</a>
+            <a href="#">Resources</a>
+            <a href="#">Enterprise</a>
+            <a href="#">Pricing</a>
+        </div>
+        <div class="nav-actions">
+            <a href="#" class="btn-signup">Sign up</a>
+        </div>
+    </nav>
+
+    <section class="hero">
+        <h1>Making digital experiences<br>sound human</h1>
+        <div class="hero-actions">
+            <a href="#" class="btn btn-primary">Sign up</a>
+            <a href="#" class="btn btn-secondary">Contact sales</a>
+        </div>
+    </section>
+
+    <section>
+        <div class="demo-panel">
+            <div class="demo-header">
+                <div class="demo-tabs">
+                    <div class="demo-tab active">Auralis Studio</div>
+                    <div class="demo-tab">Auralis Agents</div>
+                    <div class="demo-tab">Auralis API</div>
+                </div>
+                <div class="status-pill">
+                    <div class="indicator"></div>
+                    AI Voice Generator
+                </div>
+            </div>
+            <div class="demo-content">
+                <div class="play-button">
+                    <div class="play-icon"></div>
+                </div>
+            </div>
+            <div class="demo-footer">
+                <div class="mode-links">
+                    <a href="#" class="mode-link active">AI Voice Generator</a>
+                    <a href="#" class="mode-link">Text to Speech</a>
+                    <a href="#" class="mode-link">Music</a>
+                    <a href="#" class="mode-link">Sound Effects</a>
+                    <a href="#" class="mode-link">Voice Cloning</a>
+                </div>
+                <a href="#" class="btn-signup">Sign up</a>
+            </div>
+        </div>
+    </section>
+
+    <section class="trust-strip">
+        <h3>Trusted by teams building modern audio experiences</h3>
+        <div class="brands">
+            <span class="brand">VELOCITY</span>
+            <span class="brand">NEXUS</span>
+            <span class="brand">LUMINA</span>
+            <span class="brand">STACK</span>
+            <span class="brand">QUANTA</span>
+            <span class="brand">ORBITAL</span>
+            <span class="brand">SCALAR</span>
+        </div>
+    </section>
+
+    <section class="platform-overview">
+        <div class="header-group">
+            <h2>Two systems, one shared intelligence layer</h2>
+            <p>Auralis integrates generative artistry with agentic reasoning to deliver high-fidelity voice experiences across any scale.</p>
+        </div>
+        <div class="blurbs">
+            <div class="blurb">
+                <h4>Precision Generation</h4>
+                <p>Neural synthesis that captures the nuance, breath, and emotion of human speech.</p>
+            </div>
+            <div class="blurb">
+                <h4>Agentic Architecture</h4>
+                <p>Conversational logic that understands context and maintains persona-consistent dialogue.</p>
+            </div>
+        </div>
+        <div class="dashboard-mockup">
+            <div class="dash-header">
+                <span class="dash-title">NEURAL ENGINE V4.2 PRO</span>
+                <div style="display: flex; gap: 0.5rem; align-items: center;">
+                    <div class="status-pill" style="background: transparent; border: none;">
+                        <div class="indicator"></div>
+                        Real-time Synthesis Active
+                    </div>
+                    <span class="badge">STUDIO MODE</span>
+                </div>
+            </div>
+            <div class="metrics">
+                <div class="metric-card">
+                    <div class="metric-label">LATENCY</div>
+                    <div class="metric-value">12 ms</div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-label">CONFIDENCE</div>
+                    <div class="metric-value">99.8%</div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-label">STATUS</div>
+                    <div class="metric-value" style="color: var(--success);">Operational</div>
+                </div>
+            </div>
+            <div class="waveform-container">
+                <div class="wave-bar" style="animation-delay: 0.1s"></div>
+                <div class="wave-bar" style="animation-delay: 0.3s"></div>
+                <div class="wave-bar" style="animation-delay: 0.5s"></div>
+                <div class="wave-bar" style="animation-delay: 0.2s"></div>
+                <div class="wave-bar" style="animation-delay: 0.4s"></div>
+                <div class="wave-bar" style="animation-delay: 0.1s"></div>
+                <div class="wave-bar" style="animation-delay: 0.6s"></div>
+                <div class="wave-bar" style="animation-delay: 0.2s"></div>
+                <div class="wave-bar" style="animation-delay: 0.4s"></div>
+                <div class="wave-bar" style="animation-delay: 0.3s"></div>
+                <div class="wave-bar" style="animation-delay: 0.5s"></div>
+                <div class="wave-bar" style="animation-delay: 0.1s"></div>
+                <div class="wave-bar" style="animation-delay: 0.7s"></div>
+                <div class="wave-bar" style="animation-delay: 0.2s"></div>
+            </div>
+            <div class="transport">
+                <span class="transport-btn">PREV</span>
+                <span class="transport-btn" style="color: white;">PLAY</span>
+                <span class="transport-btn">STOP</span>
+                <span class="transport-btn">NEXT</span>
+            </div>
+        </div>
+    </section>
+
+    <section class="product-section">
+        <h2>Sculpt sound with absolute precision.</h2>
+        <p class="sub-copy">The professional suite for creators who demand control over every phonetic detail and musical layer.</p>
+        <div class="grid-cards">
+            <div class="card">
+                <span class="card-label">Soft Editor UI</span>
+                <div class="editor-ui-mockup"></div>
+            </div>
+            <div class="card">
+                <span class="card-label">Transcript Panel</span>
+                <h3 style="margin-bottom: 1rem;">Direct text manipulation</h3>
+                <p style="color: var(--text-muted); font-size: 0.9rem;">Edit audio by simply editing the script. Auralis Studio handles the seamless re-synthesis of altered segments.</p>
+            </div>
+        </div>
+        <div class="mode-row">
+            <div class="mode-item">Music</div>
+            <div class="mode-item">SFX</div>
+            <div class="mode-item">Voices</div>
+            <div class="mode-item">Image & Video</div>
+        </div>
+    </section>
+
+    <section class="product-section">
+        <h2>Autonomous reasoning, human delivery.</h2>
+        <p class="sub-copy">Deploy voice agents that don't just speak, but solve. Built for support, sales, and complex interactions.</p>
+        <div class="grid-cards">
+            <div class="card">
+                <span class="card-label">Nexus Support Agent • ONLINE • LATENCY: 12ms</span>
+                <div class="chat-interface">
+                    <div class="chat-bubble bot-bubble">Hello! How can I assist you today?</div>
+                    <div class="chat-bubble user-bubble">I need help checking my deployment status.</div>
+                    <div class="typing">Nexus is preparing a response...</div>
+                </div>
+            </div>
+            <div class="card">
+                <span class="card-label">Deep Insights</span>
+                <h3 style="margin-bottom: 1rem;">Sentiment & Analytics</h3>
+                <p style="color: var(--text-muted); font-size: 0.9rem;">Monitor customer satisfaction in real-time with built-in voice emotion detection and intent mapping.</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="final-cta">
+        <h2>The future of voice starts here</h2>
+        <div class="hero-actions">
+            <a href="#" class="btn btn-primary">Get started</a>
+            <a href="#" class="btn btn-secondary">Talk to sales</a>
+        </div>
+    </section>
+
+    <footer>
+        <div class="footer-brand">
+            <a href="#" class="wordmark">AURALIS</a>
+            <p>© 2024 Auralis AI. Engineered for precision.</p>
+        </div>
+        <div class="footer-links">
+            <a href="#">Twitter</a>
+            <a href="#">GitHub</a>
+            <a href="#">Terms</a>
+            <a href="#">Privacy</a>
+        </div>
+    </footer>
+
+</body>
+</html>

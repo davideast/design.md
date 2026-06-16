@@ -1,0 +1,726 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Auralis | Making digital experiences sound human</title>
+    <link href="https://cdn.jsdelivr.net/npm/geist@1.3.0/dist/fonts/geist-sans/style.css" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #111111;
+            --secondary: #6B6B6B;
+            --tertiary: #9958ff;
+            --neutral: #F7F7F5;
+            --surface-elevated: #ffffff;
+            --outline-muted: #E5E5E3;
+            
+            --rounded-sm: 0.25rem;
+            --rounded-md: 0.75rem;
+            --rounded-lg: 1.5rem;
+            --rounded-full: 9999px;
+
+            --space-sm: 8px;
+            --space-md: 24px;
+            --space-lg: 64px;
+            --space-xl: 140px;
+            --gutter: 24px;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Geist Sans', system-ui, -apple-system, sans-serif;
+            background-color: var(--neutral);
+            color: var(--primary);
+            line-height: 1.5;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        h1 {
+            font-size: 72px;
+            font-weight: 600;
+            line-height: 0.95;
+            letter-spacing: -0.04em;
+        }
+
+        h2 {
+            font-size: 42px;
+            font-weight: 600;
+            line-height: 1.1;
+            letter-spacing: -0.02em;
+        }
+
+        .body-md {
+            font-size: 16px;
+            font-weight: 400;
+            line-height: 1.5;
+            color: var(--secondary);
+        }
+
+        .label-caps {
+            font-size: 12px;
+            font-weight: 600;
+            line-height: 1;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+        }
+
+        .btn {
+            font-family: 'Geist Sans', sans-serif;
+            font-size: 14px;
+            font-weight: 500;
+            line-height: 1;
+            letter-spacing: 0.01em;
+            padding: 12px 24px;
+            border-radius: var(--rounded-full);
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            transition: opacity 0.2s;
+            border: none;
+        }
+
+        .btn-primary {
+            background-color: var(--primary);
+            color: white;
+        }
+
+        .btn-outline {
+            background-color: transparent;
+            border: 1px solid var(--outline-muted);
+            color: var(--primary);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 var(--gutter);
+        }
+
+        /* Navigation */
+        nav {
+            height: 80px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: rgba(247, 247, 245, 0.8);
+            backdrop-filter: blur(10px);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            border-bottom: 1px solid var(--outline-muted);
+        }
+
+        .wordmark {
+            font-weight: 600;
+            font-size: 20px;
+            letter-spacing: -0.02em;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 32px;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: var(--secondary);
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        .nav-links a:hover {
+            color: var(--primary);
+        }
+
+        /* Hero */
+        .hero {
+            padding: var(--space-xl) 0 var(--space-lg);
+            text-align: center;
+        }
+
+        .hero h1 {
+            max-width: 800px;
+            margin: 0 auto var(--space-md);
+        }
+
+        .hero-actions {
+            display: flex;
+            gap: 12px;
+            justify-content: center;
+        }
+
+        /* Product Demo Panel */
+        .demo-panel {
+            background: var(--surface-elevated);
+            border: 1px solid var(--outline-muted);
+            border-radius: var(--rounded-lg);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.05);
+            overflow: hidden;
+            margin-bottom: var(--space-xl);
+        }
+
+        .demo-tabs {
+            display: flex;
+            border-bottom: 1px solid var(--outline-muted);
+            background: #fafafa;
+        }
+
+        .demo-tab {
+            padding: 16px 24px;
+            font-size: 13px;
+            font-weight: 500;
+            color: var(--secondary);
+            border-right: 1px solid var(--outline-muted);
+        }
+
+        .demo-tab.active {
+            background: white;
+            color: var(--primary);
+            border-bottom: 2px solid var(--tertiary);
+        }
+
+        .demo-status {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 12px 24px;
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--secondary);
+        }
+
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            background: #10b981;
+            border-radius: 50%;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% { opacity: 1; }
+            50% { opacity: 0.4; }
+            100% { opacity: 1; }
+        }
+
+        .demo-content {
+            height: 480px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            background: radial-gradient(circle at center, #fdfdfd, #f7f7f5);
+        }
+
+        .play-button {
+            width: 80px;
+            height: 80px;
+            background: var(--tertiary);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+
+        .play-button:hover {
+            transform: scale(1.05);
+        }
+
+        .demo-footer {
+            padding: 16px 24px;
+            border-top: 1px solid var(--outline-muted);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: #fafafa;
+        }
+
+        .demo-modes {
+            display: flex;
+            gap: 24px;
+        }
+
+        .demo-mode-link {
+            font-size: 13px;
+            text-decoration: none;
+            color: var(--secondary);
+            font-weight: 500;
+        }
+
+        .demo-mode-link.active {
+            color: var(--tertiary);
+        }
+
+        /* Trust Strip */
+        .trust-strip {
+            padding: var(--space-lg) 0;
+            text-align: center;
+            border-top: 1px solid var(--outline-muted);
+            border-bottom: 1px solid var(--outline-muted);
+        }
+
+        .trust-heading {
+            color: var(--secondary);
+            margin-bottom: var(--space-md);
+        }
+
+        .brand-grid {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            opacity: 0.6;
+            font-weight: 700;
+            font-size: 18px;
+            letter-spacing: -0.02em;
+        }
+
+        /* Platform Overview */
+        .platform-section {
+            padding: var(--space-xl) 0;
+        }
+
+        .section-header {
+            max-width: 600px;
+            margin-bottom: var(--space-lg);
+        }
+
+        .blurb-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: var(--space-md);
+            margin-bottom: var(--space-lg);
+        }
+
+        .blurb h3 {
+            font-size: 18px;
+            margin-bottom: 8px;
+        }
+
+        .dashboard-mockup {
+            background: #0a0a0a;
+            border-radius: var(--rounded-md);
+            padding: 32px;
+            color: white;
+            font-family: 'Geist Mono', monospace;
+        }
+
+        .dash-top {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 40px;
+        }
+
+        .badge {
+            background: #222;
+            padding: 4px 12px;
+            border-radius: var(--rounded-sm);
+            font-size: 11px;
+            color: var(--tertiary);
+        }
+
+        .metrics-row {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 24px;
+            margin-bottom: 40px;
+        }
+
+        .metric-val {
+            font-size: 24px;
+            font-weight: 600;
+            margin-top: 4px;
+        }
+
+        .waveform {
+            height: 120px;
+            display: flex;
+            align-items: center;
+            gap: 3px;
+            margin-bottom: 32px;
+        }
+
+        .wave-bar {
+            flex: 1;
+            background: var(--tertiary);
+            border-radius: 2px;
+            min-height: 4px;
+        }
+
+        /* Studio Section */
+        .studio-section {
+            padding: var(--space-xl) 0;
+        }
+
+        .studio-grid {
+            display: grid;
+            grid-template-columns: 1.5fr 1fr;
+            gap: var(--space-md);
+            margin-top: var(--space-lg);
+        }
+
+        .card {
+            background: white;
+            border: 1px solid var(--outline-muted);
+            border-radius: var(--rounded-md);
+            padding: 32px;
+        }
+
+        .card-label {
+            display: inline-block;
+            margin-bottom: 16px;
+            padding: 4px 8px;
+            background: var(--neutral);
+            border-radius: var(--rounded-sm);
+        }
+
+        .studio-modes-row {
+            display: flex;
+            justify-content: space-between;
+            margin-top: var(--space-md);
+            padding: 24px;
+            background: white;
+            border: 1px solid var(--outline-muted);
+            border-radius: var(--rounded-md);
+        }
+
+        /* Agents Section */
+        .agents-section {
+            padding: var(--space-xl) 0;
+        }
+
+        .agents-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: var(--space-md);
+            margin-top: var(--space-lg);
+        }
+
+        .chat-interface {
+            background: white;
+            border: 1px solid var(--outline-muted);
+            border-radius: var(--rounded-md);
+            display: flex;
+            flex-direction: column;
+            height: 400px;
+        }
+
+        .chat-header {
+            padding: 16px;
+            border-bottom: 1px solid var(--outline-muted);
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .chat-body {
+            flex: 1;
+            padding: 24px;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .bubble {
+            max-width: 80%;
+            padding: 12px 16px;
+            border-radius: 12px;
+            font-size: 14px;
+        }
+
+        .bubble-bot {
+            background: var(--neutral);
+            align-self: flex-start;
+            border-bottom-left-radius: 2px;
+        }
+
+        .bubble-user {
+            background: var(--primary);
+            color: white;
+            align-self: flex-end;
+            border-bottom-right-radius: 2px;
+        }
+
+        .typing {
+            font-size: 12px;
+            color: var(--secondary);
+            margin-top: 8px;
+        }
+
+        /* Final CTA */
+        .final-cta {
+            padding: var(--space-xl) 0;
+            text-align: center;
+            background: white;
+            border-top: 1px solid var(--outline-muted);
+        }
+
+        .final-cta h2 {
+            margin-bottom: var(--space-md);
+        }
+
+        /* Footer */
+        footer {
+            padding: var(--space-lg) 0;
+            border-top: 1px solid var(--outline-muted);
+            background: var(--neutral);
+        }
+
+        .footer-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 40px;
+        }
+
+        .footer-bottom {
+            display: flex;
+            justify-content: space-between;
+            color: var(--secondary);
+            font-size: 14px;
+        }
+
+        .footer-links {
+            display: flex;
+            gap: 24px;
+        }
+
+        .footer-links a {
+            color: var(--secondary);
+            text-decoration: none;
+        }
+
+        /* Utility */
+        .mb-sm { margin-bottom: var(--space-sm); }
+        .mb-md { margin-bottom: var(--space-md); }
+    </style>
+</head>
+<body>
+
+    <nav>
+        <div class="container" style="display:flex; justify-content: space-between; width: 100%; align-items: center;">
+            <div class="wordmark">Auralis</div>
+            <div class="nav-links">
+                <a href="#">Studio</a>
+                <a href="#">Agents</a>
+                <a href="#">API</a>
+                <a href="#">Resources</a>
+                <a href="#">Enterprise</a>
+                <a href="#">Pricing</a>
+            </div>
+            <a href="#" class="btn btn-primary">Sign up</a>
+        </div>
+    </nav>
+
+    <header class="hero">
+        <div class="container">
+            <h1>Making digital experiences sound human</h1>
+            <div class="hero-actions">
+                <a href="#" class="btn btn-primary">Sign up</a>
+                <a href="#" class="btn btn-outline">Contact sales</a>
+            </div>
+        </div>
+    </header>
+
+    <section class="container">
+        <div class="demo-panel">
+            <div class="demo-tabs">
+                <div class="demo-tab active">Auralis Studio</div>
+                <div class="demo-tab">Auralis Agents</div>
+                <div class="demo-tab">Auralis API</div>
+            </div>
+            <div class="demo-status">
+                <div class="status-dot"></div>
+                AI Voice Generator
+            </div>
+            <div class="demo-content">
+                <div class="play-button">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M8 5v14l11-7z"/>
+                    </svg>
+                </div>
+            </div>
+            <div class="demo-footer">
+                <div class="demo-modes">
+                    <a href="#" class="demo-mode-link active">AI Voice Generator</a>
+                    <a href="#" class="demo-mode-link">Text to Speech</a>
+                    <a href="#" class="demo-mode-link">Music</a>
+                    <a href="#" class="demo-mode-link">Sound Effects</a>
+                    <a href="#" class="demo-mode-link">Voice Cloning</a>
+                </div>
+                <a href="#" class="btn btn-primary" style="padding: 8px 16px;">Sign up</a>
+            </div>
+        </div>
+    </section>
+
+    <section class="trust-strip">
+        <div class="container">
+            <div class="label-caps trust-heading">Trusted by teams building modern audio experiences</div>
+            <div class="brand-grid">
+                <div>Velocity</div>
+                <div>Nexus</div>
+                <div>Lumina</div>
+                <div>Stack</div>
+                <div>Quanta</div>
+                <div>Orbital</div>
+                <div>Scalar</div>
+            </div>
+        </div>
+    </section>
+
+    <section class="platform-section">
+        <div class="container">
+            <div class="section-header">
+                <h2>Two systems, one shared intelligence layer</h2>
+                <p class="body-md">A unified foundation for creating, managing, and deploying high-fidelity synthetic voices across any application or workflow.</p>
+            </div>
+            <div class="blurb-grid">
+                <div class="blurb">
+                    <h3>Precision Generation</h3>
+                    <p class="body-md">Control every inflection and breath with our state-of-the-art neural synthesis engine.</p>
+                </div>
+                <div class="blurb">
+                    <h3>Agentic Architecture</h3>
+                    <p class="body-md">Voices that don't just speak, but reason and react to user intent in real-time.</p>
+                </div>
+            </div>
+            <div class="dashboard-mockup">
+                <div class="dash-top">
+                    <div>
+                        <div class="label-caps" style="opacity: 0.5;">Engine Core</div>
+                        <div style="font-weight: 600;">NEURAL ENGINE V4.2 PRO</div>
+                    </div>
+                    <div style="text-align: right;">
+                        <span class="badge">STUDIO MODE</span>
+                        <div class="label-caps" style="margin-top: 8px; color: #10b981;">● Real-time Synthesis Active</div>
+                    </div>
+                </div>
+                <div class="metrics-row">
+                    <div>
+                        <div class="label-caps" style="opacity: 0.5;">Latency</div>
+                        <div class="metric-val">12 ms</div>
+                    </div>
+                    <div>
+                        <div class="label-caps" style="opacity: 0.5;">Confidence</div>
+                        <div class="metric-val">99.8%</div>
+                    </div>
+                    <div>
+                        <div class="label-caps" style="opacity: 0.5;">Status</div>
+                        <div class="metric-val" style="color: #10b981;">Operational</div>
+                    </div>
+                </div>
+                <div class="waveform">
+                    <div class="wave-bar" style="height: 40%;"></div>
+                    <div class="wave-bar" style="height: 60%;"></div>
+                    <div class="wave-bar" style="height: 30%;"></div>
+                    <div class="wave-bar" style="height: 80%;"></div>
+                    <div class="wave-bar" style="height: 45%;"></div>
+                    <div class="wave-bar" style="height: 90%;"></div>
+                    <div class="wave-bar" style="height: 20%;"></div>
+                    <div class="wave-bar" style="height: 70%;"></div>
+                    <div class="wave-bar" style="height: 55%;"></div>
+                    <div class="wave-bar" style="height: 35%;"></div>
+                    <div class="wave-bar" style="height: 85%;"></div>
+                    <div class="wave-bar" style="height: 50%;"></div>
+                    <div class="wave-bar" style="height: 40%;"></div>
+                    <div class="wave-bar" style="height: 60%;"></div>
+                    <div class="wave-bar" style="height: 30%;"></div>
+                </div>
+                <div style="display:flex; gap: 16px; align-items: center; opacity: 0.7;">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg>
+                    <div class="label-caps">00:04:12 / 00:12:45</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="studio-section">
+        <div class="container">
+            <div class="section-header">
+                <h2>Sculpt sound with absolute precision.</h2>
+                <p class="body-md">Auralis Studio provides a non-linear editing environment designed specifically for the nuances of synthetic speech.</p>
+            </div>
+            <div class="studio-grid">
+                <div class="card">
+                    <span class="label-caps card-label">Soft Editor UI</span>
+                    <div style="height: 200px; background: var(--neutral); border-radius: var(--rounded-sm); margin-top: 16px; border: 1px dashed var(--outline-muted);"></div>
+                </div>
+                <div class="card">
+                    <div class="label-caps mb-sm" style="color: var(--tertiary);">Transcript Panel</div>
+                    <p class="body-md">Edit audio by editing text. Our engine re-synthesizes speech instantly as you modify the transcript, maintaining perfect emotional continuity.</p>
+                </div>
+            </div>
+            <div class="studio-modes-row">
+                <div class="label-caps">Music</div>
+                <div class="label-caps">SFX</div>
+                <div class="label-caps">Voices</div>
+                <div class="label-caps">Image & Video</div>
+            </div>
+        </div>
+    </section>
+
+    <section class="agents-section">
+        <div class="container">
+            <div class="section-header">
+                <h2>Autonomous reasoning, human delivery.</h2>
+                <p class="body-md">Deploy conversational agents that understand context, handle interruptions, and speak with natural prosody.</p>
+            </div>
+            <div class="agents-grid">
+                <div class="chat-interface">
+                    <div class="chat-header">
+                        <div class="label-caps">Nexus Support Agent</div>
+                        <div class="label-caps" style="color: #10b981;">ONLINE • LATENCY: 12ms</div>
+                    </div>
+                    <div class="chat-body">
+                        <div class="bubble bubble-bot">Hello! How can I assist you today?</div>
+                        <div class="bubble bubble-user">I need help checking my deployment status.</div>
+                        <div class="typing">Agent is thinking...</div>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="label-caps mb-sm" style="color: var(--tertiary);">Deep Insights</div>
+                    <p class="body-md">Analyze every interaction with sentiment tracking, intent classification, and conversion analytics built directly into the agentic workflow.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="final-cta">
+        <div class="container">
+            <h2>The future of voice starts here</h2>
+            <div class="hero-actions">
+                <a href="#" class="btn btn-primary">Get started</a>
+                <a href="#" class="btn btn-outline">Talk to sales</a>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="container">
+            <div class="footer-top">
+                <div class="wordmark">Auralis</div>
+                <div class="body-md" style="font-size: 14px;">© 2024 Auralis AI. Engineered for precision.</div>
+            </div>
+            <div class="footer-bottom">
+                <div class="footer-links">
+                    <a href="#">Twitter</a>
+                    <a href="#">GitHub</a>
+                </div>
+                <div class="footer-links">
+                    <a href="#">Terms</a>
+                    <a href="#">Privacy</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+</body>
+</html>

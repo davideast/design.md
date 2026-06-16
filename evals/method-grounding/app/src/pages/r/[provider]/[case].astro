@@ -1,0 +1,52 @@
+---
+import Base from "../../../layouts/Base.astro";
+import TopRail from "../../../components/TopRail.astro";
+import ProofThumb from "../../../components/ProofThumb.astro";
+import { depthView, depthPaths } from "../../../lib/bench";
+
+export function getStaticPaths() {
+  return depthPaths().map((p) => ({ params: { provider: p.provider, case: p.case } }));
+}
+const { provider, case: caseKey } = Astro.params;
+const d = depthView(provider!, caseKey!)!;
+---
+<Base title={`${d.caseTitle} — ${d.providerLabel} — Design Bench`}>
+  <TopRail active="Cases" />
+  <main class="max-w-6xl mx-auto px-lg py-xl">
+    <!-- breadth → depth: back to the grid -->
+    <div class="font-label text-label uppercase text-ink-muted mb-sm">
+      <a href="/" class="hover:text-primary">All results</a> · {d.caseTitle}
+    </div>
+    <div class="flex items-baseline justify-between flex-wrap gap-sm">
+      <h1 class="text-display font-display tracking-tight">{d.caseTitle}</h1>
+      <span class="font-data text-data text-ink">{d.providerLabel}</span>
+    </div>
+    <p class="text-body text-ink-muted mt-xs max-w-prose">
+      {d.world} Every arm below is the same brief given to {d.providerLabel} with a different amount of design
+      direction — from no direction at all to a full specification. Open any one to see it full size.
+    </p>
+
+    <!-- all arms for this one provider, side by side -->
+    <div class="mt-xl grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-lg">
+      {d.arms.map((a) => (
+        <a href={a.render} target="_blank" rel="noopener" class="block group">
+          <ProofThumb src={a.render} />
+          <div class="mt-sm flex items-baseline justify-between">
+            <span class="font-label text-label uppercase text-ink group-hover:text-primary">{a.name}</span>
+            {a.isControl ? (
+              <span class="font-label text-label uppercase text-ink-muted">default look</span>
+            ) : (
+              <span class="font-data text-data text-ink bg-accent-wash px-1">{a.score != null ? a.score.toFixed(2) : "—"}</span>
+            )}
+          </div>
+          <p class="text-body text-ink-muted mt-1" style="font-size:12.5px;line-height:1.4">{a.blurb}</p>
+        </a>
+      ))}
+    </div>
+
+    <p class="text-body text-ink-muted mt-xl max-w-prose" style="font-size:13px">
+      The number is how far each arm moved from this tool's default look (top-left) — higher means the direction
+      pushed the result further from what the tool does on its own. Same brief throughout; only the direction changed.
+    </p>
+  </main>
+</Base>

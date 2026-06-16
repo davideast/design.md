@@ -15,19 +15,19 @@ const report = JSON.parse(readFileSync(join(runDir, "report.json"), "utf8"));
 const config = report.config ?? {};
 
 // --- display vocabulary ---------------------------------------------------
-const CASE_TITLES: Record<string, string> = {
+export const CASE_TITLES: Record<string, string> = {
   "agent-slides": "Agent Architecture",
   auralis: "Auralis",
   "dc-tracks": "DC Tracks",
   "night-birding": "Urban Nocturnal Field Guide",
 };
-const CASE_WORLDS: Record<string, string> = {
+export const CASE_WORLDS: Record<string, string> = {
   "agent-slides": "A seven-slide technical talk on AI agent loops.",
   auralis: "A marketing site for an AI voice platform.",
   "dc-tracks": "An editorial music publication for Washington, DC.",
   "night-birding": "A field-notes site for night birding in the city.",
 };
-const TREATMENTS: Record<string, { name: string; blurb: string }> = {
+export const TREATMENTS: Record<string, { name: string; blurb: string }> = {
   "no-design-md": { name: "No direction", blurb: "The brief alone — the default look everything else is measured from." },
   "tokens-only": { name: "Tokens only", blurb: "The shared palette and type, with no words about how to use them." },
   description: { name: "Adjectives", blurb: "The shared tokens, plus an adjective description. The method being challenged." },
@@ -36,7 +36,7 @@ const TREATMENTS: Record<string, { name: string; blurb: string }> = {
   metaphor: { name: "One governing metaphor", blurb: "The shared tokens, plus one idea mapped onto every element." },
   "full-spec": { name: "Full specification", blurb: "The complete designer-grade specification." },
 };
-const ORDER = ["no-design-md", "tokens-only", "description", "object", "constraint", "metaphor", "full-spec"];
+export const ORDER = ["no-design-md", "tokens-only", "description", "object", "constraint", "metaphor", "full-spec"];
 
 const round2 = (n: number | null | undefined) => (n == null ? null : Math.round(n * 100) / 100);
 const toolLabel = `${config.tool ?? "stitch"} · ${config.model ?? "GEMINI_3_1_PRO"}`
