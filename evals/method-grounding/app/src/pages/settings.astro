@@ -1,0 +1,62 @@
+---
+import Base from "../layouts/Base.astro";
+import TopRail from "../components/TopRail.astro";
+import { settingsView } from "../lib/makers";
+const s = settingsView();
+const statusWord: Record<string, string> = { verified: "verified", configured: "key configured", missing: "no key" };
+---
+<Base title="Settings — Design Bench">
+  <TopRail active="Settings" />
+  <main class="max-w-3xl mx-auto px-lg py-xl">
+    <div class="font-label text-label uppercase text-ink-muted mb-sm">
+      <a href="/" class="hover:text-primary">All cases</a> · settings
+    </div>
+    <h1 class="text-display font-display tracking-tight">Settings</h1>
+
+    <!-- 2. Generation tools -->
+    <section class="mt-xl">
+      <div class="font-label text-label uppercase text-ink mb-xs">Generation tools</div>
+      <p class="text-body text-ink-muted max-w-prose" style="font-size:13.5px">
+        Renderings are generated through these tools. Each key is stored locally with restricted permissions and
+        never leaves this machine — this page reads only whether a key is present, never the key itself.
+      </p>
+      <div class="mt-md border border-line bg-paper">
+        {s.tools.map((t, i) => (
+          <div class={`flex items-center justify-between gap-md px-md py-sm ${i > 0 ? "border-t border-line" : ""}`}>
+            <div>
+              <div class="font-display font-semibold text-base text-ink">{t.name}</div>
+              <div class="font-data text-data text-ink-muted mt-1">
+                {t.status !== "missing" ? "••••••••••••" : ""} {t.note}
+              </div>
+            </div>
+            <div class="flex items-center gap-sm shrink-0">
+              {t.status === "verified" && <span class="font-label text-label uppercase text-primary">✓ verified</span>}
+              {t.status === "configured" && <span class="font-label text-label uppercase text-ink-muted">configured</span>}
+              {t.status === "missing" && <span class="font-label text-label uppercase text-ink-muted">not set</span>}
+            </div>
+          </div>
+        ))}
+      </div>
+      <p class="text-body text-ink-muted mt-sm" style="font-size:12.5px">
+        A tool without a key can't be selected as an arm in a tool comparison. Keys are managed locally — set them
+        in <span class="font-data text-data">.env</span> or with the CLI; this page reflects what's configured.
+      </p>
+    </section>
+
+    <!-- 3. Editing agent -->
+    <section class="mt-xl border-t border-line pt-lg">
+      <div class="font-label text-label uppercase text-ink mb-xs">Editing agent</div>
+      <p class="text-body text-ink-muted max-w-prose" style="font-size:13.5px">
+        The conversation panels on the case and ideation screens are driven by this provider.
+      </p>
+      <div class="mt-md border border-line bg-paper px-md py-sm flex items-center justify-between">
+        <span class="font-data text-data text-ink">{s.agentProvider}</span>
+        <span class="font-label text-label uppercase text-ink-muted">{s.agentConfigured ? "configured" : "not configured"}</span>
+      </div>
+      <p class="text-body text-ink-muted mt-sm" style="font-size:12.5px">
+        Providers: ollama (local, no key) · gemini · anthropic · openrouter. Switching providers starts a fresh
+        conversation; past transcripts are kept.
+      </p>
+    </section>
+  </main>
+</Base>

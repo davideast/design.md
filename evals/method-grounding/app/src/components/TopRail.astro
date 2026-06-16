@@ -1,22 +1,21 @@
 ---
 const { active } = Astro.props;
-// Settings is deferred (not in the MVP) — kept out of nav to avoid a dead link.
 const links = [
   { href: "/", label: "Cases" },
   { href: "/compare", label: "Compare tools" },
   { href: "/measurements", label: "All measurements" },
 ];
+const linkClass = (label: string) =>
+  `font-label text-label pb-1 ${active === label ? "text-primary border-b-2 border-primary" : "text-ink-muted hover:text-primary"} transition-colors`;
 ---
 <nav class="bg-paper border-b border-line h-12 flex items-center justify-between px-lg sticky top-0 z-50">
   <div class="flex items-center gap-xl">
     <a href="/" class="font-display font-semibold tracking-tight text-base text-ink">Design Bench</a>
     <div class="hidden md:flex gap-md">
       {links.map((l) => (
-        <a
-          href={l.href}
-          class={`font-label text-label pb-1 ${active === l.label ? "text-primary border-b-2 border-primary" : "text-ink-muted hover:text-primary"} transition-colors`}
-        >{l.label}</a>
+        <a href={l.href} class={linkClass(l.label)}>{l.label}</a>
       ))}
     </div>
   </div>
+  <a href="/settings" class={`hidden md:inline ${linkClass("Settings")}`}>Settings</a>
 </nav>

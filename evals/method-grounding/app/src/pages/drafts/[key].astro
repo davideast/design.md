@@ -1,0 +1,98 @@
+---
+import Base from "../../layouts/Base.astro";
+import TopRail from "../../components/TopRail.astro";
+import { listDrafts, draftView } from "../../lib/makers";
+
+export function getStaticPaths() {
+  return listDrafts().map((d) => ({ params: { key: d.key } }));
+}
+const { key } = Astro.params;
+const d = draftView(key!)!;
+---
+<Base title={`${d.title} — draft — Design Bench`}>
+  <TopRail active="Cases" />
+  <main class="max-w-6xl mx-auto px-lg py-xl grid grid-cols-1 lg:grid-cols-[1fr_360px] gap-xl">
+    <!-- Region 1: the case's documents -->
+    <div>
+      <!-- 1. Wayfinding and status -->
+      <div class="font-label text-label uppercase text-ink-muted mb-sm">
+        <a href="/" class="hover:text-primary">All cases</a> · draft
+      </div>
+      <h1 class="text-display font-display tracking-tight">{d.title}</h1>
+      <div class="mt-xs flex items-center gap-sm flex-wrap">
+        <span class={`font-label text-label uppercase ${d.allPass ? "text-primary" : "text-ink-muted"}`}>{d.status}</span>
+        <span class="font-data text-data text-ink-muted">· {d.device}</span>
+      </div>
+      <div class="mt-md flex items-center gap-md">
+        <button class="font-label text-label uppercase bg-primary text-paper px-md py-2 disabled:opacity-40" style="border-radius:2px" disabled={!d.allPass}>Promote to the gallery</button>
+        <button class="font-label text-label uppercase text-ink-muted hover:text-primary">Delete draft</button>
+      </div>
+      <p class="text-body text-ink-muted mt-xs" style="font-size:12px">Promotion and deletion run locally through the CLI; a case enters the gallery only when every check passes.</p>
+
+      <!-- 2. The validation gate -->
+      <section class="mt-xl border-t border-line pt-lg">
+        <div class="font-label text-label uppercase text-ink mb-sm">Checks</div>
+        <div class="border border-line bg-paper">
+          {d.checks.map((c, i) => (
+            <div class={`flex items-baseline justify-between gap-md px-md py-sm ${i > 0 ? "border-t border-line" : ""}`}>
+              <span class="text-body" style="font-size:13.5px">{c.label}</span>
+              <span class="shrink-0 flex items-baseline gap-sm">
+                <span class="font-data text-data text-ink-muted">{c.detail}</span>
+                <span class={`font-label text-label uppercase ${c.pass ? "text-primary" : "text-ink"}`}>{c.pass ? "pass" : "open"}</span>
+              </span>
+            </div>
+          ))}
+        </div>
+        <p class="text-body text-ink-muted mt-sm" style="font-size:12.5px">A case enters the gallery only when every check passes; the agent runs these same checks after each edit.</p>
+      </section>
+
+      <!-- 3. The content brief -->
+      <section class="mt-xl border-t border-line pt-lg">
+        <div class="font-label text-label uppercase text-ink mb-sm">The brief — what every treatment must contain</div>
+        {d.briefTitle && <div class="font-display font-semibold text-base text-ink mb-1">{d.briefTitle}</div>}
+        <p class="text-body max-w-prose" style="font-size:15px;line-height:1.6">{d.briefProse}</p>
+      </section>
+
+      <!-- 4. The treatments -->
+      <section class="mt-xl border-t border-line pt-lg">
+        <div class="font-label text-label uppercase text-ink mb-sm">Treatments</div>
+        <div class="border border-line bg-paper">
+          {d.treatments.map((t, i) => (
+            <div class={`px-md py-sm ${i > 0 ? "border-t border-line" : ""}`}>
+              <div class="flex items-baseline justify-between gap-md">
+                <span class="font-display font-semibold text-base text-ink">{t.name}</span>
+                <span class="font-data text-data text-ink-muted shrink-0">{t.proseless ? "front matter only" : `${t.words} words`}</span>
+              </div>
+              <p class="text-body text-ink-muted mt-1" style="font-size:13px;line-height:1.45">{t.character}</p>
+            </div>
+          ))}
+        </div>
+      </section>
+    </div>
+
+    <!-- Region 2: the conversation panel -->
+    <aside class="lg:sticky lg:top-16 self-start">
+      <div class="border border-line bg-paper flex flex-col" style="border-radius:8px;max-height:calc(100vh-6rem)">
+        <div class="px-md py-sm border-b border-line flex items-baseline justify-between">
+          <span class="font-label text-label uppercase text-ink">Editing agent</span>
+          <span class="font-data text-data text-ink-muted">{d.agentProvider}</span>
+        </div>
+        <div class="px-md py-md flex-1 overflow-auto">
+          <p class="text-body text-ink-muted" style="font-size:13px;line-height:1.5">
+            Direct the agent to edit these documents — it rewrites a treatment, then re-runs the checks above and
+            reports what changed, in the machine's register. Edits happen on this machine through
+            <span class="font-data text-data">{d.agentProvider}</span>.
+          </p>
+        </div>
+        <div class="px-md py-sm border-t border-line">
+          <div class="flex flex-wrap gap-1 mb-sm">
+            {["validate", "draft all treatments", "propose groundings", "critique"].map((q) => (
+              <span class="font-label text-label uppercase text-ink-muted border border-line px-2 py-1" style="border-radius:9999px">{q}</span>
+            ))}
+          </div>
+          <div class="border border-line px-sm py-2 text-ink-muted font-body" style="font-size:13px;border-radius:2px">Direct the agent — critique, rewrite, validate…</div>
+        </div>
+      </div>
+    </aside>
+  </main>
+</Base>

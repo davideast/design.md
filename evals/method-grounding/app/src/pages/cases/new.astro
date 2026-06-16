@@ -1,0 +1,85 @@
+---
+import Base from "../../layouts/Base.astro";
+import TopRail from "../../components/TopRail.astro";
+import { listConcepts, listDrafts } from "../../lib/makers";
+const concepts = listConcepts();
+const drafts = listDrafts();
+const newest = concepts[0];
+---
+<Base title="New case — Design Bench">
+  <TopRail active="Cases" />
+  <main class="max-w-3xl mx-auto px-lg py-xl">
+    <div class="font-label text-label uppercase text-ink-muted mb-sm">
+      <a href="/" class="hover:text-primary">All cases</a> · new case
+    </div>
+    <h1 class="text-display font-display tracking-tight">New case</h1>
+
+    <!-- 2. The spark -->
+    <section class="mt-xl">
+      <label class="font-label text-label uppercase text-ink-muted block mb-sm">
+        Start with a spark — a fragment is enough; an ideation agent helps you find the world before any files exist
+      </label>
+      <div class="flex items-center gap-sm flex-wrap">
+        <input type="text" class="flex-1 border border-line px-sm py-2 font-body text-ink" style="border-radius:2px;min-width:260px"
+          placeholder="a tide chart for surfers · a zine for a synth meetup · my grandmother's recipe box…" />
+        <a href={newest ? `/concepts/${newest.id}` : "#"} class="font-label text-label uppercase bg-primary text-paper px-md py-2 hover:opacity-90" style="border-radius:2px">Start ideating</a>
+      </div>
+      <p class="text-body text-ink-muted mt-sm" style="font-size:12.5px">A conversation, not a generator — diverge on worlds, converge on a brief and a direction, commit when it's yours.</p>
+
+      {concepts.length > 0 && (
+        <div class="mt-lg">
+          <div class="font-label text-label uppercase text-ink-muted mb-sm">Concepts in progress</div>
+          <div class="border border-line bg-paper">
+            {concepts.map((c, i) => (
+              <a href={`/concepts/${c.id}`} class={`flex items-baseline justify-between gap-md px-md py-sm group ${i > 0 ? "border-t border-line" : ""}`}>
+                <span class="text-body text-ink group-hover:text-primary truncate" style="font-size:13.5px">“{c.spark}”</span>
+                <span class="font-data text-data text-ink-muted shrink-0">
+                  brief {c.hasBrief ? "✓" : "—"} · direction {c.hasDirection ? "✓" : "—"} · {c.createdAt}
+                </span>
+              </a>
+            ))}
+          </div>
+        </div>
+      )}
+    </section>
+
+    <!-- 3. The expert path -->
+    <section class="mt-xl border-t border-line pt-lg">
+      <details>
+        <summary class="font-label text-label uppercase text-ink cursor-pointer hover:text-primary">You already know the world — create a draft directly</summary>
+        <div class="mt-md grid gap-md">
+          <label class="block">
+            <span class="font-label text-label uppercase text-ink-muted block mb-1">Case short name</span>
+            <input type="text" class="border border-line px-sm py-2 font-data" style="border-radius:2px;min-width:200px" placeholder="recipe-card" />
+          </label>
+          <label class="block">
+            <span class="font-label text-label uppercase text-ink-muted block mb-1">Device</span>
+            <select class="border border-line px-sm py-2 font-data" style="border-radius:2px"><option>desktop</option><option>mobile</option><option>tablet</option></select>
+          </label>
+          <label class="block">
+            <span class="font-label text-label uppercase text-ink-muted block mb-1">The brief — everything the deliverable must contain. The agent handles tokens, groundings, and treatments; you steer it in the editor.</span>
+            <textarea rows="5" class="w-full border border-line px-sm py-2 font-body text-ink" style="border-radius:2px" placeholder="Design a…"></textarea>
+          </label>
+          <div>
+            <button class="font-label text-label uppercase border border-ink text-ink px-md py-2 hover:bg-ink hover:text-paper transition" style="border-radius:2px">Create draft</button>
+            <p class="text-body text-ink-muted mt-xs" style="font-size:12px">Drafts are scaffolded locally; once created they appear below and open in the editor.</p>
+          </div>
+        </div>
+      </details>
+
+      {drafts.length > 0 && (
+        <div class="mt-lg">
+          <div class="font-label text-label uppercase text-ink-muted mb-sm">Drafts in progress</div>
+          <div class="border border-line bg-paper">
+            {drafts.map((d, i) => (
+              <a href={`/drafts/${d.key}`} class={`flex items-baseline justify-between gap-md px-md py-sm group ${i > 0 ? "border-t border-line" : ""}`}>
+                <span class="text-body text-ink group-hover:text-primary" style="font-size:13.5px">{d.title}</span>
+                <span class="font-data text-data text-ink-muted shrink-0">{d.key} →</span>
+              </a>
+            ))}
+          </div>
+        </div>
+      )}
+    </section>
+  </main>
+</Base>

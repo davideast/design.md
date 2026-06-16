@@ -12,7 +12,10 @@ const unmeasured = runs.length - measured.length;
 <Base title="Measurements — Design Bench">
   <TopRail active="All measurements" />
   <main class="max-w-6xl mx-auto px-lg py-xl">
-    <h1 class="text-display font-display tracking-tight">Measurements</h1>
+    <div class="flex items-baseline justify-between flex-wrap gap-sm">
+      <h1 class="text-display font-display tracking-tight">Measurements</h1>
+      <a href="/measurements/new" class="font-label text-label uppercase text-primary hover:underline">New batch →</a>
+    </div>
     <p class="text-body text-ink-muted mt-xs max-w-prose">
       Every rendering on this site, with the distance it landed from the model's default look. Open any
       one to see it full size and read its field marks — the claims trace back to these.

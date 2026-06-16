@@ -50,7 +50,8 @@ const sheetHref = `/cases/${r.caseKey}/${r.treatmentKey}`;
       </div>
 
       <div class="mt-md border border-line bg-paper p-md">
-        <div class="font-label text-label uppercase text-ink-muted mb-sm">Field marks</div>
+        <div class="font-label text-label uppercase text-ink-muted mb-1">Field marks</div>
+        <p class="text-body text-ink-muted mb-sm" style="font-size:11.5px;line-height:1.4">Averaged across this treatment's {r.total} renderings — feature counts aren't recorded per rendering.</p>
         {r.fieldMarks.map((f) => (
           <div class="flex items-baseline justify-between border-b border-line py-1 last:border-0">
             <span class="text-body" style="font-size:13px">{f.label}</span>
