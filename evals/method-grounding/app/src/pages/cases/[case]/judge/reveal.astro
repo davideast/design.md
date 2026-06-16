@@ -1,0 +1,125 @@
+---
+import Base from "../../../../layouts/Base.astro";
+import TopRail from "../../../../components/TopRail.astro";
+import ProofThumb from "../../../../components/ProofThumb.astro";
+import { listJudgeable, judgeView } from "../../../../lib/runs";
+
+export function getStaticPaths() {
+  return listJudgeable().map((key) => ({ params: { case: key } }));
+}
+const { case: caseKey } = Astro.params;
+const j = judgeView(caseKey!)!;
+const judgeHref = `/cases/${j.caseKey}/judge`;
+const nextHref = j.nextKey ? `/cases/${j.nextKey}/judge` : null;
+---
+<Base title={`Reveal — ${j.caseTitle} — Design Bench`}>
+  <TopRail active="Cases" />
+  <main class="max-w-6xl mx-auto px-lg py-xl"
+    data-reveal data-case={j.caseKey} data-winner={j.winnerLetter} data-winner-name={j.winnerName} data-judge={judgeHref}>
+
+    <div class="font-label text-label uppercase text-ink-muted">
+      <a href={`/cases/${j.caseKey}`} class="hover:text-primary">{j.caseTitle}</a> · the reveal
+    </div>
+
+    <!-- 1. The outcome, first (filled client-side from the locked verdict) -->
+    <h1 class="text-display font-display tracking-tight mt-sm" data-outcome-head>The reveal</h1>
+    <p class="text-body mt-xs max-w-prose" data-outcome>
+      <!-- replaced by JS; fallback for direct visits / no verdict: -->
+      No verdict is recorded for this case yet. <a href={judgeHref} class="text-primary hover:underline">Judge it first →</a>,
+      then this page shows whether your pick matched the measurement.
+    </p>
+
+    <!-- 2. The renderings, revealed -->
+    <div class="mt-xl grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-lg">
+      {j.options.map((o) => (
+        <a href={`/cases/${j.caseKey}/${o.treatmentKey}/0`} class="db-rev block group"
+          data-letter={o.letter} data-name={o.treatmentName} data-winner={String(o.isWinner)}>
+          <div class="db-rev-frame relative border border-line" style="border-radius:8px">
+            <div class="db-letter absolute z-10 font-data text-data text-ink bg-paper border border-line flex items-center justify-center" style="top:30px;left:8px;width:26px;height:26px;border-radius:9999px">{o.letter}</div>
+            <div class="db-yours absolute z-10 hidden items-center bg-primary text-paper font-label text-label uppercase" style="top:30px;right:8px;height:26px;padding:0 8px;border-radius:9999px">your pick</div>
+            <ProofThumb src={o.samplePath} />
+          </div>
+          <div class="mt-xs flex items-baseline justify-between">
+            <span class="font-label text-label uppercase text-ink group-hover:text-primary">
+              {o.treatmentName}{o.isWinner ? " ★" : ""}
+            </span>
+            <span class="font-data text-data text-ink bg-accent-wash px-1">
+              {o.isControl ? "0.00" : o.distance != null ? o.distance.toFixed(2) : "—"}
+            </span>
+          </div>
+          {o.isControl && <p class="font-label text-label uppercase text-ink-muted mt-1">this is the default look itself</p>}
+        </a>
+      ))}
+    </div>
+    <p class="font-data text-data text-ink-muted mt-sm">★ the measurement's pick — farthest from this tool's default look. Open any rendering for its field marks.</p>
+
+    <!-- 3. The words that did it -->
+    <div class="mt-xl border-t border-line pt-lg max-w-prose">
+      <div class="font-label text-label uppercase text-ink-muted mb-sm">The words that did it</div>
+      <blockquote class="text-body border-l-2 border-primary pl-md" style="font-size:15px;line-height:1.6">{j.winnerProse}</blockquote>
+      <p class="text-body text-ink-muted mt-sm" style="font-size:13px">You judged the output; these are the words that produced <span class="font-label text-label uppercase">{j.winnerName}</span>.</p>
+    </div>
+
+    <!-- 4. The running tally (your own record, computed client-side) -->
+    <div class="mt-lg max-w-prose" data-tally hidden>
+      <p class="text-body" data-tally-text></p>
+    </div>
+
+    <!-- 5. Onward -->
+    <div class="mt-xl border-t border-line pt-md flex items-center gap-lg font-label text-label uppercase">
+      {nextHref ? <a href={nextHref} class="text-primary hover:underline">Next judgment →</a> : <span class="text-ink-muted">That's the last in the set</span>}
+      <a href={`/cases/${j.caseKey}`} class="text-ink-muted hover:text-primary">Done — back to {j.caseTitle}</a>
+    </div>
+  </main>
+</Base>
+
+<style>
+  .db-rev[data-yours="1"] .db-rev-frame { border-color: #6d4de3; box-shadow: 0 0 0 2px #6d4de3; }
+  .db-rev[data-yours="1"] .db-yours { display: flex; }
+</style>
+
+<script>
+  const root = document.querySelector<HTMLElement>("[data-reveal]");
+  if (root) {
+    const caseKey = root.dataset.case!;
+    const winner = root.dataset.winner!;
+    const winnerName = root.dataset.winnerName!;
+    let pick: string | null = null;
+    try { pick = localStorage.getItem(`db-verdict-${caseKey}`); } catch {}
+
+    const cards = Array.from(root.querySelectorAll<HTMLElement>(".db-rev"));
+    const byLetter = new Map(cards.map((c) => [c.dataset.letter!, c]));
+
+    if (pick && byLetter.has(pick)) {
+      const card = byLetter.get(pick)!;
+      card.setAttribute("data-yours", "1");
+      const pickedName = card.dataset.name!;
+      const agreed = pick === winner;
+      // record this case's outcome for the running tally
+      try { localStorage.setItem(`db-agree-${caseKey}`, agreed ? "1" : "0"); } catch {}
+
+      const head = root.querySelector<HTMLElement>("[data-outcome-head]")!;
+      const out = root.querySelector<HTMLElement>("[data-outcome]")!;
+      head.textContent = agreed ? `You and the measurement agree` : `You and the measurement differ`;
+      out.innerHTML = agreed
+        ? `You picked <b>${pick}</b> — the ${pickedName.toLowerCase()} treatment. The measurement agrees: it landed farthest from this tool's default look.`
+        : `You picked <b>${pick}</b> — the ${pickedName.toLowerCase()} treatment. The measurement's pick was <b>${winner}</b>, the ${winnerName.toLowerCase()} treatment, which landed farthest from the default look. Both are below — see how they differ.`;
+    }
+
+    // Running tally across every case the reader has judged so far.
+    let judged = 0, agreed = 0;
+    try {
+      for (let i = 0; i < localStorage.length; i++) {
+        const k = localStorage.key(i)!;
+        if (k.startsWith("db-agree-")) { judged++; if (localStorage.getItem(k) === "1") agreed++; }
+      }
+    } catch {}
+    if (judged > 0) {
+      const wrap = root.querySelector<HTMLElement>("[data-tally]")!;
+      const txt = root.querySelector<HTMLElement>("[data-tally-text]")!;
+      const j1 = judged === 1 ? "judgment" : "judgments";
+      txt.innerHTML = `Across your ${judged} ${j1} so far, you've agreed with the measurement <b>${agreed}</b> ${agreed === 1 ? "time" : "times"}.`;
+      wrap.hidden = false;
+    }
+  }
+</script>

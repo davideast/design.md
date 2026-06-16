@@ -22,6 +22,11 @@ const v = caseView(caseKey!)!;
     <!-- The claim — real measured result -->
     <p class="text-body mt-lg max-w-prose border-l-2 border-primary pl-md">{v.headline}</p>
 
+    <!-- Try it blind before reading the labels -->
+    <a href={`/cases/${v.key}/judge`} class="inline-flex items-baseline gap-sm mt-md font-label text-label uppercase text-primary hover:underline">
+      Judge these blind first → <span class="text-ink-muted">pick the strongest, then see the measurement</span>
+    </a>
+
     <!-- The treatment spread: one tool, increasing direction -->
     <div class="mt-xl flex items-center justify-between border-b border-line pb-xs">
       <span class="font-label text-label uppercase text-ink">{v.tool}</span>
@@ -30,13 +35,14 @@ const v = caseView(caseKey!)!;
 
     <div class="mt-md grid grid-cols-2 md:grid-cols-4 gap-md">
       {v.treatments.map((t) => (
-        <a href={`/cases/${v.key}/${t.key}/0`} class={`block group ${t.key === "object" ? "ring-1 ring-primary" : ""}`}>
+        <a href={`/cases/${v.key}/${t.key}`} class={`block group ${t.key === "object" ? "ring-1 ring-primary" : ""}`}>
           <ProofThumb src={t.samplePath} label={t.name} />
           <div class="mt-sm flex items-baseline justify-between">
             <span class="font-label text-label uppercase text-ink group-hover:text-primary">{t.name}</span>
             <span class="font-data text-data text-ink bg-accent-wash px-1">{t.isControl ? "0.00" : t.distance?.toFixed(2) ?? "—"}</span>
           </div>
           <p class="text-body text-ink-muted mt-xs" style="font-size:13px;line-height:1.4">{t.blurb}</p>
+          <span class="font-label text-label uppercase text-ink-muted group-hover:text-primary">{t.samples} renderings →</span>
         </a>
       ))}
     </div>

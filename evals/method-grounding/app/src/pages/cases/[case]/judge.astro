@@ -1,0 +1,92 @@
+---
+import Base from "../../../layouts/Base.astro";
+import TopRail from "../../../components/TopRail.astro";
+import ProofThumb from "../../../components/ProofThumb.astro";
+import { listJudgeable, judgeView } from "../../../lib/runs";
+
+export function getStaticPaths() {
+  return listJudgeable().map((key) => ({ params: { case: key } }));
+}
+const { case: caseKey } = Astro.params;
+const j = judgeView(caseKey!)!;
+const revealHref = `/cases/${j.caseKey}/judge/reveal`;
+---
+<Base title={`Judge — ${j.caseTitle} — Design Bench`}>
+  <TopRail active="Cases" />
+  <main class="max-w-6xl mx-auto px-lg py-xl" data-judge data-case={j.caseKey} data-reveal={revealHref}>
+    <!-- 1. Wayfinding and framing -->
+    <div class="flex items-baseline justify-between flex-wrap gap-sm">
+      <div class="font-label text-label uppercase text-ink-muted">
+        <a href={`/cases/${j.caseKey}`} class="hover:text-primary">{j.caseTitle}</a> · blind judgment
+      </div>
+      <div class="font-label text-label uppercase text-ink-muted">Judgment {j.index + 1} of {j.total} in this set</div>
+    </div>
+    <h1 class="text-display font-display tracking-tight mt-sm">Pick the one with a point of view</h1>
+    <p class="text-body text-ink-muted mt-xs max-w-prose">
+      Below are {j.options.length} renderings of the same brief — all from {j.tool}, in shuffled order, with their
+      treatments hidden. Pick the one that <em>most escapes the look you'd expect by default</em>, then see which
+      method made it. <a href="/compare" class="text-primary hover:underline">Compare tools instead →</a>
+    </p>
+
+    <!-- 2. The unlabeled renderings -->
+    <div class="mt-xl grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-lg">
+      {j.options.map((o) => (
+        <button type="button" class="db-pick block text-left group" data-letter={o.letter} aria-pressed="false">
+          <div class="db-pick-frame relative border border-line" style="border-radius:8px">
+            <div class="db-letter absolute z-10 font-data text-data text-ink bg-paper border border-line flex items-center justify-center" style="top:30px;left:8px;width:26px;height:26px;border-radius:9999px">{o.letter}</div>
+            <div class="db-check absolute z-10 hidden items-center justify-center bg-primary text-paper font-label text-label uppercase" style="top:30px;right:8px;height:26px;padding:0 8px;border-radius:9999px">picked</div>
+            <ProofThumb src={o.samplePath} />
+          </div>
+        </button>
+      ))}
+    </div>
+
+    <!-- 3. The verdict -->
+    <div class="mt-xl border-t border-line pt-lg max-w-prose">
+      <div class="font-label text-label uppercase text-ink-muted mb-xs">Your verdict</div>
+      <p class="text-body">Which rendering most escapes the look you'd expect by default?</p>
+      <div class="mt-md flex items-center gap-md">
+        <button type="button" data-lock disabled
+          class="font-label text-label uppercase bg-primary text-paper px-md py-2 disabled:opacity-40 disabled:cursor-not-allowed hover:opacity-90 transition" style="border-radius:2px">
+          Lock in and reveal
+        </button>
+        <span data-lock-hint class="font-label text-label uppercase text-ink-muted">Select a rendering first</span>
+      </div>
+      <p class="text-body text-ink-muted mt-sm" style="font-size:13px">Your verdict is recorded before the reveal — it can't be changed after.</p>
+    </div>
+  </main>
+</Base>
+
+<style>
+  .db-pick-frame { transition: box-shadow 0.12s, border-color 0.12s; }
+  .db-pick[aria-pressed="true"] .db-pick-frame { border-color: #6d4de3; box-shadow: 0 0 0 2px #6d4de3; }
+  .db-pick[aria-pressed="true"] .db-check { display: flex; }
+  .db-pick:hover .db-pick-frame { border-color: #6d4de3; }
+</style>
+
+<script>
+  const root = document.querySelector<HTMLElement>("[data-judge]");
+  if (root) {
+    const caseKey = root.dataset.case!;
+    const revealHref = root.dataset.reveal!;
+    const picks = Array.from(root.querySelectorAll<HTMLButtonElement>(".db-pick"));
+    const lock = root.querySelector<HTMLButtonElement>("[data-lock]")!;
+    const hint = root.querySelector<HTMLElement>("[data-lock-hint]")!;
+    let chosen: string | null = null;
+    for (const p of picks) {
+      p.addEventListener("click", () => {
+        chosen = p.dataset.letter!;
+        for (const q of picks) q.setAttribute("aria-pressed", String(q === p));
+        lock.disabled = false;
+        hint.textContent = `Rendering ${chosen} selected`;
+      });
+    }
+    lock.addEventListener("click", () => {
+      if (!chosen) return;
+      try {
+        localStorage.setItem(`db-verdict-${caseKey}`, chosen);
+      } catch {}
+      window.location.href = revealHref;
+    });
+  }
+</script>

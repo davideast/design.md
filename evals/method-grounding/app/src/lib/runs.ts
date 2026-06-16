@@ -123,6 +123,105 @@ export function listCases(): { key: string; title: string; world: string; headli
   });
 }
 
+// ---------------------------------------------------------------------------
+// Blind judgment: the reader picks the rendering that most escapes the default
+// look without seeing labels, then the reveal shows whether the measurement
+// agrees. Options are shuffled deterministically so the judge and reveal pages
+// place the same letter on the same rendering.
+// ---------------------------------------------------------------------------
+
+function strHash(s: string): number {
+  let h = 0;
+  for (let i = 0; i < s.length; i++) h = (h * 31 + s.charCodeAt(i)) | 0;
+  return Math.abs(h);
+}
+
+export interface JudgeOption {
+  letter: string; // A, B, C…
+  treatmentKey: string;
+  treatmentName: string;
+  distance: number | null; // excess from the default look
+  isControl: boolean;
+  isWinner: boolean; // the measurement's pick — farthest from default
+  samplePath: string | null;
+}
+
+export interface JudgeView {
+  caseKey: string;
+  caseTitle: string;
+  tool: string;
+  evalHash: string;
+  options: JudgeOption[]; // shuffled, lettered
+  winnerLetter: string;
+  winnerName: string;
+  winnerProse: string; // the grounding words that produced the winner
+  index: number; // this case's place in the judging sequence (0-based)
+  total: number; // cases that can be judged
+  prevKey: string | null;
+  nextKey: string | null;
+}
+
+/** Cases with at least two sampled treatments — enough to judge between. */
+function judgeableCases(): string[] {
+  return listCases()
+    .filter((c) => {
+      const v = caseView(c.key);
+      return (v?.treatments.filter((t) => t.samplePath).length ?? 0) >= 2;
+    })
+    .map((c) => c.key);
+}
+
+export function judgeView(caseKey: string): JudgeView | null {
+  const v = caseView(caseKey);
+  if (!v) return null;
+  const pool = v.treatments.filter((t) => t.samplePath);
+  if (pool.length < 2) return null;
+  // The measurement's pick: farthest from the default look.
+  const winnerKey = pool.reduce((best, t) => ((t.distance ?? 0) > (best.distance ?? 0) ? t : best), pool[0]).key;
+  // Deterministic shuffle: stable order keyed by case, identical on both pages.
+  const shuffled = [...pool].sort((a, b) => strHash(caseKey + a.key) - strHash(caseKey + b.key));
+  const options: JudgeOption[] = shuffled.map((t, i) => ({
+    letter: String.fromCharCode(65 + i),
+    treatmentKey: t.key,
+    treatmentName: t.name,
+    distance: t.isControl ? 0 : t.distance,
+    isControl: t.isControl,
+    isWinner: t.key === winnerKey,
+    samplePath: t.samplePath,
+  }));
+  const winner = options.find((o) => o.isWinner)!;
+  const seq = judgeableCases();
+  const index = seq.indexOf(caseKey);
+  return {
+    caseKey,
+    caseTitle: v.title,
+    tool: v.tool,
+    evalHash: v.evalHash,
+    options,
+    winnerLetter: winner.letter,
+    winnerName: winner.treatmentName,
+    winnerProse: firstParagraph(armProse(caseKey, winnerKey)),
+    index,
+    total: seq.length,
+    prevKey: index > 0 ? seq[index - 1] : null,
+    nextKey: index >= 0 && index + 1 < seq.length ? seq[index + 1] : null,
+  };
+}
+
+/** The first real paragraph of a grounding doc — the sentence(s) that set the look. */
+function firstParagraph(md: string): string {
+  for (const block of md.split(/\n\s*\n/)) {
+    const t = block.trim();
+    if (!t || t.startsWith("#") || t.startsWith("-") || t.startsWith("*")) continue;
+    return t.replace(/\s+/g, " ");
+  }
+  return md.split(/\n\s*\n/)[0]?.trim() ?? "";
+}
+
+export function listJudgeable(): string[] {
+  return judgeableCases();
+}
+
 export interface RenderingView {
   caseTitle: string;
   caseKey: string;
