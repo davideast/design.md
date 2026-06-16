@@ -8,76 +8,80 @@ const rows = Array.from(new Set(gridTiles().map((t) => t.caseKey)));
 const cols = PROVIDERS;
 const caseNo = (i: number) => String(i + 1).padStart(2, "0");
 const cmyk = ["bg-ink", "bg-primary", "bg-secondary", "bg-tertiary", "bg-line"];
+// Label column hangs into the left gutter; result columns align to the title.
+const LABEL_W = 200;
+const GUTTER = LABEL_W + 32; // main left padding: title + first result column start here
 ---
 <Base title="Design Bench">
   <TopRail active="Cases" />
-  <main class="max-w-6xl mx-auto px-lg py-xl">
-    <header class="mb-lg">
+  <main class="py-xl" style={`padding-left:${GUTTER}px;padding-right:32px`}>
+    <header class="mb-lg max-w-3xl">
       <h1 class="font-display text-display text-ink mb-sm">Design Bench</h1>
-      <p class="font-body text-body text-ink-muted max-w-3xl">
+      <p class="font-body text-body text-ink-muted">
         The same brief, run through different AI design tools. Each cell is one tool's best result for that brief;
-        open it to see every arm side by side. Down a column is one tool across briefs; across a row is the tools
-        on one brief.
+        open it to see every arm side by side. Down a column is one tool across briefs; across a row is the tools on one brief.
       </p>
     </header>
 
-    <!-- The imposition sheet: one proof sheet, ruled into a case × tool matrix,
-         registration at the corners, CMYK reference in the origin. -->
-    <div class="press-sheet relative bg-line">
-      <div class="crop-mark-tl"></div><div class="crop-mark-tr"></div>
-      <div class="crop-mark-bl"></div><div class="crop-mark-br"></div>
+    <!-- The label column hangs left into the gutter (negative margin); the first
+         result column lines up with the title. Results fill the page width. -->
+    <div class="overflow-x-auto" style={`margin-left:-${LABEL_W + 1}px`}>
+      <div class="press-sheet relative bg-line" style="min-width:1080px">
+        <div class="crop-mark-tl"></div><div class="crop-mark-tr"></div>
+        <div class="crop-mark-bl"></div><div class="crop-mark-br"></div>
 
-      <div class="grid" style={`grid-template-columns:180px repeat(${cols.length}, minmax(0,1fr));gap:1px`}>
-        <!-- origin: CMYK reference + axis label -->
-        <div class="bg-paper p-sm flex flex-col justify-between">
-          <div class="flex gap-px">
-            {cmyk.map((c) => <span class={`color-patch ${c}`} style="width:10px;height:10px"></span>)}
-          </div>
-          <div class="font-data text-data text-ink-muted mt-sm" style="font-size:9px;line-height:1.2">CMYK REF<br/>CASE \ TOOL</div>
-        </div>
-
-        <!-- provider column headers -->
-        {cols.map((p) => (
-          <div class="bg-paper p-sm">
-            <div class="font-label text-label uppercase tracking-wider text-ink leading-tight">{p.label}</div>
-            {p.runs.length === 0 && <div class="font-data text-data text-ink-muted mt-1" style="font-size:9px">no key</div>}
-          </div>
-        ))}
-
-        <!-- one row per case -->
-        {rows.map((caseKey, i) => (
-          <>
-            <div class="bg-paper p-sm">
-              <div class="font-data text-data text-ink-muted" style="font-size:9px">CASE {caseNo(i)}</div>
-              <div class="font-display font-semibold text-ink mt-1" style="font-size:14px;line-height:1.2">{CASE_TITLES[caseKey] ?? caseKey}</div>
-              <p class="font-body text-ink-muted mt-1" style="font-size:11px;line-height:1.35">{CASE_WORLDS[caseKey] ?? ""}</p>
+        <div class="grid" style={`grid-template-columns:${LABEL_W}px repeat(${cols.length}, minmax(170px,1fr));gap:1px`}>
+          <!-- origin: CMYK reference + axis label (hangs in the gutter) -->
+          <div class="bg-paper p-sm flex flex-col justify-between">
+            <div class="flex gap-px">
+              {cmyk.map((c) => <span class={`color-patch ${c}`} style="width:10px;height:10px"></span>)}
             </div>
+            <div class="font-data text-data text-ink-muted mt-sm" style="font-size:9px;line-height:1.3">CMYK REF<br/>CASE \ TOOL</div>
+          </div>
 
-            {cols.map((p) => {
-              const best = bestArm(p.key, caseKey);
-              if (best) {
+          <!-- provider column headers -->
+          {cols.map((p) => (
+            <div class="bg-paper px-sm py-sm">
+              <div class="font-label text-label uppercase tracking-wider text-ink leading-tight">{p.label}</div>
+              {p.runs.length === 0 && <div class="font-data text-data text-ink-muted mt-1" style="font-size:9px">no key</div>}
+            </div>
+          ))}
+
+          <!-- one row per case -->
+          {rows.map((caseKey, i) => (
+            <>
+              <div class="bg-paper p-sm">
+                <div class="font-data text-data text-ink-muted" style="font-size:9px">CASE {caseNo(i)}</div>
+                <div class="font-display font-semibold text-ink mt-1" style="font-size:15px;line-height:1.2">{CASE_TITLES[caseKey] ?? caseKey}</div>
+                <p class="font-body text-ink-muted mt-1" style="font-size:11.5px;line-height:1.4">{CASE_WORLDS[caseKey] ?? ""}</p>
+              </div>
+
+              {cols.map((p) => {
+                const best = bestArm(p.key, caseKey);
+                if (best) {
+                  return (
+                    <a href={`/r/${p.key}/${caseKey}`} class="bg-paper group relative block hover:z-10 hover:ring-1 hover:ring-primary">
+                      <div class="relative overflow-hidden bg-neutral" style="aspect-ratio:16/10">
+                        <iframe src={best.render} scrolling="no" tabindex="-1" loading="lazy"
+                          class="absolute top-0 left-0 origin-top-left border-0 pointer-events-none"
+                          style="width:1280px;height:800px;transform:scale(0.26)"></iframe>
+                      </div>
+                      <div class="px-sm py-1 border-t border-line">
+                        <span class="font-label text-ink-muted group-hover:text-primary" style="font-size:9px;text-transform:uppercase;letter-spacing:0.04em">{best.name}</span>
+                      </div>
+                    </a>
+                  );
+                }
+                const reason = p.runs.length === 0 ? "no key" : "awaiting run";
                 return (
-                  <a href={`/r/${p.key}/${caseKey}`} class="bg-paper group relative block hover:z-10 hover:ring-1 hover:ring-primary">
-                    <div class="relative overflow-hidden bg-neutral" style="aspect-ratio:16/10">
-                      <iframe src={best.render} scrolling="no" tabindex="-1" loading="lazy"
-                        class="absolute top-0 left-0 origin-top-left border-0 pointer-events-none"
-                        style="width:1280px;height:800px;transform:scale(0.135)"></iframe>
-                    </div>
-                    <div class="px-2 py-1 border-t border-line">
-                      <span class="font-label text-ink-muted group-hover:text-primary" style="font-size:9px;text-transform:uppercase;letter-spacing:0.04em">{best.name}</span>
-                    </div>
-                  </a>
+                  <div class="bg-paper flex items-center justify-center h-full" style="min-height:160px">
+                    <span class="font-data text-ink-muted" style="font-size:10px;opacity:0.55">{reason}</span>
+                  </div>
                 );
-              }
-              const reason = p.runs.length === 0 ? "no key" : "awaiting run";
-              return (
-                <div class="bg-paper flex items-center justify-center h-full" style="min-height:108px">
-                  <span class="font-data text-ink-muted" style="font-size:9px;opacity:0.6">{reason}</span>
-                </div>
-              );
-            })}
-          </>
-        ))}
+              })}
+            </>
+          ))}
+        </div>
       </div>
     </div>
 
