@@ -33,9 +33,9 @@ const GENERATION_TIMEOUT_MS = 180_000;
 
 /** The neutral wrapper. No aesthetic opinion — only "emit one complete document,
  *  implement the brief, follow the design system, invent nothing extra." */
-const GENERATION_INSTRUCTION = `You are generating one web page. Output a single complete, standalone HTML document and nothing else — no explanation, no commentary, no markdown code fences. Put all CSS in an inline <style> tag and load any web fonts the design system names. Implement every piece of content described in the brief below. If a design system (DESIGN.md) is provided, follow its colors, typography, spacing, and rules exactly. Do not add content, sections, or visual choices that the brief and design system do not call for.`;
+export const GENERATION_INSTRUCTION = `You are generating one web page. Output a single complete, standalone HTML document and nothing else — no explanation, no commentary, no markdown code fences. Put all CSS in an inline <style> tag and load any web fonts the design system names. Implement every piece of content described in the brief below. If a design system (DESIGN.md) is provided, follow its colors, typography, spacing, and rules exactly. Do not add content, sections, or visual choices that the brief and design system do not call for.`;
 
-const DIRECTION_PREAMBLE = "## Design system (DESIGN.md) — follow exactly";
+export const DIRECTION_PREAMBLE = "## Design system (DESIGN.md) — follow exactly";
 
 /** Pull a complete HTML document out of a model response: drop a markdown fence
  *  if present, then slice from the document start to </html>. Throws if no

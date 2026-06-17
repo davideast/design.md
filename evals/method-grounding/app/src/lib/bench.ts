@@ -23,10 +23,10 @@ export interface Provider {
 export const PROVIDERS: Provider[] = [
   { key: "stitch", label: "Stitch", runs: ["demo", "stitch-new"] },
   { key: "gemini", label: "Gemini · direct", runs: ["gemini-grid", "gemini-new"] },
-  { key: "opus", label: "Opus 4.8", runs: [] },
-  { key: "gpt", label: "GPT 5.5", runs: [] },
-  { key: "kimi", label: "Kimi K2.7", runs: [] },
-  { key: "glm", label: "GLM 5.2", runs: [] },
+  { key: "opus", label: "Opus 4.8", runs: ["opus-grid"] },
+  { key: "gpt", label: "GPT 5.5", runs: ["gpt-grid"] },
+  { key: "kimi", label: "Kimi K2.7", runs: ["kimi-grid"] },
+  { key: "glm", label: "GLM 5.2", runs: ["glm-grid"] },
 ];
 
 /** The report case for a provider × case, from the first of its runs that has it. */
