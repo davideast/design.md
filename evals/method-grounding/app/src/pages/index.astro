@@ -8,13 +8,15 @@ const rows = Array.from(new Set(gridTiles().map((t) => t.caseKey)));
 const cols = PROVIDERS;
 const caseNo = (i: number) => String(i + 1).padStart(2, "0");
 // Labels hang into the left gutter; the first proof sheet aligns with the title.
-const LABEL_W = 200;
+// LEFT_MARGIN keeps the hanging labels off the viewport edge (aligned with the masthead).
+const LABEL_W = 220;
 const GAP = 32; // table showing between sheets; also crop-mark clearance
-const GUTTER = LABEL_W + GAP;
+const LEFT_MARGIN = 24;
+const TITLE_X = LABEL_W + GAP + LEFT_MARGIN; // where the title + first sheet begin
 ---
 <Base title="Design Bench">
   <TopRail active="Cases" />
-  <main class="py-xl" style={`padding-left:${GUTTER}px;padding-right:32px`}>
+  <main class="py-xl" style={`padding-left:${TITLE_X}px;padding-right:32px`}>
     <header class="mb-lg max-w-3xl">
       <h1 class="font-display text-display text-ink mb-sm">Design Bench</h1>
       <p class="font-body text-body text-ink-muted">
@@ -25,7 +27,7 @@ const GUTTER = LABEL_W + GAP;
 
     <!-- The press table: column/row labels printed on the neutral surround; each
          result is a paper proof sheet laid on it, the table showing in the gaps. -->
-    <div class="overflow-x-auto" style={`margin-left:-${GUTTER}px`}>
+    <div class="overflow-x-auto" style={`margin-left:-${LABEL_W + GAP}px`}>
       <div class="grid items-start" style={`grid-template-columns:${LABEL_W}px repeat(${cols.length}, minmax(170px,1fr));gap:${GAP}px;min-width:1280px`}>
         <!-- origin: axis label, on the table -->
         <div class="self-end pb-xs font-data text-data text-ink-muted" style="font-size:9px">CASE \ TOOL</div>
