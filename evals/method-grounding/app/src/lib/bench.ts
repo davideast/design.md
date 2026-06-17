@@ -25,7 +25,6 @@ export const PROVIDERS: Provider[] = [
   { key: "gemini", label: "Gemini · direct", runs: ["gemini-grid", "gemini-new"] },
   { key: "opus", label: "Opus 4.8", runs: ["opus-grid"] },
   { key: "gpt", label: "GPT 5.5", runs: ["gpt-grid"] },
-  { key: "kimi", label: "Kimi K2.7", runs: ["kimi-grid"] },
   { key: "glm", label: "GLM 5.2", runs: ["glm-grid"] },
 ];
 

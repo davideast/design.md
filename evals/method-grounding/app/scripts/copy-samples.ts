@@ -60,7 +60,6 @@ const PROVIDER_RUNS: { provider: string; run: string }[] = [
   { provider: "gemini", run: "gemini-new" },
   { provider: "opus", run: "opus-grid" },
   { provider: "gpt", run: "gpt-grid" },
-  { provider: "kimi", run: "kimi-grid" },
   { provider: "glm", run: "glm-grid" },
 ];
 for (const { provider, run } of PROVIDER_RUNS) {

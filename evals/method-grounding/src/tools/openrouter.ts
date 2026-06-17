@@ -16,10 +16,6 @@ import type { GenerationTool, GenerationSession, GenerateRequest, Rendering, Log
 const DEFAULT_TEMPERATURE = 0.9;
 /** OpenRouter routing adds hops and some models are slow — give more headroom. */
 const GENERATION_TIMEOUT_MS = 240_000;
-/** Light reasoning: some models (e.g. Kimi K2.7-code) reject requests with
- *  reasoning disabled. Recorded in provenance — it's an inference setting, not
- *  a change to the shared prompt wrapper. */
-const REASONING_EFFORT = "low" as const;
 
 /** BYOK: relay treats apiKey as opaque, so the tool resolves it from .env. */
 function resolveKey(): string {
@@ -44,7 +40,7 @@ class OpenRouterSession implements GenerationSession {
     private readonly apiKey: string,
     private readonly temperature: number,
   ) {
-    this.provenance = { tool: "openrouter", model, temperature, reasoningEffort: REASONING_EFFORT };
+    this.provenance = { tool: "openrouter", model, temperature };
   }
 
   async generate(log: Logger): Promise<Rendering> {
@@ -57,7 +53,6 @@ class OpenRouterSession implements GenerationSession {
       tools: [],
       apiKey: this.apiKey,
       temperature: this.temperature,
-      reasoningEffort: REASONING_EFFORT,
       signal: controller.signal,
     };
     let text = "";
