@@ -1,0 +1,468 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Auralis — Making digital experiences sound human</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --primary:#111111;
+    --secondary:#6B6B6B;
+    --tertiary:#9958ff;
+    --neutral:#F7F7F5;
+    --surface:#ffffff;
+    --outline:#E5E5E3;
+    --sm:8px; --md:24px; --lg:64px; --xl:140px; --gutter:24px;
+    --r-sm:0.25rem; --r-md:0.75rem; --r-lg:1.5rem; --r-full:9999px;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  html{scroll-behavior:smooth;}
+  body{
+    font-family:'Geist',sans-serif;
+    background:var(--neutral);
+    color:var(--primary);
+    font-size:16px;
+    line-height:1.5;
+    -webkit-font-smoothing:antialiased;
+  }
+  .wrap{max-width:1200px;margin:0 auto;padding:0 var(--gutter);}
+  h1{font-size:72px;font-weight:600;line-height:0.95;letter-spacing:-0.04em;}
+  h2{font-size:42px;font-weight:600;line-height:1.1;letter-spacing:-0.02em;}
+  .label{font-size:12px;font-weight:600;line-height:1;letter-spacing:0.08em;text-transform:uppercase;}
+  .body{font-size:16px;font-weight:400;line-height:1.5;color:var(--secondary);}
+
+  /* Buttons */
+  .btn{
+    font-family:'Geist',sans-serif;
+    font-size:14px;font-weight:500;line-height:1;letter-spacing:0.01em;
+    border-radius:var(--r-full);
+    padding:14px 26px;
+    border:1px solid var(--outline);
+    background:var(--surface);
+    color:var(--primary);
+    cursor:pointer;
+    text-decoration:none;
+    display:inline-flex;align-items:center;justify-content:center;
+    transition:.2s;
+  }
+  .btn:hover{border-color:var(--primary);}
+  .btn-dark{background:var(--primary);color:#fff;border-color:var(--primary);}
+  .btn-dark:hover{opacity:.88;}
+
+  /* Nav */
+  nav{
+    position:sticky;top:0;z-index:50;
+    background:rgba(247,247,245,0.82);
+    backdrop-filter:blur(14px);
+    border-bottom:1px solid var(--outline);
+  }
+  .nav-in{display:flex;align-items:center;justify-content:space-between;height:68px;}
+  .wordmark{font-size:20px;font-weight:600;letter-spacing:-0.03em;text-decoration:none;color:var(--primary);}
+  .nav-links{display:flex;gap:var(--md);align-items:center;}
+  .nav-links a{font-size:14px;color:var(--secondary);text-decoration:none;font-weight:500;}
+  .nav-links a:hover{color:var(--primary);}
+  .nav-right{display:flex;align-items:center;gap:var(--md);}
+
+  /* Hero */
+  .hero{padding:var(--xl) 0;}
+  .hero h1{max-width:14ch;}
+  .hero-actions{display:flex;gap:var(--sm);margin-top:var(--lg);}
+
+  section{padding-top:var(--lg);padding-bottom:var(--lg);}
+
+  /* Demo panel */
+  .demo{
+    background:var(--surface);
+    border:1px solid var(--outline);
+    border-radius:var(--r-lg);
+    overflow:hidden;
+    box-shadow:0 30px 60px -40px rgba(17,17,17,0.18);
+  }
+  .demo-top{
+    display:flex;align-items:center;justify-content:space-between;
+    padding:var(--sm) var(--md);
+    border-bottom:1px solid var(--outline);
+  }
+  .tabs{display:flex;gap:6px;}
+  .tab{
+    font-size:13px;font-weight:500;color:var(--secondary);
+    padding:8px 16px;border-radius:var(--r-full);cursor:pointer;
+    border:1px solid transparent;
+  }
+  .tab.active{background:var(--neutral);color:var(--primary);border-color:var(--outline);}
+  .status{display:flex;align-items:center;gap:8px;color:var(--secondary);}
+  .live-dot{width:8px;height:8px;border-radius:var(--r-full);background:var(--tertiary);position:relative;}
+  .live-dot::after{content:"";position:absolute;inset:-4px;border-radius:var(--r-full);background:var(--tertiary);opacity:.3;animation:pulse 1.6s infinite;}
+  @keyframes pulse{0%{transform:scale(.6);opacity:.5;}100%{transform:scale(1.8);opacity:0;}}
+
+  .live-room{
+    position:relative;
+    height:420px;
+    display:flex;align-items:center;justify-content:center;
+    background:
+      radial-gradient(circle at 30% 40%, rgba(153,88,255,0.55), transparent 45%),
+      radial-gradient(circle at 70% 35%, rgba(56,189,248,0.5), transparent 45%),
+      radial-gradient(circle at 55% 70%, rgba(236,72,153,0.5), transparent 48%),
+      radial-gradient(circle at 40% 65%, rgba(99,102,241,0.45), transparent 50%),
+      #0c0c12;
+    overflow:hidden;
+  }
+  .live-room::before{
+    content:"";position:absolute;inset:0;
+    background:radial-gradient(circle at center, transparent 40%, rgba(12,12,18,0.5) 100%);
+  }
+  .play-btn{
+    position:relative;z-index:2;
+    width:84px;height:84px;border-radius:var(--r-full);
+    background:#fff;border:none;cursor:pointer;
+    display:flex;align-items:center;justify-content:center;
+    box-shadow:0 10px 40px rgba(0,0,0,0.35);
+  }
+  .play-btn svg{margin-left:4px;}
+  .demo-bottom{
+    display:flex;align-items:center;justify-content:space-between;
+    padding:var(--sm) var(--md);
+    border-top:1px solid var(--outline);
+    flex-wrap:wrap;gap:var(--sm);
+  }
+  .modes{display:flex;gap:4px;flex-wrap:wrap;}
+  .mode{font-size:13px;font-weight:500;color:var(--secondary);padding:7px 13px;border-radius:var(--r-full);cursor:pointer;}
+  .mode.active{background:var(--neutral);color:var(--primary);}
+
+  /* Trust */
+  .trust h2{font-size:18px;font-weight:500;color:var(--secondary);text-align:center;letter-spacing:-0.01em;}
+  .brands{display:flex;flex-wrap:wrap;justify-content:center;gap:var(--lg);margin-top:var(--lg);}
+  .brands span{font-size:22px;font-weight:600;letter-spacing:-0.02em;color:var(--primary);opacity:.55;}
+
+  /* Platform */
+  .sec-head{max-width:720px;}
+  .sec-head h2{margin-bottom:var(--md);}
+  .blurbs{display:grid;grid-template-columns:1fr 1fr;gap:var(--lg);margin:var(--lg) 0;}
+  .blurb h3{font-size:18px;font-weight:600;margin-bottom:8px;letter-spacing:-0.01em;}
+
+  /* Dark dashboard */
+  .control-room{
+    background:var(--primary);
+    border-radius:var(--r-lg);
+    padding:var(--md);
+    color:#fff;
+  }
+  .cr-top{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:var(--sm);margin-bottom:var(--md);}
+  .cr-id{display:flex;align-items:center;gap:12px;}
+  .cr-id .label{color:#fff;}
+  .badge{font-size:11px;font-weight:600;letter-spacing:0.08em;padding:6px 12px;border-radius:var(--r-full);background:var(--tertiary);color:#fff;}
+  .cr-live{display:flex;align-items:center;gap:8px;font-size:12px;font-weight:500;color:#cfcfcf;}
+  .metrics{display:grid;grid-template-columns:repeat(3,1fr);gap:var(--sm);margin-bottom:var(--md);}
+  .metric{background:#1a1a1e;border:1px solid #28282d;border-radius:var(--r-md);padding:var(--md);}
+  .metric .label{color:#8a8a90;margin-bottom:10px;}
+  .metric .val{font-size:28px;font-weight:600;letter-spacing:-0.02em;}
+  .metric .val.acc{color:var(--tertiary);}
+  .waveform{
+    height:90px;background:#1a1a1e;border:1px solid #28282d;border-radius:var(--r-md);
+    display:flex;align-items:center;gap:3px;padding:0 var(--md);overflow:hidden;margin-bottom:var(--md);
+  }
+  .waveform .bar{flex:1;border-radius:var(--r-full);background:linear-gradient(180deg,#9958ff,#38bdf8);animation:wv 1.1s ease-in-out infinite;}
+  @keyframes wv{0%,100%{transform:scaleY(0.25);}50%{transform:scaleY(1);}}
+  .transport{display:flex;align-items:center;gap:var(--sm);}
+  .tctrl{width:42px;height:42px;border-radius:var(--r-full);background:#1a1a1e;border:1px solid #28282d;display:flex;align-items:center;justify-content:center;cursor:pointer;}
+  .tctrl.main{background:#fff;}
+  .tctrl svg path,.tctrl svg rect{fill:#fff;}
+  .tctrl.main svg path,.tctrl.main svg rect{fill:var(--primary);}
+
+  /* Studio cards */
+  .card-grid{display:grid;grid-template-columns:1.4fr 1fr;gap:var(--md);margin:var(--lg) 0;}
+  .card{background:var(--surface);border:1px solid var(--outline);border-radius:var(--r-lg);overflow:hidden;}
+  .card-img{
+    height:320px;
+    background:
+      radial-gradient(circle at 35% 40%, rgba(153,88,255,0.7), transparent 50%),
+      radial-gradient(circle at 70% 60%, rgba(236,72,153,0.6), transparent 50%),
+      radial-gradient(circle at 60% 30%, rgba(56,189,248,0.55), transparent 50%),
+      #0c0c12;
+    position:relative;
+  }
+  .card-tag{position:absolute;top:var(--md);left:var(--md);background:rgba(255,255,255,0.92);color:var(--primary);padding:6px 12px;border-radius:var(--r-full);}
+  .card-text{padding:var(--md);}
+  .card-text h3{font-size:20px;font-weight:600;margin-bottom:10px;letter-spacing:-0.01em;}
+  .modes-row{display:grid;grid-template-columns:repeat(4,1fr);gap:var(--sm);}
+  .mode-card{background:var(--surface);border:1px solid var(--outline);border-radius:var(--r-md);padding:var(--md);font-weight:500;font-size:15px;}
+
+  /* Agents */
+  .chat{background:var(--surface);border:1px solid var(--outline);border-radius:var(--r-lg);overflow:hidden;}
+  .chat-head{padding:var(--md);border-bottom:1px solid var(--outline);display:flex;align-items:center;gap:12px;}
+  .avatar{width:40px;height:40px;border-radius:var(--r-full);background:linear-gradient(135deg,#9958ff,#38bdf8);}
+  .chat-head h3{font-size:16px;font-weight:600;letter-spacing:-0.01em;}
+  .chat-head .label{color:var(--tertiary);margin-top:5px;display:flex;align-items:center;gap:6px;}
+  .chat-body{padding:var(--md);display:flex;flex-direction:column;gap:14px;min-height:280px;}
+  .bubble{max-width:78%;padding:13px 16px;font-size:15px;line-height:1.45;}
+  .bubble.bot{background:var(--neutral);border:1px solid var(--outline);border-radius:var(--r-lg) var(--r-lg) var(--r-lg) var(--r-sm);align-self:flex-start;}
+  .bubble.user{background:var(--primary);color:#fff;border-radius:var(--r-lg) var(--r-lg) var(--r-sm) var(--r-lg);align-self:flex-end;}
+  .typing{align-self:flex-start;background:var(--neutral);border:1px solid var(--outline);border-radius:var(--r-full);padding:14px 18px;display:flex;gap:5px;}
+  .typing span{width:7px;height:7px;border-radius:var(--r-full);background:var(--secondary);animation:typ 1.2s infinite;}
+  .typing span:nth-child(2){animation-delay:.2s;}
+  .typing span:nth-child(3){animation-delay:.4s;}
+  @keyframes typ{0%,60%,100%{opacity:.3;transform:translateY(0);}30%{opacity:1;transform:translateY(-4px);}}
+
+  /* Final CTA */
+  .final{text-align:center;padding:var(--xl) 0;}
+  .final h2{font-size:56px;margin-bottom:var(--lg);}
+  .final-actions{display:flex;gap:var(--sm);justify-content:center;}
+
+  /* Footer */
+  footer{border-top:1px solid var(--outline);padding:var(--lg) 0;}
+  .foot{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:var(--md);}
+  .foot-copy{color:var(--secondary);font-size:14px;}
+  .foot-links{display:flex;gap:var(--md);}
+  .foot-links a{color:var(--secondary);text-decoration:none;font-size:14px;font-weight:500;}
+  .foot-links a:hover{color:var(--primary);}
+
+  @media(max-width:860px){
+    h1{font-size:46px;}
+    h2{font-size:32px;}
+    .final h2{font-size:38px;}
+    .nav-links{display:none;}
+    .blurbs,.card-grid,.metrics,.modes-row{grid-template-columns:1fr;}
+    .live-room{height:300px;}
+    .brands{gap:var(--md);}
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="wrap nav-in">
+    <a href="#" class="wordmark">Auralis</a>
+    <div class="nav-links">
+      <a href="#studio">Studio</a>
+      <a href="#agents">Agents</a>
+      <a href="#api">API</a>
+      <a href="#">Resources</a>
+      <a href="#">Enterprise</a>
+      <a href="#">Pricing</a>
+    </div>
+    <div class="nav-right">
+      <a href="#" class="btn btn-dark">Sign up</a>
+    </div>
+  </div>
+</nav>
+
+<header class="hero">
+  <div class="wrap">
+    <h1>Making digital experiences sound human</h1>
+    <div class="hero-actions">
+      <a href="#" class="btn btn-dark">Sign up</a>
+      <a href="#" class="btn">Contact sales</a>
+    </div>
+  </div>
+</header>
+
+<!-- Demo panel -->
+<section>
+  <div class="wrap">
+    <div class="demo">
+      <div class="demo-top">
+        <div class="tabs">
+          <div class="tab active">Auralis Studio</div>
+          <div class="tab">Auralis Agents</div>
+          <div class="tab">Auralis API</div>
+        </div>
+        <div class="status">
+          <span class="live-dot"></span>
+          <span class="label">AI Voice Generator</span>
+        </div>
+      </div>
+      <div class="live-room">
+        <button class="play-btn" aria-label="Play preview">
+          <svg width="26" height="30" viewBox="0 0 26 30"><path d="M0 0L26 15L0 30Z" fill="#111111"/></svg>
+        </button>
+      </div>
+      <div class="demo-bottom">
+        <div class="modes">
+          <div class="mode active">AI Voice Generator</div>
+          <div class="mode">Text to Speech</div>
+          <div class="mode">Music</div>
+          <div class="mode">Sound Effects</div>
+          <div class="mode">Voice Cloning</div>
+        </div>
+        <a href="#" class="btn btn-dark">Sign up</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Trust -->
+<section class="trust">
+  <div class="wrap">
+    <h2>Trusted by teams building modern audio experiences</h2>
+    <div class="brands">
+      <span>Velocity</span>
+      <span>Nexus</span>
+      <span>Lumina</span>
+      <span>Stack</span>
+      <span>Quanta</span>
+      <span>Orbital</span>
+      <span>Scalar</span>
+    </div>
+  </div>
+</section>
+
+<!-- Platform overview -->
+<section id="api">
+  <div class="wrap">
+    <div class="sec-head">
+      <h2>Two systems, one shared intelligence layer</h2>
+      <p class="body">Studio and Agents draw from the same neural core — a single model of voice, intent, and acoustics — so what you craft by hand and what runs autonomously speak with one consistent voice.</p>
+    </div>
+    <div class="blurbs">
+      <div class="blurb">
+        <h3>Precision Generation</h3>
+        <p class="body">Frame-accurate control over pitch, timbre, and pacing. Sculpt every syllable and render studio-grade audio in real time.</p>
+      </div>
+      <div class="blurb">
+        <h3>Agentic Architecture</h3>
+        <p class="body">Conversational agents that reason, retrieve, and respond — grounded in your data and delivered with natural human cadence.</p>
+      </div>
+    </div>
+
+    <div class="control-room">
+      <div class="cr-top">
+        <div class="cr-id">
+          <span class="label">NEURAL ENGINE V4.2 PRO</span>
+          <span class="badge">STUDIO MODE</span>
+        </div>
+        <div class="cr-live"><span class="live-dot"></span>Real-time Synthesis Active</div>
+      </div>
+      <div class="metrics">
+        <div class="metric">
+          <div class="label">LATENCY</div>
+          <div class="val">12 ms</div>
+        </div>
+        <div class="metric">
+          <div class="label">CONFIDENCE</div>
+          <div class="val acc">99.8%</div>
+        </div>
+        <div class="metric">
+          <div class="label">STATUS</div>
+          <div class="val">Operational</div>
+        </div>
+      </div>
+      <div class="waveform" id="wave"></div>
+      <div class="transport">
+        <div class="tctrl" aria-label="Previous">
+          <svg width="14" height="14" viewBox="0 0 14 14"><path d="M14 0L4 7L14 14Z"/><rect x="0" y="0" width="3" height="14"/></svg>
+        </div>
+        <div class="tctrl main" aria-label="Play">
+          <svg width="12" height="14" viewBox="0 0 12 14"><path d="M0 0L12 7L0 14Z"/></svg>
+        </div>
+        <div class="tctrl" aria-label="Next">
+          <svg width="14" height="14" viewBox="0 0 14 14"><path d="M0 0L10 7L0 14Z"/><rect x="11" y="0" width="3" height="14"/></svg>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Studio -->
+<section id="studio">
+  <div class="wrap">
+    <div class="sec-head">
+      <h2>Sculpt sound with absolute precision.</h2>
+      <p class="body">A complete production suite where every waveform, transcript, and effect is a control surface you can touch.</p>
+    </div>
+    <div class="card-grid">
+      <div class="card">
+        <div class="card-img">
+          <span class="card-tag label">Soft Editor UI</span>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-text">
+          <span class="card-tag label" style="position:static;display:inline-block;background:var(--neutral);border:1px solid var(--outline);">Transcript Panel</span>
+          <h3 style="margin-top:var(--md);">Edit voice like a document</h3>
+          <p class="body">Type to retime, rephrase, and re-voice. The transcript and the waveform stay in perfect sync, so editing audio feels exactly like editing text.</p>
+        </div>
+      </div>
+    </div>
+    <div class="modes-row">
+      <div class="mode-card">Music</div>
+      <div class="mode-card">SFX</div>
+      <div class="mode-card">Voices</div>
+      <div class="mode-card">Image &amp; Video</div>
+    </div>
+  </div>
+</section>
+
+<!-- Agents -->
+<section id="agents">
+  <div class="wrap">
+    <div class="sec-head">
+      <h2>Autonomous reasoning, human delivery.</h2>
+      <p class="body">Voice agents that understand context, take action, and respond in natural conversation — at production latency.</p>
+    </div>
+    <div class="card-grid">
+      <div class="chat">
+        <div class="chat-head">
+          <div class="avatar"></div>
+          <div>
+            <h3>Nexus Support Agent</h3>
+            <div class="label"><span class="live-dot"></span>ONLINE • LATENCY: 12ms</div>
+          </div>
+        </div>
+        <div class="chat-body">
+          <div class="bubble bot">Hello! How can I assist you today?</div>
+          <div class="bubble user">I need help checking my deployment status.</div>
+          <div class="typing"><span></span><span></span><span></span></div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-text">
+          <span class="card-tag label" style="position:static;display:inline-block;background:var(--neutral);border:1px solid var(--outline);">Deep Insights</span>
+          <h3 style="margin-top:var(--md);">Every conversation, measured</h3>
+          <p class="body">Sentiment, intent resolution, and escalation patterns surfaced automatically. Understand what callers need and how well your agents deliver — turn after turn.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Final CTA -->
+<section class="final">
+  <div class="wrap">
+    <h2>The future of voice starts here</h2>
+    <div class="final-actions">
+      <a href="#" class="btn btn-dark">Get started</a>
+      <a href="#" class="btn">Talk to sales</a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap foot">
+    <div>
+      <a href="#" class="wordmark">Auralis</a>
+      <p class="foot-copy" style="margin-top:8px;">© 2024 Auralis AI. Engineered for precision.</p>
+    </div>
+    <div class="foot-links">
+      <a href="#">Twitter</a>
+      <a href="#">GitHub</a>
+      <a href="#">Terms</a>
+      <a href="#">Privacy</a>
+    </div>
+  </div>
+</footer>
+
+<script>
+  const wave=document.getElementById('wave');
+  for(let i=0;i<64;i++){
+    const b=document.createElement('div');
+    b.className='bar';
+    b.style.animationDelay=(i*0.04)+'s';
+    b.style.animationDuration=(0.8+Math.random()*0.8)+'s';
+    wave.appendChild(b);
+  }
+</script>
+</body>
+</html>

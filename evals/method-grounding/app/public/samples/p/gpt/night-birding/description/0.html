@@ -1,0 +1,546 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Urban Nocturnal: Field Notes</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=League+Spartan:wght@500;700&family=Libre+Caslon+Text:wght@400&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --background: #F9F6EE;
+      --text: #1A1A1B;
+      --primary: #1A1A1B;
+      --ui-neutral: #707372;
+      --accent: #C53030;
+      --rule: 1pt solid #1A1A1B;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html,
+    body {
+      margin: 0;
+      padding: 0;
+      background: var(--background);
+      color: var(--text);
+    }
+
+    body {
+      font-family: "Libre Caslon Text", "Century Schoolbook", "New Century Schoolbook", Georgia, serif;
+      font-weight: 400;
+      line-height: 1.28;
+      padding: 18px;
+    }
+
+    .page {
+      width: 100%;
+      max-width: 1160px;
+      margin: 0 auto;
+      border: var(--rule);
+      background: var(--background);
+    }
+
+    header {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      border-bottom: var(--rule);
+    }
+
+    .title-block {
+      padding: 14px 16px 10px;
+    }
+
+    h1,
+    h2,
+    h3,
+    .label,
+    .datum-label,
+    .index-mark {
+      font-family: "League Spartan", Spartan, Arial, sans-serif;
+      color: var(--primary);
+    }
+
+    h1 {
+      margin: 0;
+      font-size: clamp(32px, 5vw, 62px);
+      line-height: 0.88;
+      letter-spacing: -0.04em;
+      font-weight: 700;
+      text-transform: uppercase;
+    }
+
+    .header-code {
+      border-left: var(--rule);
+      padding: 14px 16px;
+      min-width: 180px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      gap: 18px;
+      font-family: "League Spartan", Spartan, Arial, sans-serif;
+      font-weight: 500;
+      font-size: 12px;
+      line-height: 1;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
+
+    .header-code span {
+      color: var(--ui-neutral);
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: 1.05fr 1.35fr;
+    }
+
+    .column-left {
+      border-right: var(--rule);
+    }
+
+    section {
+      border-bottom: var(--rule);
+    }
+
+    section:last-child {
+      border-bottom: none;
+    }
+
+    .section-head {
+      display: grid;
+      grid-template-columns: 42px 1fr;
+      border-bottom: var(--rule);
+      min-height: 42px;
+    }
+
+    .index-mark {
+      border-right: var(--rule);
+      color: var(--accent);
+      font-size: 18px;
+      line-height: 42px;
+      text-align: center;
+      font-weight: 700;
+    }
+
+    h2 {
+      margin: 0;
+      padding: 11px 12px 8px;
+      font-size: 20px;
+      line-height: 1;
+      letter-spacing: -0.02em;
+      font-weight: 700;
+      text-transform: uppercase;
+    }
+
+    h3 {
+      margin: 0;
+      font-size: 16px;
+      line-height: 1;
+      letter-spacing: -0.01em;
+      font-weight: 700;
+      text-transform: uppercase;
+    }
+
+    .content {
+      padding: 12px;
+    }
+
+    .data-table {
+      display: grid;
+      grid-template-columns: 145px 1fr;
+      border-top: var(--rule);
+      border-left: var(--rule);
+    }
+
+    .data-table:first-child {
+      border-top: var(--rule);
+    }
+
+    .datum-label,
+    .datum-value {
+      padding: 8px 9px 6px;
+      border-right: var(--rule);
+      border-bottom: var(--rule);
+      min-height: 34px;
+    }
+
+    .datum-label {
+      font-weight: 500;
+      font-size: 12px;
+      line-height: 1;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--primary);
+      background: rgba(112, 115, 114, 0.08);
+    }
+
+    .datum-value {
+      font-size: 16px;
+    }
+
+    .species-box {
+      display: grid;
+      grid-template-columns: 1fr 150px;
+      border: var(--rule);
+    }
+
+    .species-text {
+      border-right: var(--rule);
+    }
+
+    .species-title {
+      padding: 10px 10px 8px;
+      border-bottom: var(--rule);
+    }
+
+    .species-title h3 {
+      color: var(--accent);
+    }
+
+    .field-list {
+      display: grid;
+      grid-template-columns: 110px 1fr;
+    }
+
+    .field-list .datum-label,
+    .field-list .datum-value {
+      border-left: none;
+      border-top: none;
+    }
+
+    .silhouette {
+      position: relative;
+      min-height: 214px;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 12px;
+    }
+
+    .silhouette svg {
+      width: 118px;
+      height: auto;
+      display: block;
+    }
+
+    .pointer {
+      position: absolute;
+      top: 18px;
+      right: 14px;
+      width: 44px;
+      height: 44px;
+      border-top: 2px solid var(--accent);
+      border-right: 2px solid var(--accent);
+    }
+
+    .pointer:after {
+      content: "";
+      position: absolute;
+      right: -2px;
+      top: 38px;
+      width: 58px;
+      height: 2px;
+      background: var(--accent);
+      transform: rotate(135deg);
+      transform-origin: right center;
+    }
+
+    .log-list {
+      margin: 0;
+      padding: 0;
+      list-style: none;
+      border-top: var(--rule);
+      border-left: var(--rule);
+    }
+
+    .log-list li {
+      display: grid;
+      grid-template-columns: 118px 1fr;
+      border-bottom: var(--rule);
+    }
+
+    .log-list li:last-child {
+      border-bottom: none;
+    }
+
+    .log-list strong {
+      font-family: "League Spartan", Spartan, Arial, sans-serif;
+      font-weight: 500;
+      font-size: 12px;
+      line-height: 1;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      padding: 8px 9px 6px;
+      border-right: var(--rule);
+      color: var(--primary);
+      background: rgba(112, 115, 114, 0.08);
+    }
+
+    .log-list span {
+      padding: 8px 9px 6px;
+      font-size: 16px;
+      border-right: var(--rule);
+    }
+
+    .listening {
+      padding: 12px;
+    }
+
+    .intro {
+      margin: 0 0 10px;
+      font-size: 17px;
+    }
+
+    ol.filter {
+      margin: 0;
+      padding: 0;
+      list-style: none;
+      counter-reset: filter;
+      border-top: var(--rule);
+      border-left: var(--rule);
+    }
+
+    ol.filter li {
+      counter-increment: filter;
+      display: grid;
+      grid-template-columns: 44px 132px 1fr;
+      border-bottom: var(--rule);
+    }
+
+    ol.filter li:last-child {
+      border-bottom: none;
+    }
+
+    ol.filter li:before {
+      content: counter(filter, decimal-leading-zero);
+      font-family: "League Spartan", Spartan, Arial, sans-serif;
+      font-weight: 700;
+      color: var(--accent);
+      padding: 9px 8px 6px;
+      border-right: var(--rule);
+      font-size: 14px;
+      line-height: 1;
+    }
+
+    .filter-title {
+      font-family: "League Spartan", Spartan, Arial, sans-serif;
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      font-size: 12px;
+      line-height: 1;
+      padding: 9px 8px 6px;
+      border-right: var(--rule);
+      background: rgba(112, 115, 114, 0.08);
+    }
+
+    .filter-copy {
+      padding: 7px 9px 7px;
+      font-size: 16px;
+    }
+
+    .accent-word {
+      color: var(--accent);
+    }
+
+    .footer-rule {
+      display: grid;
+      grid-template-columns: repeat(6, 1fr);
+      border-top: var(--rule);
+      height: 28px;
+    }
+
+    .footer-rule div {
+      border-right: var(--rule);
+    }
+
+    .footer-rule div:last-child {
+      border-right: none;
+    }
+
+    @media (max-width: 820px) {
+      body {
+        padding: 10px;
+      }
+
+      header,
+      .grid,
+      .species-box {
+        grid-template-columns: 1fr;
+      }
+
+      .header-code,
+      .column-left,
+      .species-text {
+        border-left: none;
+        border-right: none;
+      }
+
+      .header-code {
+        border-top: var(--rule);
+      }
+
+      .column-left {
+        border-bottom: var(--rule);
+      }
+
+      .data-table,
+      .field-list,
+      .log-list li,
+      ol.filter li {
+        grid-template-columns: 1fr;
+      }
+
+      .datum-label,
+      .log-list strong,
+      .filter-title,
+      ol.filter li:before {
+        border-right: var(--rule);
+      }
+
+      .silhouette {
+        border-top: var(--rule);
+        min-height: 150px;
+      }
+
+      ol.filter li {
+        display: block;
+      }
+
+      ol.filter li:before,
+      .filter-title,
+      .filter-copy {
+        display: block;
+        border-bottom: var(--rule);
+      }
+
+      .filter-copy {
+        border-bottom: none;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="page">
+    <header>
+      <div class="title-block">
+        <h1>Urban Nocturnal:<br>Field Notes</h1>
+      </div>
+      <div class="header-code">
+        <div>Inner City Sky</div>
+        <span>Observation Sheet</span>
+      </div>
+    </header>
+
+    <div class="grid">
+      <div class="column-left">
+        <section>
+          <div class="section-head">
+            <div class="index-mark">A</div>
+            <h2>Moon &amp; Light Conditions</h2>
+          </div>
+          <div class="content">
+            <div class="data-table">
+              <div class="datum-label">Current Status</div>
+              <div class="datum-value">Waxing Gibbous. 82% Illumination.</div>
+              <div class="datum-label">Moonrise</div>
+              <div class="datum-value">17:42.</div>
+              <div class="datum-label">Sky Quality</div>
+              <div class="datum-value">Bortle 8 (Inner City Sky).</div>
+            </div>
+          </div>
+        </section>
+
+        <section>
+          <div class="section-head">
+            <div class="index-mark">B</div>
+            <h2>Tonight’s Likely Species</h2>
+          </div>
+          <div class="content">
+            <div class="species-box">
+              <div class="species-text">
+                <div class="species-title">
+                  <h3>Black-crowned Night Heron</h3>
+                </div>
+                <div class="field-list">
+                  <div class="datum-label">Field Marks</div>
+                  <div class="datum-value">Stocky build, black crown and back, contrasting grey wings.</div>
+                  <div class="datum-label">In Flight</div>
+                  <div class="datum-value">Thick neck tucked, feet barely extending beyond tail.</div>
+                  <div class="datum-label">Context</div>
+                  <div class="datum-value">Often found near waterfront construction sites or park ponds.</div>
+                </div>
+              </div>
+              <div class="silhouette" aria-label="Schematic silhouette of a night heron">
+                <div class="pointer"></div>
+                <svg viewBox="0 0 140 170" role="img">
+                  <path d="M76 24 C91 22 104 31 106 45 C108 58 99 69 87 73 C95 85 99 101 97 119 C95 140 82 155 64 158 C44 161 28 150 23 130 C18 111 25 92 39 78 C31 73 26 64 28 53 C31 38 45 29 61 31 C65 27 70 25 76 24 Z" fill="#1A1A1B"/>
+                  <path d="M84 27 C102 18 121 13 134 12 C123 23 110 34 100 44 Z" fill="#1A1A1B"/>
+                  <circle cx="89" cy="38" r="3" fill="#F9F6EE"/>
+                  <path d="M63 156 L58 169 M72 156 L76 169" stroke="#1A1A1B" stroke-width="5" stroke-linecap="square"/>
+                  <path d="M42 80 C63 89 81 102 94 124 C76 115 54 105 29 100 Z" fill="#F9F6EE" stroke="#1A1A1B" stroke-width="3"/>
+                </svg>
+              </div>
+            </div>
+          </div>
+        </section>
+      </div>
+
+      <div class="column-right">
+        <section>
+          <div class="section-head">
+            <div class="index-mark">C</div>
+            <h2>Sightings Log</h2>
+          </div>
+          <div class="content">
+            <ul class="log-list">
+              <li><strong>Time</strong><span>23:14</span></li>
+              <li><strong>Location</strong><span>West Side Railyards</span></li>
+              <li><strong>Species</strong><span>Common Nighthawk (2)</span></li>
+              <li><strong>Behavior</strong><span>Aerial foraging under stadium lights; erratic, bat-like flight pattern.</span></li>
+            </ul>
+          </div>
+        </section>
+
+        <section>
+          <div class="section-head">
+            <div class="index-mark">D</div>
+            <h2>Guide to Listening: The Urban Filter</h2>
+          </div>
+          <div class="listening">
+            <p class="intro">To identify birds by sound in the city, you must mentally subtract the machine:</p>
+            <ol class="filter">
+              <li>
+                <span class="filter-title">The Base</span>
+                <span class="filter-copy">Ignore the low-frequency rumble of the expressway or subway vents.</span>
+              </li>
+              <li>
+                <span class="filter-title">The Signal</span>
+                <span class="filter-copy">Focus on the <span class="accent-word">"Peent"</span>—a sharp, nasal electric buzz cutting through the hum.</span>
+              </li>
+              <li>
+                <span class="filter-title">The Physical</span>
+                <span class="filter-copy">Listen for the <span class="accent-word">"Whoosh"</span> of air through primary feathers during a territorial dive.</span>
+              </li>
+            </ol>
+          </div>
+        </section>
+      </div>
+    </div>
+
+    <div class="footer-rule" aria-hidden="true">
+      <div></div>
+      <div></div>
+      <div></div>
+      <div></div>
+      <div></div>
+      <div></div>
+    </div>
+  </main>
+</body>
+</html>

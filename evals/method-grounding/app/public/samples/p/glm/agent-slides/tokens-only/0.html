@@ -1,0 +1,483 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Agent Architecture — A Technical Talk</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --primary:#1E1A14;
+    --secondary:#B8B0A2;
+    --tertiary:#C3402A;
+    --neutral:#F4F0E4;
+    --display:54px;
+    --body:17px;
+    --code:14px;
+    --label:12px;
+    --sm:8px;
+    --md:16px;
+    --lg:32px;
+    --xl:64px;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{background:#2a2620;color:var(--primary);font-family:"Source Serif 4",serif}
+  body{display:flex;flex-direction:column;align-items:center;padding:32px 16px;gap:28px}
+  .slide{
+    width:100%;
+    max-width:1280px;
+    aspect-ratio:16/9;
+    background:var(--neutral);
+    position:relative;
+    overflow:hidden;
+    box-shadow:0 30px 80px rgba(0,0,0,.4);
+  }
+  .slide-pad{position:absolute;inset:0;padding:56px 72px;display:flex;flex-direction:column}
+  .corner-mark{position:absolute;top:22px;left:72px;font-family:"IBM Plex Mono",monospace;font-size:11px;letter-spacing:.14em;color:var(--primary);opacity:.5;display:flex;align-items:center;gap:10px}
+  .corner-mark .dot{width:6px;height:6px;background:var(--tertiary);display:inline-block}
+  .corner-page{position:absolute;top:22px;right:72px;font-family:"IBM Plex Mono",monospace;font-size:11px;letter-spacing:.14em;color:var(--primary);opacity:.5}
+
+  /* ===== Slide 1 — Title ===== */
+  .s1{display:grid;grid-template-columns:1.05fr 1fr;gap:0}
+  .s1-left{padding:88px 56px 56px 72px;display:flex;flex-direction:column;justify-content:space-between;position:relative}
+  .s1-eyebrow{font-family:"IBM Plex Mono",monospace;font-size:11px;letter-spacing:.22em;color:var(--tertiary);margin-bottom:32px}
+  .s1-title{font-family:"Fraunces",serif;font-weight:500;font-size:88px;line-height:.96;letter-spacing:-.018em;color:var(--primary)}
+  .s1-title em{font-style:italic;font-weight:400;color:var(--tertiary)}
+  .s1-stand{font-family:"Source Serif 4",serif;font-size:18px;line-height:1.55;color:var(--primary);max-width:34ch;margin-top:34px;opacity:.82}
+  .s1-meta{border-top:1px solid rgba(30,26,20,.22);padding-top:18px;display:grid;grid-template-columns:1fr 1fr 1fr;gap:18px}
+  .s1-meta .lbl{font-family:"IBM Plex Mono",monospace;font-size:10px;letter-spacing:.14em;color:var(--primary);opacity:.5;margin-bottom:6px}
+  .s1-meta .val{font-family:"Source Serif 4",serif;font-size:14px;color:var(--primary)}
+  .s1-right{position:relative;background:var(--primary);color:var(--neutral);overflow:hidden}
+  .s1-right::before{content:"";position:absolute;inset:0;background-image:linear-gradient(rgba(244,240,228,.06) 1px,transparent 1px),linear-gradient(90deg,rgba(244,240,228,.06) 1px,transparent 1px);background-size:36px 36px;opacity:.5}
+  .s1-diagram{position:absolute;inset:0;padding:88px 56px;display:flex;flex-direction:column;justify-content:center;gap:22px}
+  .s1-node{border:1px solid rgba(244,240,228,.32);padding:18px 22px;font-family:"IBM Plex Mono",monospace;font-size:13px;letter-spacing:.2em;display:flex;justify-content:space-between;align-items:center;background:rgba(30,26,20,.4);position:relative;z-index:1}
+  .s1-node.active{border-color:var(--tertiary);background:rgba(195,64,42,.16)}
+  .s1-node .idx{font-size:10px;opacity:.55}
+  .s1-conn{height:34px;position:relative;display:flex;align-items:center;justify-content:center}
+  .s1-conn .line{height:100%;width:1px;background:rgba(244,240,228,.32)}
+  .s1-conn .arrow{position:absolute;color:var(--tertiary);font-family:"IBM Plex Mono",monospace;font-size:11px;letter-spacing:.1em;background:var(--primary);padding:2px 6px}
+  .s1-conn .arrow.r{right:-8px}
+  .s1-conn .arrow.l{left:-8px}
+  .s1-right-foot{position:absolute;bottom:28px;left:56px;right:56px;display:flex;justify-content:space-between;font-family:"IBM Plex Mono",monospace;font-size:10px;letter-spacing:.16em;opacity:.55}
+  .s1-corner-r{position:absolute;top:22px;right:56px;font-family:"IBM Plex Mono",monospace;font-size:11px;letter-spacing:.14em;color:var(--neutral);opacity:.55}
+
+  /* ===== Slide 2 — The Loop ===== */
+  .s2{display:grid;grid-template-columns:1.05fr 1fr;gap:0}
+  .s2-left{padding:88px 48px 56px 72px;display:flex;flex-direction:column}
+  .sect-head{display:flex;align-items:baseline;gap:18px;margin-bottom:36px}
+  .sect-num{font-family:"IBM Plex Mono",monospace;font-size:12px;letter-spacing:.14em;color:var(--tertiary)}
+  .sect-title{font-family:"Fraunces",serif;font-weight:500;font-size:42px;letter-spacing:-.01em;line-height:1.1}
+  .s2-body{font-family:"Source Serif 4",serif;font-size:17px;line-height:1.62;max-width:44ch}
+  .s2-body p+p{margin-top:14px}
+  .s2-body em{color:var(--tertiary);font-style:italic}
+  .s2-caption{margin-top:auto;padding-top:24px;border-top:1px solid rgba(30,26,20,.18);font-family:"Source Serif 4",serif;font-style:italic;font-size:13.5px;line-height:1.55;color:var(--primary);opacity:.78;max-width:46ch}
+  .s2-caption .figlabel{font-family:"IBM Plex Mono",monospace;font-style:normal;font-size:10px;letter-spacing:.12em;color:var(--tertiary);margin-right:8px}
+  .s2-right{position:relative;background:var(--primary);color:var(--neutral);padding:64px 56px;display:flex;flex-direction:column;justify-content:center}
+  .s2-right::before{content:"";position:absolute;inset:0;background-image:linear-gradient(rgba(244,240,228,.05) 1px,transparent 1px),linear-gradient(90deg,rgba(244,240,228,.05) 1px,transparent 1px);background-size:32px 32px;opacity:.4}
+  .s2-diagram{position:relative;z-index:1;display:flex;flex-direction:column;align-items:center;gap:0}
+  .s2-node{border:1px solid rgba(244,240,228,.36);padding:18px 30px;font-family:"IBM Plex Mono",monospace;font-size:13px;letter-spacing:.24em;min-width:240px;text-align:center;background:rgba(30,26,20,.55);position:relative}
+  .s2-node.think{border-color:var(--tertiary);background:rgba(195,64,42,.18)}
+  .s2-node .sub{display:block;font-size:9px;letter-spacing:.18em;opacity:.55;margin-top:6px}
+  .s2-arrow{height:46px;position:relative;display:flex;justify-content:center;align-items:center}
+  .s2-arrow .line{width:1px;height:100%;background:rgba(244,240,228,.36)}
+  .s2-arrow .tag{position:absolute;font-family:"IBM Plex Mono",monospace;font-size:10px;letter-spacing:.1em;color:var(--tertiary);background:var(--primary);padding:2px 8px;white-space:nowrap}
+  .s2-arrow.a1 .tag{right:42%}
+  .s2-arrow.a2 .tag{left:42%}
+  .s2-loopback{position:absolute;left:0;top:0;bottom:0;width:30px;pointer-events:none}
+  .s2-loopback svg{width:100%;height:100%}
+
+  /* ===== Slide 3 — Worked Trace ===== */
+  .s3{display:grid;grid-template-rows:auto 1fr}
+  .s3-head{padding:56px 72px 28px;border-bottom:1px solid rgba(30,26,20,.18)}
+  .s3-query{margin-top:18px;font-family:"IBM Plex Mono",monospace;font-size:14px;line-height:1.55;color:var(--primary)}
+  .s3-query .qtag{color:var(--tertiary);font-weight:500;margin-right:8px}
+  .s3-query .qtext{font-family:"Source Serif 4",serif;font-size:17px;font-style:italic;color:var(--primary)}
+  .s3-body{display:grid;grid-template-columns:1fr 320px;min-height:0}
+  .s3-trace{padding:24px 32px 24px 72px;overflow:hidden;font-family:"IBM Plex Mono",monospace;font-size:12.5px;line-height:1.6}
+  .s3-step{display:grid;grid-template-columns:46px 92px 1fr;gap:14px;padding:5px 0;border-bottom:1px dashed rgba(30,26,20,.1)}
+  .s3-step:last-child{border-bottom:none}
+  .s3-step .idx{color:var(--secondary);font-size:11px}
+  .s3-step .kind{font-size:10px;letter-spacing:.14em;font-weight:500;align-self:start;padding-top:1px}
+  .s3-step .kind.thought{color:var(--tertiary)}
+  .s3-step .kind.action{color:var(--primary)}
+  .s3-step .kind.obs{color:var(--secondary)}
+  .s3-step .txt{color:var(--primary);font-family:"Source Serif 4",serif;font-size:13px;line-height:1.55}
+  .s3-step .txt code{font-family:"IBM Plex Mono",monospace;font-size:12px;background:rgba(195,64,42,.09);padding:0 4px;color:var(--primary)}
+  .s3-annotations{background:var(--primary);color:var(--neutral);padding:24px 28px;display:flex;flex-direction:column;gap:14px;overflow:hidden}
+  .s3-annotations .ann-lbl{font-family:"IBM Plex Mono",monospace;font-size:10px;letter-spacing:.16em;color:var(--tertiary);margin-bottom:6px}
+  .s3-annotations .ann{font-family:"Source Serif 4",serif;font-size:12.5px;line-height:1.5;color:var(--neutral);opacity:.88;border-left:1px solid var(--tertiary);padding-left:10px}
+  .s3-annotations .ann .step{font-family:"IBM Plex Mono",monospace;font-size:9.5px;letter-spacing:.12em;color:var(--tertiary);margin-bottom:3px;display:block;opacity:1}
+
+  /* ===== Slide 4 — Four Architectures ===== */
+  .s4{display:grid;grid-template-rows:auto 1fr;padding:50px 56px 44px}
+  .s4-head{margin-bottom:22px}
+  .s4-grid{display:grid;grid-template-columns:1fr 1fr;grid-template-rows:1fr 1fr;gap:14px;min-height:0}
+  .s4-cell{border:1px solid rgba(30,26,20,.16);padding:16px 18px 14px;display:grid;grid-template-rows:auto 1fr auto;gap:10px;background:rgba(244,240,228,.4);position:relative;min-height:0}
+  .s4-cell .cell-head{display:flex;justify-content:space-between;align-items:baseline}
+  .s4-cell .cell-name{font-family:"IBM Plex Mono",monospace;font-size:12px;letter-spacing:.18em;color:var(--tertiary);font-weight:500}
+  .s4-cell .cell-tag{font-family:"IBM Plex Mono",monospace;font-size:10px;letter-spacing:.1em;color:var(--primary);opacity:.5}
+  .s4-cell .cell-diagram{position:relative;min-height:0;display:flex;justify-content:center;align-items:center}
+  .s4-cell .cell-cap{font-family:"Source Serif 4",serif;font-size:12px;line-height:1.45;color:var(--primary);opacity:.85;border-top:1px solid rgba(30,26,20,.12);padding-top:8px}
+  .s4-cell .cell-cap em{font-style:italic;color:var(--tertiary)}
+
+  .mini-svg{width:100%;height:100%;max-height:140px}
+  .mini-svg text{font-family:"IBM Plex Mono",monospace;font-size:9px;letter-spacing:.14em;fill:var(--primary)}
+  .mini-svg .lbl-think{fill:var(--tertiary)}
+  .mini-svg rect{fill:var(--neutral);stroke:var(--primary);stroke-width:1}
+  .mini-svg rect.think{fill:rgba(195,64,42,.14);stroke:var(--tertiary)}
+  .mini-svg line,.mini-svg path{stroke:var(--primary);stroke-width:1;fill:none}
+  .mini-svg .term{stroke:var(--tertiary)}
+  .mini-svg .dashed{stroke-dasharray:3 3;opacity:.5}
+
+  /* ===== Slide 5 — Where Loops Fail ===== */
+  .s5{display:grid;grid-template-columns:1fr 1.05fr}
+  .s5-left{padding:88px 48px 56px 72px;display:flex;flex-direction:column}
+  .s5-body{font-family:"Source Serif 4",serif;font-size:17px;line-height:1.62;max-width:42ch}
+  .s5-body em{color:var(--tertiary);font-style:italic}
+  .s5-footnote{margin-top:auto;padding-top:24px;border-top:1px solid rgba(30,26,20,.18);font-family:"IBM Plex Mono",monospace;font-size:11px;letter-spacing:.06em;color:var(--primary);opacity:.6}
+  .s5-right{position:relative;background:var(--primary);color:var(--neutral);padding:56px 48px 44px;display:flex;flex-direction:column}
+  .s5-chart-head{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:14px}
+  .s5-chart-head .ttl{font-family:"IBM Plex Mono",monospace;font-size:11px;letter-spacing:.18em;color:var(--neutral);opacity:.7}
+  .s5-chart-head .ttl span{color:var(--tertiary)}
+  .s5-chart{flex:1;position:relative;min-height:0}
+  .s5-chart svg{width:100%;height:100%}
+  .s5-anno{position:absolute;right:24px;top:34%;max-width:200px;font-family:"Source Serif 4",serif;font-size:12.5px;line-height:1.5;color:var(--neutral);background:rgba(195,64,42,.22);border-left:2px solid var(--tertiary);padding:10px 12px}
+
+  /* ===== Slide 6 — Code ===== */
+  .s6{display:grid;grid-template-columns:1.35fr 1fr}
+  .s6-left{padding:56px 32px 44px 72px;display:flex;flex-direction:column;min-height:0}
+  .s6-code{margin-top:18px;background:var(--primary);color:var(--neutral);font-family:"IBM Plex Mono",monospace;font-size:12.5px;line-height:1.55;padding:22px 24px;flex:1;overflow:hidden;white-space:pre;border-left:3px solid var(--tertiary)}
+  .s6-code .kw{color:var(--tertiary)}
+  .s6-code .fn{color:#E5DCC8;font-weight:500}
+  .s6-code .str{color:var(--secondary)}
+  .s6-code .com{color:rgba(184,176,162,.55);font-style:italic}
+  .s6-code .var{color:#E5DCC8}
+  .s6-remark{margin-top:14px;font-family:"Source Serif 4",serif;font-size:14px;line-height:1.55;color:var(--primary);font-style:italic;border-top:1px solid rgba(30,26,20,.18);padding-top:14px}
+  .s6-remark .lbl{font-family:"IBM Plex Mono",monospace;font-style:normal;font-size:10px;letter-spacing:.12em;color:var(--tertiary);margin-right:8px}
+  .s6-right{background:var(--primary);color:var(--neutral);padding:56px 40px 44px;display:flex;flex-direction:column;gap:22px;justify-content:center}
+  .s6-ann{display:flex;gap:14px}
+  .s6-ann .num{font-family:"IBM Plex Mono",monospace;font-size:11px;color:var(--tertiary);letter-spacing:.12em;flex-shrink:0;padding-top:2px}
+  .s6-ann .body{font-family:"Source Serif 4",serif;font-size:13px;line-height:1.55;color:var(--neutral);opacity:.92}
+  .s6-ann .body strong{font-family:"IBM Plex Mono",monospace;font-size:11px;font-weight:500;letter-spacing:.12em;color:var(--tertiary);display:block;margin-bottom:4px}
+
+  /* ===== Slide 7 — Ending ===== */
+  .s7{display:grid;grid-template-columns:1.15fr 1fr;position:relative}
+  .s7-left{padding:88px 56px 56px 72px;display:flex;flex-direction:column;justify-content:space-between;position:relative}
+  .s7-mark{font-family:"IBM Plex Mono",monospace;font-size:11px;letter-spacing:.22em;color:var(--tertiary)}
+  .s7-close{font-family:"Fraunces",serif;font-weight:500;font-size:46px;line-height:1.12;letter-spacing:-.005em;color:var(--primary);max-width:20ch}
+  .s7-close em{font-style:italic;color:var(--tertiary)}
+  .s7-left .s7-foot{font-family:"IBM Plex Mono",monospace;font-size:10px;letter-spacing:.16em;color:var(--primary);opacity:.5;border-top:1px solid rgba(30,26,20,.18);padding-top:14px;display:flex;justify-content:space-between}
+  .s7-right{background:var(--primary);color:var(--neutral);padding:88px 56px 56px;display:flex;flex-direction:column;justify-content:center;gap:18px;position:relative;overflow:hidden}
+  .s7-right::before{content:"";position:absolute;inset:0;background-image:linear-gradient(rgba(244,240,228,.04) 1px,transparent 1px),linear-gradient(90deg,rgba(244,240,228,.04) 1px,transparent 1px);background-size:32px 32px;opacity:.5}
+  .s7-ref-head{font-family:"IBM Plex Mono",monospace;font-size:11px;letter-spacing:.18em;color:var(--tertiary);margin-bottom:8px;position:relative}
+  .s7-ref{display:grid;grid-template-columns:34px 1fr;gap:14px;align-items:start;position:relative}
+  .s7-ref .num{font-family:"IBM Plex Mono",monospace;font-size:12px;color:var(--tertiary);letter-spacing:.06em;padding-top:1px}
+  .s7-ref .cite{font-family:"Source Serif 4",serif;font-size:13px;line-height:1.55;color:var(--neutral);opacity:.88}
+  .s7-ref .cite em{font-style:italic}
+
+  /* shared */
+  .grid-bg::after{content:"";position:absolute;inset:0;background-image:linear-gradient(rgba(244,240,228,.04) 1px,transparent 1px),linear-gradient(90deg,rgba(244,240,228,.04) 1px,transparent 1px);background-size:32px 32px;pointer-events:none}
+</style>
+</head>
+<body>
+
+<!-- ===================== SLIDE 1 ===================== -->
+<section class="slide s1">
+  <div class="corner-mark"><span class="dot"></span>AGENT ARCHITECTURE / 2026</div>
+  <div class="corner-page">01 / 07</div>
+  <div class="s1-left">
+    <div>
+      <div class="s1-eyebrow">A TECHNICAL TALK · SEVEN SLIDES</div>
+      <h1 class="s1-title">Agent<br>Architecture<em>.</em></h1>
+      <p class="s1-stand">On loops, traces, and the structures by which language models act.</p>
+    </div>
+    <div class="s1-meta">
+      <div><div class="lbl">SPEAKER</div><div class="val">Dr. M. Reyes</div></div>
+      <div><div class="lbl">AFFILIATION</div><div class="val">Inst. for Systems Logic</div></div>
+      <div><div class="lbl">DATE</div><div class="val">14 October 2026</div></div>
+    </div>
+  </div>
+  <div class="s1-right">
+    <div class="s1-corner-r">FIG. 0 · CONTROLLER SCHEMA</div>
+    <div class="s1-diagram">
+      <div class="s1-node active"><span>THINK</span><span class="idx">01</span></div>
+      <div class="s1-conn"><span class="line"></span><span class="arrow r">↓</span></div>
+      <div class="s1-node"><span>ACT</span><span class="idx">02</span></div>
+      <div class="s1-conn"><span class="line"></span><span class="arrow r">↓</span></div>
+      <div class="s1-node"><span>OBSERVE</span><span class="idx">03</span></div>
+      <div class="s1-conn"><span class="line"></span><span class="arrow l">↑ returns</span></div>
+    </div>
+    <div class="s1-right-foot"><span>REACT · 2023</span><span>LOOP · CLOSED</span></div>
+  </div>
+</section>
+
+<!-- ===================== SLIDE 2 ===================== -->
+<section class="slide">
+  <div class="corner-mark"><span class="dot"></span>§ 1 · THE LOOP</div>
+  <div class="corner-page">02 / 07</div>
+  <div class="slide-pad s2">
+    <div class="s2-left">
+      <div class="sect-head">
+        <span class="sect-num">§ 1</span>
+        <h2 class="sect-title">The Loop</h2>
+      </div>
+      <div class="s2-body">
+        <p>The ReAct loop is the simplest architecture that still counts as an <em>agent</em>: a controller that reasons about its next move, takes that move, and reads back what the world returns — then reasons again.</p>
+        <p>Three steps repeat until the question is answered. <em>THINK</em> selects an action and justifies it in natural language. <em>ACT</em> emits a structured tool call. <em>OBSERVE</em> injects the tool's return into context.</p>
+        <p>What makes this a controller and not a pipeline is the third step: OBSERVE does not terminate, it returns to THINK.</p>
+      </div>
+      <div class="s2-caption"><span class="figlabel">FIG. 1</span>The basic loop. Note that OBSERVE returns to THINK; this is what makes the architecture a controller, not a pipeline.</div>
+    </div>
+    <div class="s2-right grid-bg">
+      <div class="s2-diagram">
+        <div class="s2-node think">THINK<span class="sub">reason · select action</span></div>
+        <div class="s2-arrow a1"><span class="line"></span><span class="tag">↓ dispatch</span></div>
+        <div class="s2-node">ACT<span class="sub">emit tool call</span></div>
+        <div class="s2-arrow a1"><span class="line"></span><span class="tag">↓ execute</span></div>
+        <div class="s2-node">OBSERVE<span class="sub">read return · inject</span></div>
+        <div class="s2-arrow a2"><span class="line"></span><span class="tag">↑ returns to THINK</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== SLIDE 3 ===================== -->
+<section class="slide">
+  <div class="corner-mark"><span class="dot"></span>§ 2 · A WORKED TRACE</div>
+  <div class="corner-page">03 / 07</div>
+  <div class="s3">
+    <div class="s3-head">
+      <div class="sect-head" style="margin-bottom:0">
+        <span class="sect-num">§ 2</span>
+        <h2 class="sect-title">A Worked Trace</h2>
+      </div>
+      <div class="s3-query"><span class="qtag">QUERY:</span><span class="qtext">"What was the closing price of NVDA the day after Jensen Huang's 2024 keynote?"</span></div>
+    </div>
+    <div class="s3-body">
+      <div class="s3-trace">
+        <div class="s3-step"><span class="idx">01</span><span class="kind thought">THOUGHT</span><span class="txt">The query hinges on two dates: the keynote and the trading day that follows. I need the keynote date first.</span></div>
+        <div class="s3-step"><span class="idx">02</span><span class="kind action">ACTION</span><span class="txt"><code>search("Jensen Huang 2024 keynote date")</code></span></div>
+        <div class="s3-step"><span class="idx">03</span><span class="kind obs">OBSERV.</span><span class="txt">"NVIDIA GTC 2024 keynote, March 18, 2024, San Jose."</span></div>
+        <div class="s3-step"><span class="idx">04</span><span class="kind thought">THOUGHT</span><span class="txt">March 18 was a Monday. The closing price I want is for Tuesday, March 19, 2024 — the trading day after.</span></div>
+        <div class="s3-step"><span class="idx">05</span><span class="kind action">ACTION</span><span class="txt"><code>market.close("NVDA", "2024-03-19")</code></span></div>
+        <div class="s3-step"><span class="idx">06</span><span class="kind obs">OBSERV.</span><span class="txt">"NVDA close 2024-03-19: $117.59 (adjusted)."</span></div>
+        <div class="s3-step"><span class="idx">07</span><span class="kind thought">THOUGHT</span><span class="txt">I have both anchors — keynote date and the following close — so the query is fully resolved.</span></div>
+        <div class="s3-step"><span class="idx">08</span><span class="kind action">ACTION</span><span class="txt"><code>answer("$117.59, on 2024-03-19, the day after GTC.")</code></span></div>
+      </div>
+      <div class="s3-annotations">
+        <div class="ann-lbl">MARGIN ANNOTATIONS</div>
+        <div class="ann"><span class="step">STEP 01 · DECOMPOSITION</span>The agent names its unknowns before reaching for a tool — this is the reasoning tax that buys interpretability.</div>
+        <div class="ann"><span class="step">STEP 04 · GROUNDING CHECK</span>A calendar fact becomes a constraint on the next action; without it the date would be off by a weekend.</div>
+        <div class="ann"><span class="step">STEP 07 · TERMINATION</span>The loop closes when the agent can state what it now knows, not when it runs out of steps.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== SLIDE 4 ===================== -->
+<section class="slide">
+  <div class="corner-mark"><span class="dot"></span>§ 3 · FOUR ARCHITECTURES</div>
+  <div class="corner-page">04 / 07</div>
+  <div class="s4">
+    <div class="s4-head sect-head">
+      <span class="sect-num">§ 3</span>
+      <h2 class="sect-title">Four Architectures</h2>
+    </div>
+    <div class="s4-grid">
+      <!-- REACT -->
+      <div class="s4-cell">
+        <div class="cell-head"><span class="cell-name">REACT</span><span class="cell-tag">BASELINE</span></div>
+        <div class="cell-diagram">
+          <svg class="mini-svg" viewBox="0 0 220 130" preserveAspectRatio="xMidYMid meet">
+            <rect class="think" x="80" y="10" width="60" height="22"/><text x="110" y="25" text-anchor="middle">THINK</text>
+            <line x1="110" y1="32" x2="110" y2="48"/><polygon class="term" points="106,46 114,46 110,52"/>
+            <rect x="80" y="52" width="60" height="22"/><text x="110" y="67" text-anchor="middle">ACT</text>
+            <line x1="110" y1="74" x2="110" y2="90"/><polygon class="term" points="106,88 114,88 110,94"/>
+            <rect x="80" y="94" width="60" height="22"/><text x="110" y="109" text-anchor="middle">OBSERVE</text>
+            <path class="dashed" d="M 80 105 L 30 105 L 30 21 L 78 21"/><polygon class="term" points="76,17 76,25 82,21"/>
+          </svg>
+        </div>
+        <div class="cell-cap">The canonical loop. <em>THINK → ACT → OBSERVE</em>, returning to THINK.</div>
+      </div>
+      <!-- REFLEXION -->
+      <div class="s4-cell">
+        <div class="cell-head"><span class="cell-name">REFLEXION</span><span class="cell-tag">+ MEMORY</span></div>
+        <div class="cell-diagram">
+          <svg class="mini-svg" viewBox="0 0 220 130" preserveAspectRatio="xMidYMid meet">
+            <rect x="20" y="50" width="60" height="22"/><text x="50" y="65" text-anchor="middle">MEMORY</text>
+            <rect class="think" x="120" y="10" width="60" height="22"/><text x="150" y="25" text-anchor="middle">THINK</text>
+            <line x1="150" y1="32" x2="150" y2="48"/><polygon class="term" points="146,46 154,46 150,52"/>
+            <rect x="120" y="52" width="60" height="22"/><text x="150" y="67" text-anchor="middle">ACT</text>
+            <line x1="150" y1="74" x2="150" y2="90"/><polygon class="term" points="146,88 154,88 150,94"/>
+            <rect x="120" y="94" width="60" height="22"/><text x="150" y="109" text-anchor="middle">OBSERVE</text>
+            <line x1="80" y1="61" x2="118" y2="21"/><polygon class="term" points="116,16 120,24 124,17"/>
+            <line x1="150" y1="116" x2="150" y2="122"/>
+            <line x1="150" y1="122" x2="50" y2="122"/>
+            <line x1="50" y1="122" x2="50" y2="74"/><polygon class="term" points="46,76 54,76 50,70"/>
+          </svg>
+        </div>
+        <div class="cell-cap">Adds a <em>MEMORY</em> node: prior trials feed back into THINK.</div>
+      </div>
+      <!-- PLAN-AND-EXECUTE -->
+      <div class="s4-cell">
+        <div class="cell-head"><span class="cell-name">PLAN-AND-EXECUTE</span><span class="cell-tag">+ PLAN</span></div>
+        <div class="cell-diagram">
+          <svg class="mini-svg" viewBox="0 0 220 130" preserveAspectRatio="xMidYMid meet">
+            <rect x="80" y="6" width="60" height="22"/><text x="110" y="21" text-anchor="middle">PLAN</text>
+            <line x1="110" y1="28" x2="110" y2="44"/><polygon class="term" points="106,42 114,42 110,48"/>
+            <rect class="think" x="80" y="48" width="60" height="22"/><text x="110" y="63" text-anchor="middle">THINK</text>
+            <line x1="110" y1="70" x2="110" y2="78"/><polygon class="term" points="106,76 114,76 110,82"/>
+            <rect x="80" y="82" width="60" height="22"/><text x="110" y="97" text-anchor="middle">ACT</text>
+            <line x1="110" y1="104" x2="110" y2="106"/>
+            <path class="dashed" d="M 80 59 L 30 59 L 30 59"/>
+            <path class="dashed" d="M 140 93 L 195 93 L 195 59 L 142 59"/><polygon class="term" points="146,55 146,63 140,59"/>
+          </svg>
+        </div>
+        <div class="cell-cap">A <em>PLAN</em> node feeds the cycle; steps are executed against the plan.</div>
+      </div>
+      <!-- TREE-OF-THOUGHTS -->
+      <div class="s4-cell">
+        <div class="cell-head"><span class="cell-name">TREE-OF-THOUGHTS</span><span class="cell-tag">BRANCHED THINK</span></div>
+        <div class="cell-diagram">
+          <svg class="mini-svg" viewBox="0 0 220 130" preserveAspectRatio="xMidYMid meet">
+            <rect class="think" x="80" y="10" width="60" height="22"/><text x="110" y="25" text-anchor="middle">THINK</text>
+            <line x1="100" y1="32" x2="60" y2="50"/><line x1="120" y1="32" x2="160" y2="50"/>
+            <rect class="think" x="30" y="50" width="60" height="22"/><text x="60" y="65" text-anchor="middle">THINK</text>
+            <rect class="think" x="130" y="50" width="60" height="22"/><text x="160" y="65" text-anchor="middle">THINK</text>
+            <line x1="60" y1="72" x2="100" y2="90"/><line x1="160" y1="72" x2="120" y2="90"/>
+            <polygon class="term" points="96,86 104,86 100,92"/><polygon class="term" points="116,86 124,86 120,92"/>
+            <rect x="80" y="92" width="60" height="22"/><text x="110" y="107" text-anchor="middle">ACT</text>
+          </svg>
+        </div>
+        <div class="cell-cap">Branches <em>THINK</em> into two children; the winner is acted on.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== SLIDE 5 ===================== -->
+<section class="slide">
+  <div class="corner-mark"><span class="dot"></span>§ 4 · WHERE LOOPS FAIL</div>
+  <div class="corner-page">05 / 07</div>
+  <div class="s5">
+    <div class="s5-left">
+      <div class="sect-head">
+        <span class="sect-num">§ 4</span>
+        <h2 class="sect-title">Where Loops Fail</h2>
+      </div>
+      <div class="s5-body">
+        <p>Every iteration of the loop appends to the same context: the prior thought, the action, and the full return. By step twenty a modest agent has accumulated tens of thousands of tokens.</p>
+        <p>Models do not run out of capability in long loops — they run out of <em>attention</em>. The signal that mattered at step three is still in context, but the model has stopped reading it. This is the failure mode that no prompt template fixes.</p>
+      </div>
+      <div class="s5-footnote">FIG. 2 · TOKENS vs. ITER · n=1 run, observed</div>
+    </div>
+    <div class="s5-right">
+      <div class="s5-chart-head">
+        <div class="ttl"><span>TOKENS</span> · CONTEXT LENGTH</div>
+        <div class="ttl" style="opacity:.5">LOG-LINEAR</div>
+      </div>
+      <div class="s5-chart">
+        <svg viewBox="0 0 420 240" preserveAspectRatio="none">
+          <!-- axes -->
+          <line x1="50" y1="20" x2="50" y2="200" stroke="rgba(244,240,228,.4)" stroke-width="1"/>
+          <line x1="50" y1="200" x2="400" y2="200" stroke="rgba(244,240,228,.4)" stroke-width="1"/>
+          <!-- y ticks -->
+          <g font-family="IBM Plex Mono, monospace" font-size="9" fill="rgba(244,240,228,.55)" letter-spacing="0.08em">
+            <line x1="46" y1="200" x2="50" y2="200" stroke="rgba(244,240,228,.4)"/><text x="42" y="203" text-anchor="end">0</text>
+            <line x1="46" y1="155" x2="50" y2="155" stroke="rgba(244,240,228,.4)"/><text x="42" y="158" text-anchor="end">12k</text>
+            <line x1="46" y1="110" x2="50" y2="110" stroke="rgba(244,240,228,.4)"/><text x="42" y="113" text-anchor="end">24k</text>
+            <line x1="46" y1="65" x2="50" y2="65" stroke="rgba(244,240,228,.4)"/><text x="42" y="68" text-anchor="end">36k</text>
+            <line x1="46" y1="20" x2="50" y2="20" stroke="rgba(244,240,228,.4)"/><text x="42" y="23" text-anchor="end">48k</text>
+          </g>
+          <!-- x ticks: 0,5,10,15,20,25 -->
+          <g font-family="IBM Plex Mono, monospace" font-size="9" fill="rgba(244,240,228,.55)" letter-spacing="0.08em">
+            <line x1="50" y1="200" x2="50" y2="204" stroke="rgba(244,240,228,.4)"/><text x="50" y="216" text-anchor="middle">0</text>
+            <line x1="120" y1="200" x2="120" y2="204" stroke="rgba(244,240,228,.4)"/><text x="120" y="216" text-anchor="middle">5</text>
+            <line x1="190" y1="200" x2="190" y2="204" stroke="rgba(244,240,228,.4)"/><text x="190" y="216" text-anchor="middle">10</text>
+            <line x1="260" y1="200" x2="260" y2="204" stroke="rgba(244,240,228,.4)"/><text x="260" y="216" text-anchor="middle">15</text>
+            <line x1="330" y1="200" x2="330" y2="204" stroke="rgba(244,240,228,.4)"/><text x="330" y="216" text-anchor="middle">20</text>
+            <line x1="400" y1="200" x2="400" y2="204" stroke="rgba(244,240,228,.4)"/><text x="400" y="216" text-anchor="middle">25</text>
+          </g>
+          <text x="225" y="232" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="9" fill="rgba(244,240,228,.55)" letter-spacing="0.12em">ITER</text>
+          <text x="20" y="110" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="9" fill="rgba(244,240,228,.55)" letter-spacing="0.12em" transform="rotate(-90 20 110)">TOKENS</text>
+          <!-- curve rising and inflecting upward: roughly quadratic-ish -->
+          <path d="M 50,196 Q 120,191 190,180 Q 240,170 260,150 Q 280,125 300,90 Q 320,55 360,30 Q 380,22 400,18" stroke="#C3402A" stroke-width="2" fill="none"/>
+          <!-- inflection marker around iter 15-18 -->
+          <line x1="290" y1="200" x2="290" y2="100" stroke="rgba(195,64,42,.4)" stroke-dasharray="3 3"/>
+          <circle cx="290" cy="100" r="4" fill="#C3402A"/>
+          <circle cx="290" cy="100" r="9" fill="none" stroke="#C3402A" stroke-width="1"/>
+        </svg>
+        <div class="s5-anno">Most production agents fail somewhere in this region — not because the model is incapable, but because the context has become longer than the model's effective attention.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== SLIDE 6 ===================== -->
+<section class="slide">
+  <div class="corner-mark"><span class="dot"></span>§ 5 · THE LOOP, IN CODE</div>
+  <div class="corner-page">06 / 07</div>
+  <div class="s6">
+    <div class="s6-left">
+      <div class="sect-head">
+        <span class="sect-num">§ 5</span>
+        <h2 class="sect-title">The Loop, in Code</h2>
+      </div>
+      <div class="s6-code"><span class="com"># minimal ReAct — twenty-five lines, no framework</span>
+<span class="kw">def</span> <span class="fn">react</span>(question, tools, model, max_iter=<span class="var">12</span>):
+    ctx = system_prompt(question, tools)
+    <span class="kw">for</span> step <span class="kw">in</span> <span class="fn">range</span>(max_iter):
+        <span class="com"># THINK — reason about the next move</span>
+        thought, action = model.complete(ctx).parse()
+        ctx.append({<span class="str">"role"</span>: <span class="str">"assistant"</span>, <span class="str">"content"</span>: thought})
+
+        <span class="kw">if</span> action.terminal:
+            <span class="kw">return</span> action.answer
+
+        <span class="com"># ACT — dispatch the chosen tool</span>
+        result = tools[action.name](**action.args)
+
+        <span class="com"># OBSERVE — inject the return, loop resumes</span>
+        ctx.append({<span class="str">"role"</span>: <span class="str">"tool"</span>, <span class="str">"name"</span>: action.name,
+                    <span class="str">"content"</span>: <span class="fn">str</span>(result)})
+    <span class="kw">raise</span> <span class="fn">LoopExhausted</span>(step)</div>
+      <div class="s6-remark"><span class="lbl">CLOSING</span>The structure strictly interleaves reasoning and action. Forcing the model to externalize its thought before acting gives the system interpretability and reduces hallucinated state changes.</div>
+    </div>
+    <div class="s6-right">
+      <div class="s6-ann">
+        <span class="num">01</span>
+        <div class="body"><strong>THINK STEP</strong>One model call per iteration; the thought is parsed, not just emitted — the system reads its intent back.</div>
+      </div>
+      <div class="s6-ann">
+        <span class="num">02</span>
+        <div class="body"><strong>ACT STEP</strong>Tools are plain callables keyed by name. No schema, no plugin registry: the dispatch surface stays inspectable.</div>
+      </div>
+      <div class="s6-ann">
+        <span class="num">03</span>
+        <div class="body"><strong>OBSERVE STEP</strong>The return is re-injected under a <code style="font-family:'IBM Plex Mono',monospace;color:#E5DCC8">tool</code> role — the loop continues, context grows, attention thins.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== SLIDE 7 ===================== -->
+<section class="slide s7">
+  <div class="corner-mark"><span class="dot"></span>§ 6 · ENDING</div>
+  <div class="corner-page">07 / 07</div>
+  <div class="s7-left">
+    <div class="s7-mark">§ 6 · CLOSING</div>
+    <div class="s7-close">The architecture is the <em>loop</em>. Everything else is a refinement of how the loop decides what to do next.</div>
+    <div class="s7-foot"><span>END · 14 OCT 2026</span><span>REYES · INSTITUTE FOR SYSTEMS LOGIC</span></div>
+  </div>
+  <div class="s7-right">
+    <div class="s7-ref-head">REFERENCES</div>
+    <div class="s7-ref"><span class="num">[01]</span><div class="cite">Smith et al. (1983). <em>The Cybernetic Loop.</em> J. Systems Cybernetics, 11(3), 201–219.</div></div>
+    <div class="s7-ref"><span class="num">[02]</span><div class="cite">Yao, S. et al. (2023). <em>ReAct: Synergizing Reasoning and Acting in Language Models.</em> arXiv:2210.03629.</div></div>
+    <div class="s7-ref"><span class="num">[03]</span><div class="cite">Shinn, N. et al. (2023). <em>Reflexion: Language Agents with Verbal Reinforcement Learning.</em> arXiv:2303.11366.</div></div>
+  </div>
+</section>
+
+</body>
+</html>

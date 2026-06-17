@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Kettle &amp; Leaf</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400&family=Libre+Franklin:wght@700&family=Source+Serif+4:wght@400&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary: #1B1B1B;
+      --secondary: #6E675C;
+      --tertiary: #E8590C;
+      --neutral: #F4EFE6;
+      --sm: 8px;
+      --md: 16px;
+      --lg: 32px;
+      --xl: 64px;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      background: var(--neutral);
+      color: var(--primary);
+      font-family: "Source Serif 4", serif;
+      font-size: 16px;
+      font-weight: 400;
+      line-height: 1.65;
+    }
+
+    .page {
+      width: min(1120px, calc(100% - 128px));
+      margin: 0 auto;
+      padding: var(--xl) 0 var(--lg);
+    }
+
+    header {
+      padding: var(--xl) 0;
+      border-bottom: 1px solid rgba(110, 103, 92, 0.28);
+    }
+
+    .eyebrow {
+      margin: 0 0 var(--md);
+      font-family: "IBM Plex Mono", monospace;
+      font-size: 12px;
+      font-weight: 400;
+      line-height: 1.4;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--tertiary);
+    }
+
+    h1 {
+      margin: 0;
+      max-width: 720px;
+      font-family: "Libre Franklin", sans-serif;
+      font-size: 44px;
+      font-weight: 700;
+      line-height: 1.05;
+      letter-spacing: -0.01em;
+      color: var(--primary);
+    }
+
+    .welcome {
+      max-width: 560px;
+      margin: var(--lg) 0 0;
+      color: var(--secondary);
+    }
+
+    main {
+      padding: var(--xl) 0;
+    }
+
+    .section {
+      margin-bottom: var(--xl);
+    }
+
+    .section-header {
+      margin-bottom: var(--lg);
+    }
+
+    h2 {
+      margin: 0;
+      font-family: "IBM Plex Mono", monospace;
+      font-size: 12px;
+      font-weight: 400;
+      line-height: 1.4;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--secondary);
+    }
+
+    .tea-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: var(--lg);
+    }
+
+    .tea-card {
+      padding-top: var(--md);
+      border-top: 1px solid rgba(110, 103, 92, 0.35);
+    }
+
+    .tea-card h3 {
+      margin: 0 0 var(--sm);
+      font-family: "Libre Franklin", sans-serif;
+      font-size: 24px;
+      font-weight: 700;
+      line-height: 1.05;
+      letter-spacing: -0.01em;
+      color: var(--primary);
+    }
+
+    .origin {
+      margin: 0 0 var(--md);
+      font-family: "IBM Plex Mono", monospace;
+      font-size: 12px;
+      font-weight: 400;
+      line-height: 1.4;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--tertiary);
+    }
+
+    .note {
+      margin: 0;
+      color: var(--secondary);
+    }
+
+    .two-column {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: var(--xl);
+      align-items: start;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      color: var(--primary);
+      font-family: "Source Serif 4", serif;
+      font-size: 16px;
+      font-weight: 400;
+      line-height: 1.65;
+    }
+
+    th {
+      text-align: left;
+      font-family: "IBM Plex Mono", monospace;
+      font-size: 12px;
+      font-weight: 400;
+      line-height: 1.4;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--secondary);
+      padding: 0 0 var(--sm);
+      border-bottom: 1px solid rgba(110, 103, 92, 0.35);
+    }
+
+    td {
+      padding: var(--sm) 0;
+      border-bottom: 1px solid rgba(110, 103, 92, 0.18);
+    }
+
+    td:last-child,
+    th:last-child {
+      text-align: right;
+    }
+
+    .story p {
+      margin: 0;
+      color: var(--primary);
+    }
+
+    .map-line {
+      padding: var(--lg) 0;
+      border-top: 1px solid rgba(110, 103, 92, 0.28);
+      border-bottom: 1px solid rgba(110, 103, 92, 0.28);
+      display: flex;
+      justify-content: space-between;
+      gap: var(--lg);
+      align-items: baseline;
+    }
+
+    .map-line span:first-child {
+      font-family: "IBM Plex Mono", monospace;
+      font-size: 12px;
+      font-weight: 400;
+      line-height: 1.4;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--secondary);
+    }
+
+    .map-line span:last-child {
+      color: var(--primary);
+    }
+
+    footer {
+      padding-top: var(--lg);
+      display: flex;
+      justify-content: space-between;
+      gap: var(--lg);
+      color: var(--secondary);
+    }
+
+    footer p {
+      margin: 0;
+    }
+
+    .footer-label {
+      display: block;
+      margin-bottom: var(--sm);
+      font-family: "IBM Plex Mono", monospace;
+      font-size: 12px;
+      font-weight: 400;
+      line-height: 1.4;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--primary);
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <header>
+      <p class="eyebrow">Neighborhood tea house</p>
+      <h1>Kettle &amp; Leaf</h1>
+      <p class="welcome">Welcome in for carefully brewed teas, quiet tables, and a warm cup by the window.</p>
+    </header>
+
+    <main>
+      <section class="section" aria-labelledby="today-teas">
+        <div class="section-header">
+          <h2 id="today-teas">Today’s brewed teas</h2>
+        </div>
+        <div class="tea-grid">
+          <article class="tea-card">
+            <h3>Alishan Oolong</h3>
+            <p class="origin">Chiayi County, Taiwan</p>
+            <p class="note">Soft orchid aroma with cream, green pear, and a clean mountain finish.</p>
+          </article>
+          <article class="tea-card">
+            <h3>Nandi Hills Black</h3>
+            <p class="origin">Nandi County, Kenya</p>
+            <p class="note">Bright copper cup with malt, baked plum, and a gentle citrus lift.</p>
+          </article>
+          <article class="tea-card">
+            <h3>Hōjicha</h3>
+            <p class="origin">Uji, Japan</p>
+            <p class="note">Toasted grain, chestnut, and light caramel with a mellow roasted depth.</p>
+          </article>
+        </div>
+      </section>
+
+      <section class="section two-column" aria-label="Quiet hours and sourcing">
+        <div>
+          <div class="section-header">
+            <h2>Weekly quiet hours</h2>
+          </div>
+          <table>
+            <thead>
+              <tr>
+                <th>Day</th>
+                <th>Quiet hours</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Monday</td>
+                <td>8:00–10:00 AM</td>
+              </tr>
+              <tr>
+                <td>Wednesday</td>
+                <td>2:00–4:00 PM</td>
+              </tr>
+              <tr>
+                <td>Friday</td>
+                <td>9:00–11:00 AM</td>
+              </tr>
+              <tr>
+                <td>Sunday</td>
+                <td>3:00–5:00 PM</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="story">
+          <div class="section-header">
+            <h2>From the owner</h2>
+          </div>
+          <p>Each year, owner Mara Lin travels to small farms in Taiwan and Kenya to taste new harvests, sit with growers, and bring back teas that carry the weather, soil, and patient craft of the people who made them.</p>
+        </div>
+      </section>
+
+      <section class="map-line" aria-label="Map and address">
+        <span>Map</span>
+        <span>412 Maple Row</span>
+      </section>
+    </main>
+
+    <footer>
+      <p>
+        <span class="footer-label">Hours</span>
+        Monday–Friday 7:30 AM–6:00 PM · Saturday–Sunday 8:00 AM–5:00 PM
+      </p>
+      <p>
+        <span class="footer-label">Phone</span>
+        (555) 412-8060
+      </p>
+    </footer>
+  </div>
+</body>
+</html>

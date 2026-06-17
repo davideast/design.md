@@ -1,0 +1,992 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Agent Architecture — A technical talk in seven slides</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Source+Serif+4:opsz,wght@8..60,400;8..60,500;8..60,600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --primary:#1E1A14;
+  --secondary:#B8B0A2;
+  --tertiary:#C3402A;
+  --neutral:#F4F0E4;
+  --ink-soft:rgba(30,26,20,0.72);
+  --ink-faint:rgba(30,26,20,0.55);
+  --ink-ghost:rgba(30,26,20,0.32);
+  --paper-deep:#ECE5D2;
+  --paper-warm:#EBE3D0;
+}
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+html,body{background:var(--primary)}
+body{
+  font-family:"Source Serif 4",Georgia,serif;
+  color:var(--primary);
+  -webkit-font-smoothing:antialiased;
+  -moz-osx-font-smoothing:grayscale;
+  display:flex;flex-direction:column;align-items:center;
+  padding:36px 0 60px;gap:32px;
+}
+.slide{
+  width:1280px;height:720px;
+  background:var(--neutral);
+  position:relative;overflow:hidden;
+  box-shadow:0 24px 60px rgba(0,0,0,0.45),0 0 0 1px rgba(0,0,0,0.18);
+  font-feature-settings:"liga","kern";
+}
+.slide::before{
+  content:'';position:absolute;inset:0;pointer-events:none;z-index:1;
+  background:
+    radial-gradient(ellipse at 30% 20%, rgba(30,26,20,0.022) 0%, transparent 55%),
+    radial-gradient(ellipse at 75% 80%, rgba(195,64,42,0.018) 0%, transparent 55%),
+    radial-gradient(ellipse at 50% 50%, transparent 70%, rgba(30,26,20,0.04) 100%);
+}
+.slide::after{
+  content:'';position:absolute;inset:0;pointer-events:none;z-index:3;
+  background-image:
+    linear-gradient(rgba(30,26,20,0.018) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(30,26,20,0.018) 1px, transparent 1px);
+  background-size:48px 48px;
+  opacity:0.55;
+}
+.slide > *{position:relative;z-index:2}
+
+/* === Common typography === */
+.display{
+  font-family:"Fraunces",serif;font-weight:500;font-size:54px;line-height:1.1;letter-spacing:0.01em;
+}
+.body-md{
+  font-family:"Source Serif 4",serif;font-weight:400;font-size:17px;line-height:1.62;
+}
+.code{
+  font-family:"IBM Plex Mono",monospace;font-weight:400;font-size:14px;line-height:1.5;
+}
+.label-sm{
+  font-family:"IBM Plex Mono",monospace;font-weight:400;font-size:12px;line-height:1.4;letter-spacing:0.08em;
+  text-transform:uppercase;
+}
+
+/* === Slide chrome === */
+.slide-no{
+  position:absolute;top:36px;right:48px;
+  font-family:"IBM Plex Mono",monospace;font-size:11px;letter-spacing:0.22em;
+  color:var(--ink-faint);text-transform:uppercase;
+}
+.slide-no .of{margin:0 4px;opacity:0.5}
+
+.slide-chapter-mark{
+  position:absolute;top:36px;left:48px;width:22px;height:22px;z-index:5;
+}
+.slide-chapter-mark svg{width:100%;height:100%;display:block;overflow:visible}
+
+/* ===== SLIDE 1 — TITLE ===== */
+.s1{
+  padding:96px 96px 72px 96px;
+  display:grid;grid-template-columns:1fr 1fr;align-items:end;gap:48px;
+}
+.s1-top{
+  position:absolute;top:56px;left:96px;right:96px;
+  display:flex;justify-content:space-between;align-items:center;
+  font-family:"IBM Plex Mono",monospace;font-size:11px;letter-spacing:0.18em;
+  text-transform:uppercase;color:var(--ink-faint);
+}
+.s1-top .right{display:flex;gap:32px}
+.s1-main{padding-bottom:24px}
+.s1-eyebrow{
+  font-family:"IBM Plex Mono",monospace;font-size:11px;letter-spacing:0.22em;
+  text-transform:uppercase;color:var(--ink-faint);margin-bottom:36px;
+  display:flex;align-items:center;gap:14px;
+}
+.s1-eyebrow::after{
+  content:'';flex:0 0 60px;height:1px;background:var(--secondary);
+}
+.s1-title{
+  font-family:"Fraunces",serif;font-weight:500;
+  font-size:124px;line-height:0.95;letter-spacing:-0.02em;
+  color:var(--primary);
+}
+.s1-title .amp{font-style:italic;font-weight:400;color:var(--ink-soft)}
+.s1-standfirst{
+  font-family:"Source Serif 4",serif;font-size:22px;line-height:1.4;
+  color:var(--ink-soft);max-width:460px;margin-top:32px;
+  font-style:italic;
+}
+.s1-right{
+  display:flex;flex-direction:column;align-items:flex-end;justify-content:flex-end;
+  height:100%;
+}
+.s1-loop-mark{width:240px;height:240px;margin-bottom:64px;position:relative}
+.s1-loop-mark svg{width:100%;height:100%;overflow:visible}
+.s1-meta{
+  font-family:"IBM Plex Mono",monospace;font-size:12px;letter-spacing:0.08em;
+  text-transform:uppercase;color:var(--ink-soft);text-align:right;line-height:1.7;
+}
+.s1-meta .speaker{
+  font-family:"Fraunces",serif;font-size:18px;letter-spacing:0.01em;
+  text-transform:none;font-weight:500;color:var(--primary);margin-bottom:4px;
+  font-style:normal;
+}
+.s1-bottom-rule{
+  position:absolute;left:96px;right:96px;bottom:56px;height:1px;background:var(--secondary);
+  opacity:0.5;
+}
+.s1-bottom-meta{
+  position:absolute;left:96px;right:96px;bottom:24px;
+  display:flex;justify-content:space-between;
+  font-family:"IBM Plex Mono",monospace;font-size:10px;letter-spacing:0.2em;
+  text-transform:uppercase;color:var(--ink-ghost);
+}
+
+/* ===== SLIDE 2 — THE LOOP ===== */
+.s2{padding:80px 96px 72px}
+.s2-header{
+  display:flex;align-items:baseline;gap:28px;margin-bottom:56px;
+}
+.s2-section{
+  font-family:"IBM Plex Mono",monospace;font-size:12px;letter-spacing:0.16em;
+  text-transform:uppercase;color:var(--tertiary);font-weight:500;
+}
+.s2-section .num{color:var(--ink-faint);margin-right:10px}
+.s2-h1{
+  font-family:"Fraunces",serif;font-weight:500;font-size:64px;line-height:1;
+  letter-spacing:-0.015em;color:var(--primary);
+}
+.s2-body{
+  display:grid;grid-template-columns:1.05fr 1fr;gap:72px;align-items:start;
+}
+.s2-prose{max-width:440px;padding-top:8px}
+.s2-prose p{
+  font-family:"Source Serif 4",serif;font-size:17px;line-height:1.62;
+  color:var(--primary);margin-bottom:1em;
+}
+.s2-prose p:last-child{margin-bottom:0}
+.s2-prose .drop{
+  font-family:"Fraunces",serif;font-size:46px;line-height:0.9;float:left;
+  margin:6px 10px -2px 0;color:var(--tertiary);font-weight:500;
+}
+.s2-figure{display:flex;flex-direction:column;align-items:center}
+.s2-loop{width:380px;height:380px;position:relative}
+.s2-loop svg{width:100%;height:100%;overflow:visible}
+.s2-caption{
+  font-family:"Source Serif 4",serif;font-size:13px;line-height:1.55;
+  color:var(--ink-soft);max-width:340px;text-align:center;margin-top:28px;
+  font-style:italic;
+}
+.s2-caption .figtag{
+  font-family:"IBM Plex Mono",monospace;font-size:11px;letter-spacing:0.08em;
+  text-transform:uppercase;color:var(--ink-faint);font-style:normal;
+  margin-right:6px;
+}
+
+/* ===== SLIDE 3 — WORKED TRACE ===== */
+.s3{padding:72px 96px 64px}
+.s3-header{margin-bottom:24px;display:flex;align-items:baseline;gap:28px}
+.s3-h1{
+  font-family:"Fraunces",serif;font-weight:500;font-size:54px;line-height:1;
+  letter-spacing:-0.015em;
+}
+.s3-query{
+  background:var(--primary);color:var(--neutral);
+  padding:18px 28px;margin-bottom:28px;
+  display:flex;align-items:baseline;gap:18px;
+  position:relative;
+}
+.s3-query::before{
+  content:'';position:absolute;left:0;top:0;bottom:0;width:4px;background:var(--tertiary);
+}
+.s3-query .qlabel{
+  font-family:"IBM Plex Mono",monospace;font-size:11px;letter-spacing:0.18em;
+  text-transform:uppercase;color:var(--secondary);
+}
+.s3-query .qtext{
+  font-family:"Source Serif 4",serif;font-size:17px;line-height:1.4;font-style:italic;
+  color:var(--neutral);
+}
+.s3-trace{
+  display:grid;grid-template-columns:1fr 220px;gap:0;
+  font-family:"IBM Plex Mono",monospace;font-size:13px;line-height:1.55;
+}
+.s3-step{
+  display:grid;grid-template-columns:44px 1fr;gap:14px;
+  padding:8px 0 8px 0;border-bottom:1px solid rgba(184,176,162,0.4);
+  align-items:baseline;
+}
+.s3-step:last-child{border-bottom:none}
+.s3-step .n{color:var(--ink-ghost);font-size:11px;letter-spacing:0.08em}
+.s3-step .content{display:grid;grid-template-columns:88px 1fr;gap:16px;align-items:baseline}
+.s3-step .kind{
+  font-family:"IBM Plex Mono",monospace;font-size:11px;letter-spacing:0.14em;
+  text-transform:uppercase;font-weight:500;
+  color:var(--tertiary);
+}
+.s3-step.kind-observation .kind{color:var(--ink-soft)}
+.s3-step.kind-thought .kind{color:var(--primary)}
+.s3-step .text{
+  font-family:"Source Serif 4",serif;font-size:14px;line-height:1.5;color:var(--primary);
+}
+.s3-step.kind-observation .text{color:var(--ink-soft);font-style:italic}
+.s3-step .text .arg{color:var(--ink-faint)}
+.s3-step .margin{
+  font-family:"Source Serif 4",serif;font-size:12px;line-height:1.4;
+  color:var(--ink-faint);font-style:italic;padding-right:24px;
+  border-left:1px solid rgba(184,176,162,0.5);padding-left:16px;
+  align-self:start;padding-top:2px;
+}
+
+/* ===== SLIDE 4 — FOUR ARCHITECTURES ===== */
+.s4{padding:72px 80px 64px}
+.s4-header{display:flex;align-items:baseline;gap:28px;margin-bottom:36px}
+.s4-h1{
+  font-family:"Fraunces",serif;font-weight:500;font-size:54px;line-height:1;
+  letter-spacing:-0.015em;
+}
+.s4-grid{
+  display:grid;grid-template-columns:1fr 1fr;grid-template-rows:1fr 1fr;
+  gap:0;border-top:1px solid var(--secondary);border-left:1px solid var(--secondary);
+}
+.s4-cell{
+  border-right:1px solid var(--secondary);border-bottom:1px solid var(--secondary);
+  padding:22px 24px 18px;
+  display:grid;grid-template-columns:160px 1fr;gap:18px;align-items:center;
+  position:relative;
+}
+.s4-cell-label{
+  position:absolute;top:14px;left:24px;
+  font-family:"IBM Plex Mono",monospace;font-size:11px;letter-spacing:0.16em;
+  text-transform:uppercase;color:var(--primary);font-weight:500;
+}
+.s4-cell-label .ord{
+  color:var(--ink-ghost);margin-right:8px;
+}
+.s4-cell-figure{
+  margin-top:24px;width:160px;height:130px;
+}
+.s4-cell-figure svg{width:100%;height:100%;overflow:visible}
+.s4-cell-caption{
+  font-family:"Source Serif 4",serif;font-size:13px;line-height:1.5;
+  color:var(--ink-soft);padding-top:24px;
+  font-style:italic;
+}
+.s4-cell-caption .figtag{
+  font-family:"IBM Plex Mono",monospace;font-size:10px;letter-spacing:0.08em;
+  text-transform:uppercase;color:var(--ink-faint);font-style:normal;
+  margin-right:6px;display:block;margin-bottom:4px;letter-spacing:0.14em;
+}
+
+/* ===== SLIDE 5 — WHERE LOOPS FAIL ===== */
+.s5{padding:72px 96px 64px}
+.s5-header{display:flex;align-items:baseline;gap:28px;margin-bottom:32px}
+.s5-h1{
+  font-family:"Fraunces",serif;font-weight:500;font-size:54px;line-height:1;
+  letter-spacing:-0.015em;
+}
+.s5-body{
+  display:grid;grid-template-columns:1fr 1.35fr;gap:64px;align-items:start;
+}
+.s5-prose{padding-top:6px;max-width:380px}
+.s5-prose p{
+  font-family:"Source Serif 4",serif;font-size:17px;line-height:1.62;color:var(--primary);
+}
+.s5-chart-wrap{position:relative}
+.s5-chart{width:100%;height:340px;position:relative}
+.s5-chart svg{width:100%;height:100%;overflow:visible}
+.s5-chart-annotation{
+  font-family:"Source Serif 4",serif;font-size:13px;line-height:1.5;
+  color:var(--primary);max-width:280px;margin-top:8px;font-style:italic;
+  padding-left:14px;border-left:2px solid var(--tertiary);
+}
+.s5-chart-annotation .figtag{
+  font-family:"IBM Plex Mono",monospace;font-size:10px;letter-spacing:0.14em;
+  text-transform:uppercase;color:var(--ink-faint);font-style:normal;
+  display:block;margin-bottom:6px;
+}
+
+/* ===== SLIDE 6 — CODE ===== */
+.s6{padding:72px 96px 64px}
+.s6-header{display:flex;align-items:baseline;gap:28px;margin-bottom:24px}
+.s6-h1{
+  font-family:"Fraunces",serif;font-weight:500;font-size:54px;line-height:1;
+  letter-spacing:-0.015em;
+}
+.s6-body{
+  display:grid;grid-template-columns:1fr 240px;gap:48px;align-items:start;
+}
+.s6-code{
+  background:var(--primary);color:var(--neutral);
+  padding:24px 28px;
+  font-family:"IBM Plex Mono",monospace;font-size:13px;line-height:1.6;
+  position:relative;
+}
+.s6-code::before{
+  content:'';position:absolute;left:0;top:0;bottom:0;width:3px;background:var(--tertiary);
+}
+.s6-code .ln{
+  display:inline-block;width:28px;color:rgba(244,240,228,0.32);
+  user-select:none;text-align:right;padding-right:14px;
+}
+.s6-code .kw{color:#E8B96A}
+.s6-code .fn{color:#F4F0E4}
+.s6-code .st{color:#C9C2B0;font-style:italic}
+.s6-code .cm{color:rgba(184,176,162,0.6);font-style:italic}
+.s6-code .vr{color:#D89A87}
+.s6-margins{display:flex;flex-direction:column;gap:24px;padding-top:8px}
+.s6-margin{
+  font-family:"Source Serif 4",serif;font-size:13px;line-height:1.5;
+  color:var(--ink-soft);
+}
+.s6-margin .tag{
+  font-family:"IBM Plex Mono",monospace;font-size:10px;letter-spacing:0.16em;
+  text-transform:uppercase;color:var(--tertiary);font-weight:500;
+  display:block;margin-bottom:4px;
+}
+.s6-margin .tag .step{color:var(--ink-faint);margin-right:6px}
+.s6-closing{
+  margin-top:24px;
+  font-family:"Source Serif 4",serif;font-size:16px;line-height:1.55;
+  color:var(--primary);font-style:italic;max-width:560px;
+  padding-left:14px;border-left:2px solid var(--tertiary);
+}
+
+/* ===== SLIDE 7 — ENDING ===== */
+.s7{padding:96px;position:relative}
+.s7-loop{
+  position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);
+  width:440px;height:440px;opacity:0.92;
+}
+.s7-loop svg{width:100%;height:100%;overflow:visible}
+.s7-content{
+  position:absolute;bottom:96px;left:96px;right:96px;
+  display:grid;grid-template-columns:1fr 1fr;gap:64px;align-items:end;
+}
+.s7-closing{
+  font-family:"Fraunces",serif;font-weight:500;font-size:34px;line-height:1.15;
+  letter-spacing:-0.01em;color:var(--primary);max-width:520px;
+}
+.s7-closing .echo{color:var(--tertiary);font-style:italic;font-weight:400}
+.s7-refs{justify-self:end;max-width:360px}
+.s7-refs .refs-label{
+  font-family:"IBM Plex Mono",monospace;font-size:10px;letter-spacing:0.18em;
+  text-transform:uppercase;color:var(--ink-faint);margin-bottom:14px;
+}
+.s7-refs ol{list-style:none;counter-reset:ref}
+.s7-refs li{
+  counter-increment:ref;
+  font-family:"Source Serif 4",serif;font-size:13px;line-height:1.55;
+  color:var(--ink-soft);padding:6px 0;
+  display:grid;grid-template-columns:40px 1fr;gap:10px;
+  border-top:1px solid rgba(184,176,162,0.4);
+}
+.s7-refs li:last-child{border-bottom:1px solid rgba(184,176,162,0.4)}
+.s7-refs li::before{
+  content:"[" counter(ref, decimal-leading-zero) "]";
+  font-family:"IBM Plex Mono",monospace;font-size:11px;color:var(--ink-faint);
+  letter-spacing:0.04em;
+}
+.s7-top-meta{
+  position:absolute;top:56px;left:96px;right:96px;
+  display:flex;justify-content:space-between;
+  font-family:"IBM Plex Mono",monospace;font-size:11px;letter-spacing:0.18em;
+  text-transform:uppercase;color:var(--ink-faint);
+}
+</style>
+</head>
+<body>
+
+<!-- ============================================================
+     SLIDE 1 — TITLE
+     ============================================================ -->
+<section class="slide s1" aria-label="Slide 1 — Title">
+  <div class="slide-chapter-mark">
+    <svg viewBox="0 0 24 24" fill="none">
+      <path d="M5,12 C5,7.6 8.6,4 12,4 C15.4,4 19,7.6 19,12 C19,16.4 15.4,20 12,20" stroke="#1E1A14" stroke-width="1.4" fill="none" stroke-linecap="round"/>
+      <path d="M19,12 L16.5,8.5 M19,12 L15.5,11.2" stroke="#C3402A" stroke-width="1.4" stroke-linecap="round" fill="none"/>
+    </svg>
+  </div>
+  <div class="s1-top">
+    <span>A Technical Talk · Seven Slides</span>
+    <div class="right"><span>Autumn 2026</span></div>
+  </div>
+
+  <div class="s1-main">
+    <div class="s1-eyebrow">CS 5xx · Topics in Agents</div>
+    <h1 class="s1-title">Agent<br>Architecture<span style="color:var(--tertiary);font-style:italic;font-weight:400">.</span></h1>
+    <p class="s1-standfirst">On loops, traces, and the structures by which language models act.</p>
+  </div>
+
+  <div class="s1-right">
+    <div class="s1-loop-mark" aria-hidden="true">
+      <svg viewBox="-20 -20 240 240">
+        <defs>
+          <marker id="s1arrow" viewBox="0 0 12 12" refX="6" refY="6" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+            <path d="M1,1 L11,6 L1,11 Z" fill="#C3402A"/>
+          </marker>
+        </defs>
+        <!-- main loop arc -->
+        <path d="M30,100 C30,55 70,20 100,20 C130,20 170,55 170,100 C170,145 130,180 100,180 C70,180 30,145 30,100 Z"
+              stroke="#1E1A14" stroke-width="1.4" fill="none" stroke-linecap="round" opacity="0.4"/>
+        <!-- returning vermilion arrow -->
+        <path d="M170,100 C170,145 130,180 100,180"
+              stroke="#C3402A" stroke-width="2.2" fill="none" stroke-linecap="round"
+              marker-end="url(#s1arrow)"/>
+        <!-- THINK node -->
+        <circle cx="100" cy="20" r="9" fill="#F4F0E4" stroke="#1E1A14" stroke-width="1.2"/>
+        <text x="100" y="24" text-anchor="middle" font-family="IBM Plex Mono" font-size="7" fill="#1E1A14" font-weight="500">T</text>
+        <!-- ACT node -->
+        <circle cx="170" cy="100" r="9" fill="#F4F0E4" stroke="#1E1A14" stroke-width="1.2"/>
+        <text x="170" y="104" text-anchor="middle" font-family="IBM Plex Mono" font-size="7" fill="#1E1A14" font-weight="500">A</text>
+        <!-- OBS node -->
+        <circle cx="100" cy="180" r="9" fill="#F4F0E4" stroke="#1E1A14" stroke-width="1.2"/>
+        <text x="100" y="184" text-anchor="middle" font-family="IBM Plex Mono" font-size="7" fill="#1E1A14" font-weight="500">O</text>
+        <!-- labels -->
+        <text x="100" y="6" text-anchor="middle" font-family="IBM Plex Mono" font-size="7" fill="#B8B0A2" letter-spacing="0.14em">THINK</text>
+        <text x="192" y="103" font-family="IBM Plex Mono" font-size="7" fill="#B8B0A2" letter-spacing="0.14em">ACT</text>
+        <text x="100" y="202" text-anchor="middle" font-family="IBM Plex Mono" font-size="7" fill="#B8B0A2" letter-spacing="0.14em">OBSERVE</text>
+      </svg>
+    </div>
+    <div class="s1-meta">
+      <div class="speaker">D. Iyer</div>
+      <div>Carnegie Mellon University</div>
+      <div style="margin-top:14px">14 October 2026</div>
+    </div>
+  </div>
+
+  <div class="s1-bottom-rule"></div>
+  <div class="s1-bottom-meta">
+    <span>ReAct · Reflexion · Plan-and-Execute · Tree-of-Thoughts</span>
+    <span>01 / 07</span>
+  </div>
+</section>
+
+
+<!-- ============================================================
+     SLIDE 2 — THE LOOP
+     ============================================================ -->
+<section class="slide s2" aria-label="Slide 2 — The Loop">
+  <div class="slide-chapter-mark">
+    <svg viewBox="0 0 24 24" fill="none">
+      <path d="M5,12 C5,7.6 8.6,4 12,4 C15.4,4 19,7.6 19,12 C19,16.4 15.4,20 12,20" stroke="#1E1A14" stroke-width="1.4" fill="none" stroke-linecap="round"/>
+      <path d="M19,12 L16.5,8.5 M19,12 L15.5,11.2" stroke="#C3402A" stroke-width="1.4" stroke-linecap="round" fill="none"/>
+    </svg>
+  </div>
+  <div class="slide-no"><span class="num">02</span><span class="of">/</span><span class="total">07</span></div>
+
+  <div class="s2-header">
+    <span class="s2-section"><span class="num">§ 1</span>The Loop</span>
+    <h2 class="s2-h1">The basic loop.</h2>
+  </div>
+
+  <div class="s2-body">
+    <div class="s2-prose">
+      <p><span class="drop">R</span>eAct is the simplest controller you can build around a language model, and its simplicity is the point. The model emits a <em>thought</em>, takes an <em>action</em> against some environment — a search, a calculator, an API — and reads back the <em>observation</em>. That observation is appended to the working trace, and the cycle repeats. Nothing about the model changes between turns; what changes is the context the model reads on its next turn. The architecture is the cycle. The thing that makes it an agent rather than a chatbot is that the last step returns to the first.</p>
+    </div>
+
+    <div class="s2-figure">
+      <div class="s2-loop" aria-hidden="true">
+        <svg viewBox="-60 -40 500 500">
+          <defs>
+            <marker id="s2arrow" viewBox="0 0 12 12" refX="9" refY="6" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+              <path d="M1,1 L11,6 L1,11 Z" fill="#1E1A14"/>
+            </marker>
+            <marker id="s2arrow-red" viewBox="0 0 12 12" refX="9" refY="6" markerWidth="7.5" markerHeight="7.5" orient="auto-start-reverse">
+              <path d="M1,1 L11,6 L1,11 Z" fill="#C3402A"/>
+            </marker>
+          </defs>
+          <!-- THINK node (top) -->
+          <g>
+            <rect x="140" y="0" width="100" height="44" fill="#F4F0E4" stroke="#1E1A14" stroke-width="1.4"/>
+            <text x="190" y="27" text-anchor="middle" font-family="IBM Plex Mono" font-size="13" fill="#1E1A14" letter-spacing="0.14em">THINK</text>
+          </g>
+          <!-- ACT node (right) -->
+          <g>
+            <rect x="300" y="180" width="100" height="44" fill="#F4F0E4" stroke="#1E1A14" stroke-width="1.4"/>
+            <text x="350" y="207" text-anchor="middle" font-family="IBM Plex Mono" font-size="13" fill="#1E1A14" letter-spacing="0.14em">ACT</text>
+          </g>
+          <!-- OBSERVE node (bottom) -->
+          <g>
+            <rect x="140" y="360" width="100" height="44" fill="#F4F0E4" stroke="#1E1A14" stroke-width="1.4"/>
+            <text x="190" y="387" text-anchor="middle" font-family="IBM Plex Mono" font-size="13" fill="#1E1A14" letter-spacing="0.14em">OBSERVE</text>
+          </g>
+
+          <!-- THINK -> ACT (curved, slight wobble) -->
+          <path d="M240,32 C290,40 318,80 336,176"
+                stroke="#1E1A14" stroke-width="1.5" fill="none"
+                marker-end="url(#s2arrow)" stroke-linecap="round"/>
+          <!-- ACT -> OBSERVE -->
+          <path d="M336,224 C320,300 280,340 244,366"
+                stroke="#1E1A14" stroke-width="1.5" fill="none"
+                marker-end="url(#s2arrow)" stroke-linecap="round"/>
+          <!-- OBSERVE -> THINK (the vermilion return) -->
+          <path d="M156,360 C120,300 100,200 138,52"
+                stroke="#C3402A" stroke-width="2.4" fill="none"
+                marker-end="url(#s2arrow-red)" stroke-linecap="round"/>
+
+          <!-- small annotation on the return -->
+          <text x="68" y="200" font-family="IBM Plex Mono" font-size="10" fill="#C3402A" letter-spacing="0.14em" transform="rotate(-78 68 200)">RETURNS TO THINK</text>
+        </svg>
+      </div>
+      <div class="s2-caption">
+        <span class="figtag">Fig. 1</span>The basic loop. Note that OBSERVE returns to THINK; this is what makes the architecture a controller, not a pipeline.
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ============================================================
+     SLIDE 3 — A WORKED TRACE
+     ============================================================ -->
+<section class="slide s3" aria-label="Slide 3 — A Worked Trace">
+  <div class="slide-chapter-mark">
+    <svg viewBox="0 0 24 24" fill="none">
+      <path d="M5,12 C5,7.6 8.6,4 12,4 C15.4,4 19,7.6 19,12 C19,16.4 15.4,20 12,20" stroke="#1E1A14" stroke-width="1.4" fill="none" stroke-linecap="round"/>
+      <path d="M19,12 L16.5,8.5 M19,12 L15.5,11.2" stroke="#C3402A" stroke-width="1.4" stroke-linecap="round" fill="none"/>
+    </svg>
+  </div>
+  <div class="slide-no"><span class="num">03</span><span class="of">/</span><span class="total">07</span></div>
+
+  <div class="s3-header">
+    <span class="s2-section"><span class="num">§ 2</span>A Worked Trace</span>
+    <h2 class="s3-h1">Six steps, one answer.</h2>
+  </div>
+
+  <div class="s3-query">
+    <span class="qlabel">Query</span>
+    <span class="qtext">"What was the closing price of NVDA the day after Jensen Huang's 2024 keynote?"</span>
+  </div>
+
+  <div class="s3-trace">
+    <div>
+      <div class="s3-step kind-thought">
+        <span class="n">01</span>
+        <div class="content">
+          <span class="kind">Thought</span>
+          <span class="text">I need to find the date of Jensen Huang's 2024 keynote first, then look up NVDA's close on the trading day after.</span>
+        </div>
+        <span class="margin">Two unknowns in sequence — the date is a prerequisite, not a side-query.</span>
+      </div>
+      <div class="s3-step kind-action">
+        <span class="n">02</span>
+        <div class="content">
+          <span class="kind">Action</span>
+          <span class="text">search<span class="arg">("Jensen Huang 2024 keynote date")</span></span>
+        </div>
+        <span class="margin">Tool call is parameterised — the action surface stays narrow.</span>
+      </div>
+      <div class="s3-step kind-observation">
+        <span class="n">03</span>
+        <div class="content">
+          <span class="kind">Observation</span>
+          <span class="text">Keynote delivered January 8, 2024 at CES 2024 in Las Vegas.</span>
+        </div>
+        <span class="margin">Observation is appended, not interpreted — the model decides next.</span>
+      </div>
+      <div class="s3-step kind-thought">
+        <span class="n">04</span>
+        <div class="content">
+          <span class="kind">Thought</span>
+          <span class="text">January 8 was a Monday. The next trading day is January 9, 2024. I need NVDA's close on that date.</span>
+        </div>
+        <span class="margin">A calendar inference the model performs itself — no tool needed.</span>
+      </div>
+      <div class="s3-step kind-action">
+        <span class="n">05</span>
+        <div class="content">
+          <span class="kind">Action</span>
+          <span class="text">price_lookup<span class="arg">("NVDA", "2024-01-09")</span></span>
+        </div>
+        <span class="margin">Date is now grounded — the agent commits to a specific day.</span>
+      </div>
+      <div class="s3-step kind-observation">
+        <span class="n">06</span>
+        <div class="content">
+          <span class="kind">Observation</span>
+          <span class="text">NVDA closed at $522.53 on 2024-01-09, up 0.9 % from prior close.</span>
+        </div>
+        <span class="margin">The observation carries enough to answer — no further inference.</span>
+      </div>
+      <div class="s3-step kind-thought">
+        <span class="n">07</span>
+        <div class="content">
+          <span class="kind">Thought</span>
+          <span class="text">I have everything I need. The closing price on the trading day after the keynote was $522.53.</span>
+        </div>
+        <span class="margin">The trace closes with a synthesis step, not a tool call.</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ============================================================
+     SLIDE 4 — FOUR ARCHITECTURES
+     ============================================================ -->
+<section class="slide s4" aria-label="Slide 4 — Four Architectures">
+  <div class="slide-chapter-mark">
+    <svg viewBox="0 0 24 24" fill="none">
+      <path d="M5,12 C5,7.6 8.6,4 12,4 C15.4,4 19,7.6 19,12 C19,16.4 15.4,20 12,20" stroke="#1E1A14" stroke-width="1.4" fill="none" stroke-linecap="round"/>
+      <path d="M19,12 L16.5,8.5 M19,12 L15.5,11.2" stroke="#C3402A" stroke-width="1.4" stroke-linecap="round" fill="none"/>
+    </svg>
+  </div>
+  <div class="slide-no"><span class="num">04</span><span class="of">/</span><span class="total">07</span></div>
+
+  <div class="s4-header">
+    <span class="s2-section"><span class="num">§ 3</span>Four Architectures</span>
+    <h2 class="s4-h1">The same loop, four refinements.</h2>
+  </div>
+
+  <div class="s4-grid">
+    <!-- A. REACT -->
+    <div class="s4-cell">
+      <div class="s4-cell-label"><span class="ord">A.</span>REACT</div>
+      <div class="s4-cell-figure">
+        <svg viewBox="-10 -10 180 130">
+          <defs>
+            <marker id="a4-arr" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 Z" fill="#1E1A14"/></marker>
+            <marker id="a4-arr-red" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6.5" markerHeight="6.5" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 Z" fill="#C3402A"/></marker>
+          </defs>
+          <!-- triangle of nodes -->
+          <g><rect x="50" y="0" width="60" height="22" fill="#F4F0E4" stroke="#1E1A14" stroke-width="1.1"/><text x="80" y="14" text-anchor="middle" font-family="IBM Plex Mono" font-size="8" fill="#1E1A14" letter-spacing="0.1em">THINK</text></g>
+          <g><rect x="110" y="64" width="60" height="22" fill="#F4F0E4" stroke="#1E1A14" stroke-width="1.1"/><text x="140" y="78" text-anchor="middle" font-family="IBM Plex Mono" font-size="8" fill="#1E1A14" letter-spacing="0.1em">ACT</text></g>
+          <g><rect x="50" y="104" width="60" height="22" fill="#F4F0E4" stroke="#1E1A14" stroke-width="1.1"/><text x="80" y="118" text-anchor="middle" font-family="IBM Plex Mono" font-size="8" fill="#1E1A14" letter-spacing="0.1em">OBSERVE</text></g>
+          <!-- arrows -->
+          <path d="M110,17 C132,30 138,52 138,62" stroke="#1E1A14" stroke-width="1.1" fill="none" marker-end="url(#a4-arr)"/>
+          <path d="M120,86 C112,94 100,100 112,104" stroke="#1E1A14" stroke-width="1.1" fill="none" marker-end="url(#a4-arr)"/>
+          <path d="M52,104 C30,90 30,30 50,18" stroke="#C3402A" stroke-width="1.7" fill="none" marker-end="url(#a4-arr-red)"/>
+        </svg>
+      </div>
+      <div class="s4-cell-caption"><span class="figtag">Fig. 2.A</span>The baseline. Thought, action, observation — and the observation returns to thought. Everything else in this deck is a modification of this triangle.</div>
+    </div>
+
+    <!-- B. REFLEXION -->
+    <div class="s4-cell">
+      <div class="s4-cell-label"><span class="ord">B.</span>REFLEXION</div>
+      <div class="s4-cell-figure">
+        <svg viewBox="-10 -10 180 130">
+          <defs>
+            <marker id="b4-arr" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 Z" fill="#1E1A14"/></marker>
+            <marker id="b4-arr-red" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6.5" markerHeight="6.5" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 Z" fill="#C3402A"/></marker>
+          </defs>
+          <!-- main triangle: THINK top, ACT right, OBS bottom -->
+          <g><rect x="60" y="0" width="60" height="22" fill="#F4F0E4" stroke="#1E1A14" stroke-width="1.1"/><text x="90" y="14" text-anchor="middle" font-family="IBM Plex Mono" font-size="8" fill="#1E1A14" letter-spacing="0.1em">THINK</text></g>
+          <g><rect x="110" y="64" width="60" height="22" fill="#F4F0E4" stroke="#1E1A14" stroke-width="1.1"/><text x="140" y="78" text-anchor="middle" font-family="IBM Plex Mono" font-size="8" fill="#1E1A14" letter-spacing="0.1em">ACT</text></g>
+          <g><rect x="60" y="104" width="60" height="22" fill="#F4F0E4" stroke="#1E1A14" stroke-width="1.1"/><text x="90" y="118" text-anchor="middle" font-family="IBM Plex Mono" font-size="8" fill="#1E1A14" letter-spacing="0.1em">OBSERVE</text></g>
+          <!-- MEMORY node to the left -->
+          <g><rect x="0" y="42" width="50" height="22" fill="#F4F0E4" stroke="#C3402A" stroke-width="1.4"/><text x="25" y="56" text-anchor="middle" font-family="IBM Plex Mono" font-size="8" fill="#1E1A14" letter-spacing="0.1em">MEMORY</text></g>
+          <!-- cycle arrows -->
+          <path d="M120,17 C140,30 142,52 140,62" stroke="#1E1A14" stroke-width="1.1" fill="none" marker-end="url(#b4-arr)"/>
+          <path d="M130,86 C120,96 100,100 120,104" stroke="#1E1A14" stroke-width="1.1" fill="none" marker-end="url(#b4-arr)"/>
+          <path d="M62,104 C44,90 44,30 60,18" stroke="#C3402A" stroke-width="1.7" fill="none" marker-end="url(#b4-arr-red)"/>
+          <!-- MEMORY <-> THINK dashed -->
+          <path d="M50,52 C56,40 56,30 60,22" stroke="#1E1A14" stroke-width="0.9" fill="none" stroke-dasharray="2 2" marker-end="url(#b4-arr)"/>
+          <path d="M62,22 C58,32 58,42 50,52" stroke="#1E1A14" stroke-width="0.9" fill="none" stroke-dasharray="2 2" marker-end="url(#b4-arr)" transform="translate(-2,-2)"/>
+        </svg>
+      </div>
+      <div class="s4-cell-caption"><span class="figtag">Fig. 2.B</span>Reflexion adds a MEMORY node to the cycle. Past traces feed the next thought as lessons, not as raw context.</div>
+    </div>
+
+    <!-- C. PLAN-AND-EXECUTE -->
+    <div class="s4-cell">
+      <div class="s4-cell-label"><span class="ord">C.</span>PLAN-AND-EXECUTE</div>
+      <div class="s4-cell-figure">
+        <svg viewBox="-10 -10 180 130">
+          <defs>
+            <marker id="c4-arr" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 Z" fill="#1E1A14"/></marker>
+            <marker id="c4-arr-red" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6.5" markerHeight="6.5" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 Z" fill="#C3402A"/></marker>
+          </defs>
+          <!-- PLAN node at top -->
+          <g><rect x="50" y="0" width="60" height="22" fill="#F4F0E4" stroke="#1E1A14" stroke-width="1.1"/><text x="80" y="14" text-anchor="middle" font-family="IBM Plex Mono" font-size="8" fill="#1E1A14" letter-spacing="0.1em">PLAN</text></g>
+          <!-- mini-cycle below: THINK, ACT, OBSERVE -->
+          <g><rect x="0" y="64" width="40" height="22" fill="#F4F0E4" stroke="#1E1A14" stroke-width="1.1"/><text x="20" y="78" text-anchor="middle" font-family="IBM Plex Mono" font-size="7" fill="#1E1A14" letter-spacing="0.06em">THINK</text></g>
+          <g><rect x="130" y="64" width="40" height="22" fill="#F4F0E4" stroke="#1E1A14" stroke-width="1.1"/><text x="150" y="78" text-anchor="middle" font-family="IBM Plex Mono" font-size="7" fill="#1E1A14" letter-spacing="0.06em">ACT</text></g>
+          <g><rect x="65" y="104" width="50" height="22" fill="#F4F0E4" stroke="#1E1A14" stroke-width="1.1"/><text x="90" y="118" text-anchor="middle" font-family="IBM Plex Mono" font-size="7" fill="#1E1A14" letter-spacing="0.06em">OBSERVE</text></g>
+          <!-- PLAN feeds the cycle -->
+          <path d="M80,22 C70,38 40,52 22,62" stroke="#1E1A14" stroke-width="1.1" fill="none" marker-end="url(#c4-arr)"/>
+          <!-- mini-cycle arrows -->
+          <path d="M40,78 C80,86 110,84 128,76" stroke="#1E1A14" stroke-width="1.1" fill="none" marker-end="url(#c4-arr)"/>
+          <path d="M138,86 C120,96 105,100 116,104" stroke="#1E1A14" stroke-width="1.1" fill="none" marker-end="url(#c4-arr)"/>
+          <path d="M65,116 C50,108 28,96 22,86" stroke="#C3402A" stroke-width="1.7" fill="none" marker-end="url(#c4-arr-red)"/>
+          <!-- re-plan dashed arrow back up -->
+          <path d="M115,106 C140,80 130,40 110,22" stroke="#1E1A14" stroke-width="0.9" fill="none" stroke-dasharray="2 2" marker-end="url(#c4-arr)"/>
+        </svg>
+      </div>
+      <div class="s4-cell-caption"><span class="figtag">Fig. 2.C</span>Plan-and-Execute adds a PLAN node that feeds the cycle. A plan is drawn up once, then the loop executes each step — and may re-plan.</div>
+    </div>
+
+    <!-- D. TREE-OF-THOUGHTS -->
+    <div class="s4-cell">
+      <div class="s4-cell-label"><span class="ord">D.</span>TREE-OF-THOUGHTS</div>
+      <div class="s4-cell-figure">
+        <svg viewBox="-10 -10 180 130">
+          <defs>
+            <marker id="d4-arr" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 Z" fill="#1E1A14"/></marker>
+            <marker id="d4-arr-red" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6.5" markerHeight="6.5" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 Z" fill="#C3402A"/></marker>
+          </defs>
+          <!-- THINK node at top -->
+          <g><rect x="60" y="0" width="60" height="22" fill="#F4F0E4" stroke="#1E1A14" stroke-width="1.1"/><text x="90" y="14" text-anchor="middle" font-family="IBM Plex Mono" font-size="8" fill="#1E1A14" letter-spacing="0.1em">THINK</text></g>
+          <!-- two THINK children -->
+          <g><rect x="20" y="42" width="50" height="20" fill="#F4F0E4" stroke="#1E1A14" stroke-width="1"/><text x="45" y="55" text-anchor="middle" font-family="IBM Plex Mono" font-size="7" fill="#1E1A14" letter-spacing="0.06em">THINK.a</text></g>
+          <g><rect x="110" y="42" width="50" height="20" fill="#F4F0E4" stroke="#1E1A14" stroke-width="1"/><text x="135" y="55" text-anchor="middle" font-family="IBM Plex Mono" font-size="7" fill="#1E1A14" letter-spacing="0.06em">THINK.b</text></g>
+          <!-- branch arrows from THINK -->
+          <path d="M76,22 C60,30 50,36 45,40" stroke="#1E1A14" stroke-width="1" fill="none" marker-end="url(#d4-arr)"/>
+          <path d="M104,22 C120,30 130,36 135,40" stroke="#1E1A14" stroke-width="1" fill="none" marker-end="url(#d4-arr)"/>
+          <!-- ACT node -->
+          <g><rect x="110" y="74" width="50" height="22" fill="#F4F0E4" stroke="#1E1A14" stroke-width="1.1"/><text x="135" y="88" text-anchor="middle" font-family="IBM Plex Mono" font-size="8" fill="#1E1A14" letter-spacing="0.1em">ACT</text></g>
+          <!-- OBSERVE node -->
+          <g><rect x="60" y="104" width="60" height="22" fill="#F4F0E4" stroke="#1E1A14" stroke-width="1.1"/><text x="90" y="118" text-anchor="middle" font-family="IBM Plex Mono" font-size="8" fill="#1E1A14" letter-spacing="0.1em">OBSERVE</text></g>
+          <!-- the better child proceeds to ACT -->
+          <path d="M135,62 C140,68 142,70 138,72" stroke="#1E1A14" stroke-width="1.1" fill="none" marker-end="url(#d4-arr)"/>
+          <path d="M135,62 C138,68 138,70 135,74" stroke="#1E1A14" stroke-width="1.1" fill="none"/>
+          <!-- ACT -> OBSERVE -->
+          <path d="M125,96 C115,100 105,102 116,104" stroke="#1E1A14" stroke-width="1.1" fill="none" marker-end="url(#d4-arr)"/>
+          <!-- OBSERVE -> THINK (return) -->
+          <path d="M62,104 C42,90 42,30 60,18" stroke="#C3402A" stroke-width="1.7" fill="none" marker-end="url(#d4-arr-red)"/>
+          <!-- pruned branch indicator: a small X on the rejected branch -->
+          <path d="M28,38 L36,46 M36,38 L28,46" stroke="#B8B0A2" stroke-width="1" fill="none"/>
+        </svg>
+      </div>
+      <div class="s4-cell-caption"><span class="figtag">Fig. 2.D</span>Tree-of-Thoughts branches THINK into two children before acting. The weaker branch is pruned; the stronger proceeds.</div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ============================================================
+     SLIDE 5 — WHERE LOOPS FAIL
+     ============================================================ -->
+<section class="slide s5" aria-label="Slide 5 — Where Loops Fail">
+  <div class="slide-chapter-mark">
+    <svg viewBox="0 0 24 24" fill="none">
+      <path d="M5,12 C5,7.6 8.6,4 12,4 C15.4,4 19,7.6 19,12 C19,16.4 15.4,20 12,20" stroke="#1E1A14" stroke-width="1.4" fill="none" stroke-linecap="round"/>
+      <path d="M19,12 L16.5,8.5 M19,12 L15.5,11.2" stroke="#C3402A" stroke-width="1.4" stroke-linecap="round" fill="none"/>
+    </svg>
+  </div>
+  <div class="slide-no"><span class="num">05</span><span class="of">/</span><span class="total">07</span></div>
+
+  <div class="s5-header">
+    <span class="s2-section"><span class="num">§ 4</span>Where Loops Fail</span>
+    <h2 class="s5-h1">The context window, against iteration.</h2>
+  </div>
+
+  <div class="s5-body">
+    <div class="s5-prose">
+      <p>An agent loop is, mechanically, an accumulator. Every turn the working trace grows: a thought here, a tool call there, a returned document of a few hundred tokens. Nothing is summarised, nothing is forgotten. Sooner or later the trace approaches the model's effective attention — the length at which it stops reading its own history faithfully. The loop does not break because the model is incapable; it breaks because the controller has accumulated more past than the model can hold in view. This is the dominant failure mode in production agents, and almost no architecture addresses it directly.</p>
+    </div>
+
+    <div class="s5-chart-wrap">
+      <div class="s5-chart" aria-hidden="true">
+        <svg viewBox="0 0 560 340">
+          <!-- y axis label -->
+          <text x="14" y="20" font-family="IBM Plex Mono" font-size="10" fill="#B8B0A2" letter-spacing="0.14em">TOKENS</text>
+          <!-- x axis label -->
+          <text x="290" y="332" text-anchor="middle" font-family="IBM Plex Mono" font-size="10" fill="#B8B0A2" letter-spacing="0.14em">ITER</text>
+
+          <!-- gridlines -->
+          <g stroke="#B8B0A2" stroke-width="0.5" opacity="0.35">
+            <line x1="60" y1="40" x2="540" y2="40"/>
+            <line x1="60" y1="110" x2="540" y2="110"/>
+            <line x1="60" y1="180" x2="540" y2="180"/>
+            <line x1="60" y1="250" x2="540" y2="250"/>
+          </g>
+          <!-- baseline x axis -->
+          <line x1="60" y1="290" x2="540" y2="290" stroke="#1E1A14" stroke-width="1"/>
+          <line x1="60" y1="40" x2="60" y2="290" stroke="#1E1A14" stroke-width="1"/>
+
+          <!-- x ticks: 0, 5, 10, 15, 20, 25 -->
+          <g font-family="IBM Plex Mono" font-size="10" fill="#1E1A14" text-anchor="middle">
+            <text x="60" y="308">0</text>
+            <text x="156" y="308">5</text>
+            <text x="252" y="308">10</text>
+            <text x="348" y="308">15</text>
+            <text x="444" y="308">20</text>
+            <text x="540" y="308">25</text>
+          </g>
+          <g stroke="#1E1A14" stroke-width="0.8">
+            <line x1="60" y1="290" x2="60" y2="295"/>
+            <line x1="156" y1="290" x2="156" y2="295"/>
+            <line x1="252" y1="290" x2="252" y2="295"/>
+            <line x1="348" y1="290" x2="348" y2="295"/>
+            <line x1="444" y1="290" x2="444" y2="295"/>
+            <line x1="540" y1="290" x2="540" y2="295"/>
+          </g>
+
+          <!-- y ticks -->
+          <g font-family="IBM Plex Mono" font-size="10" fill="#1E1A14" text-anchor="end">
+            <text x="52" y="294">0</text>
+            <text x="52" y="254">8k</text>
+            <text x="52" y="184">16k</text>
+            <text x="52" y="114">24k</text>
+            <text x="52" y="44">32k</text>
+          </g>
+
+          <!-- the curve: rising and inflecting upward around iter 15 -->
+          <!-- points: (0,290) (5,272) (10,240) (15,180) (20,110) (25,40) -->
+          <path d="M60,290 C100,282 130,275 156,272 C200,265 220,255 252,240 C290,225 320,200 348,180 C380,158 410,138 444,110 C480,80 510,55 540,40"
+                stroke="#1E1A14" stroke-width="2" fill="none" stroke-linecap="round"/>
+
+          <!-- data points -->
+          <g fill="#1E1A14">
+            <circle cx="60" cy="290" r="2.5"/>
+            <circle cx="156" cy="272" r="2.5"/>
+            <circle cx="252" cy="240" r="2.5"/>
+            <circle cx="348" cy="180" r="3.5" fill="#C3402A"/>
+            <circle cx="444" cy="110" r="2.5"/>
+            <circle cx="540" cy="40" r="2.5"/>
+          </g>
+
+          <!-- inflection annotation: dashed lines to axes -->
+          <line x1="348" y1="180" x2="348" y2="290" stroke="#C3402A" stroke-width="0.8" stroke-dasharray="3 3" opacity="0.7"/>
+          <line x1="60" y1="180" x2="348" y2="180" stroke="#C3402A" stroke-width="0.8" stroke-dasharray="3 3" opacity="0.7"/>
+
+          <!-- inflection label -->
+          <text x="356" y="174" font-family="IBM Plex Mono" font-size="10" fill="#C3402A" letter-spacing="0.08em">INFLECTION</text>
+          <text x="356" y="186" font-family="IBM Plex Mono" font-size="9" fill="#B8B0A2">iter ≈ 15</text>
+
+          <!-- failure band shading around 10–15 iter -->
+          <rect x="252" y="40" width="96" height="250" fill="#C3402A" opacity="0.05"/>
+          <text x="300" y="56" font-family="IBM Plex Mono" font-size="9" fill="#C3402A" letter-spacing="0.12em" text-anchor="middle" opacity="0.7">FAILURE BAND</text>
+        </svg>
+      </div>
+      <div class="s5-chart-annotation">
+        <span class="figtag">Fig. 3</span>Most production agents fail somewhere in this region — not because the model is incapable, but because the context has become longer than the model's effective attention.
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ============================================================
+     SLIDE 6 — THE LOOP, IN CODE
+     ============================================================ -->
+<section class="slide s6" aria-label="Slide 6 — The Loop, in Code">
+  <div class="slide-chapter-mark">
+    <svg viewBox="0 0 24 24" fill="none">
+      <path d="M5,12 C5,7.6 8.6,4 12,4 C15.4,4 19,7.6 19,12 C19,16.4 15.4,20 12,20" stroke="#1E1A14" stroke-width="1.4" fill="none" stroke-linecap="round"/>
+      <path d="M19,12 L16.5,8.5 M19,12 L15.5,11.2" stroke="#C3402A" stroke-width="1.4" stroke-linecap="round" fill="none"/>
+    </svg>
+  </div>
+  <div class="slide-no"><span class="num">06</span><span class="of">/</span><span class="total">07</span></div>
+
+  <div class="s6-header">
+    <span class="s2-section"><span class="num">§ 5</span>The Loop, in Code</span>
+    <h2 class="s6-h1">A minimal ReAct loop.</h2>
+  </div>
+
+  <div class="s6-body">
+    <div>
+      <pre class="s6-code"><span class="ln">1</span><span class="kw">def</span> <span class="fn">react_loop</span>(query, tools, max_iters=<span class="vr">16</span>):
+<span class="ln">2</span>    trace = [{<span class="st">"role"</span>: <span class="st">"user"</span>, <span class="st">"content"</span>: query}]
+<span class="ln">3</span>    <span class="kw">for</span> i <span class="kw">in</span> <span class="fn">range</span>(max_iters):
+<span class="ln">4</span>        <span class="cm"># ── THINK ──────────────────────────────</span>
+<span class="ln">5</span>        out = llm(trace, stop=[<span class="st">"Action:"</span>])
+<span class="ln">6</span>        thought, action = <span class="fn">parse</span>(out)
+<span class="ln">7</span>        trace.append({<span class="st">"role"</span>: <span class="st">"asst"</span>, <span class="st">"content"</span>: thought})
+<span class="ln">8</span>        <span class="kw">if</span> action <span class="kw">is</span> <span class="kw">None</span>:
+<span class="ln">9</span>            <span class="kw">return</span> thought            <span class="cm"># final answer</span>
+<span class="ln">10</span>        <span class="cm"># ── ACT ───────────────────────────────</span>
+<span class="ln">11</span>        name, args = action
+<span class="ln">12</span>        result = tools[name](**args)
+<span class="ln">13</span>        <span class="cm"># ── OBSERVE ───────────────────────────</span>
+<span class="ln">14</span>        trace.append({
+<span class="ln">15</span>            <span class="st">"role"</span>: <span class="st">"tool"</span>,
+<span class="ln">16</span>            <span class="st">"content"</span>: <span class="fn">str</span>(result),
+<span class="ln">17</span>        })
+<span class="ln">18</span>    <span class="kw">raise</span> <span class="fn">RuntimeError</span>(<span class="st">"context exhausted"</span>)</pre>
+
+      <div class="s6-closing">
+        The structure strictly interleaves reasoning and action. Forcing the model to externalize its thought before acting gives the system interpretability and reduces hallucinated state changes.
+      </div>
+    </div>
+
+    <div class="s6-margins">
+      <div class="s6-margin">
+        <span class="tag"><span class="step">→</span>THINK</span>
+        The model is stopped at <code style="font-family:'IBM Plex Mono',monospace;font-size:11px;background:rgba(30,26,20,0.06);padding:1px 4px">"Action:"</code> so the thought and the action are emitted in the same call but separable. The thought is the model's, not the system's.
+      </div>
+      <div class="s6-margin">
+        <span class="tag"><span class="step">→</span>ACT</span>
+        The tool is dispatched by name with arguments the model produced. The environment — not the model — produces the result. The model never sees an effect it did not request.
+      </div>
+      <div class="s6-margin">
+        <span class="tag"><span class="step">→</span>OBSERVE</span>
+        The observation is appended verbatim as a <code style="font-family:'IBM Plex Mono',monospace;font-size:11px;background:rgba(30,26,20,0.06);padding:1px 4px">tool</code> turn. Nothing is summarised; nothing is dropped. The next iteration's THINK reads the full trace.
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ============================================================
+     SLIDE 7 — ENDING
+     ============================================================ -->
+<section class="slide s7" aria-label="Slide 7 — Ending">
+  <div class="slide-chapter-mark">
+    <svg viewBox="0 0 24 24" fill="none">
+      <path d="M5,12 C5,7.6 8.6,4 12,4 C15.4,4 19,7.6 19,12 C19,16.4 15.4,20 12,20" stroke="#1E1A14" stroke-width="1.4" fill="none" stroke-linecap="round"/>
+      <path d="M19,12 L16.5,8.5 M19,12 L15.5,11.2" stroke="#C3402A" stroke-width="1.4" stroke-linecap="round" fill="none"/>
+    </svg>
+  </div>
+
+  <div class="s7-top-meta">
+    <span>§ 6 · Ending</span>
+    <span>07 / 07</span>
+  </div>
+
+  <!-- Full-scale redrawn loop, centered -->
+  <div class="s7-loop" aria-hidden="true">
+    <svg viewBox="-60 -40 540 540">
+      <defs>
+        <marker id="s7arrow" viewBox="0 0 12 12" refX="9" refY="6" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+          <path d="M1,1 L11,6 L1,11 Z" fill="#1E1A14"/>
+        </marker>
+        <marker id="s7arrow-red" viewBox="0 0 12 12" refX="9" refY="6" markerWidth="9" markerHeight="9" orient="auto-start-reverse">
+          <path d="M1,1 L11,6 L1,11 Z" fill="#C3402A"/>
+        </marker>
+      </defs>
+      <!-- THINK node (top) -->
+      <g>
+        <rect x="160" y="0" width="120" height="52" fill="#F4F0E4" stroke="#1E1A14" stroke-width="1.6"/>
+        <text x="220" y="32" text-anchor="middle" font-family="IBM Plex Mono" font-size="15" fill="#1E1A14" letter-spacing="0.14em">THINK</text>
+      </g>
+      <!-- ACT node (right) -->
+      <g>
+        <rect x="360" y="216" width="120" height="52" fill="#F4F0E4" stroke="#1E1A14" stroke-width="1.6"/>
+        <text x="420" y="248" text-anchor="middle" font-family="IBM Plex Mono" font-size="15" fill="#1E1A14" letter-spacing="0.14em">ACT</text>
+      </g>
+      <!-- OBSERVE node (bottom) -->
+      <g>
+        <rect x="160" y="432" width="120" height="52" fill="#F4F0E4" stroke="#1E1A14" stroke-width="1.6"/>
+        <text x="220" y="464" text-anchor="middle" font-family="IBM Plex Mono" font-size="15" fill="#1E1A14" letter-spacing="0.14em">OBSERVE</text>
+      </g>
+
+      <!-- THINK -> ACT -->
+      <path d="M280,40 C340,52 372,108 396,212" stroke="#1E1A14" stroke-width="1.8" fill="none" marker-end="url(#s7arrow)" stroke-linecap="round"/>
+      <!-- ACT -> OBSERVE -->
+      <path d="M396,268 C372,360 320,416 282,432" stroke="#1E1A14" stroke-width="1.8" fill="none" marker-end="url(#s7arrow)" stroke-linecap="round"/>
+      <!-- OBSERVE -> THINK (vermilion return) -->
+      <path d="M168,432 C120,360 100,200 156,56" stroke="#C3402A" stroke-width="2.8" fill="none" marker-end="url(#s7arrow-red)" stroke-linecap="round"/>
+
+      <!-- caption along the return -->
+      <text x="60" y="240" font-family="IBM Plex Mono" font-size="11" fill="#C3402A" letter-spacing="0.18em" transform="rotate(-80 60 240)">THE RETURNING ARROW</text>
+    </svg>
+  </div>
+
+  <div class="s7-content">
+    <div class="s7-closing">
+      The architecture is the <span class="echo">loop</span>. Everything else is a refinement of how the loop decides what to do next.
+    </div>
+
+    <div class="s7-refs">
+      <div class="refs-label">References</div>
+      <ol>
+        <li>Smith, J., Patel, R., &amp; O'Neil, K. (1983). <em>The Cybernetic Loop.</em> Journal of Systems Theory, 41(3), 207–224.</li>
+        <li>Yao, S., Zhao, J., Yu, D., Du, N., Shafran, I., Narasimhan, K., &amp; Cao, Y. (2023). <em>ReAct: Synergizing Reasoning and Acting in Language Models.</em></li>
+        <li>Shinn, N., Cassano, F., Berman, E., Gopinath, A., Narasimhan, K., &amp; Yao, S. (2023). <em>Reflexion: Language Agents with Verbal Reinforcement Learning.</em></li>
+      </ol>
+    </div>
+  </div>
+</section>
+
+</body>
+</html>

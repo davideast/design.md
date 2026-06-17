@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Urban Nocturnal: Field Notes</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Spectral:ital,wght@0,400;0,600;1,400&display=swap');
+
+  :root {
+    --bg: #0c1018;
+    --panel: #141a26;
+    --line: #2a3344;
+    --text: #c4cdd9;
+    --muted: #6f7c90;
+    --accent: #c8a24a;
+    --signal: #7fb2d9;
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Spectral', serif;
+    line-height: 1.6;
+    padding: 2rem 1.25rem 4rem;
+  }
+
+  .wrap {
+    max-width: 720px;
+    margin: 0 auto;
+  }
+
+  header {
+    border-bottom: 1px solid var(--line);
+    padding-bottom: 1.5rem;
+    margin-bottom: 2.5rem;
+  }
+
+  h1 {
+    font-weight: 600;
+    font-size: 2.2rem;
+    letter-spacing: -0.01em;
+    margin: 0;
+    color: #fff;
+  }
+
+  .kicker {
+    font-family: 'IBM Plex Mono', monospace;
+    text-transform: uppercase;
+    letter-spacing: 0.18em;
+    font-size: 0.7rem;
+    color: var(--accent);
+    margin-bottom: 0.6rem;
+  }
+
+  h2 {
+    font-family: 'IBM Plex Mono', monospace;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    font-size: 0.85rem;
+    color: var(--accent);
+    border-bottom: 1px solid var(--line);
+    padding-bottom: 0.5rem;
+    margin: 0 0 1.25rem;
+  }
+
+  h3 {
+    font-family: 'Spectral', serif;
+    font-weight: 600;
+    font-size: 1.3rem;
+    color: #fff;
+    margin: 0 0 0.75rem;
+  }
+
+  section {
+    margin-bottom: 2.75rem;
+  }
+
+  .conditions {
+    display: grid;
+    gap: 0.4rem;
+  }
+
+  .conditions .row {
+    display: flex;
+    gap: 0.75rem;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.85rem;
+  }
+
+  .conditions .label {
+    color: var(--muted);
+    min-width: 9.5rem;
+  }
+
+  .conditions .value {
+    color: var(--text);
+  }
+
+  .species-card {
+    background: var(--panel);
+    border: 1px solid var(--line);
+    border-left: 3px solid var(--accent);
+    padding: 1.25rem 1.5rem;
+  }
+
+  .species-card p {
+    margin: 0 0 0.6rem;
+  }
+
+  .species-card p:last-child { margin-bottom: 0; }
+
+  .field-label {
+    color: var(--accent);
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.72rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+  }
+
+  .log {
+    list-style: none;
+    margin: 0;
+    padding: 1.25rem 1.5rem;
+    background: var(--panel);
+    border: 1px solid var(--line);
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.85rem;
+  }
+
+  .log li {
+    display: flex;
+    gap: 0.75rem;
+    padding: 0.4rem 0;
+    border-bottom: 1px dashed var(--line);
+  }
+
+  .log li:last-child { border-bottom: none; }
+
+  .log .k {
+    color: var(--signal);
+    min-width: 6rem;
+  }
+
+  .log .v { color: var(--text); }
+
+  ol.listen {
+    counter-reset: step;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  ol.listen > li {
+    position: relative;
+    padding: 0 0 1.1rem 3rem;
+  }
+
+  ol.listen > li::before {
+    counter-increment: step;
+    content: counter(step, decimal-leading-zero);
+    position: absolute;
+    left: 0;
+    top: 0.1rem;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.8rem;
+    color: var(--accent);
+    border: 1px solid var(--line);
+    padding: 0.1rem 0.4rem;
+  }
+
+  ol.listen strong {
+    color: #fff;
+    font-weight: 600;
+  }
+
+  .intro {
+    color: var(--muted);
+    font-style: italic;
+    margin-bottom: 1.5rem;
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <div class="kicker">Field Notes</div>
+    <h1>Urban Nocturnal</h1>
+  </header>
+
+  <section>
+    <h2>Moon &amp; Light Conditions</h2>
+    <div class="conditions">
+      <div class="row"><span class="label">Current Status</span><span class="value">Waxing Gibbous. 82% Illumination.</span></div>
+      <div class="row"><span class="label">Moonrise</span><span class="value">17:42.</span></div>
+      <div class="row"><span class="label">Sky Quality</span><span class="value">Bortle 8 (Inner City Sky).</span></div>
+    </div>
+  </section>
+
+  <section>
+    <h2>Tonight’s Likely Species</h2>
+    <div class="species-card">
+      <h3>Black-crowned Night Heron</h3>
+      <p><span class="field-label">Field Marks</span><br>Stocky build, black crown and back, contrasting grey wings.</p>
+      <p><span class="field-label">In Flight</span><br>Thick neck tucked, feet barely extending beyond tail.</p>
+      <p><span class="field-label">Context</span><br>Often found near waterfront construction sites or park ponds.</p>
+    </div>
+  </section>
+
+  <section>
+    <h2>Sightings Log</h2>
+    <ul class="log">
+      <li><span class="k">Time</span><span class="v">23:14</span></li>
+      <li><span class="k">Location</span><span class="v">West Side Railyards</span></li>
+      <li><span class="k">Species</span><span class="v">Common Nighthawk (2)</span></li>
+      <li><span class="k">Behavior</span><span class="v">Aerial foraging under stadium lights; erratic, bat-like flight pattern.</span></li>
+    </ul>
+  </section>
+
+  <section>
+    <h2>Guide to Listening: The Urban Filter</h2>
+    <p class="intro">To identify birds by sound in the city, you must mentally subtract the machine:</p>
+    <ol class="listen">
+      <li><strong>The Base:</strong> Ignore the low-frequency rumble of the expressway or subway vents.</li>
+      <li><strong>The Signal:</strong> Focus on the "Peent"—a sharp, nasal electric buzz cutting through the hum.</li>
+      <li><strong>The Physical:</strong> Listen for the "Whoosh" of air through primary feathers during a territorial dive.</li>
+    </ol>
+  </section>
+</div>
+</body>
+</html>

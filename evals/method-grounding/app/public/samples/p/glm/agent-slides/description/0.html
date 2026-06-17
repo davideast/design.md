@@ -1,0 +1,666 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Agent Architecture — A Technical Talk</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --primary:#1E1A14;
+  --secondary:#B8B0A2;
+  --tertiary:#C3402A;
+  --neutral:#F4F0E4;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{background:#2a2620;color:var(--primary);font-family:"Source Serif 4",Georgia,serif;-webkit-font-smoothing:antialiased}
+.deck{display:flex;flex-direction:column;align-items:center;gap:28px;padding:28px 0}
+.slide{
+  width:1280px;height:720px;background:var(--neutral);
+  position:relative;overflow:hidden;
+  box-shadow:0 30px 80px -20px rgba(0,0,0,.55);
+}
+.display{font-family:"Fraunces",serif;font-size:54px;font-weight:500;line-height:1.1;letter-spacing:.01em}
+.body-md{font-family:"Source Serif 4",serif;font-size:17px;font-weight:400;line-height:1.62}
+.code{font-family:"IBM Plex Mono",monospace;font-size:14px;font-weight:400;line-height:1.5}
+.label-sm{font-family:"IBM Plex Mono",monospace;font-size:12px;font-weight:400;line-height:1.4;letter-spacing:.08em;text-transform:uppercase}
+.rule{height:1px;background:var(--primary);opacity:.18}
+
+/* ============ SLIDE 1 — TITLE ============ */
+.s1{padding:64px 80px;display:flex;flex-direction:column;justify-content:space-between}
+.s1-top{display:flex;justify-content:space-between;align-items:flex-start}
+.s1-mark{font-family:"Fraunces",serif;font-size:13px;font-weight:500;letter-spacing:.24em;text-transform:uppercase;color:var(--primary)}
+.s1-mark .dot{color:var(--tertiary);margin:0 6px}
+.s1-meta{font-family:"IBM Plex Mono",monospace;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--primary);opacity:.65;text-align:right;line-height:1.6}
+.s1-title-wrap{position:relative;margin-top:-8px}
+.s1-title{font-family:"Fraunces",serif;font-size:148px;font-weight:500;line-height:.95;letter-spacing:-.012em;color:var(--primary)}
+.s1-title .amp{font-style:italic;color:var(--tertiary);font-weight:400}
+.s1-folio{position:absolute;left:0;top:-28px;font-family:"IBM Plex Mono",monospace;font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--primary);opacity:.5}
+.s1-stand{margin-top:44px;max-width:760px}
+.s1-stand .label{display:block;font-family:"IBM Plex Mono",monospace;font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--secondary);margin-bottom:14px}
+.s1-stand p{font-family:"Source Serif 4",serif;font-size:22px;font-weight:400;line-height:1.45;color:var(--primary);font-style:italic}
+.s1-bottom{display:flex;justify-content:space-between;align-items:flex-end;border-top:1px solid rgba(30,26,20,.18);padding-top:22px}
+.s1-speaker{font-family:"IBM Plex Mono",monospace;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--primary);line-height:1.7}
+.s1-speaker strong{font-weight:500;color:var(--primary);display:block;font-size:12px;letter-spacing:.16em}
+.s1-date{font-family:"IBM Plex Mono",monospace;font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--primary);text-align:right;line-height:1.7}
+.s1-date strong{font-weight:500;display:block;font-size:12px;letter-spacing:.16em}
+
+/* ============ SLIDE 2 — THE LOOP ============ */
+.s2{padding:64px 80px;display:grid;grid-template-columns:1fr 1fr;gap:64px}
+.s2-left{display:flex;flex-direction:column}
+.s2-eyebrow{font-family:"IBM Plex Mono",monospace;font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--tertiary);margin-bottom:14px}
+.s2-title{font-family:"Fraunces",serif;font-size:54px;font-weight:500;line-height:1.05;letter-spacing:.01em;margin-bottom:28px}
+.s2-title em{font-style:italic;color:var(--tertiary);font-weight:400}
+.s2-prose{font-family:"Source Serif 4",serif;font-size:17px;line-height:1.62;max-width:440px}
+.s2-prose p+p{margin-top:14px}
+.s2-prose .first-cap::first-letter{font-family:"Fraunces",serif;font-size:46px;font-weight:500;float:left;line-height:.9;padding:6px 8px 0 0;color:var(--tertiary)}
+.s2-right{display:flex;flex-direction:column;justify-content:space-between}
+.s2-diagram{flex:1;display:flex;align-items:center;justify-content:center}
+.s2-caption{font-family:"Source Serif 4",serif;font-style:italic;font-size:13.5px;line-height:1.5;color:var(--primary);opacity:.78;border-top:1px solid rgba(30,26,20,.18);padding-top:16px;max-width:480px}
+.s2-caption strong{font-family:"IBM Plex Mono",monospace;font-style:normal;font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--tertiary);font-weight:500}
+
+/* ============ SLIDE 3 — WORKED TRACE ============ */
+.s3{padding:56px 80px;display:grid;grid-template-rows:auto 1fr;gap:24px}
+.s3-head{display:flex;justify-content:space-between;align-items:baseline;border-bottom:1px solid rgba(30,26,20,.18);padding-bottom:14px}
+.s3-head-left{display:flex;align-items:baseline;gap:28px}
+.s3-eyebrow{font-family:"IBM Plex Mono",monospace;font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--tertiary)}
+.s3-title{font-family:"Fraunces",serif;font-size:34px;font-weight:500;line-height:1;letter-spacing:.01em}
+.s3-title em{font-style:italic;color:var(--tertiary);font-weight:400}
+.s3-query{font-family:"IBM Plex Mono",monospace;font-size:11.5px;letter-spacing:.04em;color:var(--primary);opacity:.78}
+.s3-query .q-label{color:var(--tertiary);font-weight:500;margin-right:6px}
+.s3-body{display:grid;grid-template-columns:1fr 220px;gap:40px;overflow:hidden}
+.s3-steps{display:flex;flex-direction:column;gap:9px}
+.s3-step{display:grid;grid-template-columns:60px 96px 1fr;gap:14px;align-items:baseline;padding-bottom:9px;border-bottom:1px dashed rgba(30,26,20,.14)}
+.s3-step:last-child{border-bottom:none}
+.s3-num{font-family:"IBM Plex Mono",monospace;font-size:11px;color:var(--secondary);letter-spacing:.08em}
+.s3-kind{font-family:"IBM Plex Mono",monospace;font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;font-weight:500}
+.s3-kind.thought{color:var(--primary)}
+.s3-kind.action{color:var(--tertiary)}
+.s3-kind.observation{color:var(--secondary)}
+.s3-text{font-family:"Source Serif 4",serif;font-size:14px;line-height:1.5;color:var(--primary)}
+.s3-text code{font-family:"IBM Plex Mono",monospace;font-size:12.5px;background:rgba(195,64,42,.07);padding:1px 5px;color:var(--primary)}
+.s3-text em{font-style:italic;color:var(--primary);opacity:.7}
+.s3-margins{border-left:1px solid rgba(30,26,20,.18);padding-left:24px;display:flex;flex-direction:column;gap:30px}
+.s3-margin{font-family:"Source Serif 4",serif;font-style:italic;font-size:12.5px;line-height:1.45;color:var(--primary);opacity:.72;position:relative}
+.s3-margin::before{content:attr(data-marker);font-family:"IBM Plex Mono",monospace;font-style:normal;font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--tertiary);display:block;margin-bottom:5px;opacity:.9}
+.s3-margin-end{font-family:"IBM Plex Mono",monospace;font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--secondary);margin-top:auto;padding-top:14px;border-top:1px solid rgba(30,26,20,.18)}
+
+/* ============ SLIDE 4 — FOUR ARCHITECTURES ============ */
+.s4{padding:48px 80px 56px;display:grid;grid-template-rows:auto 1fr;gap:22px}
+.s4-head{display:flex;justify-content:space-between;align-items:flex-end;border-bottom:1px solid rgba(30,26,20,.18);padding-bottom:14px}
+.s4-head-left{display:flex;align-items:baseline;gap:28px}
+.s4-eyebrow{font-family:"IBM Plex Mono",monospace;font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--tertiary)}
+.s4-title{font-family:"Fraunces",serif;font-size:34px;font-weight:500;line-height:1;letter-spacing:.01em}
+.s4-title em{font-style:italic;color:var(--tertiary);font-weight:400}
+.s4-grid{display:grid;grid-template-columns:1fr 1fr;grid-template-rows:1fr 1fr;gap:32px 48px}
+.s4-card{display:grid;grid-template-rows:auto 1fr auto;gap:8px;min-height:0}
+.s4-card-head{display:flex;align-items:baseline;justify-content:space-between}
+.s4-card-num{font-family:"IBM Plex Mono",monospace;font-size:10px;letter-spacing:.14em;color:var(--secondary);text-transform:uppercase}
+.s4-card-title{font-family:"Fraunces",serif;font-size:19px;font-weight:500;letter-spacing:.02em;text-transform:uppercase}
+.s4-diagram{display:flex;align-items:center;justify-content:center;min-height:0}
+.s4-caption{font-family:"Source Serif 4",serif;font-style:italic;font-size:12px;line-height:1.4;color:var(--primary);opacity:.74;border-top:1px dashed rgba(30,26,20,.18);padding-top:8px}
+.s4-caption strong{font-family:"IBM Plex Mono",monospace;font-style:normal;font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--tertiary);font-weight:500;margin-right:6px}
+
+/* ============ SLIDE 5 — WHERE LOOPS FAIL ============ */
+.s5{padding:64px 80px;display:grid;grid-template-columns:1fr 1.15fr;gap:56px}
+.s5-left{display:flex;flex-direction:column}
+.s5-eyebrow{font-family:"IBM Plex Mono",monospace;font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--tertiary);margin-bottom:14px}
+.s5-title{font-family:"Fraunces",serif;font-size:54px;font-weight:500;line-height:1.05;letter-spacing:.01em;margin-bottom:28px}
+.s5-title em{font-style:italic;color:var(--tertiary);font-weight:400}
+.s5-prose{font-family:"Source Serif 4",serif;font-size:17px;line-height:1.62;max-width:440px}
+.s5-prose p+p{margin-top:14px}
+.s5-prose .first-cap::first-letter{font-family:"Fraunces",serif;font-size:46px;font-weight:500;float:left;line-height:.9;padding:6px 8px 0 0;color:var(--tertiary)}
+.s5-right{position:relative;display:flex;flex-direction:column}
+.s5-plot-label{font-family:"IBM Plex Mono",monospace;font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:var(--secondary);margin-bottom:8px;text-align:right}
+.s5-plot-wrap{flex:1;position:relative}
+
+/* ============ SLIDE 6 — CODE ============ */
+.s6{padding:56px 80px;display:grid;grid-template-rows:auto 1fr;gap:22px}
+.s6-head{display:flex;justify-content:space-between;align-items:flex-end;border-bottom:1px solid rgba(30,26,20,.18);padding-bottom:14px}
+.s6-head-left{display:flex;align-items:baseline;gap:28px}
+.s6-eyebrow{font-family:"IBM Plex Mono",monospace;font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--tertiary)}
+.s6-title{font-family:"Fraunces",serif;font-size:34px;font-weight:500;line-height:1;letter-spacing:.01em}
+.s6-title em{font-style:italic;color:var(--tertiary);font-weight:400}
+.s6-lang{font-family:"IBM Plex Mono",monospace;font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:var(--secondary)}
+.s6-body{display:grid;grid-template-columns:1fr 280px;gap:48px;min-height:0}
+.s6-code-wrap{display:flex;flex-direction:column;min-height:0}
+.s6-code{font-family:"IBM Plex Mono",monospace;font-size:13px;line-height:1.5;color:var(--primary);white-space:pre;background:rgba(30,26,20,.04);padding:18px 22px;border-left:2px solid var(--tertiary);overflow:hidden}
+.s6-code .ln{color:var(--secondary);display:inline-block;width:24px;text-align:right;margin-right:14px;user-select:none;opacity:.7}
+.s6-code .kw{color:var(--tertiary);font-weight:500}
+.s6-code .fn{color:var(--primary);font-weight:500}
+.s6-code .str{color:var(--primary);opacity:.78}
+.s6-code .cm{color:var(--secondary);font-style:italic}
+.s6-close{margin-top:14px;font-family:"Source Serif 4",serif;font-size:14.5px;line-height:1.55;font-style:italic;color:var(--primary);max-width:680px;border-top:1px solid rgba(30,26,20,.18);padding-top:14px}
+.s6-close strong{font-style:normal;font-family:"IBM Plex Mono",monospace;font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--tertiary);font-weight:500;display:block;margin-bottom:6px}
+.s6-margins{display:flex;flex-direction:column;gap:14px}
+.s6-margin{position:relative;padding:14px 16px 14px 18px;border-left:1px solid var(--tertiary);background:rgba(195,64,42,.04)}
+.s6-margin .marker{font-family:"IBM Plex Mono",monospace;font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:var(--tertiary);font-weight:500;margin-bottom:6px;display:block}
+.s6-margin p{font-family:"Source Serif 4",serif;font-size:13px;line-height:1.5;color:var(--primary)}
+.s6-margin p code{font-family:"IBM Plex Mono",monospace;font-size:11.5px;background:rgba(195,64,42,.1);padding:1px 4px;color:var(--primary)}
+
+/* ============ SLIDE 7 — ENDING ============ */
+.s7{padding:64px 80px;display:flex;flex-direction:column;justify-content:space-between;position:relative}
+.s7-top{display:flex;justify-content:space-between;align-items:flex-start}
+.s7-mark{font-family:"IBM Plex Mono",monospace;font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--secondary)}
+.s7-num{font-family:"IBM Plex Mono",monospace;font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--secondary)}
+.s7-mid{display:flex;flex-direction:column;justify-content:center;flex:1;padding:32px 0}
+.s7-eyebrow{font-family:"IBM Plex Mono",monospace;font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--tertiary);margin-bottom:28px}
+.s7-quote{font-family:"Fraunces",serif;font-size:60px;font-weight:500;line-height:1.1;letter-spacing:.005em;max-width:1080px;color:var(--primary)}
+.s7-quote .accent{color:var(--tertiary);font-style:italic;font-weight:400}
+.s7-bottom{border-top:1px solid rgba(30,26,20,.18);padding-top:22px;display:grid;grid-template-columns:auto 1fr;gap:80px;align-items:start}
+.s7-refs-label{font-family:"IBM Plex Mono",monospace;font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--primary)}
+.s7-refs{display:grid;grid-template-columns:1fr 1fr 1fr;gap:48px}
+.s7-ref{font-family:"Source Serif 4",serif;font-size:13px;line-height:1.55;color:var(--primary)}
+.s7-ref .num{font-family:"IBM Plex Mono",monospace;font-size:11px;letter-spacing:.08em;color:var(--tertiary);font-weight:500;display:block;margin-bottom:4px}
+.s7-ref .title{font-style:italic;color:var(--primary)}
+.s7-ref .meta{color:var(--secondary);font-size:12px;display:block;margin-top:2px}
+
+/* ============ SHARED DIAGRAM PRIMITIVES ============ */
+.dnode{font-family:"IBM Plex Mono",monospace;font-size:11px;letter-spacing:.14em;text-transform:uppercase;fill:var(--primary);font-weight:500}
+.dedge{stroke:var(--primary);stroke-width:1.25;fill:none}
+.daccent{fill:var(--tertiary)}
+.dsoft{stroke:rgba(30,26,20,.4);stroke-width:1;stroke-dasharray:3 3;fill:none}
+.dlbl{font-family:"IBM Plex Mono",monospace;font-size:9px;letter-spacing:.12em;text-transform:uppercase;fill:var(--secondary)}
+.dcap{font-family:"Source Serif 4",serif;font-style:italic;font-size:11px;fill:var(--primary);opacity:.75}
+
+@media (max-width:1340px){.deck{padding:20px 0}.slide{transform-origin:top center}}
+</style>
+</head>
+<body>
+
+<div class="deck">
+
+<!-- ===================== SLIDE 1 ===================== -->
+<section class="slide s1">
+  <div class="s1-top">
+    <div class="s1-mark">A Technical Talk<span class="dot">·</span>Six Movements</div>
+    <div class="s1-meta">
+      Lecture Hall B<br>
+      Stanford, California
+    </div>
+  </div>
+
+  <div class="s1-title-wrap">
+    <span class="s1-folio">Lecture 01 — 14.x.2026</span>
+    <h1 class="s1-title">Agent<br>Architecture<span class="amp">.</span></h1>
+    <div class="s1-stand">
+      <span class="label">Standfirst</span>
+      <p>On loops, traces, and the structures by which language models act.</p>
+    </div>
+  </div>
+
+  <div class="s1-bottom">
+    <div class="s1-speaker">
+      <strong>Dr. Elena Marsh</strong>
+      Department of Computer Science<br>
+      Stanford University
+    </div>
+    <div class="s1-date">
+      <strong>14 October 2026</strong>
+      Autumn Term — Week 3
+    </div>
+  </div>
+</section>
+
+<!-- ===================== SLIDE 2 ===================== -->
+<section class="slide s2">
+  <div class="s2-left">
+    <div class="s2-eyebrow">§ 1 — Foundations</div>
+    <h2 class="s2-title">The <em>Loop</em>.</h2>
+    <div class="s2-prose">
+      <p class="first-cap">ReAct names the simplest useful thing an agent can be: a loop in which a language model reasons about its situation, takes an action in the world, and reads back what changed. Reasoning produces a plan; action carries it out; observation reports the result. The cycle then repeats.</p>
+      <p>What makes this an architecture rather than a prompt is the closing edge — observation returning to thought. That single turn converts a pipeline into a controller, and is the reason the system can be said to act.</p>
+    </div>
+  </div>
+  <div class="s2-right">
+    <div class="s2-diagram">
+      <svg viewBox="0 0 480 360" width="100%" height="100%">
+        <!-- Center marker -->
+        <text x="240" y="195" text-anchor="middle" class="dlbl" fill="rgba(30,26,20,.3)">react cycle</text>
+
+        <!-- Edges -->
+        <path d="M 240 95 L 240 145" class="dedge"/>
+        <path d="M 244 145 L 248 140 M 240 145 L 244 140" class="dedge"/>
+        <path d="M 240 215 L 240 265" class="dedge"/>
+        <path d="M 244 265 L 248 260 M 240 265 L 244 260" class="dedge"/>
+
+        <!-- Returning edge: OBSERVE -> THINK (left side, curved) -->
+        <path d="M 210 300 C 110 300, 110 80, 210 80" class="dedge"/>
+        <path d="M 215 82 L 222 84 M 210 80 L 215 86" class="dedge"/>
+
+        <!-- Edge labels -->
+        <text x="252" y="125" class="dlbl">→ act</text>
+        <text x="252" y="245" class="dlbl">→ observe</text>
+        <text x="95" y="190" class="dlbl" text-anchor="middle">returns</text>
+        <text x="95" y="204" class="dlbl" text-anchor="middle">to think</text>
+
+        <!-- THINK node -->
+        <rect x="190" y="65" width="100" height="30" fill="var(--neutral)" stroke="var(--primary)" stroke-width="1.25"/>
+        <text x="240" y="84" text-anchor="middle" class="dnode">Think</text>
+
+        <!-- ACT node (accent) -->
+        <rect x="190" y="185" width="100" height="30" fill="var(--tertiary)" stroke="var(--tertiary)" stroke-width="1.25"/>
+        <text x="240" y="204" text-anchor="middle" class="dnode" fill="var(--neutral)">Act</text>
+
+        <!-- OBSERVE node -->
+        <rect x="190" y="285" width="100" height="30" fill="var(--neutral)" stroke="var(--primary)" stroke-width="1.25"/>
+        <text x="240" y="304" text-anchor="middle" class="dnode">Observe</text>
+
+        <!-- Small annotation marker for the closing edge -->
+        <circle cx="110" cy="190" r="2.5" class="daccent"/>
+      </svg>
+    </div>
+    <div class="s2-caption">
+      <strong>Fig. 1.</strong> The basic loop. Note that OBSERVE returns to THINK; this is what makes the architecture a controller, not a pipeline.
+    </div>
+  </div>
+</section>
+
+<!-- ===================== SLIDE 3 ===================== -->
+<section class="slide s3">
+  <div class="s3-head">
+    <div class="s3-head-left">
+      <span class="s3-eyebrow">§ 2</span>
+      <h2 class="s3-title">A Worked <em>Trace</em>.</h2>
+    </div>
+    <div class="s3-query"><span class="q-label">Query —</span> "What was the closing price of NVDA the day after Jensen Huang's 2024 keynote?"</div>
+  </div>
+
+  <div class="s3-body">
+    <div class="s3-steps">
+
+      <div class="s3-step">
+        <span class="s3-num">01</span>
+        <span class="s3-kind thought">Thought</span>
+        <span class="s3-text">I need the date of Jensen Huang's 2024 keynote, then the trading day immediately after, then NVDA's close on that day.</span>
+      </div>
+
+      <div class="s3-step">
+        <span class="s3-num">02</span>
+        <span class="s3-kind action">Action</span>
+        <span class="s3-text"><code>search("Jensen Huang keynote 2024 date")</code></span>
+      </div>
+
+      <div class="s3-step">
+        <span class="s3-num">03</span>
+        <span class="s3-kind observation">Observation</span>
+        <span class="s3-text">"NVIDIA GTC 2024 keynote — March 18, 2024, San Jose." <em>Monday.</em></span>
+      </div>
+
+      <div class="s3-step">
+        <span class="s3-num">04</span>
+        <span class="s3-kind thought">Thought</span>
+        <span class="s3-text">The next trading day after Monday March 18 is Tuesday March 19 — markets were open. Fetch NVDA close for 2024-03-19.</span>
+      </div>
+
+      <div class="s3-step">
+        <span class="s3-num">05</span>
+        <span class="s3-kind action">Action</span>
+        <span class="s3-text"><code>stock_close("NVDA", "2024-03-19")</code></span>
+      </div>
+
+      <div class="s3-step">
+        <span class="s3-num">06</span>
+        <span class="s3-kind observation">Observation</span>
+        <span class="s3-text">"NVDA closed at <em>$919.13</em> on 2024-03-19, up 2.4% from the prior session."</span>
+      </div>
+
+      <div class="s3-step">
+        <span class="s3-num">07</span>
+        <span class="s3-kind thought">Thought</span>
+        <span class="s3-text">I have both ingredients. Compose the answer and stop.</span>
+      </div>
+
+      <div class="s3-step">
+        <span class="s3-num">08</span>
+        <span class="s3-kind action">Action</span>
+        <span class="s3-text"><code>finish("$919.13, the close on 19 March 2024, the trading day after Huang's GTC keynote.")</code></span>
+      </div>
+
+    </div>
+
+    <div class="s3-margins">
+      <div class="s3-margin" data-marker="a · decomposition">The first thought breaks the question into three concrete sub-goals before any tool is touched.</div>
+      <div class="s3-margin" data-marker="b · tool choice">Each action names a specific tool and arguments — never a vague "look it up".</div>
+      <div class="s3-margin" data-marker="c · grounding">Observations are returned verbatim and become the substrate for the next thought.</div>
+      <div class="s3-margin" data-marker="d · termination">The agent decides to stop. No external scheduler is required.</div>
+      <div class="s3-margin-end">Trace terminates at step 08</div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== SLIDE 4 ===================== -->
+<section class="slide s4">
+  <div class="s4-head">
+    <div class="s4-head-left">
+      <span class="s4-eyebrow">§ 3</span>
+      <h2 class="s4-title">Four <em>Architectures</em>.</h2>
+    </div>
+    <div class="s4-eyebrow" style="color:var(--secondary)">A 2 × 2 comparison</div>
+  </div>
+
+  <div class="s4-grid">
+
+    <!-- REACT -->
+    <div class="s4-card">
+      <div class="s4-card-head">
+        <div class="s4-card-title">ReAct</div>
+        <div class="s4-card-num">i — baseline</div>
+      </div>
+      <div class="s4-diagram">
+        <svg viewBox="0 0 280 160" width="100%" height="100%">
+          <path d="M 140 28 L 140 48" class="dedge"/>
+          <path d="M 144 48 L 148 44 M 140 48 L 144 44" class="dedge"/>
+          <path d="M 140 82 L 140 102" class="dedge"/>
+          <path d="M 144 102 L 148 98 M 140 102 L 144 98" class="dedge"/>
+          <path d="M 125 122 C 80 122, 80 28, 125 28" class="dedge"/>
+          <path d="M 130 30 L 137 32 M 125 28 L 130 34" class="dedge"/>
+          <rect x="115" y="18" width="50" height="20" fill="var(--neutral)" stroke="var(--primary)" stroke-width="1"/>
+          <text x="140" y="32" text-anchor="middle" class="dnode" style="font-size:9px">Think</text>
+          <rect x="115" y="62" width="50" height="20" fill="var(--tertiary)"/>
+          <text x="140" y="76" text-anchor="middle" class="dnode" style="font-size:9px" fill="var(--neutral)">Act</text>
+          <rect x="115" y="112" width="50" height="20" fill="var(--neutral)" stroke="var(--primary)" stroke-width="1"/>
+          <text x="140" y="126" text-anchor="middle" class="dnode" style="font-size:9px">Observe</text>
+        </svg>
+      </div>
+      <div class="s4-caption"><strong>Fig. i.</strong> The basic Think–Act–Observe cycle. Reasoning and acting interleave.</div>
+    </div>
+
+    <!-- REFLEXION -->
+    <div class="s4-card">
+      <div class="s4-card-head">
+        <div class="s4-card-title">Reflexion</div>
+        <div class="s4-card-num">ii — adds memory</div>
+      </div>
+      <div class="s4-diagram">
+        <svg viewBox="0 0 280 160" width="100%" height="100%">
+          <path d="M 140 28 L 140 48" class="dedge"/>
+          <path d="M 144 48 L 148 44 M 140 48 L 144 44" class="dedge"/>
+          <path d="M 140 82 L 140 102" class="dedge"/>
+          <path d="M 144 102 L 148 98 M 140 102 L 144 98" class="dedge"/>
+          <path d="M 125 122 C 80 122, 80 28, 125 28" class="dedge"/>
+          <path d="M 130 30 L 137 32 M 125 28 L 130 34" class="dedge"/>
+          <rect x="115" y="18" width="50" height="20" fill="var(--neutral)" stroke="var(--primary)" stroke-width="1"/>
+          <text x="140" y="32" text-anchor="middle" class="dnode" style="font-size:9px">Think</text>
+          <rect x="115" y="62" width="50" height="20" fill="var(--tertiary)"/>
+          <text x="140" y="76" text-anchor="middle" class="dnode" style="font-size:9px" fill="var(--neutral)">Act</text>
+          <rect x="115" y="112" width="50" height="20" fill="var(--neutral)" stroke="var(--primary)" stroke-width="1"/>
+          <text x="140" y="126" text-anchor="middle" class="dnode" style="font-size:9px">Observe</text>
+          <!-- Memory node -->
+          <rect x="215" y="62" width="55" height="20" fill="var(--neutral)" stroke="var(--tertiary)" stroke-width="1.25"/>
+          <text x="242" y="76" text-anchor="middle" class="dnode" style="font-size:9px" fill="var(--tertiary)">Memory</text>
+          <path d="M 165 72 L 213 72" class="dedge" stroke-dasharray="2 3"/>
+          <path d="M 210 68 L 215 72 M 210 76 L 215 72" class="dedge"/>
+          <path d="M 213 82 C 200 110, 180 122, 165 124" class="dedge" stroke-dasharray="2 3"/>
+        </svg>
+      </div>
+      <div class="s4-caption"><strong>Fig. ii.</strong> Reflexion adds a Memory node that feeds prior trials back into Think.</div>
+    </div>
+
+    <!-- PLAN-AND-EXECUTE -->
+    <div class="s4-card">
+      <div class="s4-card-head">
+        <div class="s4-card-title">Plan-and-Execute</div>
+        <div class="s4-card-num">iii — adds planner</div>
+      </div>
+      <div class="s4-diagram">
+        <svg viewBox="0 0 280 160" width="100%" height="100%">
+          <rect x="115" y="8" width="50" height="20" fill="var(--tertiary)"/>
+          <text x="140" y="22" text-anchor="middle" class="dnode" style="font-size:9px" fill="var(--neutral)">Plan</text>
+          <path d="M 140 28 L 140 48" class="dedge"/>
+          <path d="M 144 48 L 148 44 M 140 48 L 144 44" class="dedge"/>
+          <path d="M 140 82 L 140 102" class="dedge"/>
+          <path d="M 144 102 L 148 98 M 140 102 L 144 98" class="dedge"/>
+          <path d="M 125 122 C 80 122, 80 58, 125 58" class="dedge"/>
+          <path d="M 130 60 L 137 62 M 125 58 L 130 64" class="dedge"/>
+          <rect x="115" y="58" width="50" height="20" fill="var(--neutral)" stroke="var(--primary)" stroke-width="1"/>
+          <text x="140" y="72" text-anchor="middle" class="dnode" style="font-size:9px">Think</text>
+          <rect x="115" y="102" width="50" height="20" fill="var(--neutral)" stroke="var(--primary)" stroke-width="1"/>
+          <text x="140" y="116" text-anchor="middle" class="dnode" style="font-size:9px">Act</text>
+          <rect x="115" y="140" width="50" height="20" fill="var(--neutral)" stroke="var(--primary)" stroke-width="1"/>
+          <text x="140" y="154" text-anchor="middle" class="dnode" style="font-size:9px">Observe</text>
+          <path d="M 140 122 L 140 140" class="dedge"/>
+          <path d="M 144 140 L 148 136 M 140 140 L 144 136" class="dedge"/>
+        </svg>
+      </div>
+      <div class="s4-caption"><strong>Fig. iii.</strong> A Plan node feeds the cycle, decomposing goals before execution.</div>
+    </div>
+
+    <!-- TREE-OF-THOUGHTS -->
+    <div class="s4-card">
+      <div class="s4-card-head">
+        <div class="s4-card-title">Tree-of-Thoughts</div>
+        <div class="s4-card-num">iv — branches Think</div>
+      </div>
+      <div class="s4-diagram">
+        <svg viewBox="0 0 280 160" width="100%" height="100%">
+          <rect x="115" y="8" width="50" height="20" fill="var(--neutral)" stroke="var(--primary)" stroke-width="1"/>
+          <text x="140" y="22" text-anchor="middle" class="dnode" style="font-size:9px">Think</text>
+          <!-- Two children -->
+          <path d="M 130 28 C 120 45, 95 55, 80 62" class="dedge"/>
+          <path d="M 84 60 L 80 62 L 84 66" class="dedge"/>
+          <path d="M 150 28 C 160 45, 185 55, 200 62" class="dedge"/>
+          <path d="M 196 60 L 200 62 L 196 66" class="dedge"/>
+          <rect x="55" y="62" width="50" height="20" fill="var(--neutral)" stroke="var(--tertiary)" stroke-width="1.25"/>
+          <text x="80" y="76" text-anchor="middle" class="dnode" style="font-size:9px" fill="var(--tertiary)">Think′</text>
+          <rect x="175" y="62" width="50" height="20" fill="var(--neutral)" stroke="var(--tertiary)" stroke-width="1.25"/>
+          <text x="200" y="76" text-anchor="middle" class="dnode" style="font-size:9px" fill="var(--tertiary)">Think″</text>
+          <!-- Both feed Act -->
+          <path d="M 80 82 C 110 100, 130 105, 140 108" class="dedge"/>
+          <path d="M 200 82 C 170 100, 150 105, 140 108" class="dedge"/>
+          <rect x="115" y="108" width="50" height="20" fill="var(--tertiary)"/>
+          <text x="140" y="122" text-anchor="middle" class="dnode" style="font-size:9px" fill="var(--neutral)">Act</text>
+          <path d="M 140 128 L 140 142" class="dedge"/>
+          <path d="M 144 142 L 148 138 M 140 142 L 144 138" class="dedge"/>
+          <rect x="115" y="142" width="50" height="16" fill="var(--neutral)" stroke="var(--primary)" stroke-width="1"/>
+          <text x="140" y="153" text-anchor="middle" class="dnode" style="font-size:8px">Observe</text>
+        </svg>
+      </div>
+      <div class="s4-caption"><strong>Fig. iv.</strong> Think branches into two children; only the surviving branch reaches Act.</div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ===================== SLIDE 5 ===================== -->
+<section class="slide s5">
+  <div class="s5-left">
+    <div class="s5-eyebrow">§ 4 — Failure modes</div>
+    <h2 class="s5-title">Where Loops <em>Fail</em>.</h2>
+    <div class="s5-prose">
+      <p class="first-cap">Every iteration of an agent loop writes back into the same context window. Tokens accumulate: the query, the prior thoughts, the tool calls, the verbatim observations, the prompts the framework adds to keep things tidy. The history is the working memory of the system — and it grows monotonically with every step.</p>
+      <p>Eventually the history is longer than the model can attend to effectively. The agent begins to lose track of its own goal, to repeat actions, to forget what it has already established. The loop has not crashed. It has simply degraded past the point of useful work.</p>
+    </div>
+  </div>
+
+  <div class="s5-right">
+    <div class="s5-plot-label">Fig. 2 — Context tokens vs. iteration count</div>
+    <div class="s5-plot-wrap">
+      <svg viewBox="0 0 580 460" width="100%" height="100%" preserveAspectRatio="xMidYMid meet">
+        <!-- Title labels -->
+        <text x="60" y="38" class="dlbl" style="font-size:10px">Tokens (k)</text>
+        <text x="540" y="420" text-anchor="end" class="dlbl" style="font-size:10px">Iterations</text>
+
+        <!-- Grid -->
+        <line x1="60" y1="60" x2="540" y2="60" stroke="rgba(30,26,20,.08)" stroke-width="1"/>
+        <line x1="60" y1="130" x2="540" y2="130" stroke="rgba(30,26,20,.08)" stroke-width="1"/>
+        <line x1="60" y1="200" x2="540" y2="200" stroke="rgba(30,26,20,.08)" stroke-width="1"/>
+        <line x1="60" y1="270" x2="540" y2="270" stroke="rgba(30,26,20,.08)" stroke-width="1"/>
+        <line x1="60" y1="340" x2="540" y2="340" stroke="rgba(30,26,20,.08)" stroke-width="1"/>
+
+        <!-- Y axis -->
+        <line x1="60" y1="60" x2="60" y2="400" stroke="var(--primary)" stroke-width="1.25"/>
+        <!-- X axis -->
+        <line x1="60" y1="400" x2="540" y2="400" stroke="var(--primary)" stroke-width="1.25"/>
+
+        <!-- Y ticks and labels -->
+        <line x1="56" y1="60" x2="60" y2="60" stroke="var(--primary)" stroke-width="1.25"/>
+        <line x1="56" y1="130" x2="60" y2="130" stroke="var(--primary)" stroke-width="1.25"/>
+        <line x1="56" y1="200" x2="60" y2="200" stroke="var(--primary)" stroke-width="1.25"/>
+        <line x1="56" y1="270" x2="60" y2="270" stroke="var(--primary)" stroke-width="1.25"/>
+        <line x1="56" y1="340" x2="60" y2="340" stroke="var(--primary)" stroke-width="1.25"/>
+        <line x1="56" y1="400" x2="60" y2="400" stroke="var(--primary)" stroke-width="1.25"/>
+
+        <text x="50" y="64" text-anchor="end" class="dlbl" style="font-size:10px">128</text>
+        <text x="50" y="134" text-anchor="end" class="dlbl" style="font-size:10px">96</text>
+        <text x="50" y="204" text-anchor="end" class="dlbl" style="font-size:10px">64</text>
+        <text x="50" y="274" text-anchor="end" class="dlbl" style="font-size:10px">32</text>
+        <text x="50" y="344" text-anchor="end" class="dlbl" style="font-size:10px">16</text>
+        <text x="50" y="404" text-anchor="end" class="dlbl" style="font-size:10px">0</text>
+
+        <!-- X ticks and labels -->
+        <!-- 0,5,10,15,20,25 ITER, evenly spaced -->
+        <line x1="60" y1="400" x2="60" y2="404" stroke="var(--primary)" stroke-width="1.25"/>
+        <line x1="156" y1="400" x2="156" y2="404" stroke="var(--primary)" stroke-width="1.25"/>
+        <line x1="252" y1="400" x2="252" y2="404" stroke="var(--primary)" stroke-width="1.25"/>
+        <line x1="348" y1="400" x2="348" y2="404" stroke="var(--primary)" stroke-width="1.25"/>
+        <line x1="444" y1="400" x2="444" y2="404" stroke="var(--primary)" stroke-width="1.25"/>
+        <line x1="540" y1="400" x2="540" y2="404" stroke="var(--primary)" stroke-width="1.25"/>
+
+        <text x="60" y="418" text-anchor="middle" class="dlbl" style="font-size:10px">0</text>
+        <text x="156" y="418" text-anchor="middle" class="dlbl" style="font-size:10px">5</text>
+        <text x="252" y="418" text-anchor="middle" class="dlbl" style="font-size:10px">10</text>
+        <text x="348" y="418" text-anchor="middle" class="dlbl" style="font-size:10px">15</text>
+        <text x="444" y="418" text-anchor="middle" class="dlbl" style="font-size:10px">20</text>
+        <text x="540" y="418" text-anchor="middle" class="dlbl" style="font-size:10px">25</text>
+
+        <text x="556" y="404" class="dlbl" style="font-size:9px" fill="var(--secondary)">ITER</text>
+
+        <!-- Inflection region (shaded band between iter 13 and 17) -->
+        <rect x="329" y="60" width="38" height="340" fill="var(--tertiary)" opacity="0.06"/>
+
+        <!-- The curve: monotonically rising, inflecting upward around iter 15 -->
+        <path d="M 60 392
+                 C 100 388, 130 384, 156 378
+                 C 180 372, 220 366, 252 358
+                 C 280 351, 320 342, 348 326
+                 C 376 308, 410 268, 444 200
+                 C 470 144, 510 92, 540 70"
+              fill="none" stroke="var(--tertiary)" stroke-width="2"/>
+
+        <!-- Data points -->
+        <circle cx="60" cy="392" r="2.5" fill="var(--tertiary)"/>
+        <circle cx="156" cy="378" r="2.5" fill="var(--tertiary)"/>
+        <circle cx="252" cy="358" r="2.5" fill="var(--tertiary)"/>
+        <circle cx="348" cy="326" r="2.5" fill="var(--tertiary)"/>
+        <circle cx="444" cy="200" r="2.5" fill="var(--tertiary)"/>
+        <circle cx="540" cy="70" r="2.5" fill="var(--tertiary)"/>
+
+        <!-- Inflection marker -->
+        <circle cx="348" cy="326" r="6" fill="none" stroke="var(--tertiary)" stroke-width="1.25"/>
+        <line x1="348" y1="326" x2="348" y2="232" stroke="var(--tertiary)" stroke-width="1" stroke-dasharray="3 3"/>
+
+        <!-- Annotation box -->
+        <rect x="358" y="178" width="178" height="56" fill="var(--neutral)" stroke="var(--tertiary)" stroke-width="1"/>
+        <text x="368" y="194" class="dlbl" style="font-size:9px" fill="var(--tertiary)">Inflection · iter ≈ 15</text>
+        <text x="368" y="210" style="font-family:'Source Serif 4',serif;font-style:italic;font-size:11px;fill:var(--primary)">Most production agents fail</text>
+        <text x="368" y="225" style="font-family:'Source Serif 4',serif;font-style:italic;font-size:11px;fill:var(--primary)">somewhere in this region —</text>
+
+        <!-- Connector from box to inflection point -->
+        <path d="M 358 220 L 350 226 L 348 326" fill="none" stroke="var(--tertiary)" stroke-width="0.75" stroke-dasharray="2 3" opacity="0.6"/>
+      </svg>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== SLIDE 6 ===================== -->
+<section class="slide s6">
+  <div class="s6-head">
+    <div class="s6-head-left">
+      <span class="s6-eyebrow">§ 5</span>
+      <h2 class="s6-title">The Loop, in <em>Code</em>.</h2>
+    </div>
+    <span class="s6-lang">Python · minimal ReAct</span>
+  </div>
+
+  <div class="s6-body">
+    <div class="s6-code-wrap">
+      <pre class="s6-code"><span class="ln">01</span><span class="cm"># minimal ReAct loop — the entire architecture, in 25 lines</span>
+<span class="ln">02</span>
+<span class="ln">03</span><span class="kw">def</span> <span class="fn">react</span>(query, tools, model, max_steps=<span class="str">20</span>):
+<span class="ln">04</span>    history = [{<span class="str">"role"</span>: <span class="str">"user"</span>, <span class="str">"content"</span>: query}]
+<span class="ln">05</span>
+<span class="ln">06</span>    <span class="kw">for</span> step <span class="kw">in</span> <span class="fn">range</span>(max_steps):
+<span class="ln">07</span>        <span class="cm"># THINK — let the model externalize its reasoning first</span>
+<span class="ln">08</span>        thought = model.complete(history + [{
+<span class="ln">09</span>            <span class="str">"role"</span>: <span class="str">"system"</span>,
+<span class="ln">10</span>            <span class="str">"content"</span>: <span class="str">"State your reasoning, then pick an action."</span>
+<span class="ln">11</span>        }])
+<span class="ln">12</span>        history.append({<span class="str">"role"</span>: <span class="str">"assistant"</span>, <span class="str">"content"</span>: thought})
+<span class="ln">13</span>
+<span class="ln">14</span>        <span class="cm"># ACT — parse &amp; execute the chosen tool, if any</span>
+<span class="ln">15</span>        action = <span class="fn">parse_action</span>(thought)
+<span class="ln">16</span>        <span class="kw">if</span> action.name == <span class="str">"finish"</span>:
+<span class="ln">17</span>            <span class="kw">return</span> action.input
+<span class="ln">18</span>
+<span class="ln">19</span>        result = tools[action.name](**action.input)
+<span class="ln">20</span>
+<span class="ln">21</span>        <span class="cm"># OBSERVE — feed the result back into the next thought</span>
+<span class="ln">22</span>        history.append({
+<span class="ln">23</span>            <span class="str">"role"</span>: <span class="str">"tool"</span>,
+<span class="ln">24</span>            <span class="str">"content"</span>: <span class="fn">str</span>(result)
+<span class="ln">25</span>        })
+<span class="ln">26</span>    <span class="kw">raise</span> <span class="fn">RuntimeError</span>(<span class="str">"step budget exhausted"</span>)</pre>
+
+      <div class="s6-close">
+        <strong>Closing remark</strong>
+        The structure strictly interleaves reasoning and action. Forcing the model to externalize its thought before acting gives the system interpretability and reduces hallucinated state changes.
+      </div>
+    </div>
+
+    <div class="s6-margins">
+      <div class="s6-margin">
+        <span class="marker">a · The THINK step</span>
+        <p>The model is asked to externalize its reasoning before any tool is touched. This thought becomes part of the history — visible, auditable, and available as context for the next decision.</p>
+      </div>
+      <div class="s6-margin">
+        <span class="marker">b · The ACT step</span>
+        <p><code>parse_action</code> extracts a structured tool call from the model's text. If the action is <code>finish</code>, the loop returns; otherwise the named tool runs with the parsed arguments.</p>
+      </div>
+      <div class="s6-margin">
+        <span class="marker">c · The OBSERVE step</span>
+        <p>The tool's result is appended verbatim as a <code>tool</code> message — never summarized, never paraphrased. The next iteration of THINK sees exactly what the tool saw.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== SLIDE 7 ===================== -->
+<section class="slide s7">
+  <div class="s7-top">
+    <div class="s7-mark">Lecture 01 — Agent Architecture</div>
+    <div class="s7-num">§ 6 — Ending</div>
+  </div>
+
+  <div class="s7-mid">
+    <div class="s7-eyebrow">Closing</div>
+    <h2 class="s7-quote">The architecture is the loop. Everything else is a <span class="accent">refinement of how the loop decides what to do next.</span></h2>
+  </div>
+
+  <div class="s7-bottom">
+    <div class="s7-refs-label">References</div>
+    <div class="s7-refs">
+      <div class="s7-ref">
+        <span class="num">[01]</span>
+        <span class="title">The Cybernetic Loop.</span>
+        <span class="meta">Smith et al. (1983)</span>
+      </div>
+      <div class="s7-ref">
+        <span class="num">[02]</span>
+        <span class="title">ReAct: Synergizing Reasoning and Acting in Language Models.</span>
+        <span class="meta">Yao et al. (2022)</span>
+      </div>
+      <div class="s7-ref">
+        <span class="num">[03]</span>
+        <span class="title">Reflexion: Language Agents with Verbal Reinforcement Learning.</span>
+        <span class="meta">Shinn et al. (2023)</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+</div>
+
+</body>
+</html>

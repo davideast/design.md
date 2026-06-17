@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Agent Architecture</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500&family=IBM+Plex+Mono:wght@400&family=Source+Serif+4:opsz,wght@8..60,400&display=swap" rel="stylesheet">
+<style>
+:root{
+  --primary:#1E1A14;
+  --secondary:#B8B0A2;
+  --tertiary:#C3402A;
+  --neutral:#F4F0E4;
+  --sm:8px;
+  --md:16px;
+  --lg:32px;
+  --xl:64px;
+}
+*{box-sizing:border-box}
+html,body{margin:0;background:var(--neutral);color:var(--primary)}
+body{font-family:"Source Serif 4",serif}
+.slide{
+  width:1280px;
+  height:720px;
+  background:var(--neutral);
+  position:relative;
+  overflow:hidden;
+  page-break-after:always;
+  border-bottom:1px solid rgba(30,26,20,.08);
+}
+h1,h2{
+  font-family:"Fraunces",serif;
+  font-size:54px;
+  font-weight:500;
+  line-height:1.1;
+  letter-spacing:.01em;
+  margin:0;
+}
+p{
+  font-family:"Source Serif 4",serif;
+  font-size:17px;
+  font-weight:400;
+  line-height:1.62;
+  margin:0;
+}
+.label,.caption,.annotation,.ref,.query{
+  font-family:"IBM Plex Mono",monospace;
+  font-size:12px;
+  font-weight:400;
+  line-height:1.4;
+  letter-spacing:.08em;
+}
+.caption{letter-spacing:.02em;color:var(--primary)}
+.annotation{color:var(--tertiary);letter-spacing:.04em}
+.code{
+  font-family:"IBM Plex Mono",monospace;
+  font-size:14px;
+  font-weight:400;
+  line-height:1.5;
+  white-space:pre;
+}
+.muted{color:var(--secondary)}
+.accent{color:var(--tertiary)}
+.rule{height:1px;background:var(--primary)}
+.thin{height:1px;background:rgba(30,26,20,.35)}
+svg text{font-family:"IBM Plex Mono",monospace;font-size:12px;letter-spacing:.08em;fill:var(--primary)}
+svg .line{stroke:var(--primary);stroke-width:1.5;fill:none}
+svg .accent-line{stroke:var(--tertiary);stroke-width:2;fill:none}
+svg .node{fill:none;stroke:var(--primary);stroke-width:1.5}
+svg .faint{stroke:var(--secondary)}
+.title-slide{padding:96px 104px}
+.title-slide h1{font-size:72px;margin-top:132px}
+.standfirst{
+  width:690px;
+  margin-top:24px;
+  font-size:24px;
+  line-height:1.45;
+}
+.speaker{
+  position:absolute;
+  left:104px;
+  bottom:88px;
+  display:grid;
+  grid-template-columns:190px 1fr;
+  gap:16px;
+}
+.date{
+  position:absolute;
+  right:104px;
+  bottom:88px;
+}
+.section{padding:64px 80px}
+.section h2{font-size:46px}
+.two-col{
+  display:grid;
+  grid-template-columns:440px 1fr;
+  gap:70px;
+  margin-top:54px;
+  align-items:start;
+}
+.diagram-wrap{padding-top:8px}
+.slide2 p{width:430px}
+.slide2 .caption{width:540px;margin-top:28px}
+.trace{
+  margin-top:34px;
+  display:grid;
+  grid-template-columns:1fr 190px;
+  gap:28px;
+}
+.query{
+  grid-column:1/3;
+  font-size:13px;
+  letter-spacing:.04em;
+  border-top:1px solid var(--primary);
+  border-bottom:1px solid rgba(30,26,20,.35);
+  padding:14px 0;
+}
+.steps{display:grid;gap:8px}
+.step{
+  display:grid;
+  grid-template-columns:116px 1fr;
+  gap:14px;
+  border-bottom:1px solid rgba(30,26,20,.18);
+  padding-bottom:7px;
+}
+.step .kind{
+  font-family:"IBM Plex Mono",monospace;
+  font-size:12px;
+  letter-spacing:.08em;
+  color:var(--tertiary);
+}
+.step .txt{
+  font-family:"IBM Plex Mono",monospace;
+  font-size:12px;
+  line-height:1.45;
+  letter-spacing:.02em;
+}
+.annos{display:grid;gap:8px;padding-top:0}
+.annos div{
+  min-height:45px;
+  border-bottom:1px solid rgba(30,26,20,.18);
+  padding-bottom:7px;
+}
+.grid4{
+  margin-top:34px;
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:28px 34px;
+}
+.card{
+  border-top:1px solid var(--primary);
+  padding-top:12px;
+  height:246px;
+  display:grid;
+  grid-template-rows:150px auto;
+}
+.card .caption{font-size:11px;letter-spacing:.02em}
+.fail{
+  display:grid;
+  grid-template-columns:410px 1fr;
+  gap:70px;
+  margin-top:52px;
+}
+.plotnote{
+  position:absolute;
+  width:350px;
+  right:108px;
+  top:247px;
+}
+.code-slide{
+  padding:52px 78px;
+}
+.code-layout{
+  margin-top:24px;
+  display:grid;
+  grid-template-columns:755px 280px;
+  gap:48px;
+}
+.codebox{
+  border-top:1px solid var(--primary);
+  border-bottom:1px solid rgba(30,26,20,.35);
+  padding:18px 0;
+}
+.code-anno{
+  display:grid;
+  gap:42px;
+  padding-top:72px;
+}
+.remark{
+  position:absolute;
+  left:78px;
+  bottom:44px;
+  width:1010px;
+  border-top:1px solid rgba(30,26,20,.35);
+  padding-top:14px;
+}
+.ending{
+  padding:82px 104px;
+}
+.close-line{
+  font-family:"Fraunces",serif;
+  font-size:42px;
+  line-height:1.18;
+  letter-spacing:.01em;
+  width:880px;
+  margin-top:118px;
+}
+.refs{
+  position:absolute;
+  left:104px;
+  bottom:88px;
+  display:grid;
+  gap:12px;
+  width:760px;
+}
+@media print{
+  body{background:var(--neutral)}
+  .slide{border-bottom:0}
+}
+</style>
+</head>
+<body>
+
+<section class="slide title-slide">
+  <div class="label muted">TECHNICAL TALK</div>
+  <h1>Agent Architecture</h1>
+  <p class="standfirst">On loops, traces, and the structures by which language models act.</p>
+  <div class="speaker">
+    <div class="label muted">SPEAKER</div>
+    <div class="label">Dr. Mira Sen<br>Institute for Machine Intelligence</div>
+  </div>
+  <div class="date label">14 October 2026</div>
+</section>
+
+<section class="slide section slide2">
+  <h2>§ 1. The Loop</h2>
+  <div class="two-col">
+    <p>The ReAct loop is a small control structure around a language model. At each turn the model first writes a thought: a compact account of what it believes, lacks, or intends. It then selects an action, usually a tool call, query, or message to the outside world. The environment returns an observation, which is appended to the trace and becomes evidence for the next thought. Nothing mystical is required. The intelligence comes from repeatedly binding private reasoning to public effects, then forcing the next decision to acknowledge what actually happened.</p>
+    <div class="diagram-wrap">
+      <svg width="560" height="285" viewBox="0 0 560 285" aria-label="Think Act Observe loop">
+        <defs>
+          <marker id="arrow" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto">
+            <path d="M0,0 L8,4 L0,8 Z" fill="#1E1A14"></path>
+          </marker>
+        </defs>
+        <rect class="node" x="46" y="92" width="128" height="58"></rect>
+        <rect class="node" x="220" y="92" width="128" height="58"></rect>
+        <rect class="node" x="394" y="92" width="128" height="58"></rect>
+        <text x="83" y="126">THINK</text>
+        <text x="264" y="126">ACT</text>
+        <text x="424" y="126">OBSERVE</text>
+        <path class="line" marker-end="url(#arrow)" d="M174 121 H217"></path>
+        <path class="line" marker-end="url(#arrow)" d="M348 121 H391"></path>
+        <path class="line" marker-end="url(#arrow)" d="M458 151 C458 230 110 230 110 153"></path>
+        <text x="236" y="224" fill="#C3402A">RETURN</text>
+      </svg>
+      <div class="caption">Fig. 1. The basic loop. Note that OBSERVE returns to THINK; this is what makes the architecture a controller, not a pipeline.</div>
+    </div>
+  </div>
+</section>
+
+<section class="slide section">
+  <h2>§ 2. A Worked Trace</h2>
+  <div class="trace">
+    <div class="query">Query: “What was the closing price of NVDA the day after Jensen Huang's 2024 keynote?”</div>
+    <div class="steps">
+      <div class="step"><div class="kind">THOUGHT</div><div class="txt">Identify the keynote date before looking up market data.</div></div>
+      <div class="step"><div class="kind">ACTION</div><div class="txt">search_web("Jensen Huang 2024 keynote date")</div></div>
+      <div class="step"><div class="kind">OBSERVATION</div><div class="txt">GTC 2024 keynote delivered March 18, 2024.</div></div>
+      <div class="step"><div class="kind">THOUGHT</div><div class="txt">The day after is March 19, 2024; need NVDA close.</div></div>
+      <div class="step"><div class="kind">ACTION</div><div class="txt">market_data("NVDA", date="2024-03-19", field="close")</div></div>
+      <div class="step"><div class="kind">OBSERVATION</div><div class="txt">NVDA closed at 893.98 USD on 2024-03-19.</div></div>
+      <div class="step"><div class="kind">THOUGHT</div><div class="txt">Answer with date basis and distinguish close from intraday price.</div></div>
+      <div class="step"><div class="kind">ACTION</div><div class="txt">final("NVDA closed at $893.98 on March 19, 2024.")</div></div>
+    </div>
+    <div class="annos">
+      <div class="annotation">resolve event</div>
+      <div class="annotation">external evidence</div>
+      <div class="annotation">date anchored</div>
+      <div class="annotation">derive target</div>
+      <div class="annotation">tool selection</div>
+      <div class="annotation">state updated</div>
+      <div class="annotation">answer policy</div>
+      <div class="annotation">commit</div>
+    </div>
+  </div>
+</section>
+
+<section class="slide section">
+  <h2>§ 3. Four Architectures</h2>
+  <div class="grid4">
+    <div class="card">
+      <svg width="520" height="150" viewBox="0 0 520 150">
+        <defs><marker id="a1" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto"><path d="M0,0 L7,3.5 L0,7 Z" fill="#1E1A14"/></marker></defs>
+        <rect class="node" x="34" y="44" width="96" height="42"/><rect class="node" x="210" y="44" width="96" height="42"/><rect class="node" x="386" y="44" width="96" height="42"/>
+        <text x="58" y="69">THINK</text><text x="241" y="69">ACT</text><text x="406" y="69">OBSERVE</text>
+        <path class="line" marker-end="url(#a1)" d="M130 65 H207"/><path class="line" marker-end="url(#a1)" d="M306 65 H383"/><path class="line" marker-end="url(#a1)" d="M434 87 C434 130 82 130 82 89"/>
+      </svg>
+      <div class="caption">REACT. A single recurrent controller alternates reasoning, tool use, and observation.</div>
+    </div>
+    <div class="card">
+      <svg width="520" height="150" viewBox="0 0 520 150">
+        <defs><marker id="a2" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto"><path d="M0,0 L7,3.5 L0,7 Z" fill="#1E1A14"/></marker></defs>
+        <rect class="node" x="26" y="42" width="88" height="40"/><rect class="node" x="164" y="42" width="88" height="40"/><rect class="node" x="302" y="42" width="88" height="40"/><rect class="node" x="216" y="102" width="96" height="36"/>
+        <text x="45" y="66">THINK</text><text x="190" y="66">ACT</text><text x="316" y="66">OBSERVE</text><text x="235" y="126">MEMORY</text>
+        <path class="line" marker-end="url(#a2)" d="M114 62 H161"/><path class="line" marker-end="url(#a2)" d="M252 62 H299"/><path class="line" marker-end="url(#a2)" d="M346 83 C346 98 300 104 265 104"/><path class="line" marker-end="url(#a2)" d="M216 120 C120 120 70 101 70 84"/>
+      </svg>
+      <div class="caption">REFLEXION. The loop writes lessons into memory and consults them on later turns.</div>
+    </div>
+    <div class="card">
+      <svg width="520" height="150" viewBox="0 0 520 150">
+        <defs><marker id="a3" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto"><path d="M0,0 L7,3.5 L0,7 Z" fill="#1E1A14"/></marker></defs>
+        <rect class="node" x="24" y="18" width="82" height="38"/><rect class="node" x="138" y="70" width="88" height="40"/><rect class="node" x="270" y="70" width="88" height="40"/><rect class="node" x="402" y="70" width="88" height="40"/>
+        <text x="48" y="41">PLAN</text><text x="157" y="94">THINK</text><text x="296" y="94">ACT</text><text x="416" y="94">OBSERVE</text>
+        <path class="line" marker-end="url(#a3)" d="M106 43 C124 50 140 58 158 69"/><path class="line" marker-end="url(#a3)" d="M226 90 H267"/><path class="line" marker-end="url(#a3)" d="M358 90 H399"/><path class="line" marker-end="url(#a3)" d="M446 111 C446 138 182 138 182 112"/>
+      </svg>
+      <div class="caption">PLAN-AND-EXECUTE. A plan constrains the local loop without replacing feedback.</div>
+    </div>
+    <div class="card">
+      <svg width="520" height="150" viewBox="0 0 520 150">
+        <defs><marker id="a4" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto"><path d="M0,0 L7,3.5 L0,7 Z" fill="#1E1A14"/></marker></defs>
+        <rect class="node" x="38" y="55" width="86" height="40"/><rect class="node" x="190" y="22" width="86" height="40"/><rect class="node" x="190" y="88" width="86" height="40"/><rect class="node" x="356" y="55" width="86" height="40"/>
+        <text x="57" y="79">THINK</text><text x="209" y="46">THINK</text><text x="209" y="112">THINK</text><text x="386" y="79">ACT</text>
+        <path class="line" marker-end="url(#a4)" d="M124 68 L187 47"/><path class="line" marker-end="url(#a4)" d="M124 82 L187 103"/><path class="line" marker-end="url(#a4)" d="M276 42 C310 42 326 56 354 68"/><path class="line" marker-end="url(#a4)" d="M276 108 C310 108 326 94 354 82"/>
+      </svg>
+      <div class="caption">TREE-OF-THOUGHTS. Candidate thoughts branch and are evaluated before action.</div>
+    </div>
+  </div>
+</section>
+
+<section class="slide section">
+  <h2>§ 4. Where Loops Fail</h2>
+  <div class="fail">
+    <p>Agent loops accumulate their own history. Tool outputs, failed attempts, partial plans, and self-critiques all enter the context, and the trace soon becomes the environment the model must reason inside. The failure is gradual: attention becomes less selective, stale observations look current, and the controller repeats work. Long before the formal context window is full, effective attention can be exhausted by a trace too large to inspect.</p>
+    <svg width="610" height="360" viewBox="0 0 610 360">
+      <defs><marker id="plotarrow" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto"><path d="M0,0 L7,3.5 L0,7 Z" fill="#1E1A14"/></marker></defs>
+      <path class="line" d="M64 292 H560"></path>
+      <path class="line" d="M64 292 V34"></path>
+      <text x="52" y="24">TOKENS</text>
+      <text x="500" y="332">ITER</text>
+      <text x="58" y="318">0</text><text x="156" y="318">5</text><text x="252" y="318">10</text><text x="354" y="318">15</text><text x="454" y="318">20</text><text x="552" y="318">25</text>
+      <path class="accent-line" d="M64 274 C120 262 172 249 224 232 C282 212 328 187 366 145 C414 92 470 60 552 44"></path>
+      <circle cx="366" cy="145" r="5" fill="#C3402A"></circle>
+      <path class="line" marker-end="url(#plotarrow)" d="M430 132 C410 132 392 137 370 144"></path>
+    </svg>
+  </div>
+  <div class="plotnote annotation">Most production agents fail somewhere in this region — not because the model is incapable, but because the context has become longer than the model's effective attention.</div>
+</section>
+
+<section class="slide code-slide">
+  <h2>§ 5. The Loop, in Code</h2>
+  <div class="code-layout">
+    <div class="codebox code">def react_loop(model, tools, question, max_steps=8):
+    trace = [{"role": "user", "content": question}]
+
+    for step in range(max_steps):
+        thought = model.complete(
+            trace + [{"role": "system",
+                      "content": "Write the next THOUGHT."}]
+        )
+        trace.append({"role": "assistant",
+                      "content": "THOUGHT: " + thought})
+
+        action = model.complete(
+            trace + [{"role": "system",
+                      "content": "Choose one tool call or FINAL."}]
+        )
+        trace.append({"role": "assistant",
+                      "content": "ACTION: " + action})
+
+        if action.startswith("FINAL"):
+            return action.removeprefix("FINAL:")
+
+        name, args = parse_tool_call(action)
+        result = tools[name](**args)
+
+        observation = summarize(result)
+        trace.append({"role": "tool",
+                      "content": "OBSERVATION: " + observation})
+
+    return model.complete(trace + [{"role": "system",
+                                    "content": "Answer from the trace."}])</div>
+    <div class="code-anno">
+      <div class="annotation">THINK step: the model makes its current state explicit before it changes the world.</div>
+      <div class="annotation">ACT step: the controller permits exactly one external move, making causality inspectable.</div>
+      <div class="annotation">OBSERVE step: the environment, not the model, supplies the new evidence for the next turn.</div>
+    </div>
+  </div>
+  <p class="remark">The structure strictly interleaves reasoning and action. Forcing the model to externalize its thought before acting gives the system interpretability and reduces hallucinated state changes.</p>
+</section>
+
+<section class="slide ending">
+  <h2>§ 6. Ending</h2>
+  <div class="close-line">The architecture is the loop. Everything else is a refinement of how the loop decides what to do next.</div>
+  <div class="refs">
+    <div class="ref">[01] Smith et al. (1983). The Cybernetic Loop.</div>
+    <div class="ref">[02] Yao et al. (2023). ReAct: Synergizing Reasoning and Acting in Language Models.</div>
+    <div class="ref">[03] Shinn et al. (2023). Reflexion: Language Agents with Verbal Reinforcement Learning.</div>
+  </div>
+</section>
+
+</body>
+</html>

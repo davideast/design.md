@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kettle and Leaf — Neighborhood Tea House</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&family=Karla:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #f4efe6;
+    --paper: #fbf8f1;
+    --ink: #2e3328;
+    --muted: #6b6f5f;
+    --leaf: #4a5d3a;
+    --accent: #9c6b3f;
+    --line: #ddd5c3;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--bg);
+    color: var(--ink);
+    font-family: 'Karla', sans-serif;
+    line-height: 1.6;
+    padding: 48px 24px;
+  }
+
+  .wrap {
+    max-width: 860px;
+    margin: 0 auto;
+    background: var(--paper);
+    border: 1px solid var(--line);
+    padding: 56px 64px;
+  }
+
+  header {
+    text-align: center;
+    border-bottom: 1px solid var(--line);
+    padding-bottom: 32px;
+    margin-bottom: 40px;
+  }
+
+  h1 {
+    font-family: 'Cormorant Garamond', serif;
+    font-weight: 600;
+    font-size: 3.4rem;
+    letter-spacing: 0.5px;
+    color: var(--leaf);
+    line-height: 1.05;
+  }
+
+  .welcome {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-size: 1.3rem;
+    color: var(--muted);
+    margin-top: 10px;
+  }
+
+  h2 {
+    font-family: 'Cormorant Garamond', serif;
+    font-weight: 600;
+    font-size: 1.9rem;
+    color: var(--accent);
+    margin-bottom: 20px;
+  }
+
+  section { margin-bottom: 44px; }
+
+  .teas {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 28px;
+  }
+
+  .tea {
+    border-top: 2px solid var(--leaf);
+    padding-top: 14px;
+  }
+
+  .tea h3 {
+    font-family: 'Cormorant Garamond', serif;
+    font-weight: 600;
+    font-size: 1.4rem;
+    color: var(--ink);
+  }
+
+  .tea .origin {
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    color: var(--accent);
+    margin: 4px 0 10px;
+  }
+
+  .tea .note {
+    font-size: 0.95rem;
+    color: var(--muted);
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    max-width: 420px;
+  }
+
+  th, td {
+    text-align: left;
+    padding: 9px 12px;
+    border-bottom: 1px solid var(--line);
+    font-size: 0.95rem;
+  }
+
+  th {
+    font-weight: 600;
+    color: var(--leaf);
+  }
+
+  td.time { color: var(--muted); }
+
+  .sourcing p {
+    font-size: 1.05rem;
+    max-width: 640px;
+  }
+
+  .map {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.3rem;
+    color: var(--leaf);
+    border: 1px dashed var(--line);
+    padding: 18px 22px;
+    text-align: center;
+  }
+
+  .map span {
+    display: block;
+    font-family: 'Karla', sans-serif;
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    color: var(--accent);
+    margin-bottom: 6px;
+  }
+
+  footer {
+    border-top: 1px solid var(--line);
+    margin-top: 8px;
+    padding-top: 28px;
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 20px;
+    font-size: 0.9rem;
+    color: var(--muted);
+  }
+
+  footer strong {
+    display: block;
+    color: var(--leaf);
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    font-size: 0.78rem;
+    margin-bottom: 6px;
+  }
+
+  footer a {
+    color: var(--accent);
+    text-decoration: none;
+  }
+</style>
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <h1>Kettle and Leaf</h1>
+      <p class="welcome">A quiet corner for steeping, sipping, and slowing down.</p>
+    </header>
+
+    <section>
+      <h2>Today's Three Brews</h2>
+      <div class="teas">
+        <div class="tea">
+          <h3>Morning Jade</h3>
+          <p class="origin">Alishan, Taiwan</p>
+          <p class="note">A high-mountain oolong with notes of butter, orchid, and fresh-cut grass. Soft and lingering.</p>
+        </div>
+        <div class="tea">
+          <h3>Rift Valley Gold</h3>
+          <p class="origin">Nandi Hills, Kenya</p>
+          <p class="note">A brisk black tea, full-bodied with malt and a warm honeyed finish. Best taken plain.</p>
+        </div>
+        <div class="tea">
+          <h3>Smoked Pine</h3>
+          <p class="origin">Nantou, Taiwan</p>
+          <p class="note">A roasted oolong layered with toasted nut, dark caramel, and a whisper of woodsmoke.</p>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <h2>Quiet Hours</h2>
+      <table>
+        <tr><th>Day</th><th>Hours</th></tr>
+        <tr><td>Monday</td><td class="time">8:00 – 10:00 am</td></tr>
+        <tr><td>Wednesday</td><td class="time">2:00 – 4:00 pm</td></tr>
+        <tr><td>Friday</td><td class="time">8:00 – 10:00 am</td></tr>
+        <tr><td>Sunday</td><td class="time">3:00 – 6:00 pm</td></tr>
+      </table>
+    </section>
+
+    <section class="sourcing">
+      <h2>Where the Leaves Come From</h2>
+      <p>Twice a year our owner, Mira, travels to the gardens behind every cup we pour. In Taiwan she walks the misted slopes of Alishan and Nantou, tasting fresh-rolled oolongs straight from the wok. In Kenya she meets the growers of the Nandi Hills and Rift Valley, choosing the season's brightest black teas by hand. Everything on our shelf is bought from people she has shaken hands with.</p>
+    </section>
+
+    <section>
+      <div class="map">
+        <span>Find Us</span>
+        412 Maple Row
+      </div>
+    </section>
+
+    <footer>
+      <div>
+        <strong>Hours</strong>
+        Tuesday – Sunday, 8:00 am – 7:00 pm<br>
+        Closed Mondays
+      </div>
+      <div>
+        <strong>Call</strong>
+        <a href="tel:+15555551842">(555) 555-1842</a>
+      </div>
+    </footer>
+  </div>
+</body>
+</html>

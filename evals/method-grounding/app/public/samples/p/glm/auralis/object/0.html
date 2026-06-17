@@ -1,0 +1,1919 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Auralis — Making digital experiences sound human</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root {
+    --primary: #111111;
+    --secondary: #6B6B6B;
+    --tertiary: #9958ff;
+    --neutral: #F7F7F5;
+    --surface-elevated: #ffffff;
+    --outline-muted: #E5E5E3;
+    --sm: 8px;
+    --md: 24px;
+    --lg: 64px;
+    --xl: 140px;
+    --gutter: 24px;
+    --r-sm: 0.25rem;
+    --r-md: 0.75rem;
+    --r-lg: 1.5rem;
+    --r-full: 9999px;
+  }
+
+  html, body {
+    background: var(--neutral);
+    color: var(--primary);
+    font-family: 'Geist', system-ui, sans-serif;
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .label-caps {
+    font-size: 12px;
+    font-weight: 600;
+    line-height: 1;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  .btn {
+    font-family: 'Geist', sans-serif;
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 1;
+    letter-spacing: 0.01em;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 14px 22px;
+    border-radius: var(--r-full);
+    border: 1px solid transparent;
+    cursor: pointer;
+    text-decoration: none;
+    white-space: nowrap;
+    transition: background 120ms ease, color 120ms ease, border-color 120ms ease;
+    font-variant-numeric: tabular-nums;
+  }
+  .btn-primary { background: var(--primary); color: var(--surface-elevated); }
+  .btn-primary:hover { background: #000; }
+  .btn-ghost { background: transparent; color: var(--primary); border-color: var(--primary); }
+  .btn-ghost:hover { background: var(--primary); color: var(--surface-elevated); }
+  .btn-tertiary { background: var(--surface-elevated); color: var(--primary); border-color: var(--outline-muted); }
+  .btn-tertiary:hover { border-color: var(--primary); }
+  .btn-dark { background: transparent; color: var(--surface-elevated); border-color: rgba(255,255,255,0.28); }
+  .btn-dark:hover { background: rgba(255,255,255,0.1); border-color: rgba(255,255,255,0.55); }
+
+  .container {
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 0 40px;
+  }
+
+  /* NAV */
+  nav.top {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: rgba(247,247,245,0.86);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border-bottom: 1px solid var(--outline-muted);
+  }
+  .nav-inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 68px;
+  }
+  .wordmark {
+    font-family: 'Geist', sans-serif;
+    font-size: 17px;
+    font-weight: 600;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+  }
+  .nav-links {
+    display: flex;
+    gap: 28px;
+    align-items: center;
+  }
+  .nav-links a {
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--primary);
+    text-decoration: none;
+    line-height: 1;
+    transition: opacity 120ms ease;
+  }
+  .nav-links a:hover { opacity: 0.55; }
+  .nav-cta { display: flex; align-items: center; gap: 14px; }
+
+  /* HERO */
+  .hero {
+    padding: 130px 0 90px;
+    position: relative;
+  }
+  .hero-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 56px;
+  }
+  .hero-meta-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: var(--gutter);
+  }
+  .hero-eyebrow {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    color: var(--secondary);
+  }
+  .hero-eyebrow .dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 9999px;
+    background: var(--tertiary);
+    box-shadow: 0 0 0 4px rgba(153,88,255,0.18);
+  }
+  .hero-eyebrow .label-caps { color: var(--secondary); }
+  .hero-specs {
+    display: flex;
+    gap: 32px;
+  }
+  .spec {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    text-align: right;
+  }
+  .spec .label-caps { color: var(--secondary); }
+  .spec .val {
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--primary);
+    letter-spacing: 0.01em;
+    font-variant-numeric: tabular-nums;
+  }
+  .hero h1 {
+    font-family: 'Geist', sans-serif;
+    font-size: clamp(48px, 7vw, 72px);
+    font-weight: 600;
+    line-height: 0.95;
+    letter-spacing: -0.04em;
+    max-width: 13ch;
+  }
+  .hero-actions {
+    display: flex;
+    gap: 14px;
+    align-items: center;
+    flex-wrap: wrap;
+  }
+
+  /* SECTIONS */
+  .section { padding: 96px 0; }
+  .section-head {
+    display: grid;
+    grid-template-columns: 1.1fr 1fr;
+    gap: 48px;
+    align-items: end;
+    margin-bottom: 56px;
+  }
+  .section-head.stacked { grid-template-columns: 1fr; max-width: 880px; }
+  .section-head .label-caps { color: var(--secondary); margin-bottom: 18px; display: inline-flex; align-items: center; gap: 10px; }
+  .section-head .label-caps::before {
+    content: '';
+    width: 18px;
+    height: 1px;
+    background: var(--secondary);
+    display: inline-block;
+  }
+  .section-head h2 {
+    font-family: 'Geist', sans-serif;
+    font-size: clamp(28px, 4vw, 42px);
+    font-weight: 600;
+    line-height: 1.1;
+    letter-spacing: -0.02em;
+  }
+  .section-head p {
+    font-size: 16px;
+    line-height: 1.5;
+    color: var(--secondary);
+    max-width: 42ch;
+  }
+
+  /* DEMO PANEL */
+  .demo-panel {
+    background: var(--surface-elevated);
+    border: 1px solid var(--outline-muted);
+    border-radius: var(--r-lg);
+    overflow: hidden;
+  }
+  .demo-tabs {
+    display: flex;
+    align-items: center;
+    gap: 2px;
+    padding: 12px 16px;
+    border-bottom: 1px solid var(--outline-muted);
+    background: linear-gradient(180deg, #fcfcfb, #f5f5f3);
+  }
+  .demo-tab {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 18px;
+    border-radius: var(--r-full);
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--secondary);
+    cursor: pointer;
+    border: 1px solid transparent;
+    transition: all 140ms ease;
+  }
+  .demo-tab .tab-ico {
+    width: 14px;
+    height: 14px;
+    border-radius: 3px;
+    background: currentColor;
+    opacity: 0.32;
+  }
+  .demo-tab:hover { color: var(--primary); }
+  .demo-tab.active {
+    background: var(--primary);
+    color: var(--surface-elevated);
+  }
+  .demo-tab.active .tab-ico { background: var(--surface-elevated); opacity: 1; }
+  .demo-tab-spacer { flex: 1; }
+  .demo-tab-meta {
+    font-size: 11px;
+    color: var(--secondary);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    font-weight: 600;
+    padding-right: 8px;
+  }
+
+  .demo-status {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 14px 24px;
+    border-bottom: 1px solid var(--outline-muted);
+    background: var(--surface-elevated);
+  }
+  .status-label {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .live-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 9999px;
+    background: var(--tertiary);
+    position: relative;
+  }
+  .live-dot::after {
+    content: '';
+    position: absolute;
+    inset: -5px;
+    border-radius: 9999px;
+    border: 1.5px solid var(--tertiary);
+    opacity: 0.35;
+    animation: pulse 2s ease-out infinite;
+  }
+  @keyframes pulse {
+    0% { transform: scale(0.7); opacity: 0.55; }
+    100% { transform: scale(1.6); opacity: 0; }
+  }
+  .status-right {
+    display: flex;
+    gap: 22px;
+    color: var(--secondary);
+  }
+  .status-right .label-caps { color: var(--secondary); }
+
+  .demo-preview {
+    height: 460px;
+    background: var(--neutral);
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .spectral {
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(ellipse 60% 50% at 50% 50%, rgba(153,88,255,0.55) 0%, transparent 55%),
+      radial-gradient(ellipse 50% 45% at 38% 42%, rgba(0,180,255,0.45) 0%, transparent 55%),
+      radial-gradient(ellipse 45% 40% at 64% 36%, rgba(236,72,153,0.4) 0%, transparent 55%),
+      radial-gradient(ellipse 55% 45% at 60% 62%, rgba(34,87,255,0.32) 0%, transparent 55%),
+      radial-gradient(ellipse 35% 30% at 42% 64%, rgba(140,108,255,0.42) 0%, transparent 60%),
+      var(--neutral);
+  }
+  .spectral::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background:
+      repeating-linear-gradient(0deg, transparent 0, transparent 38px, rgba(17,17,17,0.04) 38px, rgba(17,17,17,0.04) 39px),
+      repeating-linear-gradient(90deg, transparent 0, transparent 38px, rgba(17,17,17,0.04) 38px, rgba(17,17,17,0.04) 39px);
+    mix-blend-mode: multiply;
+    opacity: 0.55;
+  }
+  .preview-grid {
+    position: absolute;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(17,17,17,0.06) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(17,17,17,0.06) 1px, transparent 1px);
+    background-size: 48px 48px;
+    background-position: center center;
+    pointer-events: none;
+  }
+  .preview-crosshair {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+  }
+  .preview-crosshair::before,
+  .preview-crosshair::after {
+    content: '';
+    position: absolute;
+    background: rgba(17,17,17,0.18);
+  }
+  .preview-crosshair::before { left: 50%; top: 18%; bottom: 18%; width: 1px; }
+  .preview-crosshair::after { top: 50%; left: 18%; right: 18%; height: 1px; }
+
+  .preview-corners {
+    position: absolute;
+    inset: 18px;
+    pointer-events: none;
+  }
+  .preview-corners span {
+    position: absolute;
+    width: 14px;
+    height: 14px;
+    border-color: rgba(17,17,17,0.4);
+    border-style: solid;
+    border-width: 0;
+  }
+  .preview-corners span:nth-child(1) { top: 0; left: 0; border-top-width: 1.5px; border-left-width: 1.5px; }
+  .preview-corners span:nth-child(2) { top: 0; right: 0; border-top-width: 1.5px; border-right-width: 1.5px; }
+  .preview-corners span:nth-child(3) { bottom: 0; left: 0; border-bottom-width: 1.5px; border-left-width: 1.5px; }
+  .preview-corners span:nth-child(4) { bottom: 0; right: 0; border-bottom-width: 1.5px; border-right-width: 1.5px; }
+
+  .preview-overlay {
+    position: relative;
+    z-index: 2;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 22px;
+  }
+  .play-btn {
+    width: 88px;
+    height: 88px;
+    border-radius: 9999px;
+    background: var(--primary);
+    color: var(--surface-elevated);
+    border: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 12px 32px rgba(17,17,17,0.22), 0 2px 6px rgba(17,17,17,0.14);
+    transition: transform 140ms ease;
+  }
+  .play-btn:hover { transform: scale(1.04); }
+  .play-btn svg { width: 26px; height: 26px; margin-left: 3px; }
+  .preview-readout {
+    display: flex;
+    gap: 22px;
+    background: rgba(255,255,255,0.9);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    padding: 10px 18px;
+    border-radius: 9999px;
+    border: 1px solid var(--outline-muted);
+  }
+  .readout-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 11px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    font-weight: 600;
+  }
+  .readout-item .lbl { color: var(--secondary); }
+  .readout-item .val { color: var(--primary); font-variant-numeric: tabular-nums; }
+  .readout-sep { width: 1px; background: var(--outline-muted); }
+
+  .preview-tl, .preview-tr, .preview-bl, .preview-br {
+    position: absolute;
+    z-index: 3;
+    color: var(--secondary);
+    font-size: 11px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    font-weight: 600;
+    font-variant-numeric: tabular-nums;
+  }
+  .preview-tl { top: 16px; left: 20px; }
+  .preview-tr { top: 16px; right: 20px; }
+  .preview-bl { bottom: 16px; left: 20px; }
+  .preview-br { bottom: 16px; right: 20px; }
+
+  .demo-bottom {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 12px 16px;
+    border-top: 1px solid var(--outline-muted);
+    background: var(--surface-elevated);
+  }
+  .mode-link {
+    padding: 9px 16px;
+    border-radius: var(--r-full);
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--secondary);
+    cursor: pointer;
+    transition: all 140ms ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .mode-link::before {
+    content: '';
+    width: 6px;
+    height: 6px;
+    border-radius: 9999px;
+    background: currentColor;
+    opacity: 0.4;
+  }
+  .mode-link:hover { color: var(--primary); background: var(--neutral); }
+  .mode-link.active {
+    background: var(--neutral);
+    color: var(--primary);
+  }
+  .mode-link.active::before { opacity: 1; background: var(--tertiary); }
+  .demo-bottom-spacer { flex: 1; }
+
+  /* TRUST STRIP */
+  .trust-strip {
+    padding: 72px 0;
+    border-top: 1px solid var(--outline-muted);
+    border-bottom: 1px solid var(--outline-muted);
+  }
+  .trust-strip h2 {
+    font-family: 'Geist', sans-serif;
+    font-size: 16px;
+    font-weight: 500;
+    letter-spacing: -0.005em;
+    color: var(--secondary);
+    text-align: center;
+    margin-bottom: 44px;
+  }
+  .trust-brands {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 24px;
+    align-items: center;
+  }
+  .trust-brand {
+    font-family: 'Geist', sans-serif;
+    font-size: 20px;
+    font-weight: 600;
+    letter-spacing: -0.02em;
+    color: var(--primary);
+    opacity: 0.42;
+    text-align: center;
+    transition: opacity 160ms ease;
+  }
+  .trust-brand:hover { opacity: 1; }
+
+  /* PLATFORM OVERVIEW */
+  .platform-features {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+    margin-bottom: 24px;
+  }
+  .feature-card {
+    background: var(--surface-elevated);
+    border: 1px solid var(--outline-muted);
+    border-radius: var(--r-md);
+    padding: 32px;
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+  }
+  .feature-card .num {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--secondary);
+    font-variant-numeric: tabular-nums;
+  }
+  .feature-card h3 {
+    font-family: 'Geist', sans-serif;
+    font-size: 22px;
+    font-weight: 600;
+    line-height: 1.2;
+    letter-spacing: -0.015em;
+  }
+  .feature-card p {
+    font-size: 15px;
+    line-height: 1.55;
+    color: var(--secondary);
+  }
+
+  /* DASHBOARD */
+  .dashboard {
+    background: var(--primary);
+    color: var(--surface-elevated);
+    border-radius: var(--r-lg);
+    padding: 28px;
+    position: relative;
+    overflow: hidden;
+  }
+  .dashboard::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(255,255,255,0.025) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255,255,255,0.025) 1px, transparent 1px);
+    background-size: 32px 32px;
+    pointer-events: none;
+  }
+  .dash-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    margin-bottom: 28px;
+    position: relative;
+    flex-wrap: wrap;
+  }
+  .dash-title {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+  }
+  .dash-title .plate {
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--surface-elevated);
+  }
+  .dash-title .ver {
+    font-size: 11px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.42);
+    padding-left: 14px;
+    border-left: 1px solid rgba(255,255,255,0.18);
+  }
+  .dash-badges {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 7px 14px;
+    border-radius: 9999px;
+    border: 1px solid rgba(255,255,255,0.2);
+    font-size: 11px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    font-weight: 600;
+    color: rgba(255,255,255,0.85);
+  }
+  .badge-live {
+    border-color: rgba(153,88,255,0.55);
+    background: rgba(153,88,255,0.12);
+    color: #d9c2ff;
+  }
+  .badge-live .ld {
+    width: 7px; height: 7px; border-radius: 9999px; background: var(--tertiary);
+    box-shadow: 0 0 8px rgba(153,88,255,0.9);
+    animation: blink 1.6s ease-in-out infinite;
+  }
+  @keyframes blink { 50% { opacity: 0.35; } }
+
+  .metrics {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 14px;
+    margin-bottom: 28px;
+    position: relative;
+  }
+  .metric {
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: var(--r-md);
+    padding: 22px 24px;
+  }
+  .metric-label {
+    font-size: 11px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.5);
+    font-weight: 600;
+    margin-bottom: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .metric-label .tag {
+    font-size: 9px;
+    padding: 2px 6px;
+    border-radius: 4px;
+    background: rgba(255,255,255,0.08);
+    color: rgba(255,255,255,0.55);
+    letter-spacing: 0.08em;
+  }
+  .metric-value {
+    font-family: 'Geist', sans-serif;
+    font-size: 36px;
+    font-weight: 600;
+    letter-spacing: -0.025em;
+    line-height: 1;
+    color: var(--surface-elevated);
+    display: flex;
+    align-items: baseline;
+    gap: 6px;
+    font-variant-numeric: tabular-nums;
+  }
+  .metric-value .unit {
+    font-size: 14px;
+    font-weight: 500;
+    color: rgba(255,255,255,0.45);
+    letter-spacing: 0;
+  }
+  .metric-value .status-dot {
+    display: inline-block;
+    width: 8px;
+    height: 8px;
+    border-radius: 9999px;
+    background: #4ade80;
+    margin-right: 8px;
+    align-self: center;
+    box-shadow: 0 0 8px rgba(74,222,128,0.6);
+  }
+  .metric-spark {
+    margin-top: 14px;
+    height: 22px;
+    display: flex;
+    align-items: flex-end;
+    gap: 3px;
+  }
+  .metric-spark span {
+    flex: 1;
+    background: rgba(153,88,255,0.55);
+    border-radius: 1px;
+  }
+
+  .waveform {
+    background: rgba(255,255,255,0.03);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: var(--r-md);
+    padding: 28px;
+    margin-bottom: 22px;
+    position: relative;
+  }
+  .waveform-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 22px;
+  }
+  .waveform-head .label-caps { color: rgba(255,255,255,0.5); }
+  .waveform-head .freq {
+    font-size: 11px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.4);
+    font-weight: 600;
+    font-variant-numeric: tabular-nums;
+  }
+  .waveform-bars {
+    display: flex;
+    align-items: center;
+    gap: 3px;
+    height: 120px;
+  }
+  .waveform-bars span {
+    flex: 1;
+    background: linear-gradient(180deg, var(--tertiary) 0%, rgba(153,88,255,0.22) 100%);
+    border-radius: 1px;
+    min-height: 4px;
+  }
+  .waveform-axis {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 14px;
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.32);
+    font-weight: 500;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .transport {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 14px 18px;
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: var(--r-md);
+    position: relative;
+  }
+  .transport-btn {
+    width: 38px;
+    height: 38px;
+    border-radius: 9999px;
+    background: rgba(255,255,255,0.08);
+    border: 1px solid rgba(255,255,255,0.12);
+    color: rgba(255,255,255,0.85);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: background 140ms ease;
+  }
+  .transport-btn:hover { background: rgba(255,255,255,0.16); }
+  .transport-btn.play {
+    background: var(--surface-elevated);
+    color: var(--primary);
+    border-color: var(--surface-elevated);
+  }
+  .transport-btn svg { width: 14px; height: 14px; }
+  .transport-btn.play svg { width: 13px; height: 13px; margin-left: 1px; }
+  .transport-time {
+    font-size: 13px;
+    color: rgba(255,255,255,0.7);
+    font-variant-numeric: tabular-nums;
+    letter-spacing: 0.04em;
+    font-weight: 500;
+  }
+  .transport-progress {
+    flex: 1;
+    height: 4px;
+    background: rgba(255,255,255,0.1);
+    border-radius: 9999px;
+    position: relative;
+    margin: 0 8px;
+  }
+  .transport-progress::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 38%;
+    background: var(--tertiary);
+    border-radius: 9999px;
+  }
+  .transport-progress::before {
+    content: '';
+    position: absolute;
+    left: 38%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    width: 12px;
+    height: 12px;
+    border-radius: 9999px;
+    background: var(--surface-elevated);
+    box-shadow: 0 0 0 4px rgba(153,88,255,0.3);
+  }
+  .transport-output {
+    font-size: 11px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.4);
+    font-weight: 600;
+  }
+
+  /* AURALIS STUDIO */
+  .studio-grid {
+    display: grid;
+    grid-template-columns: 1.4fr 1fr;
+    gap: 24px;
+    margin-bottom: 24px;
+  }
+  .studio-image-card {
+    background: var(--surface-elevated);
+    border: 1px solid var(--outline-muted);
+    border-radius: var(--r-lg);
+    padding: 24px;
+    overflow: hidden;
+    position: relative;
+  }
+  .card-label {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 18px;
+  }
+  .card-label .label-caps { color: var(--secondary); }
+  .card-label .badge-soft {
+    font-size: 10px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    font-weight: 600;
+    color: var(--secondary);
+    padding: 4px 8px;
+    background: var(--neutral);
+    border-radius: 4px;
+  }
+  .editor-preview {
+    background: var(--neutral);
+    border-radius: var(--r-md);
+    height: 340px;
+    position: relative;
+    overflow: hidden;
+    border: 1px solid var(--outline-muted);
+  }
+  .editor-mock {
+    position: absolute;
+    inset: 0;
+    display: grid;
+    grid-template-columns: 56px 1fr 120px;
+    grid-template-rows: 36px 1fr 52px;
+  }
+  .editor-mock > div { background: var(--surface-elevated); border: 1px solid var(--outline-muted); }
+  .editor-toolbar {
+    grid-column: 1 / -1;
+    background: var(--surface-elevated);
+    border-bottom: 1px solid var(--outline-muted);
+    display: flex;
+    align-items: center;
+    padding: 0 14px;
+    gap: 14px;
+  }
+  .editor-toolbar .tb-dot {
+    width: 9px; height: 9px; border-radius: 9999px;
+    background: var(--outline-muted);
+  }
+  .editor-toolbar .tb-pill {
+    height: 14px; background: var(--neutral); border-radius: 9999px; flex: 1; max-width: 220px;
+  }
+  .editor-toolbar .tb-tag {
+    height: 14px; width: 60px; background: var(--neutral); border-radius: 3px;
+  }
+  .editor-tl {
+    background: var(--neutral);
+    border-right: 1px solid var(--outline-muted);
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding: 12px 10px;
+  }
+  .editor-tl span {
+    width: 100%; height: 18px; background: var(--surface-elevated); border: 1px solid var(--outline-muted); border-radius: 4px;
+  }
+  .editor-track-area {
+    background: var(--surface-elevated);
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    padding: 12px;
+    position: relative;
+  }
+  .track-row {
+    height: 28px;
+    background: var(--neutral);
+    border-radius: 4px;
+    border: 1px solid var(--outline-muted);
+    display: flex;
+    align-items: center;
+    padding: 0 8px;
+    gap: 6px;
+    position: relative;
+    overflow: hidden;
+  }
+  .track-row .wave-mini {
+    height: 16px; flex: 1; display: flex; align-items: center; gap: 1.5px; opacity: 0.5;
+  }
+  .track-row .wave-mini span {
+    flex: 1; background: var(--primary); border-radius: 1px;
+  }
+  .track-row.tone .wave-mini span { background: var(--tertiary); opacity: 0.75; }
+  .track-row.tone-2 .wave-mini span { background: #22aaff; opacity: 0.55; }
+  .track-row .lbl {
+    font-size: 9px; letter-spacing: 0.06em; text-transform: uppercase; color: var(--secondary); font-weight: 600; min-width: 30px;
+  }
+  .editor-right {
+    background: var(--neutral);
+    border-left: 1px solid var(--outline-muted);
+    padding: 12px 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  .editor-right span {
+    width: 100%; height: 16px; background: var(--surface-elevated); border: 1px solid var(--outline-muted); border-radius: 3px;
+  }
+  .editor-right .knob {
+    width: 36px; height: 36px; align-self: center; border-radius: 9999px;
+    background: var(--surface-elevated); border: 1px solid var(--outline-muted);
+    margin-top: 6px;
+    position: relative;
+  }
+  .editor-right .knob::after {
+    content: ''; position: absolute; top: 4px; left: 50%; transform: translateX(-50%);
+    width: 2px; height: 10px; background: var(--primary); border-radius: 1px;
+  }
+  .editor-bottom {
+    grid-column: 1 / -1;
+    background: var(--surface-elevated);
+    border-top: 1px solid var(--outline-muted);
+    display: flex;
+    align-items: center;
+    padding: 0 14px;
+    gap: 12px;
+  }
+  .editor-bottom .eb-pill {
+    height: 18px; background: var(--neutral); border-radius: 9999px; border: 1px solid var(--outline-muted);
+  }
+  .editor-bottom .eb-1 { width: 80px; }
+  .editor-bottom .eb-2 { width: 140px; }
+  .editor-bottom .eb-3 { width: 60px; }
+  .editor-bottom .eb-spacer { flex: 1; }
+  .editor-bottom .eb-play {
+    width: 28px; height: 28px; border-radius: 9999px; background: var(--primary);
+  }
+
+  .studio-text-card {
+    background: var(--surface-elevated);
+    border: 1px solid var(--outline-muted);
+    border-radius: var(--r-lg);
+    padding: 32px;
+    display: flex;
+    flex-direction: column;
+  }
+  .studio-text-card .card-label { margin-bottom: 32px; }
+  .transcript {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    flex: 1;
+  }
+  .transcript-line {
+    display: flex;
+    gap: 14px;
+    align-items: flex-start;
+  }
+  .transcript-speaker {
+    font-size: 11px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--secondary);
+    font-weight: 600;
+    min-width: 50px;
+    padding-top: 4px;
+  }
+  .transcript-text {
+    font-size: 15px;
+    line-height: 1.5;
+    color: var(--primary);
+    flex: 1;
+  }
+  .transcript-text .hl {
+    background: rgba(153,88,255,0.14);
+    padding: 1px 3px;
+    border-radius: 3px;
+    color: var(--tertiary);
+    font-weight: 500;
+  }
+  .transcript-text .ts {
+    color: var(--secondary);
+    font-variant-numeric: tabular-nums;
+    font-size: 11px;
+    margin-right: 6px;
+    letter-spacing: 0.02em;
+  }
+  .transcript-cursor {
+    display: inline-block;
+    width: 2px;
+    height: 14px;
+    background: var(--tertiary);
+    vertical-align: -2px;
+    margin-left: 2px;
+    animation: cursor-blink 1s steps(2) infinite;
+  }
+  @keyframes cursor-blink { 50% { opacity: 0; } }
+
+  .studio-modes {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 24px;
+  }
+  .mode-card {
+    background: var(--surface-elevated);
+    border: 1px solid var(--outline-muted);
+    border-radius: var(--r-md);
+    padding: 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+    transition: border-color 140ms ease;
+  }
+  .mode-card:hover { border-color: var(--primary); }
+  .mode-card .icon-box {
+    width: 36px;
+    height: 36px;
+    border-radius: var(--r-sm);
+    background: var(--neutral);
+    border: 1px solid var(--outline-muted);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--primary);
+  }
+  .mode-card .icon-box svg { width: 18px; height: 18px; }
+  .mode-card h4 {
+    font-family: 'Geist', sans-serif;
+    font-size: 17px;
+    font-weight: 600;
+    letter-spacing: -0.015em;
+  }
+  .mode-card p {
+    font-size: 13px;
+    line-height: 1.5;
+    color: var(--secondary);
+  }
+  .mode-card .num {
+    font-size: 11px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--secondary);
+    font-weight: 600;
+    font-variant-numeric: tabular-nums;
+  }
+
+  /* AURALIS AGENTS */
+  .agents-grid {
+    display: grid;
+    grid-template-columns: 1.3fr 1fr;
+    gap: 24px;
+  }
+  .chat-card {
+    background: var(--surface-elevated);
+    border: 1px solid var(--outline-muted);
+    border-radius: var(--r-lg);
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+  }
+  .chat-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 18px 24px;
+    border-bottom: 1px solid var(--outline-muted);
+    background: var(--surface-elevated);
+  }
+  .chat-head-left {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+  }
+  .chat-avatar {
+    width: 38px;
+    height: 38px;
+    border-radius: 9999px;
+    background: var(--neutral);
+    border: 1px solid var(--outline-muted);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--primary);
+  }
+  .chat-avatar svg { width: 18px; height: 18px; }
+  .chat-title .name {
+    font-size: 14px;
+    font-weight: 600;
+    letter-spacing: -0.005em;
+  }
+  .chat-title .status {
+    font-size: 11px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--secondary);
+    font-weight: 600;
+    margin-top: 4px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .chat-title .status .dot {
+    width: 6px; height: 6px; border-radius: 9999px; background: #4ade80;
+  }
+  .chat-head-right {
+    display: flex;
+    gap: 6px;
+  }
+  .chat-head-right .btn-ico {
+    width: 30px; height: 30px; border-radius: 9999px;
+    background: var(--neutral); border: 1px solid var(--outline-muted);
+    display: flex; align-items: center; justify-content: center; color: var(--secondary);
+    cursor: pointer;
+  }
+  .chat-head-right .btn-ico:hover { color: var(--primary); }
+  .chat-head-right .btn-ico svg { width: 14px; height: 14px; }
+
+  .chat-body {
+    padding: 28px 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+    background: var(--neutral);
+    flex: 1;
+    min-height: 360px;
+  }
+  .chat-msg {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    max-width: 78%;
+  }
+  .chat-msg.bot { align-self: flex-start; }
+  .chat-msg.user { align-self: flex-end; align-items: flex-end; }
+  .chat-msg .role {
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--secondary);
+    font-weight: 600;
+    padding: 0 4px;
+  }
+  .chat-msg.user .role { color: var(--tertiary); }
+  .chat-bubble {
+    padding: 14px 18px;
+    border-radius: var(--r-md);
+    font-size: 14.5px;
+    line-height: 1.5;
+    border: 1px solid var(--outline-muted);
+  }
+  .chat-msg.bot .chat-bubble {
+    background: var(--surface-elevated);
+    border-top-left-radius: 6px;
+    color: var(--primary);
+  }
+  .chat-msg.user .chat-bubble {
+    background: var(--primary);
+    color: var(--surface-elevated);
+    border-color: var(--primary);
+    border-top-right-radius: 6px;
+  }
+  .chat-meta {
+    font-size: 10px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--secondary);
+    font-weight: 600;
+    padding: 0 4px;
+    font-variant-numeric: tabular-nums;
+  }
+  .typing {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 16px 18px;
+    background: var(--surface-elevated);
+    border: 1px solid var(--outline-muted);
+    border-radius: var(--r-md);
+    border-top-left-radius: 6px;
+    align-self: flex-start;
+    width: fit-content;
+  }
+  .typing span {
+    width: 7px; height: 7px; border-radius: 9999px; background: var(--secondary);
+    animation: typing 1.4s ease-in-out infinite;
+  }
+  .typing span:nth-child(2) { animation-delay: 0.2s; }
+  .typing span:nth-child(3) { animation-delay: 0.4s; }
+  @keyframes typing {
+    0%, 60%, 100% { transform: translateY(0); opacity: 0.4; }
+    30% { transform: translateY(-4px); opacity: 1; }
+  }
+
+  .chat-input {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 14px 18px;
+    border-top: 1px solid var(--outline-muted);
+    background: var(--surface-elevated);
+  }
+  .chat-input-field {
+    flex: 1;
+    height: 38px;
+    border-radius: 9999px;
+    background: var(--neutral);
+    border: 1px solid var(--outline-muted);
+    display: flex;
+    align-items: center;
+    padding: 0 16px;
+    font-size: 13px;
+    color: var(--secondary);
+  }
+  .chat-input-send {
+    width: 38px; height: 38px; border-radius: 9999px;
+    background: var(--primary); color: var(--surface-elevated);
+    display: flex; align-items: center; justify-content: center;
+    cursor: pointer;
+  }
+  .chat-input-send svg { width: 14px; height: 14px; }
+
+  .insights-card {
+    background: var(--surface-elevated);
+    border: 1px solid var(--outline-muted);
+    border-radius: var(--r-lg);
+    padding: 32px;
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+  }
+  .insights-card .card-label { margin-bottom: 0; }
+  .insights-card h3 {
+    font-family: 'Geist', sans-serif;
+    font-size: 22px;
+    font-weight: 600;
+    letter-spacing: -0.015em;
+    line-height: 1.2;
+  }
+  .insights-card p {
+    font-size: 14.5px;
+    line-height: 1.55;
+    color: var(--secondary);
+  }
+  .insights-stats {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin-top: 4px;
+  }
+  .insight-stat {
+    background: var(--neutral);
+    border: 1px solid var(--outline-muted);
+    border-radius: var(--r-md);
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+  .insight-stat .lbl {
+    font-size: 10px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--secondary);
+    font-weight: 600;
+  }
+  .insight-stat .val {
+    font-family: 'Geist', sans-serif;
+    font-size: 22px;
+    font-weight: 600;
+    letter-spacing: -0.02em;
+    color: var(--primary);
+    font-variant-numeric: tabular-nums;
+  }
+  .insight-stat .val .unit { font-size: 12px; color: var(--secondary); font-weight: 500; }
+
+  .insights-bars {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+  }
+  .bar-row {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+  .bar-row .bar-head {
+    display: flex; justify-content: space-between;
+    font-size: 11px; letter-spacing: 0.06em; text-transform: uppercase;
+    font-weight: 600; color: var(--secondary);
+  }
+  .bar-row .bar-head .v { color: var(--primary); font-variant-numeric: tabular-nums; }
+  .bar-track {
+    height: 6px;
+    background: var(--neutral);
+    border-radius: 9999px;
+    overflow: hidden;
+  }
+  .bar-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--tertiary), #d96bff);
+    border-radius: 9999px;
+  }
+
+  /* FINAL CTA */
+  .final-cta {
+    padding: 140px 0;
+    text-align: center;
+    border-top: 1px solid var(--outline-muted);
+    background:
+      radial-gradient(ellipse 50% 60% at 50% 100%, rgba(153,88,255,0.08) 0%, transparent 60%),
+      var(--neutral);
+  }
+  .final-cta .label-caps {
+    color: var(--secondary);
+    margin-bottom: 28px;
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .final-cta .label-caps::before, .final-cta .label-caps::after {
+    content: ''; width: 24px; height: 1px; background: var(--secondary);
+  }
+  .final-cta h2 {
+    font-family: 'Geist', sans-serif;
+    font-size: clamp(40px, 6vw, 64px);
+    font-weight: 600;
+    line-height: 0.98;
+    letter-spacing: -0.035em;
+    margin-bottom: 44px;
+  }
+  .final-cta-actions {
+    display: flex;
+    gap: 14px;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+
+  /* FOOTER */
+  footer {
+    background: var(--surface-elevated);
+    border-top: 1px solid var(--outline-muted);
+    padding: 48px 0;
+  }
+  .footer-inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 24px;
+    flex-wrap: wrap;
+  }
+  .footer-left {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+  .footer-left .wordmark { font-size: 15px; }
+  .footer-copy {
+    font-size: 12px;
+    color: var(--secondary);
+    letter-spacing: 0.01em;
+  }
+  .footer-links {
+    display: flex;
+    gap: 26px;
+    align-items: center;
+  }
+  .footer-links a {
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--primary);
+    text-decoration: none;
+    transition: opacity 140ms ease;
+  }
+  .footer-links a:hover { opacity: 0.55; }
+
+  /* RESPONSIVE */
+  @media (max-width: 980px) {
+    .container { padding: 0 24px; }
+    .nav-links { display: none; }
+    .hero { padding: 80px 0 60px; }
+    .hero-meta-row { flex-direction: column; align-items: flex-start; gap: 28px; }
+    .hero-specs { gap: 22px; }
+    .spec { text-align: left; }
+    .section { padding: 64px 0; }
+    .section-head { grid-template-columns: 1fr; gap: 20px; }
+    .demo-tabs { overflow-x: auto; }
+    .demo-tab-meta { display: none; }
+    .demo-bottom { overflow-x: auto; }
+    .platform-features { grid-template-columns: 1fr; }
+    .metrics { grid-template-columns: 1fr; }
+    .studio-grid { grid-template-columns: 1fr; }
+    .studio-modes { grid-template-columns: 1fr 1fr; }
+    .agents-grid { grid-template-columns: 1fr; }
+    .trust-brands { grid-template-columns: repeat(3, 1fr); gap: 32px 16px; }
+    .dash-top { flex-direction: column; align-items: flex-start; }
+  }
+  @media (max-width: 560px) {
+    .studio-modes { grid-template-columns: 1fr; }
+    .trust-brands { grid-template-columns: repeat(2, 1fr); }
+    .footer-inner { flex-direction: column; align-items: flex-start; }
+  }
+</style>
+</head>
+<body>
+
+<nav class="top">
+  <div class="container nav-inner">
+    <div class="wordmark">Auralis</div>
+    <div class="nav-links">
+      <a href="#studio">Studio</a>
+      <a href="#agents">Agents</a>
+      <a href="#api">API</a>
+      <a href="#resources">Resources</a>
+      <a href="#enterprise">Enterprise</a>
+      <a href="#pricing">Pricing</a>
+    </div>
+    <div class="nav-cta">
+      <a href="#signup" class="btn btn-primary">Sign up</a>
+    </div>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="container hero-grid">
+    <div class="hero-meta-row">
+      <div class="hero-eyebrow">
+        <span class="dot"></span>
+        <span class="label-caps">Voice Intelligence Platform</span>
+      </div>
+      <div class="hero-specs">
+        <div class="spec">
+          <span class="label-caps">Latency</span>
+          <span class="val">12 ms</span>
+        </div>
+        <div class="spec">
+          <span class="label-caps">Engine</span>
+          <span class="val">v4.2 Pro</span>
+        </div>
+        <div class="spec">
+          <span class="label-caps">Region</span>
+          <span class="val">Global</span>
+        </div>
+      </div>
+    </div>
+    <h1>Making digital experiences sound human</h1>
+    <div class="hero-actions">
+      <a href="#signup" class="btn btn-primary">Sign up</a>
+      <a href="#sales" class="btn btn-ghost">Contact sales</a>
+    </div>
+  </div>
+</section>
+
+<!-- SECTION 2 — DEMO PANEL -->
+<section class="section" style="padding-top: 16px;">
+  <div class="container">
+    <div class="demo-panel">
+      <div class="demo-tabs">
+        <div class="demo-tab active">
+          <span class="tab-ico"></span>
+          Auralis Studio
+        </div>
+        <div class="demo-tab">
+          <span class="tab-ico"></span>
+          Auralis Agents
+        </div>
+        <div class="demo-tab">
+          <span class="tab-ico"></span>
+          Auralis API
+        </div>
+        <div class="demo-tab-spacer"></div>
+        <div class="demo-tab-meta">Session · 0294-A</div>
+      </div>
+
+      <div class="demo-status">
+        <div class="status-label">
+          <span class="live-dot"></span>
+          <span class="label-caps">AI Voice Generator</span>
+        </div>
+        <div class="status-right">
+          <span class="label-caps">48 kHz · 24-bit</span>
+          <span class="label-caps">Voice · Aurora-1</span>
+        </div>
+      </div>
+
+      <div class="demo-preview">
+        <div class="spectral"></div>
+        <div class="preview-grid"></div>
+        <div class="preview-crosshair"></div>
+        <div class="preview-corners"><span></span><span></span><span></span><span></span></div>
+
+        <div class="preview-tl">00:01:24:08</div>
+        <div class="preview-tr">+ 0.0 dB</div>
+        <div class="preview-bl">FREQ · 220 Hz</div>
+        <div class="preview-br">RENDER · 99.8%</div>
+
+        <div class="preview-overlay">
+          <button class="play-btn" aria-label="Play">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M6 4l14 8-14 8z"/></svg>
+          </button>
+          <div class="preview-readout">
+            <div class="readout-item"><span class="lbl">Voice</span><span class="val">Aurora-1</span></div>
+            <div class="readout-sep"></div>
+            <div class="readout-item"><span class="lbl">Style</span><span class="val">Warm</span></div>
+            <div class="readout-sep"></div>
+            <div class="readout-item"><span class="lbl">Lang</span><span class="val">EN-US</span></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="demo-bottom">
+        <div class="mode-link active">AI Voice Generator</div>
+        <div class="mode-link">Text to Speech</div>
+        <div class="mode-link">Music</div>
+        <div class="mode-link">Sound Effects</div>
+        <div class="mode-link">Voice Cloning</div>
+        <div class="demo-bottom-spacer"></div>
+        <a href="#signup" class="btn btn-tertiary" style="padding: 10px 20px;">Sign up</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SECTION 3 — TRUST STRIP -->
+<section class="trust-strip">
+  <div class="container">
+    <h2>Trusted by teams building modern audio experiences</h2>
+    <div class="trust-brands">
+      <div class="trust-brand">Velocity</div>
+      <div class="trust-brand">Nexus</div>
+      <div class="trust-brand">Lumina</div>
+      <div class="trust-brand">Stack</div>
+      <div class="trust-brand">Quanta</div>
+      <div class="trust-brand">Orbital</div>
+      <div class="trust-brand">Scalar</div>
+    </div>
+  </div>
+</section>
+
+<!-- SECTION 4 — PLATFORM OVERVIEW -->
+<section class="section">
+  <div class="container">
+    <div class="section-head">
+      <div>
+        <span class="label-caps">Platform</span>
+        <h2>Two systems, one shared intelligence layer</h2>
+      </div>
+      <p>Auralis unifies precision generation and agentic architecture under a single neural core — the same engine that renders a syllable in twelve milliseconds orchestrates a multi-turn conversation across channels.</p>
+    </div>
+
+    <div class="platform-features">
+      <div class="feature-card">
+        <span class="num">01 · Generation</span>
+        <h3>Precision Generation</h3>
+        <p>Sample-accurate synthesis with controllable prosody, emotion, and timbre. Built for studios that ship broadcast-grade audio.</p>
+      </div>
+      <div class="feature-card">
+        <span class="num">02 · Agents</span>
+        <h3>Agentic Architecture</h3>
+        <p>Reasoning voice agents that hold context across turns, channels, and time — conversational delivery indistinguishable from a human operator.</p>
+      </div>
+    </div>
+
+    <div class="dashboard">
+      <div class="dash-top">
+        <div class="dash-title">
+          <span class="plate">Neural Engine V4.2 Pro</span>
+          <span class="ver">Build 2024.11</span>
+        </div>
+        <div class="dash-badges">
+          <span class="badge">Studio Mode</span>
+          <span class="badge badge-live"><span class="ld"></span>Real-time Synthesis Active</span>
+        </div>
+      </div>
+
+      <div class="metrics">
+        <div class="metric">
+          <div class="metric-label">Latency<span class="tag">P99</span></div>
+          <div class="metric-value">12<span class="unit">ms</span></div>
+          <div class="metric-spark">
+            <span style="height:30%"></span><span style="height:48%"></span><span style="height:36%"></span>
+            <span style="height:62%"></span><span style="height:44%"></span><span style="height:70%"></span>
+            <span style="height:52%"></span><span style="height:38%"></span><span style="height:60%"></span>
+            <span style="height:34%"></span><span style="height:54%"></span><span style="height:42%"></span>
+          </div>
+        </div>
+        <div class="metric">
+          <div class="metric-label">Confidence<span class="tag">ASR</span></div>
+          <div class="metric-value">99.8<span class="unit">%</span></div>
+          <div class="metric-spark">
+            <span style="height:74%"></span><span style="height:80%"></span><span style="height:78%"></span>
+            <span style="height:88%"></span><span style="height:82%"></span><span style="height:90%"></span>
+            <span style="height:86%"></span><span style="height:92%"></span><span style="height:84%"></span>
+            <span style="height:94%"></span><span style="height:88%"></span><span style="height:96%"></span>
+          </div>
+        </div>
+        <div class="metric">
+          <div class="metric-label">Status<span class="tag">Live</span></div>
+          <div class="metric-value"><span class="status-dot"></span>Operational</div>
+          <div class="metric-spark">
+            <span style="height:50%"></span><span style="height:54%"></span><span style="height:52%"></span>
+            <span style="height:58%"></span><span style="height:50%"></span><span style="height:56%"></span>
+            <span style="height:52%"></span><span style="height:60%"></span><span style="height:54%"></span>
+            <span style="height:52%"></span><span style="height:58%"></span><span style="height:54%"></span>
+          </div>
+        </div>
+      </div>
+
+      <div class="waveform">
+        <div class="waveform-head">
+          <span class="label-caps" style="color: rgba(255,255,255,0.5);">Spectral Output</span>
+          <span class="freq">20 Hz — 20 kHz</span>
+        </div>
+        <div class="waveform-bars" id="wf"></div>
+        <div class="waveform-axis">
+          <span>00:00</span><span>00:30</span><span>01:00</span><span>01:30</span><span>02:00</span>
+        </div>
+      </div>
+
+      <div class="transport">
+        <button class="transport-btn" aria-label="Previous"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M6 4h2v16H6zM20 4l-12 8 12 8z"/></svg></button>
+        <button class="transport-btn play" aria-label="Play"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M6 4l14 8-14 8z"/></svg></button>
+        <button class="transport-btn" aria-label="Next"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M16 4h2v16h-2zM4 4l12 8-12 8z"/></svg></button>
+        <span class="transport-time">00:34.218</span>
+        <div class="transport-progress"></div>
+        <span class="transport-time">02:14.000</span>
+        <span class="transport-output">Out · 48 kHz</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SECTION 5 — AURALIS STUDIO -->
+<section class="section" id="studio">
+  <div class="container">
+    <div class="section-head">
+      <div>
+        <span class="label-caps">Auralis Studio</span>
+        <h2>Sculpt sound with absolute precision.</h2>
+      </div>
+      <p>A professional audio creation and editing suite built for producers, sound designers, and broadcast teams. Sample-level control, non-destructive workflows, and AI-assisted mastering in one engineered surface.</p>
+    </div>
+
+    <div class="studio-grid">
+      <div class="studio-image-card">
+        <div class="card-label">
+          <span class="label-caps">Soft Editor UI</span>
+          <span class="badge-soft">Editor</span>
+        </div>
+        <div class="editor-preview">
+          <div class="editor-mock">
+            <div class="editor-toolbar">
+              <span class="tb-dot"></span><span class="tb-dot"></span><span class="tb-dot"></span>
+              <span class="tb-pill"></span>
+              <span class="tb-tag"></span>
+              <div style="flex:1"></div>
+              <span class="tb-tag"></span>
+            </div>
+            <div class="editor-tl">
+              <span></span><span></span><span></span><span></span><span></span><span></span>
+            </div>
+            <div class="editor-track-area">
+              <div class="track-row"><span class="lbl">VOX</span><div class="wave-mini">
+                <span style="height:40%"></span><span style="height:70%"></span><span style="height:55%"></span><span style="height:85%"></span><span style="height:60%"></span><span style="height:45%"></span><span style="height:75%"></span><span style="height:50%"></span><span style="height:65%"></span><span style="height:80%"></span><span style="height:48%"></span><span style="height:62%"></span><span style="height:70%"></span><span style="height:55%"></span><span style="height:42%"></span><span style="height:68%"></span><span style="height:58%"></span><span style="height:74%"></span><span style="height:50%"></span><span style="height:64%"></span>
+              </div></div>
+              <div class="track-row tone"><span class="lbl">MUS</span><div class="wave-mini">
+                <span style="height:30%"></span><span style="height:50%"></span><span style="height:42%"></span><span style="height:60%"></span><span style="height:38%"></span><span style="height:52%"></span><span style="height:46%"></span><span style="height:64%"></span><span style="height:40%"></span><span style="height:56%"></span><span style="height:48%"></span><span style="height:62%"></span><span style="height:34%"></span><span style="height:50%"></span><span style="height:44%"></span><span style="height:58%"></span><span style="height:36%"></span><span style="height:54%"></span><span style="height:46%"></span><span style="height:60%"></span>
+              </div></div>
+              <div class="track-row tone-2"><span class="lbl">SFX</span><div class="wave-mini">
+                <span style="height:20%"></span><span style="height:80%"></span><span style="height:25%"></span><span style="height:90%"></span><span style="height:30%"></span><span style="height:70%"></span><span style="height:22%"></span><span style="height:85%"></span><span style="height:28%"></span><span style="height:75%"></span><span style="height:24%"></span><span style="height:88%"></span><span style="height:26%"></span><span style="height:72%"></span><span style="height:30%"></span><span style="height:82%"></span><span style="height:24%"></span><span style="height:78%"></span><span style="height:28%"></span><span style="height:68%"></span>
+              </div></div>
+              <div class="track-row"><span class="lbl">AUX</span><div class="wave-mini">
+                <span style="height:15%"></span><span style="height:25%"></span><span style="height:18%"></span><span style="height:30%"></span><span style="height:22%"></span><span style="height:28%"></span><span style="height:16%"></span><span style="height:32%"></span><span style="height:20%"></span><span style="height:26%"></span><span style="height:14%"></span><span style="height:30%"></span><span style="height:18%"></span><span style="height:24%"></span><span style="height:16%"></span><span style="height:28%"></span><span style="height:20%"></span><span style="height:26%"></span><span style="height:14%"></span><span style="height:32%"></span>
+              </div></div>
+            </div>
+            <div class="editor-right">
+              <span></span><span></span>
+              <div class="knob"></div>
+              <span></span><span></span>
+            </div>
+            <div class="editor-bottom">
+              <div class="eb-play"></div>
+              <span class="eb-pill eb-1"></span>
+              <span class="eb-pill eb-2"></span>
+              <span class="eb-spacer"></span>
+              <span class="eb-pill eb-3"></span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="studio-text-card">
+        <div class="card-label">
+          <span class="label-caps">Transcript Panel</span>
+          <span class="badge-soft">Live</span>
+        </div>
+        <div class="transcript">
+          <div class="transcript-line">
+            <span class="transcript-speaker">VOX 01</span>
+            <div class="transcript-text"><span class="ts">00:00.12</span>Welcome back to the studio. Today we're <span class="hl">mastering</span> the latest cut.</div>
+          </div>
+          <div class="transcript-line">
+            <span class="transcript-speaker">VOX 02</span>
+            <div class="transcript-text"><span class="ts">00:04.88</span>Let's start by leveling the vocal bus and adding <span class="hl">warmth</span> on the low end.</div>
+          </div>
+          <div class="transcript-line">
+            <span class="transcript-speaker">VOX 01</span>
+            <div class="transcript-text"><span class="ts">00:09.42</span>Exactly. Pull the compressor threshold down by two decibels<span class="transcript-cursor"></span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="studio-modes">
+      <div class="mode-card">
+        <div class="num">01</div>
+        <div class="icon-box">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg>
+        </div>
+        <h4>Music</h4>
+        <p>Compose, arrange, and master with MIDI, audio, and AI-assisted stems.</p>
+      </div>
+      <div class="mode-card">
+        <div class="num">02</div>
+        <div class="icon-box">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M3 12h2l2-7 4 14 3-10 2 5h5"/></svg>
+        </div>
+        <h4>SFX</h4>
+        <p>Design and layer sound effects with procedural generation and foley tools.</p>
+      </div>
+      <div class="mode-card">
+        <div class="num">03</div>
+        <div class="icon-box">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="22"/></svg>
+        </div>
+        <h4>Voices</h4>
+        <p>Generate, clone, and direct synthetic voices with sample-level control.</p>
+      </div>
+      <div class="mode-card">
+        <div class="num">04</div>
+        <div class="icon-box">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="5" width="18" height="14" rx="2"/><circle cx="12" cy="12" r="3"/></svg>
+        </div>
+        <h4>Image &amp; Video</h4>
+        <p>Sync audio to picture with frame-accurate timelines and stem exports.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SECTION 6 — AURALIS AGENTS -->
+<section class="section" id="agents">
+  <div class="container">
+    <div class="section-head">
+      <div>
+        <span class="label-caps">Auralis Agents</span>
+        <h2>Autonomous reasoning, human delivery.</h2>
+      </div>
+      <p>AI-powered conversational voice agents that reason, retrieve, and respond in real time. Built for support, sales, and operations — with delivery indistinguishable from your best human operator.</p>
+    </div>
+
+    <div class="agents-grid">
+      <div class="chat-card">
+        <div class="chat-head">
+          <div class="chat-head-left">
+            <div class="chat-avatar">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="4" y="6" width="16" height="12" rx="2"/><circle cx="9" cy="12" r="1.2" fill="currentColor"/><circle cx="15" cy="12" r="1.2" fill="currentColor"/><path d="M12 2v4"/></svg>
+            </div>
+            <div class="chat-title">
+              <div class="name">Nexus Support Agent</div>
+              <div class="status"><span class="dot"></span>Online · Latency: 12ms</div>
+            </div>
+          </div>
+          <div class="chat-head-right">
+            <div class="btn-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M22 16.92V20a2 2 0 0 1-2.18 2 19.86 19.86 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6A19.86 19.86 0 0 1 2 4.18 2 2 0 0 1 4 2h3.09a2 2 0 0 1 2 1.72c.13.81.36 1.6.7 2.34a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.74-1.25a2 2 0 0 1 2.11-.45c.74.34 1.53.57 2.34.7A2 2 0 0 1 22 16.92z"/></svg></div>
+            <div class="btn-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="12" cy="12" r="1"/><circle cx="19" cy="12" r="1"/><circle cx="5" cy="12" r="1"/></svg></div>
+          </div>
+        </div>
+        <div class="chat-body">
+          <div class="chat-msg bot">
+            <span class="role">Nexus Agent</span>
+            <div class="chat-bubble">Hello! How can I assist you today?</div>
+            <span class="chat-meta">00:00 · 11ms</span>
+          </div>
+          <div class="chat-msg user">
+            <span class="role">You</span>
+            <div class="chat-bubble">I need help checking my deployment status.</div>
+            <span class="chat-meta">00:02 · sent</span>
+          </div>
+          <div class="typing">
+            <span></span><span></span><span></span>
+          </div>
+        </div>
+        <div class="chat-input">
+          <div class="chat-input-field">Reply to Nexus Agent…</div>
+          <div class="chat-input-send">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+          </div>
+        </div>
+      </div>
+
+      <div class="insights-card">
+        <div class="card-label">
+          <span class="label-caps">Deep Insights</span>
+          <span class="badge-soft">Analytics</span>
+        </div>
+        <h3>Deep Insights</h3>
+        <p>Real-time analytics on every conversation — sentiment, resolution rate, intent coverage, and operator handoff. Tune agents against ground truth, not gut feel.</p>
+        <div class="insights-stats">
+          <div class="insight-stat">
+            <span class="lbl">Resolution</span>
+            <span class="val">94.2<span class="unit">%</span></span>
+          </div>
+          <div class="insight-stat">
+            <span class="lbl">Avg Handle</span>
+            <span class="val">1:48<span class="unit"> min</span></span>
+          </div>
+        </div>
+        <div class="insights-bars">
+          <div class="bar-row">
+            <div class="bar-head"><span>Intent Coverage</span><span class="v">98%</span></div>
+            <div class="bar-track"><div class="bar-fill" style="width:98%"></div></div>
+          </div>
+          <div class="bar-row">
+            <div class="bar-head"><span>Sentiment Positive</span><span class="v">87%</span></div>
+            <div class="bar-track"><div class="bar-fill" style="width:87%"></div></div>
+          </div>
+          <div class="bar-row">
+            <div class="bar-head"><span>Handoff Rate</span><span class="v">6%</span></div>
+            <div class="bar-track"><div class="bar-fill" style="width:6%"></div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SECTION 7 — FINAL CTA -->
+<section class="final-cta">
+  <div class="container">
+    <span class="label-caps">Get Started</span>
+    <h2>The future of voice starts here</h2>
+    <div class="final-cta-actions">
+      <a href="#signup" class="btn btn-primary">Get started</a>
+      <a href="#sales" class="btn btn-ghost">Talk to sales</a>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="container footer-inner">
+    <div class="footer-left">
+      <div class="wordmark">Auralis</div>
+      <div class="footer-copy">© 2024 Auralis AI. Engineered for precision.</div>
+    </div>
+    <div class="footer-links">
+      <a href="#twitter">Twitter</a>
+      <a href="#github">GitHub</a>
+      <a href="#terms">Terms</a>
+      <a href="#privacy">Privacy</a>
+    </div>
+  </div>
+</footer>
+
+<script>
+  // Generate waveform bars with a speech-like envelope
+  (function(){
+    const wf = document.getElementById('wf');
+    if(!wf) return;
+    const N = 96;
+    let html = '';
+    for(let i = 0; i < N; i++){
+      const t = i / N;
+      // multi-lobed envelope (like syllables)
+      const env = (Math.sin(t * Math.PI * 3.2) * 0.5 + 0.5) * (0.6 + 0.4 * Math.sin(t * Math.PI * 7));
+      const noise = 0.35 + Math.random() * 0.65;
+      const h = Math.max(6, Math.min(100, env * noise * 100));
+      const op = 0.5 + 0.5 * env;
+      html += `<span style="height:${h}%; opacity:${op.toFixed(2)}"></span>`;
+    }
+    wf.innerHTML = html;
+  })();
+</script>
+
+</body>
+</html>

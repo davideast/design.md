@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Urban Nocturnal: Field Notes</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=League+Spartan:wght@500;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --background: #F9F6EE;
+    --text: #1A1A1B;
+    --primary: #1A1A1B;
+    --ui-neutral: #707372;
+    --accent: #C53030;
+  }
+
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    border-radius: 0;
+  }
+
+  body {
+    background: var(--background);
+    color: var(--text);
+    font-family: "Century Schoolbook", Georgia, "Times New Roman", serif;
+    font-size: 16px;
+    line-height: 1.5;
+    padding: 24px;
+  }
+
+  .page {
+    max-width: 720px;
+    margin: 0 auto;
+  }
+
+  h1, h2, h3 {
+    font-family: "League Spartan", sans-serif;
+    font-weight: 700;
+    color: var(--primary);
+    letter-spacing: 0.01em;
+  }
+
+  h1 {
+    font-size: 2.2rem;
+    line-height: 1.05;
+    text-transform: uppercase;
+    border-bottom: 3px solid var(--text);
+    padding-bottom: 12px;
+    margin-bottom: 24px;
+  }
+
+  h2 {
+    font-size: 1.3rem;
+    text-transform: uppercase;
+    margin-top: 32px;
+    margin-bottom: 10px;
+    padding-bottom: 4px;
+    border-bottom: 1px solid var(--ui-neutral);
+  }
+
+  h3 {
+    font-size: 1.05rem;
+    margin-top: 16px;
+    margin-bottom: 6px;
+  }
+
+  p {
+    margin-bottom: 8px;
+  }
+
+  .label {
+    font-family: "League Spartan", sans-serif;
+    font-weight: 500;
+    text-transform: uppercase;
+    font-size: 0.8rem;
+    letter-spacing: 0.03em;
+    color: var(--ui-neutral);
+  }
+
+  section {
+    margin-bottom: 8px;
+  }
+
+  .status-block p {
+    margin-bottom: 4px;
+  }
+
+  .status-block strong {
+    color: var(--text);
+  }
+
+  .species-marks p {
+    margin-bottom: 4px;
+  }
+
+  .species-marks strong {
+    font-family: "League Spartan", sans-serif;
+    font-weight: 500;
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 0.02em;
+    color: var(--accent);
+    margin-right: 4px;
+  }
+
+  .log {
+    border-left: 3px solid var(--accent);
+    padding-left: 14px;
+    list-style: none;
+  }
+
+  .log li {
+    margin-bottom: 4px;
+  }
+
+  .log strong {
+    font-family: "League Spartan", sans-serif;
+    font-weight: 500;
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 0.02em;
+    color: var(--ui-neutral);
+    display: inline-block;
+    min-width: 78px;
+  }
+
+  .listen-intro {
+    margin-bottom: 12px;
+  }
+
+  ol.listen {
+    list-style: none;
+    counter-reset: step;
+  }
+
+  ol.listen li {
+    counter-increment: step;
+    position: relative;
+    padding-left: 36px;
+    margin-bottom: 10px;
+  }
+
+  ol.listen li::before {
+    content: counter(step);
+    position: absolute;
+    left: 0;
+    top: 0;
+    font-family: "League Spartan", sans-serif;
+    font-weight: 700;
+    font-size: 1rem;
+    color: var(--accent);
+    width: 24px;
+    height: 24px;
+    border: 2px solid var(--accent);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  ol.listen strong {
+    font-family: "League Spartan", sans-serif;
+    font-weight: 700;
+    text-transform: uppercase;
+    font-size: 0.85rem;
+    letter-spacing: 0.02em;
+  }
+</style>
+</head>
+<body>
+  <div class="page">
+    <h1>Urban Nocturnal: Field Notes</h1>
+
+    <section class="status-block">
+      <h2>Moon &amp; Light Conditions</h2>
+      <p><strong>Current Status:</strong> Waxing Gibbous. 82% Illumination.</p>
+      <p><strong>Moonrise:</strong> 17:42.</p>
+      <p><strong>Sky Quality:</strong> Bortle 8 (Inner City Sky).</p>
+    </section>
+
+    <section>
+      <h2>Tonight's Likely Species</h2>
+      <h3>Black-crowned Night Heron</h3>
+      <div class="species-marks">
+        <p><strong>Field Marks:</strong> Stocky build, black crown and back, contrasting grey wings.</p>
+        <p><strong>In Flight:</strong> Thick neck tucked, feet barely extending beyond tail.</p>
+        <p><strong>Context:</strong> Often found near waterfront construction sites or park ponds.</p>
+      </div>
+    </section>
+
+    <section>
+      <h2>Sightings Log</h2>
+      <ul class="log">
+        <li><strong>Time:</strong> 23:14</li>
+        <li><strong>Location:</strong> West Side Railyards</li>
+        <li><strong>Species:</strong> Common Nighthawk (2)</li>
+        <li><strong>Behavior:</strong> Aerial foraging under stadium lights; erratic, bat-like flight pattern.</li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>Guide to Listening: The Urban Filter</h2>
+      <p class="listen-intro">To identify birds by sound in the city, you must mentally subtract the machine:</p>
+      <ol class="listen">
+        <li><strong>The Base:</strong> Ignore the low-frequency rumble of the expressway or subway vents.</li>
+        <li><strong>The Signal:</strong> Focus on the "Peent"—a sharp, nasal electric buzz cutting through the hum.</li>
+        <li><strong>The Physical:</strong> Listen for the "Whoosh" of air through primary feathers during a territorial dive.</li>
+      </ol>
+    </section>
+  </div>
+</body>
+</html>

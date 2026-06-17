@@ -1,0 +1,1583 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Auralis — Making digital experiences sound human</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&family=Geist+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --primary: #111111;
+    --secondary: #6B6B6B;
+    --tertiary: #9958ff;
+    --neutral: #F7F7F5;
+    --surface-elevated: #ffffff;
+    --outline-muted: #E5E5E3;
+    --r-sm: 0.25rem;
+    --r-md: 0.75rem;
+    --r-lg: 1.5rem;
+    --r-full: 9999px;
+    --s-sm: 8px;
+    --s-md: 24px;
+    --s-lg: 64px;
+    --s-xl: 140px;
+    --s-gutter: 24px;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html { scroll-behavior: smooth; -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; }
+
+  body {
+    font-family: 'Geist', sans-serif;
+    background: var(--neutral);
+    color: var(--primary);
+    line-height: 1.5;
+    overflow-x: hidden;
+  }
+
+  ::selection { background: var(--tertiary); color: #fff; }
+
+  /* Typography */
+  .h1 {
+    font-family: 'Geist', sans-serif;
+    font-size: 72px;
+    font-weight: 600;
+    line-height: 0.95;
+    letter-spacing: -0.04em;
+  }
+  .h2 {
+    font-family: 'Geist', sans-serif;
+    font-size: 42px;
+    font-weight: 600;
+    line-height: 1.1;
+    letter-spacing: -0.02em;
+  }
+  .body-md {
+    font-family: 'Geist', sans-serif;
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 1.5;
+  }
+  .label-caps {
+    font-family: 'Geist', sans-serif;
+    font-size: 12px;
+    font-weight: 600;
+    line-height: 1;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+  .btn-text {
+    font-family: 'Geist', sans-serif;
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 1;
+    letter-spacing: 0.01em;
+  }
+  .mono {
+    font-family: 'Geist Mono', monospace;
+  }
+
+  /* Layout */
+  .container {
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 0 var(--s-gutter);
+  }
+
+  section { padding: var(--s-lg) 0; }
+
+  /* Nav */
+  .nav {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: rgba(247, 247, 245, 0.82);
+    backdrop-filter: saturate(180%) blur(20px);
+    -webkit-backdrop-filter: saturate(180%) blur(20px);
+    border-bottom: 1px solid var(--outline-muted);
+  }
+  .nav-inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 64px;
+  }
+  .wordmark {
+    font-family: 'Geist', sans-serif;
+    font-size: 19px;
+    font-weight: 600;
+    letter-spacing: -0.02em;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .wordmark .mark {
+    width: 22px; height: 22px;
+    border-radius: 50%;
+    background: radial-gradient(circle at 32% 30%, #fff 0%, #d6c2ff 18%, var(--tertiary) 60%, #5a1fb0 100%);
+    box-shadow: 0 0 0 1px rgba(0,0,0,0.06), inset 0 0 8px rgba(255,255,255,0.25);
+    position: relative;
+  }
+  .wordmark .mark::after {
+    content: ''; position: absolute; inset: 0;
+    border-radius: 50%;
+    background: radial-gradient(circle at 70% 75%, rgba(255,255,255,0.4) 0%, transparent 30%);
+  }
+  .nav-links { display: flex; align-items: center; gap: 28px; }
+  .nav-links a {
+    color: var(--primary);
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: 500;
+    letter-spacing: 0.01em;
+    opacity: 0.78;
+    transition: opacity 0.18s ease;
+  }
+  .nav-links a:hover { opacity: 1; }
+
+  /* Buttons */
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 13px 20px;
+    border-radius: var(--r-full);
+    font-size: 14px;
+    font-weight: 500;
+    letter-spacing: 0.01em;
+    text-decoration: none;
+    border: 1px solid transparent;
+    cursor: pointer;
+    transition: transform 0.18s ease, background 0.18s ease, border-color 0.18s ease, color 0.18s ease, box-shadow 0.18s ease;
+    white-space: nowrap;
+  }
+  .btn-primary { background: var(--primary); color: var(--neutral); }
+  .btn-primary:hover { background: #2a2a2a; transform: translateY(-1px); }
+  .btn-ghost { background: transparent; color: var(--primary); border-color: var(--outline-muted); }
+  .btn-ghost:hover { background: var(--surface-elevated); border-color: var(--primary); transform: translateY(-1px); }
+  .btn-sm { padding: 10px 18px; font-size: 13px; }
+  .btn-lg { padding: 15px 26px; font-size: 15px; }
+  .btn-pill-icon {
+    width: 30px; height: 30px;
+    border-radius: var(--r-full);
+    background: var(--primary);
+    color: var(--neutral);
+    display: inline-flex; align-items: center; justify-content: center;
+    transition: background 0.18s ease, transform 0.18s ease;
+  }
+  .btn-pill-icon:hover { background: var(--tertiary); transform: scale(1.06); }
+
+  /* Hero */
+  .hero { padding: 96px 0 64px; }
+  .hero-eyebrow {
+    display: inline-flex; align-items: center; gap: 10px;
+    padding: 7px 14px 7px 10px;
+    border-radius: var(--r-full);
+    background: var(--surface-elevated);
+    border: 1px solid var(--outline-muted);
+    margin-bottom: 36px;
+  }
+  .hero-eyebrow .dot {
+    width: 8px; height: 8px; border-radius: 50%;
+    background: var(--tertiary);
+    box-shadow: 0 0 0 4px rgba(153, 88, 255, 0.16);
+    animation: pulse 2.4s infinite;
+  }
+  @keyframes pulse {
+    0%, 100% { box-shadow: 0 0 0 4px rgba(153, 88, 255, 0.16); }
+    50% { box-shadow: 0 0 0 7px rgba(153, 88, 255, 0.06); }
+  }
+  .hero h1 {
+    max-width: 920px;
+    margin-bottom: 44px;
+  }
+  .hero h1 .accent { color: var(--tertiary); font-style: italic; font-weight: 500; }
+  .hero-actions { display: flex; gap: 12px; flex-wrap: wrap; }
+
+  /* Demo panel */
+  .demo-section { padding-top: 0; }
+  .panel {
+    background: var(--surface-elevated);
+    border: 1px solid var(--outline-muted);
+    border-radius: var(--r-lg);
+    overflow: hidden;
+    box-shadow: 0 1px 0 rgba(0,0,0,0.02), 0 24px 60px -30px rgba(0,0,0,0.18);
+  }
+  .tab-bar {
+    display: flex;
+    align-items: stretch;
+    border-bottom: 1px solid var(--outline-muted);
+    background: #FBFBF9;
+  }
+  .tab {
+    padding: 16px 20px;
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--secondary);
+    cursor: pointer;
+    border-bottom: 2px solid transparent;
+    transition: color 0.18s ease, border-color 0.18s ease, background 0.18s ease;
+    display: flex; align-items: center; gap: 8px;
+  }
+  .tab .tab-dot {
+    width: 6px; height: 6px; border-radius: 50%; background: var(--outline-muted);
+    transition: background 0.18s ease;
+  }
+  .tab:hover { color: var(--primary); }
+  .tab.active { color: var(--primary); border-bottom-color: var(--primary); }
+  .tab.active .tab-dot { background: var(--tertiary); }
+  .tab-bar .right { margin-left: auto; display: flex; align-items: center; gap: 14px; padding-right: 20px; }
+  .status-label {
+    display: inline-flex; align-items: center; gap: 8px;
+    font-size: 11px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase;
+    color: var(--secondary);
+  }
+  .live-dot {
+    width: 8px; height: 8px; border-radius: 50%; background: var(--tertiary);
+    box-shadow: 0 0 0 3px rgba(153, 88, 255, 0.18);
+    animation: pulse 2.4s infinite;
+  }
+
+  .preview {
+    position: relative;
+    background:
+      radial-gradient(ellipse 60% 50% at 50% 50%, rgba(153, 88, 255, 0.07) 0%, transparent 65%),
+      linear-gradient(180deg, #0c0c0c 0%, #1a1a1a 100%);
+    height: 440px;
+    display: flex; align-items: center; justify-content: center;
+    overflow: hidden;
+  }
+  .preview::before {
+    content: ''; position: absolute; inset: 0;
+    background-image:
+      linear-gradient(rgba(255,255,255,0.025) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255,255,255,0.025) 1px, transparent 1px);
+    background-size: 48px 48px;
+    mask-image: radial-gradient(ellipse 70% 60% at 50% 50%, black 30%, transparent 80%);
+    -webkit-mask-image: radial-gradient(ellipse 70% 60% at 50% 50%, black 30%, transparent 80%);
+  }
+  .preview::after {
+    content: ''; position: absolute;
+    width: 600px; height: 600px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(153,88,255,0.10) 0%, transparent 60%);
+    animation: drift 9s ease-in-out infinite;
+  }
+  @keyframes drift {
+    0%, 100% { transform: translate(-40px, -30px); }
+    50% { transform: translate(40px, 30px); }
+  }
+  .preview-overlay {
+    position: absolute; top: 16px; left: 16px; right: 16px;
+    display: flex; justify-content: space-between; align-items: flex-start;
+    z-index: 3;
+  }
+  .chip {
+    display: inline-flex; align-items: center; gap: 6px;
+    padding: 6px 10px;
+    border-radius: var(--r-full);
+    background: rgba(255,255,255,0.06);
+    border: 1px solid rgba(255,255,255,0.10);
+    color: rgba(255,255,255,0.78);
+    font-size: 10px; font-weight: 600; letter-spacing: 0.10em; text-transform: uppercase;
+    backdrop-filter: blur(8px);
+  }
+  .chip .ld { width: 6px; height: 6px; border-radius: 50%; background: var(--tertiary); box-shadow: 0 0 6px var(--tertiary); }
+
+  .play-button {
+    width: 84px; height: 84px;
+    border-radius: 50%;
+    background: var(--tertiary);
+    display: flex; align-items: center; justify-content: center;
+    cursor: pointer;
+    position: relative;
+    z-index: 3;
+    transition: transform 0.18s ease, box-shadow 0.18s ease;
+    box-shadow: 0 0 0 0 rgba(153, 88, 255, 0.55), 0 20px 50px -10px rgba(153, 88, 255, 0.6);
+  }
+  .play-button:hover { transform: scale(1.06); }
+  .play-button .ring {
+    position: absolute; inset: -8px;
+    border-radius: 50%;
+    border: 1px solid rgba(153, 88, 255, 0.4);
+    animation: ring-pulse 2.8s infinite;
+  }
+  .play-button .ring2 {
+    position: absolute; inset: -18px;
+    border-radius: 50%;
+    border: 1px solid rgba(153, 88, 255, 0.18);
+    animation: ring-pulse 2.8s infinite 0.6s;
+  }
+  @keyframes ring-pulse {
+    0% { transform: scale(0.85); opacity: 0; }
+    30% { opacity: 1; }
+    100% { transform: scale(1.35); opacity: 0; }
+  }
+
+  .preview-wave {
+    position: absolute;
+    bottom: 24px; left: 50%; transform: translateX(-50%);
+    display: flex; gap: 3px; align-items: flex-end;
+    height: 60px; z-index: 2;
+    opacity: 0.7;
+  }
+  .preview-wave span {
+    display: block;
+    width: 3px;
+    background: linear-gradient(180deg, var(--tertiary), rgba(153,88,255,0.3));
+    border-radius: 2px;
+    animation: wv 1.4s ease-in-out infinite;
+  }
+  @keyframes wv {
+    0%, 100% { height: 8px; }
+    50% { height: 40px; }
+  }
+
+  .mode-bar {
+    display: flex; align-items: center;
+    padding: 12px 16px;
+    border-top: 1px solid var(--outline-muted);
+    background: #FBFBF9;
+    gap: 4px;
+    flex-wrap: wrap;
+  }
+  .mode-link {
+    padding: 9px 14px;
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--secondary);
+    border-radius: var(--r-full);
+    cursor: pointer;
+    transition: all 0.18s ease;
+  }
+  .mode-link:hover { color: var(--primary); background: var(--surface-elevated); }
+  .mode-link.active {
+    background: var(--primary);
+    color: var(--neutral);
+  }
+  .mode-bar .right { margin-left: auto; }
+
+  /* Trust strip */
+  .trust {
+    padding: 72px 0;
+    border-top: 1px solid var(--outline-muted);
+    border-bottom: 1px solid var(--outline-muted);
+    background: var(--surface-elevated);
+  }
+  .trust h3 {
+    text-align: center;
+    color: var(--secondary);
+    font-size: 13px;
+    font-weight: 500;
+    letter-spacing: 0.06em;
+    margin-bottom: 40px;
+  }
+  .brands {
+    display: flex; align-items: center; justify-content: space-between;
+    gap: var(--s-md);
+    flex-wrap: wrap;
+  }
+  .brand {
+    font-family: 'Geist', sans-serif;
+    font-size: 22px;
+    font-weight: 600;
+    letter-spacing: -0.02em;
+    color: var(--primary);
+    opacity: 0.42;
+    transition: opacity 0.2s ease, color 0.2s ease;
+    display: inline-flex; align-items: center; gap: 9px;
+  }
+  .brand:hover { opacity: 0.78; color: var(--tertiary); }
+  .brand .b-mark {
+    width: 14px; height: 14px;
+    display: inline-block;
+    flex-shrink: 0;
+  }
+  .brand:nth-child(1) .b-mark { background: var(--primary); border-radius: 50% 50% 50% 4px; }
+  .brand:nth-child(2) .b-mark { background: var(--primary); border-radius: 4px; transform: rotate(45deg); }
+  .brand:nth-child(3) .b-mark { background: var(--primary); border-radius: 50%; box-shadow: inset 0 0 0 3px var(--neutral); }
+  .brand:nth-child(4) .b-mark { background: var(--primary); clip-path: polygon(50% 0, 100% 100%, 0 100%); }
+  .brand:nth-child(5) .b-mark { background: var(--primary); border-radius: 50%; position: relative; }
+  .brand:nth-child(5) .b-mark::after { content:''; position:absolute; inset:3px; border-radius:50%; background: var(--neutral); }
+  .brand:nth-child(6) .b-mark { background: var(--primary); border-radius: 50%; border: 3px solid var(--neutral); box-sizing: border-box; }
+  .brand:nth-child(7) .b-mark { background: var(--primary); border-radius: 2px 12px 2px 12px; }
+
+  /* Platform overview */
+  .platform h2 { margin-bottom: 20px; max-width: 880px; }
+  .platform .subcopy { max-width: 620px; color: var(--secondary); margin-bottom: 56px; font-size: 17px; line-height: 1.55; }
+  .feature-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--s-md);
+    margin-bottom: 56px;
+  }
+  .feature-blurb {
+    background: var(--surface-elevated);
+    border: 1px solid var(--outline-muted);
+    border-radius: var(--r-md);
+    padding: 28px;
+  }
+  .feature-blurb .num {
+    font-family: 'Geist Mono', monospace;
+    font-size: 11px;
+    color: var(--secondary);
+    letter-spacing: 0.08em;
+    margin-bottom: 18px;
+  }
+  .feature-blurb h4 {
+    font-size: 19px;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+    margin-bottom: 10px;
+  }
+  .feature-blurb p { color: var(--secondary); font-size: 14px; line-height: 1.55; }
+
+  /* Dashboard */
+  .dashboard {
+    background: #0c0c0c;
+    border-radius: var(--r-lg);
+    overflow: hidden;
+    border: 1px solid #1c1c1c;
+    box-shadow: 0 30px 80px -40px rgba(0,0,0,0.5);
+  }
+  .dash-top {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 14px 20px;
+    border-bottom: 1px solid #1c1c1c;
+    background: #0a0a0a;
+  }
+  .dash-title {
+    display: flex; align-items: center; gap: 12px;
+    font-family: 'Geist Mono', monospace;
+    font-size: 11px;
+    color: rgba(255,255,255,0.5);
+    letter-spacing: 0.12em;
+  }
+  .dash-title .logo-dot {
+    width: 10px; height: 10px; border-radius: 2px;
+    background: linear-gradient(135deg, var(--tertiary), #5a1fb0);
+  }
+  .dash-badges { display: flex; align-items: center; gap: 8px; }
+  .badge {
+    display: inline-flex; align-items: center; gap: 6px;
+    padding: 5px 10px;
+    border-radius: var(--r-full);
+    font-family: 'Geist Mono', monospace;
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.10em;
+  }
+  .badge-studio { background: rgba(153,88,255,0.14); color: #c4a6ff; border: 1px solid rgba(153,88,255,0.28); }
+  .badge-live { background: rgba(46,204,113,0.10); color: #5fe09a; border: 1px solid rgba(46,204,113,0.22); }
+  .badge-live .ld { width: 6px; height: 6px; border-radius: 50%; background: #5fe09a; box-shadow: 0 0 6px #5fe09a; animation: pulse 2s infinite; }
+
+  .dash-body {
+    display: grid;
+    grid-template-columns: 1fr 1.2fr;
+    gap: 1px;
+    background: #1a1a1a;
+  }
+  .dash-left, .dash-right { background: #0c0c0c; padding: 24px; }
+  .dash-left h5 {
+    font-family: 'Geist Mono', monospace;
+    font-size: 10px;
+    color: rgba(255,255,255,0.42);
+    letter-spacing: 0.12em;
+    margin-bottom: 18px;
+  }
+  .metric {
+    background: #131313;
+    border: 1px solid #1f1f1f;
+    border-radius: var(--r-md);
+    padding: 16px 18px;
+    margin-bottom: 10px;
+    display: flex; align-items: center; justify-content: space-between;
+  }
+  .metric:last-child { margin-bottom: 0; }
+  .metric-label {
+    font-family: 'Geist Mono', monospace;
+    font-size: 10px;
+    color: rgba(255,255,255,0.45);
+    letter-spacing: 0.10em;
+  }
+  .metric-value {
+    font-family: 'Geist Mono', monospace;
+    font-size: 17px;
+    font-weight: 600;
+    color: #fff;
+    letter-spacing: -0.01em;
+  }
+  .metric-value.ok { color: #5fe09a; }
+  .metric-value.accent { color: var(--tertiary); }
+
+  .dash-right { display: flex; flex-direction: column; }
+  .dash-right-head {
+    display: flex; align-items: center; justify-content: space-between;
+    margin-bottom: 18px;
+  }
+  .dash-right-head .label {
+    font-family: 'Geist Mono', monospace;
+    font-size: 10px;
+    color: rgba(255,255,255,0.42);
+    letter-spacing: 0.12em;
+  }
+  .dash-right-head .tag {
+    font-family: 'Geist Mono', monospace;
+    font-size: 10px;
+    color: var(--tertiary);
+    letter-spacing: 0.10em;
+  }
+  .waveform-area {
+    flex: 1;
+    background: #0a0a0a;
+    border: 1px solid #1c1c1c;
+    border-radius: var(--r-md);
+    padding: 20px;
+    display: flex; align-items: center; justify-content: center;
+    min-height: 200px;
+    position: relative;
+    overflow: hidden;
+  }
+  .waveform-area::before {
+    content: ''; position: absolute; inset: 0;
+    background: radial-gradient(ellipse 60% 80% at 50% 50%, rgba(153,88,255,0.06) 0%, transparent 70%);
+  }
+  .waveform {
+    display: flex; align-items: center; gap: 2px;
+    height: 140px;
+    position: relative; z-index: 1;
+  }
+  .waveform span {
+    display: block;
+    width: 3px;
+    background: linear-gradient(180deg, var(--tertiary), rgba(153,88,255,0.25));
+    border-radius: 2px;
+    animation: wv 1.2s ease-in-out infinite;
+  }
+
+  .transport {
+    display: flex; align-items: center; gap: 14px;
+    padding: 14px 18px;
+    margin-top: 14px;
+    background: #131313;
+    border: 1px solid #1f1f1f;
+    border-radius: var(--r-md);
+  }
+  .transport-btn {
+    width: 34px; height: 34px;
+    border-radius: 50%;
+    background: var(--tertiary);
+    display: flex; align-items: center; justify-content: center;
+    color: #fff; cursor: pointer;
+    transition: transform 0.15s ease;
+    border: none;
+  }
+  .transport-btn:hover { transform: scale(1.06); }
+  .transport-btn.ghost { background: #1f1f1f; }
+  .transport-btn.ghost:hover { background: #2a2a2a; }
+  .transport-time {
+    font-family: 'Geist Mono', monospace;
+    font-size: 11px;
+    color: rgba(255,255,255,0.55);
+    letter-spacing: 0.06em;
+  }
+  .transport-track {
+    flex: 1;
+    height: 4px;
+    background: #1f1f1f;
+    border-radius: 2px;
+    overflow: hidden;
+    position: relative;
+  }
+  .transport-track::after {
+    content: ''; position: absolute; left: 0; top: 0; bottom: 0;
+    width: 38%;
+    background: linear-gradient(90deg, var(--tertiary), #c4a6ff);
+    border-radius: 2px;
+  }
+
+  /* Studio section */
+  .section-head { margin-bottom: 48px; max-width: 820px; }
+  .section-head h2 { margin-bottom: 16px; }
+  .section-head p { color: var(--secondary); font-size: 17px; line-height: 1.55; max-width: 620px; }
+  .studio-grid {
+    display: grid;
+    grid-template-columns: 1.4fr 1fr;
+    gap: var(--s-md);
+    margin-bottom: 32px;
+  }
+  .image-card {
+    background: var(--surface-elevated);
+    border: 1px solid var(--outline-muted);
+    border-radius: var(--r-lg);
+    overflow: hidden;
+    position: relative;
+    min-height: 420px;
+  }
+  .image-card .label {
+    position: absolute; top: 16px; left: 16px;
+    padding: 6px 10px;
+    background: rgba(255,255,255,0.92);
+    backdrop-filter: blur(8px);
+    border: 1px solid var(--outline-muted);
+    border-radius: var(--r-full);
+    font-family: 'Geist Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.10em;
+    z-index: 2;
+  }
+  .editor-mock {
+    position: absolute; inset: 0;
+    background: linear-gradient(180deg, #181818 0%, #0e0e0e 100%);
+    display: grid;
+    grid-template-columns: 60px 1fr 180px;
+    grid-template-rows: 44px 1fr 60px;
+  }
+  .ed-toolbar {
+    grid-column: 1 / -1;
+    background: #131313;
+    border-bottom: 1px solid #222;
+    display: flex; align-items: center;
+    padding: 0 14px;
+    gap: 12px;
+  }
+  .ed-toolbar .dot { width: 10px; height: 10px; border-radius: 50%; background: #2a2a2a; }
+  .ed-toolbar .dot.r { background: #ff5f57; }
+  .ed-toolbar .dot.y { background: #febc2e; }
+  .ed-toolbar .dot.g { background: #28c840; }
+  .ed-toolbar .title {
+    margin-left: 14px;
+    font-family: 'Geist Mono', monospace;
+    font-size: 11px;
+    color: rgba(255,255,255,0.5);
+    letter-spacing: 0.06em;
+  }
+  .ed-left {
+    background: #0e0e0e;
+    border-right: 1px solid #1c1c1c;
+    display: flex; flex-direction: column; align-items: center;
+    padding-top: 14px; gap: 14px;
+  }
+  .ed-left .tool {
+    width: 28px; height: 28px; border-radius: 6px;
+    background: #1a1a1a; display: flex; align-items: center; justify-content: center;
+    color: rgba(255,255,255,0.4);
+  }
+  .ed-left .tool.active { background: rgba(153,88,255,0.18); color: var(--tertiary); }
+  .ed-tracks {
+    background: #0a0a0a;
+    padding: 16px;
+    display: flex; flex-direction: column; gap: 10px;
+    overflow: hidden;
+  }
+  .ed-track {
+    height: 56px;
+    background: #111;
+    border: 1px solid #1c1c1c;
+    border-radius: 8px;
+    padding: 8px 10px;
+    display: flex; align-items: center; gap: 10px;
+  }
+  .ed-track .t-name {
+    font-family: 'Geist Mono', monospace;
+    font-size: 9px;
+    color: rgba(255,255,255,0.55);
+    letter-spacing: 0.08em;
+    width: 50px;
+  }
+  .ed-track .t-wave {
+    flex: 1;
+    height: 36px;
+    background: linear-gradient(90deg, rgba(153,88,255,0.18), rgba(153,88,255,0.04));
+    border-radius: 4px;
+    position: relative;
+    overflow: hidden;
+  }
+  .ed-track .t-wave::before {
+    content: ''; position: absolute; inset: 0;
+    background-image: repeating-linear-gradient(90deg, transparent 0, transparent 2px, rgba(153,88,255,0.5) 2px, rgba(153,88,255,0.5) 3px);
+    mask: linear-gradient(180deg, transparent 30%, black 50%, transparent 70%);
+    -webkit-mask: linear-gradient(180deg, transparent 30%, black 50%, transparent 70%);
+    opacity: 0.7;
+  }
+  .ed-track .t-wave.t2 { background: linear-gradient(90deg, rgba(46,204,113,0.18), rgba(46,204,113,0.04)); }
+  .ed-track .t-wave.t2::before { background-image: repeating-linear-gradient(90deg, transparent 0, transparent 2px, rgba(46,204,113,0.5) 2px, rgba(46,204,113,0.5) 3px); }
+  .ed-track .t-wave.t3 { background: linear-gradient(90deg, rgba(255,200,80,0.16), rgba(255,200,80,0.04)); }
+  .ed-track .t-wave.t3::before { background-image: repeating-linear-gradient(90deg, transparent 0, transparent 2px, rgba(255,200,80,0.5) 2px, rgba(255,200,80,0.5) 3px); }
+  .ed-right {
+    background: #0e0e0e;
+    border-left: 1px solid #1c1c1c;
+    padding: 14px;
+  }
+  .ed-right .panel-title {
+    font-family: 'Geist Mono', monospace;
+    font-size: 9px;
+    color: rgba(255,255,255,0.45);
+    letter-spacing: 0.10em;
+    margin-bottom: 12px;
+  }
+  .ed-right .knob {
+    height: 40px;
+    background: #161616;
+    border: 1px solid #222;
+    border-radius: 6px;
+    margin-bottom: 8px;
+    position: relative;
+    overflow: hidden;
+  }
+  .ed-right .knob::after {
+    content: ''; position: absolute; left: 0; top: 0; bottom: 0;
+    background: linear-gradient(90deg, var(--tertiary), rgba(153,88,255,0.2));
+  }
+  .ed-right .knob.k2::after { width: 60%; }
+  .ed-right .knob.k3::after { width: 35%; }
+  .ed-right .knob.k4::after { width: 78%; }
+  .ed-right .knob.k1::after { width: 50%; }
+  .ed-transport {
+    grid-column: 1 / -1;
+    background: #131313;
+    border-top: 1px solid #222;
+    display: flex; align-items: center;
+    padding: 0 16px;
+    gap: 14px;
+  }
+  .ed-transport .pb {
+    width: 28px; height: 28px; border-radius: 50%;
+    background: var(--tertiary); display: flex; align-items: center; justify-content: center;
+  }
+  .ed-transport .t-time {
+    font-family: 'Geist Mono', monospace;
+    font-size: 10px;
+    color: rgba(255,255,255,0.55);
+  }
+
+  .text-card {
+    background: var(--surface-elevated);
+    border: 1px solid var(--outline-muted);
+    border-radius: var(--r-lg);
+    padding: 32px;
+    display: flex; flex-direction: column;
+  }
+  .text-card .card-label {
+    font-family: 'Geist Mono', monospace;
+    font-size: 11px;
+    color: var(--secondary);
+    letter-spacing: 0.10em;
+    margin-bottom: 22px;
+  }
+  .text-card h3 {
+    font-size: 24px;
+    font-weight: 600;
+    letter-spacing: -0.02em;
+    margin-bottom: 14px;
+  }
+  .text-card p {
+    color: var(--secondary);
+    font-size: 15px;
+    line-height: 1.55;
+    margin-bottom: 24px;
+  }
+  .transcript-mock {
+    margin-top: auto;
+    background: var(--neutral);
+    border: 1px solid var(--outline-muted);
+    border-radius: var(--r-md);
+    padding: 16px;
+    font-family: 'Geist Mono', monospace;
+    font-size: 12px;
+    line-height: 1.7;
+    color: var(--primary);
+  }
+  .transcript-mock .ts { color: var(--tertiary); margin-right: 8px; }
+  .transcript-mock .speaker { color: var(--secondary); }
+
+  .modes-row {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: var(--s-md);
+  }
+  .mode-card {
+    background: var(--surface-elevated);
+    border: 1px solid var(--outline-muted);
+    border-radius: var(--r-md);
+    padding: 24px;
+    transition: border-color 0.2s ease, transform 0.2s ease;
+    cursor: pointer;
+  }
+  .mode-card:hover { border-color: var(--primary); transform: translateY(-2px); }
+  .mode-card .mode-icon {
+    width: 36px; height: 36px;
+    border-radius: 8px;
+    background: var(--neutral);
+    border: 1px solid var(--outline-muted);
+    display: flex; align-items: center; justify-content: center;
+    margin-bottom: 18px;
+    color: var(--primary);
+  }
+  .mode-card h4 {
+    font-size: 17px;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+    margin-bottom: 6px;
+  }
+  .mode-card p { color: var(--secondary); font-size: 13px; line-height: 1.5; }
+
+  /* Agents section */
+  .agents-grid {
+    display: grid;
+    grid-template-columns: 1.3fr 1fr;
+    gap: var(--s-md);
+  }
+  .chat-card {
+    background: var(--surface-elevated);
+    border: 1px solid var(--outline-muted);
+    border-radius: var(--r-lg);
+    overflow: hidden;
+    display: flex; flex-direction: column;
+  }
+  .chat-head {
+    padding: 16px 20px;
+    border-bottom: 1px solid var(--outline-muted);
+    display: flex; align-items: center; justify-content: space-between;
+  }
+  .chat-head .agent { display: flex; align-items: center; gap: 12px; }
+  .chat-head .avatar {
+    width: 36px; height: 36px;
+    border-radius: 50%;
+    background: radial-gradient(circle at 30% 30%, #fff 0%, #c4a6ff 30%, var(--tertiary) 70%, #5a1fb0 100%);
+    box-shadow: 0 0 0 1px rgba(153,88,255,0.2);
+  }
+  .chat-head .agent-info h4 {
+    font-size: 14px; font-weight: 600; letter-spacing: -0.01em;
+  }
+  .chat-head .agent-info .status {
+    font-family: 'Geist Mono', monospace;
+    font-size: 10px;
+    color: #2eb86c;
+    letter-spacing: 0.08em;
+    margin-top: 3px;
+    display: flex; align-items: center; gap: 5px;
+  }
+  .chat-head .agent-info .status .dot {
+    width: 6px; height: 6px; border-radius: 50%; background: #2eb86c;
+    box-shadow: 0 0 5px #2eb86c;
+  }
+  .chat-head .actions { display: flex; gap: 8px; }
+  .chat-head .icon-btn {
+    width: 30px; height: 30px; border-radius: 50%;
+    background: var(--neutral); border: 1px solid var(--outline-muted);
+    display: flex; align-items: center; justify-content: center;
+    color: var(--secondary); cursor: pointer;
+    transition: all 0.15s ease;
+  }
+  .chat-head .icon-btn:hover { color: var(--primary); border-color: var(--primary); }
+
+  .chat-body {
+    padding: 24px;
+    display: flex; flex-direction: column; gap: 16px;
+    flex: 1;
+    min-height: 360px;
+  }
+  .bubble {
+    max-width: 78%;
+    padding: 12px 16px;
+    border-radius: 18px;
+    font-size: 14px;
+    line-height: 1.5;
+    position: relative;
+  }
+  .bubble.bot {
+    align-self: flex-start;
+    background: var(--neutral);
+    border: 1px solid var(--outline-muted);
+    border-bottom-left-radius: 6px;
+    color: var(--primary);
+  }
+  .bubble.bot .meta {
+    font-family: 'Geist Mono', monospace;
+    font-size: 9px;
+    color: var(--secondary);
+    letter-spacing: 0.06em;
+    margin-top: 6px;
+  }
+  .bubble.user {
+    align-self: flex-end;
+    background: var(--primary);
+    color: var(--neutral);
+    border-bottom-right-radius: 6px;
+  }
+  .bubble.user .meta {
+    font-family: 'Geist Mono', monospace;
+    font-size: 9px;
+    color: rgba(255,255,255,0.5);
+    letter-spacing: 0.06em;
+    margin-top: 6px;
+    text-align: right;
+  }
+  .typing {
+    align-self: flex-start;
+    background: var(--neutral);
+    border: 1px solid var(--outline-muted);
+    border-radius: 18px;
+    border-bottom-left-radius: 6px;
+    padding: 14px 18px;
+    display: flex; align-items: center; gap: 4px;
+  }
+  .typing span {
+    width: 7px; height: 7px; border-radius: 50%;
+    background: var(--secondary);
+    opacity: 0.5;
+    animation: blink 1.4s infinite;
+  }
+  .typing span:nth-child(2) { animation-delay: 0.2s; }
+  .typing span:nth-child(3) { animation-delay: 0.4s; }
+  @keyframes blink {
+    0%, 80%, 100% { opacity: 0.3; transform: translateY(0); }
+    40% { opacity: 1; transform: translateY(-3px); }
+  }
+  .chat-input {
+    padding: 14px 16px;
+    border-top: 1px solid var(--outline-muted);
+    display: flex; align-items: center; gap: 10px;
+  }
+  .chat-input .field {
+    flex: 1;
+    padding: 10px 14px;
+    background: var(--neutral);
+    border: 1px solid var(--outline-muted);
+    border-radius: var(--r-full);
+    font-size: 13px;
+    color: var(--secondary);
+  }
+  .chat-input .send {
+    width: 36px; height: 36px; border-radius: 50%;
+    background: var(--primary); color: var(--neutral);
+    display: flex; align-items: center; justify-content: center;
+    cursor: pointer; border: none;
+  }
+  .chat-input .send:hover { background: var(--tertiary); }
+
+  .insights-card {
+    background: var(--primary);
+    color: var(--neutral);
+    border-radius: var(--r-lg);
+    padding: 32px;
+    display: flex; flex-direction: column;
+    position: relative;
+    overflow: hidden;
+  }
+  .insights-card::before {
+    content: ''; position: absolute;
+    width: 320px; height: 320px; border-radius: 50%;
+    background: radial-gradient(circle, rgba(153,88,255,0.22) 0%, transparent 60%);
+    top: -80px; right: -80px;
+  }
+  .insights-card .label {
+    font-family: 'Geist Mono', monospace;
+    font-size: 11px;
+    color: rgba(255,255,255,0.5);
+    letter-spacing: 0.10em;
+    margin-bottom: 20px;
+    position: relative;
+  }
+  .insights-card h3 {
+    font-size: 26px;
+    font-weight: 600;
+    letter-spacing: -0.02em;
+    margin-bottom: 14px;
+    position: relative;
+  }
+  .insights-card p {
+    color: rgba(255,255,255,0.72);
+    font-size: 14px;
+    line-height: 1.55;
+    margin-bottom: 28px;
+    position: relative;
+  }
+  .insight-stat {
+    display: flex; align-items: baseline; justify-content: space-between;
+    padding: 16px 0;
+    border-top: 1px solid rgba(255,255,255,0.10);
+    position: relative;
+  }
+  .insight-stat .stat-label {
+    font-family: 'Geist Mono', monospace;
+    font-size: 10px;
+    color: rgba(255,255,255,0.5);
+    letter-spacing: 0.10em;
+  }
+  .insight-stat .stat-val {
+    font-family: 'Geist Mono', monospace;
+    font-size: 18px;
+    font-weight: 600;
+    color: #fff;
+  }
+  .insight-stat .stat-val.accent { color: var(--tertiary); }
+  .insight-stat .bar {
+    flex: 1;
+    height: 3px;
+    margin: 0 16px;
+    background: rgba(255,255,255,0.10);
+    border-radius: 2px;
+    overflow: hidden;
+    align-self: center;
+  }
+  .insight-stat .bar i {
+    display: block; height: 100%;
+    background: var(--tertiary);
+    border-radius: 2px;
+  }
+
+  /* Final CTA */
+  .final-cta {
+    text-align: center;
+    padding: 120px 0 100px;
+    position: relative;
+    overflow: hidden;
+  }
+  .final-cta::before {
+    content: ''; position: absolute;
+    width: 800px; height: 800px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(153,88,255,0.07) 0%, transparent 60%);
+    top: -300px; left: 50%; transform: translateX(-50%);
+    pointer-events: none;
+  }
+  .final-cta .eyebrow {
+    display: inline-flex; align-items: center; gap: 8px;
+    padding: 7px 14px;
+    border-radius: var(--r-full);
+    background: var(--surface-elevated);
+    border: 1px solid var(--outline-muted);
+    margin-bottom: 32px;
+    font-family: 'Geist Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.10em;
+    color: var(--secondary);
+  }
+  .final-cta h2 {
+    max-width: 720px;
+    margin: 0 auto 40px;
+    position: relative;
+  }
+  .final-cta .actions {
+    display: flex; gap: 12px; justify-content: center; flex-wrap: wrap;
+    position: relative;
+  }
+
+  /* Footer */
+  footer {
+    border-top: 1px solid var(--outline-muted);
+    background: var(--surface-elevated);
+    padding: 40px 0;
+  }
+  .foot-inner {
+    display: flex; align-items: center; justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 20px;
+  }
+  .foot-left { display: flex; align-items: center; gap: 16px; flex-wrap: wrap; }
+  .foot-left .wordmark { font-size: 16px; }
+  .copyright {
+    font-family: 'Geist Mono', monospace;
+    font-size: 11px;
+    color: var(--secondary);
+    letter-spacing: 0.04em;
+  }
+  .foot-links { display: flex; align-items: center; gap: 22px; }
+  .foot-links a {
+    color: var(--secondary);
+    text-decoration: none;
+    font-size: 13px;
+    font-weight: 500;
+    transition: color 0.18s ease;
+  }
+  .foot-links a:hover { color: var(--primary); }
+
+  /* Responsive */
+  @media (max-width: 980px) {
+    .h1 { font-size: 52px; }
+    .h2 { font-size: 34px; }
+    .nav-links { display: none; }
+    .feature-grid, .studio-grid, .agents-grid { grid-template-columns: 1fr; }
+    .dash-body { grid-template-columns: 1fr; }
+    .modes-row { grid-template-columns: 1fr 1fr; }
+    .brands { justify-content: center; gap: 28px 40px; }
+    .hero { padding: 64px 0 48px; }
+    section { padding: 56px 0; }
+  }
+  @media (max-width: 600px) {
+    .h1 { font-size: 40px; }
+    .h2 { font-size: 28px; }
+    .modes-row { grid-template-columns: 1fr; }
+    .preview { height: 320px; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+      animation-duration: 0.001ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.001ms !important;
+    }
+  }
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <div class="container nav-inner">
+    <a href="#" class="wordmark" style="text-decoration:none;color:inherit;">
+      <span class="mark"></span>
+      Auralis
+    </a>
+    <div class="nav-links">
+      <a href="#studio">Studio</a>
+      <a href="#agents">Agents</a>
+      <a href="#api">API</a>
+      <a href="#resources">Resources</a>
+      <a href="#enterprise">Enterprise</a>
+      <a href="#pricing">Pricing</a>
+    </div>
+    <a href="#" class="btn btn-primary btn-sm">Sign up</a>
+  </div>
+</nav>
+
+<main>
+
+  <!-- Section 1 — Hero -->
+  <section class="hero">
+    <div class="container">
+      <div class="hero-eyebrow label-caps" style="color:var(--secondary);">
+        <span class="dot"></span>
+        <span style="color:var(--primary);">Auralis Voice Intelligence v4.2</span>
+      </div>
+      <h1 class="h1">Making digital experiences <span class="accent">sound human</span></h1>
+      <div class="hero-actions">
+        <a href="#" class="btn btn-primary btn-lg">Sign up</a>
+        <a href="#" class="btn btn-ghost btn-lg">Contact sales</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Section 2 — Product demo panel -->
+  <section class="demo-section">
+    <div class="container">
+      <div class="panel">
+        <div class="tab-bar">
+          <div class="tab active"><span class="tab-dot"></span>Auralis Studio</div>
+          <div class="tab"><span class="tab-dot"></span>Auralis Agents</div>
+          <div class="tab"><span class="tab-dot"></span>Auralis API</div>
+          <div class="right">
+            <span class="status-label"><span class="live-dot"></span>AI Voice Generator</span>
+          </div>
+        </div>
+        <div class="preview">
+          <div class="preview-overlay">
+            <div class="chip"><span class="ld"></span>SESSION • LIVE</div>
+            <div class="chip">VOICE / NOVA-2</div>
+          </div>
+          <div class="play-button" role="button" aria-label="Play preview">
+            <div class="ring"></div>
+            <div class="ring2"></div>
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="white"><path d="M8 5v14l11-7z"/></svg>
+          </div>
+          <div class="preview-wave">
+            <span style="animation-delay:0s"></span>
+            <span style="animation-delay:0.1s"></span>
+            <span style="animation-delay:0.2s"></span>
+            <span style="animation-delay:0.3s"></span>
+            <span style="animation-delay:0.4s"></span>
+            <span style="animation-delay:0.5s"></span>
+            <span style="animation-delay:0.6s"></span>
+            <span style="animation-delay:0.7s"></span>
+            <span style="animation-delay:0.8s"></span>
+            <span style="animation-delay:0.9s"></span>
+            <span style="animation-delay:1.0s"></span>
+            <span style="animation-delay:0.2s"></span>
+            <span style="animation-delay:0.4s"></span>
+            <span style="animation-delay:0.6s"></span>
+            <span style="animation-delay:0.1s"></span>
+            <span style="animation-delay:0.3s"></span>
+          </div>
+        </div>
+        <div class="mode-bar">
+          <div class="mode-link active">AI Voice Generator</div>
+          <div class="mode-link">Text to Speech</div>
+          <div class="mode-link">Music</div>
+          <div class="mode-link">Sound Effects</div>
+          <div class="mode-link">Voice Cloning</div>
+          <div class="right">
+            <a href="#" class="btn btn-primary btn-sm">Sign up</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Section 3 — Trust strip -->
+  <section class="trust">
+    <div class="container">
+      <h3 class="label-caps">Trusted by teams building modern audio experiences</h3>
+      <div class="brands">
+        <div class="brand"><span class="b-mark"></span>Velocity</div>
+        <div class="brand"><span class="b-mark"></span>Nexus</div>
+        <div class="brand"><span class="b-mark"></span>Lumina</div>
+        <div class="brand"><span class="b-mark"></span>Stack</div>
+        <div class="brand"><span class="b-mark"></span>Quanta</div>
+        <div class="brand"><span class="b-mark"></span>Orbital</div>
+        <div class="brand"><span class="b-mark"></span>Scalar</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Section 4 — Platform overview -->
+  <section class="platform" id="platform">
+    <div class="container">
+      <h2 class="h2">Two systems, one shared intelligence layer</h2>
+      <p class="subcopy">Auralis unifies precision generation and agentic architecture under a single neural core — so every voice, conversation, and signal carries the same coherent intelligence end to end.</p>
+
+      <div class="feature-grid">
+        <div class="feature-blurb">
+          <div class="num">01 / GENERATION</div>
+          <h4>Precision Generation</h4>
+          <p>Studio-grade synthesis with sub-12ms latency. Phoneme-level control, emotion modeling, and 99.8% confidence scoring across 38 languages.</p>
+        </div>
+        <div class="feature-blurb">
+          <div class="num">02 / ARCHITECTURE</div>
+          <h4>Agentic Architecture</h4>
+          <p>Conversational agents that reason, plan, and act. Built on a shared context graph that keeps every interaction consistent across channels and sessions.</p>
+        </div>
+      </div>
+
+      <div class="dashboard">
+        <div class="dash-top">
+          <div class="dash-title">
+            <span class="logo-dot"></span>
+            NEURAL ENGINE V4.2 PRO
+          </div>
+          <div class="dash-badges">
+            <span class="badge badge-studio">STUDIO MODE</span>
+            <span class="badge badge-live"><span class="ld"></span>REAL-TIME SYNTHESIS ACTIVE</span>
+          </div>
+        </div>
+        <div class="dash-body">
+          <div class="dash-left">
+            <h5>SYSTEM METRICS</h5>
+            <div class="metric">
+              <span class="metric-label">LATENCY</span>
+              <span class="metric-value accent">12 ms</span>
+            </div>
+            <div class="metric">
+              <span class="metric-label">CONFIDENCE</span>
+              <span class="metric-value">99.8%</span>
+            </div>
+            <div class="metric">
+              <span class="metric-label">STATUS</span>
+              <span class="metric-value ok">Operational</span>
+            </div>
+          </div>
+          <div class="dash-right">
+            <div class="dash-right-head">
+              <span class="label">WAVEFORM / OUTPUT</span>
+              <span class="tag">CH 01 — NOVA-2</span>
+            </div>
+            <div class="waveform-area">
+              <div class="waveform">
+                <span style="height:20%;animation-delay:0s"></span>
+                <span style="height:55%;animation-delay:0.1s"></span>
+                <span style="height:80%;animation-delay:0.2s"></span>
+                <span style="height:40%;animation-delay:0.05s"></span>
+                <span style="height:65%;animation-delay:0.15s"></span>
+                <span style="height:90%;animation-delay:0.25s"></span>
+                <span style="height:35%;animation-delay:0.1s"></span>
+                <span style="height:70%;animation-delay:0.2s"></span>
+                <span style="height:50%;animation-delay:0s"></span>
+                <span style="height:85%;animation-delay:0.3s"></span>
+                <span style="height:25%;animation-delay:0.15s"></span>
+                <span style="height:60%;animation-delay:0.05s"></span>
+                <span style="height:75%;animation-delay:0.2s"></span>
+                <span style="height:45%;animation-delay:0.1s"></span>
+                <span style="height:95%;animation-delay:0.25s"></span>
+                <span style="height:30%;animation-delay:0.05s"></span>
+                <span style="height:55%;animation-delay:0.15s"></span>
+                <span style="height:80%;animation-delay:0.2s"></span>
+                <span style="height:40%;animation-delay:0s"></span>
+                <span style="height:70%;animation-delay:0.1s"></span>
+                <span style="height:50%;animation-delay:0.15s"></span>
+                <span style="height:88%;animation-delay:0.25s"></span>
+                <span style="height:35%;animation-delay:0.05s"></span>
+                <span style="height:62%;animation-delay:0.2s"></span>
+                <span style="height:48%;animation-delay:0.1s"></span>
+                <span style="height:78%;animation-delay:0.15s"></span>
+                <span style="height:42%;animation-delay:0s"></span>
+                <span style="height:68%;animation-delay:0.3s"></span>
+                <span style="height:55%;animation-delay:0.1s"></span>
+                <span style="height:82%;animation-delay:0.2s"></span>
+                <span style="height:38%;animation-delay:0.05s"></span>
+                <span style="height:72%;animation-delay:0.15s"></span>
+              </div>
+            </div>
+            <div class="transport">
+              <button class="transport-btn ghost" aria-label="Previous">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M6 6h2v12H6zm3.5 6l8.5 6V6z"/></svg>
+              </button>
+              <button class="transport-btn" aria-label="Play">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+              </button>
+              <button class="transport-btn ghost" aria-label="Next">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M6 18l8.5-6L6 6v12zM16 6v12h2V6h-2z"/></svg>
+              </button>
+              <span class="transport-time">00:01:24 / 00:03:42</span>
+              <div class="transport-track"></div>
+              <span class="transport-time">128 BPM</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Section 5 — Auralis Studio -->
+  <section id="studio">
+    <div class="container">
+      <div class="section-head">
+        <h2 class="h2">Sculpt sound with absolute precision.</h2>
+        <p>Auralis Studio is the professional audio creation and editing suite — built for producers, sound designers, and teams who need frame-accurate control over every nuance of voice and sound.</p>
+      </div>
+
+      <div class="studio-grid">
+        <div class="image-card">
+          <div class="label">SOFT EDITOR UI</div>
+          <div class="editor-mock">
+            <div class="ed-toolbar">
+              <span class="dot r"></span><span class="dot y"></span><span class="dot g"></span>
+              <span class="title">auralis-studio — session_04.aural</span>
+            </div>
+            <div class="ed-left">
+              <div class="tool active"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2L2 22h20L12 2z"/></svg></div>
+              <div class="tool"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="12" r="9"/></svg></div>
+              <div class="tool"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><rect x="4" y="4" width="16" height="16"/></svg></div>
+              <div class="tool"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M3 5l9 7 9-7"/></svg></div>
+              <div class="tool"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M4 12h16M4 6h16M4 18h16"/></svg></div>
+            </div>
+            <div class="ed-tracks">
+              <div class="ed-track">
+                <span class="t-name">VOX_01</span>
+                <div class="t-wave"></div>
+              </div>
+              <div class="ed-track">
+                <span class="t-name">MUSIC</span>
+                <div class="t-wave t2"></div>
+              </div>
+              <div class="ed-track">
+                <span class="t-name">SFX_02</span>
+                <div class="t-wave t3"></div>
+              </div>
+              <div class="ed-track">
+                <span class="t-name">VOX_02</span>
+                <div class="t-wave"></div>
+              </div>
+            </div>
+            <div class="ed-right">
+              <div class="panel-title">MIXER</div>
+              <div class="knob k1"></div>
+              <div class="knob k2"></div>
+              <div class="knob k3"></div>
+              <div class="knob k4"></div>
+            </div>
+            <div class="ed-transport">
+              <div class="pb"><svg width="10" height="10" viewBox="0 0 24 24" fill="white"><path d="M8 5v14l11-7z"/></svg></div>
+              <span class="t-time">00:01:24.082</span>
+              <div style="flex:1;height:3px;background:#222;border-radius:2px;overflow:hidden;">
+                <div style="width:42%;height:100%;background:var(--tertiary);"></div>
+              </div>
+              <span class="t-time">128 BPM</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="text-card">
+          <div class="card-label">TRANSCRIPT PANEL</div>
+          <h3>Edit voice at the word level.</h3>
+          <p>Every spoken word is bound to its audio frame. Cut, reorder, restyle, or replace dialogue by editing text — Studio re-renders the audio with the same voice and emotion intact.</p>
+          <div class="transcript-mock">
+            <div><span class="ts">00:01.24</span><span class="speaker">NOVA-2 ▸</span>Welcome back to the studio.</div>
+            <div><span class="ts">00:03.10</span><span class="speaker">NOVA-2 ▸</span>Today we're shipping something new.</div>
+            <div><span class="ts">00:05.42</span><span class="speaker">NOVA-2 ▸</span>Press play to hear the difference.</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="modes-row">
+        <div class="mode-card">
+          <div class="mode-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg></div>
+          <h4>Music</h4>
+          <p>Compose, arrange, and master with AI-assisted instruments and stems.</p>
+        </div>
+        <div class="mode-card">
+          <div class="mode-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 5L6 9H2v6h4l5 4V5z"/><path d="M19 12a7 7 0 0 1-7 7"/></svg></div>
+          <h4>SFX</h4>
+          <p>Generate and layer sound effects with frame-accurate placement.</p>
+        </div>
+        <div class="mode-card">
+          <div class="mode-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2M12 19v4"/></svg></div>
+          <h4>Voices</h4>
+          <p>Clone, direct, and perform with emotionally aware voice models.</p>
+        </div>
+        <div class="mode-card">
+          <div class="mode-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg></div>
+          <h4>Image &amp; Video</h4>
+          <p>Sync sound to picture with adaptive scoring and automatic dialogue matching.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Section 6 — Auralis Agents -->
+  <section id="agents">
+    <div class="container">
+      <div class="section-head">
+        <h2 class="h2">Autonomous reasoning, human delivery.</h2>
+        <p>Auralis Agents are conversational voice systems that reason through context, take real actions, and respond with the warmth and timing of a human voice — in 12 milliseconds.</p>
+      </div>
+
+      <div class="agents-grid">
+        <div class="chat-card">
+          <div class="chat-head">
+            <div class="agent">
+              <div class="avatar"></div>
+              <div class="agent-info">
+                <h4>Nexus Support Agent</h4>
+                <div class="status"><span class="dot"></span>ONLINE • LATENCY: 12ms</div>
+              </div>
+            </div>
+            <div class="actions">
+              <div class="icon-btn" aria-label="Call"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.37 1.9.72 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.91.35 1.85.59 2.81.72A2 2 0 0 1 22 16.92z"/></svg></div>
+              <div class="icon-btn" aria-label="More"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><circle cx="5" cy="12" r="2"/><circle cx="12" cy="12" r="2"/><circle cx="19" cy="12" r="2"/></svg></div>
+            </div>
+          </div>
+          <div class="chat-body">
+            <div class="bubble bot">
+              Hello! How can I assist you today?
+              <div class="meta">NOVA-2 • 12ms • CONF 99.8%</div>
+            </div>
+            <div class="bubble user">
+              I need help checking my deployment status.
+              <div class="meta">YOU • 14:02:08</div>
+            </div>
+            <div class="typing">
+              <span></span><span></span><span></span>
+            </div>
+          </div>
+          <div class="chat-input">
+            <div class="field">Type a message…</div>
+            <button class="send" aria-label="Send"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 2L11 13M22 2l-7 20-4-9-9-4 20-7z"/></svg></button>
+          </div>
+        </div>
+
+        <div class="insights-card">
+          <div class="label">DEEP INSIGHTS</div>
+          <h3>Analytics that hear the conversation.</h3>
+          <p>Every agent interaction is scored for sentiment, intent, resolution, and delivery — so you can see not just what was said, but how it landed, in real time.</p>
+          <div class="insight-stat">
+            <span class="stat-label">RESOLUTION</span>
+            <div class="bar"><i style="width:94%"></i></div>
+            <span class="stat-val accent">94%</span>
+          </div>
+          <div class="insight-stat">
+            <span class="stat-label">SENTIMENT</span>
+            <div class="bar"><i style="width:78%"></i></div>
+            <span class="stat-val">+78</span>
+          </div>
+          <div class="insight-stat">
+            <span class="stat-label">AVG LATENCY</span>
+            <div class="bar"><i style="width:24%"></i></div>
+            <span class="stat-val">12ms</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Section 7 — Final CTA -->
+  <section class="final-cta">
+    <div class="container">
+      <div class="eyebrow"><span class="live-dot" style="display:inline-block;"></span> AURALIS • READY WHEN YOU ARE</div>
+      <h2 class="h2">The future of voice starts here</h2>
+      <div class="actions">
+        <a href="#" class="btn btn-primary btn-lg">Get started</a>
+        <a href="#" class="btn btn-ghost btn-lg">Talk to sales</a>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <div class="container foot-inner">
+    <div class="foot-left">
+      <a href="#" class="wordmark" style="text-decoration:none;color:inherit;">
+        <span class="mark"></span>
+        Auralis
+      </a>
+      <span class="copyright">© 2024 Auralis AI. Engineered for precision.</span>
+    </div>
+    <div class="foot-links">
+      <a href="#">Twitter</a>
+      <a href="#">GitHub</a>
+      <a href="#">Terms</a>
+      <a href="#">Privacy</a>
+    </div>
+  </div>
+</footer>
+
+<script>
+  // Tab interaction
+  document.querySelectorAll('.tab').forEach(t => {
+    t.addEventListener('click', () => {
+      document.querySelectorAll('.tab').forEach(x => x.classList.remove('active'));
+      t.classList.add('active');
+    });
+  });
+
+  // Mode link interaction
+  document.querySelectorAll('.mode-bar .mode-link').forEach(m => {
+    m.addEventListener('click', () => {
+      document.querySelectorAll('.mode-bar .mode-link').forEach(x => x.classList.remove('active'));
+      m.classList.add('active');
+    });
+  });
+
+  // Play button feedback
+  const playBtn = document.querySelector('.play-button');
+  if (playBtn) {
+    let playing = false;
+    playBtn.addEventListener('click', () => {
+      playing = !playing;
+      playBtn.innerHTML = playing
+        ? '<div class="ring"></div><div class="ring2"></div><svg width="26" height="26" viewBox="0 0 24 24" fill="white"><rect x="6" y="5" width="4" height="14"/><rect x="14" y="5" width="4" height="14"/></svg>'
+        : '<div class="ring"></div><div class="ring2"></div><svg width="28" height="28" viewBox="0 0 24 24" fill="white"><path d="M8 5v14l11-7z"/></svg>';
+    });
+  }
+
+  // Pause waveform animation when out of view (perf)
+  const waves = document.querySelectorAll('.waveform, .preview-wave');
+  if ('IntersectionObserver' in window) {
+    const io = new IntersectionObserver(entries => {
+      entries.forEach(e => {
+        e.target.style.animationPlayState = e.isIntersecting ? 'running' : 'paused';
+        e.target.querySelectorAll('span').forEach(s => {
+          s.style.animationPlayState = e.isIntersecting ? 'running' : 'paused';
+        });
+      });
+    }, { rootMargin: '50px' });
+    waves.forEach(w => io.observe(w));
+  }
+</script>
+
+</body>
+</html>

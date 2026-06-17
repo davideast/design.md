@@ -1,0 +1,590 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Agent Architecture — Slide Deck</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap');
+
+  :root{
+    --paper:#f6f1e7;
+    --ink:#171615;
+    --muted:#6f675b;
+    --line:#292724;
+    --soft:#ded5c5;
+    --panel:#fffaf0;
+    --accent:#c65f3a;
+    --accent2:#315f72;
+    --green:#5d7453;
+  }
+
+  *{box-sizing:border-box}
+  html,body{margin:0;padding:0;background:#111;color:var(--ink);}
+  body{
+    font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  }
+
+  .deck{
+    width:100%;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    gap:0;
+    background:#111;
+  }
+
+  .slide{
+    width:1600px;
+    height:900px;
+    background:var(--paper);
+    position:relative;
+    overflow:hidden;
+    page-break-after:always;
+    padding:72px 86px;
+    border-bottom:1px solid #111;
+  }
+
+  h1,h2,h3,p{margin:0}
+  h1{
+    font-size:94px;
+    letter-spacing:-0.055em;
+    line-height:0.92;
+    font-weight:800;
+  }
+  h2{
+    font-size:54px;
+    letter-spacing:-0.04em;
+    line-height:1;
+    font-weight:800;
+  }
+  .standfirst{
+    font-size:31px;
+    line-height:1.25;
+    letter-spacing:-0.02em;
+    color:var(--muted);
+    max-width:780px;
+  }
+  .body{
+    font-size:25px;
+    line-height:1.47;
+    letter-spacing:-0.015em;
+  }
+  .small{
+    font-size:17px;
+    line-height:1.35;
+    color:var(--muted);
+  }
+  .mono{
+    font-family:"JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  }
+  .rule{
+    height:2px;
+    background:var(--ink);
+    width:100%;
+  }
+  .kicker{
+    font-family:"JetBrains Mono", monospace;
+    font-size:18px;
+    letter-spacing:0.08em;
+    text-transform:uppercase;
+    color:var(--accent);
+    margin-bottom:22px;
+  }
+
+  /* Slide 1 */
+  .title-slide{
+    display:flex;
+    flex-direction:column;
+    justify-content:space-between;
+  }
+  .title-slide:before{
+    content:"";
+    position:absolute;
+    left:86px;
+    right:86px;
+    top:72px;
+    height:2px;
+    background:var(--ink);
+  }
+  .title-main{
+    margin-top:210px;
+  }
+  .title-main h1{
+    font-size:122px;
+  }
+  .title-meta{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:30px;
+    border-top:2px solid var(--ink);
+    padding-top:24px;
+    font-size:22px;
+    line-height:1.35;
+  }
+  .title-meta .right{text-align:right;color:var(--muted)}
+
+  /* Slide 2 */
+  .two-col{
+    display:grid;
+    grid-template-columns: 0.95fr 1.05fr;
+    gap:74px;
+    height:100%;
+  }
+  .slide-head{
+    grid-column:1/-1;
+    align-self:start;
+  }
+  .react-diagram{
+    position:relative;
+    height:520px;
+    margin-top:34px;
+  }
+  .node{
+    position:absolute;
+    width:260px;
+    height:96px;
+    border:3px solid var(--ink);
+    background:var(--panel);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-family:"JetBrains Mono", monospace;
+    font-size:28px;
+    font-weight:600;
+    letter-spacing:0.04em;
+    box-shadow:8px 8px 0 var(--soft);
+  }
+  .think{left:235px;top:20px}
+  .act{right:60px;top:205px}
+  .observe{left:70px;top:380px}
+  svg.arrow-layer{position:absolute;inset:0;width:100%;height:100%;overflow:visible}
+  .caption{
+    font-size:18px;
+    line-height:1.35;
+    color:var(--muted);
+    border-top:1.5px solid var(--line);
+    padding-top:14px;
+    margin-top:20px;
+  }
+
+  /* Slide 3 */
+  .trace-wrap{
+    display:grid;
+    grid-template-columns: 1fr 315px;
+    gap:36px;
+    margin-top:38px;
+  }
+  .query{
+    font-size:27px;
+    line-height:1.35;
+    padding:20px 24px;
+    border:2px solid var(--ink);
+    background:var(--panel);
+    margin-top:36px;
+  }
+  .trace{
+    border-left:3px solid var(--ink);
+    padding-left:28px;
+  }
+  .step{
+    display:grid;
+    grid-template-columns: 34px 1fr;
+    gap:16px;
+    margin-bottom:17px;
+  }
+  .num{
+    font-family:"JetBrains Mono", monospace;
+    font-size:17px;
+    color:var(--accent);
+    padding-top:3px;
+  }
+  .lines{
+    font-family:"JetBrains Mono", monospace;
+    font-size:16.5px;
+    line-height:1.48;
+  }
+  .tag{color:var(--accent2);font-weight:600}
+  .annotations{
+    padding-top:2px;
+  }
+  .ann{
+    font-size:15px;
+    line-height:1.3;
+    color:var(--muted);
+    border-left:2px solid var(--soft);
+    padding-left:13px;
+    margin-bottom:37px;
+  }
+
+  /* Slide 4 */
+  .grid4{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    grid-template-rows:1fr 1fr;
+    gap:26px;
+    margin-top:38px;
+    height:690px;
+  }
+  .card{
+    border:2px solid var(--ink);
+    background:rgba(255,250,240,0.62);
+    padding:22px;
+    position:relative;
+  }
+  .card h3{
+    font-size:23px;
+    letter-spacing:-0.02em;
+    margin-bottom:10px;
+  }
+  .mini{
+    height:205px;
+    position:relative;
+  }
+  .mini-node{
+    position:absolute;
+    min-width:86px;
+    height:42px;
+    padding:0 12px;
+    border:2px solid var(--ink);
+    background:var(--panel);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-family:"JetBrains Mono", monospace;
+    font-size:13px;
+    font-weight:600;
+  }
+  .mini svg{position:absolute;inset:0;width:100%;height:100%}
+  .figcap{
+    font-size:15px;
+    line-height:1.3;
+    color:var(--muted);
+    border-top:1px solid var(--soft);
+    padding-top:10px;
+  }
+
+  /* Slide 5 */
+  .fail-layout{
+    display:grid;
+    grid-template-columns:0.78fr 1.22fr;
+    gap:64px;
+    align-items:end;
+    margin-top:70px;
+  }
+  .plot{
+    height:560px;
+    border-left:3px solid var(--ink);
+    border-bottom:3px solid var(--ink);
+    position:relative;
+    background:linear-gradient(to top, rgba(222,213,197,.55) 1px, transparent 1px) 0 0/100% 92px;
+  }
+  .axis-y{
+    position:absolute;
+    left:-58px;
+    top:-6px;
+    font-family:"JetBrains Mono", monospace;
+    font-size:18px;
+    writing-mode:vertical-rl;
+    transform:rotate(180deg);
+    letter-spacing:.08em;
+  }
+  .axis-x{
+    position:absolute;
+    right:0;
+    bottom:-46px;
+    font-family:"JetBrains Mono", monospace;
+    font-size:18px;
+    letter-spacing:.08em;
+  }
+  .ticks{
+    position:absolute;
+    left:0;right:0;bottom:-28px;
+    display:flex;
+    justify-content:space-between;
+    font-family:"JetBrains Mono", monospace;
+    font-size:16px;
+    color:var(--muted);
+  }
+  .inflect{
+    position:absolute;
+    left:51%;
+    top:42%;
+    width:390px;
+    font-size:15.5px;
+    line-height:1.35;
+    color:var(--muted);
+    border-left:2px solid var(--accent);
+    padding-left:14px;
+  }
+
+  /* Slide 6 */
+  .code-layout{
+    display:grid;
+    grid-template-columns:1fr 330px;
+    gap:34px;
+    margin-top:36px;
+  }
+  pre{
+    margin:0;
+    background:#171615;
+    color:#f7efe2;
+    border:2px solid var(--ink);
+    padding:26px 30px;
+    font-family:"JetBrains Mono", monospace;
+    font-size:17px;
+    line-height:1.38;
+    tab-size:4;
+    box-shadow:10px 10px 0 var(--soft);
+  }
+  .code-ann{
+    font-size:16px;
+    line-height:1.35;
+    color:var(--muted);
+    border-left:2px solid var(--accent2);
+    padding-left:14px;
+    margin-bottom:90px;
+  }
+  .remark{
+    position:absolute;
+    left:86px;
+    right:86px;
+    bottom:54px;
+    font-size:22px;
+    line-height:1.35;
+    border-top:2px solid var(--ink);
+    padding-top:18px;
+  }
+
+  /* Slide 7 */
+  .ending{
+    display:flex;
+    flex-direction:column;
+    justify-content:space-between;
+  }
+  .closing{
+    font-size:55px;
+    line-height:1.08;
+    letter-spacing:-0.045em;
+    font-weight:800;
+    max-width:1180px;
+    margin-top:205px;
+  }
+  .refs{
+    border-top:2px solid var(--ink);
+    padding-top:22px;
+    font-family:"JetBrains Mono", monospace;
+    font-size:18px;
+    line-height:1.8;
+    color:var(--muted);
+  }
+
+  @media (max-width: 1600px){
+    .slide{
+      width:100vw;
+      height:56.25vw;
+      transform-origin:top center;
+      padding:4.5vw 5.375vw;
+    }
+  }
+</style>
+</head>
+<body>
+<main class="deck">
+
+<section class="slide title-slide">
+  <div class="title-main">
+    <h1>Agent Architecture</h1>
+    <p class="standfirst" style="margin-top:28px;">On loops, traces, and the structures by which language models act.</p>
+  </div>
+  <div class="title-meta">
+    <div>
+      <strong>Dr. Mira K. Ellison</strong><br>
+      Systems and Intelligence Lab
+    </div>
+    <div class="right">14 October 2026</div>
+  </div>
+</section>
+
+<section class="slide">
+  <div class="two-col">
+    <div>
+      <div class="kicker">§ 1. The Loop</div>
+      <h2>The ReAct loop is a controller.</h2>
+      <p class="body" style="margin-top:42px;">
+        ReAct names a simple discipline for making a language model act in the world: alternate reasoning with grounded action. The model first writes down what it believes it should do next, then calls a tool, receives the tool’s output, and folds that observation back into the next decision. The loop is not just prompt formatting. It is a control structure that lets a stochastic text generator maintain contact with external state: search results, files, APIs, simulators, databases, and user feedback. Progress comes from repeated correction. Each observation narrows the gap between the model’s internal story and the world.
+      </p>
+    </div>
+    <div>
+      <div class="react-diagram">
+        <svg class="arrow-layer" viewBox="0 0 720 520" aria-hidden="true">
+          <defs>
+            <marker id="arrow" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto">
+              <path d="M0,0 L12,6 L0,12 Z" fill="#171615"></path>
+            </marker>
+          </defs>
+          <path d="M500 96 C625 118 675 176 610 235" fill="none" stroke="#171615" stroke-width="4" marker-end="url(#arrow)"/>
+          <path d="M520 300 C450 410 310 455 205 430" fill="none" stroke="#171615" stroke-width="4" marker-end="url(#arrow)"/>
+          <path d="M170 380 C105 250 185 120 330 88" fill="none" stroke="#171615" stroke-width="4" marker-end="url(#arrow)"/>
+        </svg>
+        <div class="node think">THINK</div>
+        <div class="node act">ACT</div>
+        <div class="node observe">OBSERVE</div>
+      </div>
+      <p class="caption">Fig. 1. The basic loop. Note that OBSERVE returns to THINK; this is what makes the architecture a controller, not a pipeline.</p>
+    </div>
+  </div>
+</section>
+
+<section class="slide">
+  <div class="kicker">§ 2. A Worked Trace</div>
+  <h2>A trace is the agent’s audit log.</h2>
+  <div class="query"><span class="mono">Query:</span> “What was the closing price of NVDA the day after Jensen Huang's 2024 keynote?”</div>
+  <div class="trace-wrap">
+    <div class="trace">
+      <div class="step"><div class="num">01</div><div class="lines"><span class="tag">THOUGHT</span> Identify the keynote date before fetching market data.<br><span class="tag">ACTION</span> search_web("Jensen Huang 2024 keynote date")<br><span class="tag">OBSERVATION</span> NVIDIA GTC keynote occurred March 18, 2024.</div></div>
+      <div class="step"><div class="num">02</div><div class="lines"><span class="tag">THOUGHT</span> The day after is March 19, 2024; verify it was a trading day.<br><span class="tag">ACTION</span> calendar.check_market_day("2024-03-19")<br><span class="tag">OBSERVATION</span> NASDAQ open; regular session trading day.</div></div>
+      <div class="step"><div class="num">03</div><div class="lines"><span class="tag">THOUGHT</span> Retrieve official historical price for NVDA on that date.<br><span class="tag">ACTION</span> market_data.get_ohlc("NVDA","2024-03-19")<br><span class="tag">OBSERVATION</span> Close: 89.398 USD, split-adjusted.</div></div>
+      <div class="step"><div class="num">04</div><div class="lines"><span class="tag">THOUGHT</span> Check whether the user expects pre- or post-split notation.<br><span class="tag">ACTION</span> market_data.get_corporate_actions("NVDA","2024")<br><span class="tag">OBSERVATION</span> 10-for-1 split effective June 10, 2024.</div></div>
+      <div class="step"><div class="num">05</div><div class="lines"><span class="tag">THOUGHT</span> Convert adjusted close to contemporaneous pre-split price if needed.<br><span class="tag">ACTION</span> calculator.multiply(89.398, 10)<br><span class="tag">OBSERVATION</span> 893.98 USD.</div></div>
+      <div class="step"><div class="num">06</div><div class="lines"><span class="tag">THOUGHT</span> Answer with date, source convention, and caveat.<br><span class="tag">ACTION</span> final_answer()<br><span class="tag">OBSERVATION</span> NVDA closed at $893.98 then, or $89.40 split-adjusted.</div></div>
+    </div>
+    <div class="annotations">
+      <div class="ann">Resolve ambiguous event language into a concrete date.</div>
+      <div class="ann">The calendar tool prevents weekend and holiday errors.</div>
+      <div class="ann">The agent asks for data rather than inventing a price.</div>
+      <div class="ann">Corporate actions change how historical prices are displayed.</div>
+      <div class="ann">A small deterministic calculation is delegated to a tool.</div>
+      <div class="ann">The final response preserves provenance and convention.</div>
+    </div>
+  </div>
+</section>
+
+<section class="slide">
+  <div class="kicker">§ 3. Four Architectures</div>
+  <h2>Common refinements of the same loop.</h2>
+  <div class="grid4">
+    <div class="card">
+      <h3>REACT</h3>
+      <div class="mini">
+        <svg viewBox="0 0 620 205"><defs><marker id="a1" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0,0 L8,4 L0,8 Z" fill="#171615"/></marker></defs><path d="M190 68 C270 20 390 42 420 86" fill="none" stroke="#171615" stroke-width="3" marker-end="url(#a1)"/><path d="M430 120 C350 178 220 170 178 120" fill="none" stroke="#171615" stroke-width="3" marker-end="url(#a1)"/></svg>
+        <div class="mini-node" style="left:96px;top:76px;">THINK</div>
+        <div class="mini-node" style="left:270px;top:40px;">ACT</div>
+        <div class="mini-node" style="left:414px;top:104px;">OBSERVE</div>
+      </div>
+      <p class="figcap">Fig. 2. ReAct interleaves reasoning, tool calls, and observations.</p>
+    </div>
+    <div class="card">
+      <h3>REFLEXION</h3>
+      <div class="mini">
+        <svg viewBox="0 0 620 205"><defs><marker id="a2" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0,0 L8,4 L0,8 Z" fill="#171615"/></marker></defs><path d="M175 70 C250 25 380 42 410 85" fill="none" stroke="#171615" stroke-width="3" marker-end="url(#a2)"/><path d="M420 123 C350 175 215 168 170 122" fill="none" stroke="#171615" stroke-width="3" marker-end="url(#a2)"/><path d="M300 144 L300 92" stroke="#171615" stroke-width="3" marker-end="url(#a2)"/></svg>
+        <div class="mini-node" style="left:72px;top:78px;">THINK</div>
+        <div class="mini-node" style="left:260px;top:38px;">ACT</div>
+        <div class="mini-node" style="left:412px;top:104px;">OBSERVE</div>
+        <div class="mini-node" style="left:250px;top:146px;border-color:#c65f3a;">MEMORY</div>
+      </div>
+      <p class="figcap">Fig. 3. Reflexion records lessons in memory and injects them into later thinking.</p>
+    </div>
+    <div class="card">
+      <h3>PLAN-AND-EXECUTE</h3>
+      <div class="mini">
+        <svg viewBox="0 0 620 205"><defs><marker id="a3" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0,0 L8,4 L0,8 Z" fill="#171615"/></marker></defs><path d="M160 64 L235 78" stroke="#171615" stroke-width="3" marker-end="url(#a3)"/><path d="M315 60 C385 24 480 50 500 91" fill="none" stroke="#171615" stroke-width="3" marker-end="url(#a3)"/><path d="M500 126 C430 174 325 162 300 122" fill="none" stroke="#171615" stroke-width="3" marker-end="url(#a3)"/></svg>
+        <div class="mini-node" style="left:62px;top:42px;border-color:#315f72;">PLAN</div>
+        <div class="mini-node" style="left:230px;top:72px;">THINK</div>
+        <div class="mini-node" style="left:365px;top:42px;">ACT</div>
+        <div class="mini-node" style="left:492px;top:104px;">OBSERVE</div>
+      </div>
+      <p class="figcap">Fig. 4. A plan node decomposes the task, then execution proceeds stepwise.</p>
+    </div>
+    <div class="card">
+      <h3>TREE-OF-THOUGHTS</h3>
+      <div class="mini">
+        <svg viewBox="0 0 620 205"><defs><marker id="a4" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0,0 L8,4 L0,8 Z" fill="#171615"/></marker></defs><path d="M160 92 L255 58" stroke="#171615" stroke-width="3" marker-end="url(#a4)"/><path d="M160 112 L255 142" stroke="#171615" stroke-width="3" marker-end="url(#a4)"/><path d="M348 60 L445 96" stroke="#171615" stroke-width="3" marker-end="url(#a4)"/><path d="M348 144 L445 116" stroke="#171615" stroke-width="3" marker-end="url(#a4)"/></svg>
+        <div class="mini-node" style="left:70px;top:82px;">THINK</div>
+        <div class="mini-node" style="left:256px;top:36px;">THINK A</div>
+        <div class="mini-node" style="left:256px;top:126px;">THINK B</div>
+        <div class="mini-node" style="left:450px;top:92px;">ACT</div>
+      </div>
+      <p class="figcap">Fig. 5. Tree-of-Thoughts branches deliberation before committing to an action.</p>
+    </div>
+  </div>
+</section>
+
+<section class="slide">
+  <div class="kicker">§ 4. Where Loops Fail</div>
+  <h2>Failure often looks like too much history.</h2>
+  <div class="fail-layout">
+    <p class="body">
+      Context-window exhaustion is the quiet failure mode of agent loops. Every thought, tool call, observation, retry, and diagnostic note becomes part of the next prompt unless the system compresses or discards it. The model may still have nominal room for tokens, but effective attention degrades: early constraints fade, irrelevant observations compete with decisive ones, and the agent starts re-solving subproblems it already solved.
+    </p>
+    <div class="plot">
+      <div class="axis-y">TOKENS</div>
+      <div class="axis-x">ITER</div>
+      <div class="ticks"><span>0</span><span>5</span><span>10</span><span>15</span><span>20</span><span>25</span></div>
+      <svg viewBox="0 0 820 560" style="position:absolute;inset:0;width:100%;height:100%;">
+        <path d="M0 520 C95 505 170 488 240 458 C330 420 402 382 470 328 C555 260 635 154 820 34" fill="none" stroke="#c65f3a" stroke-width="6"/>
+        <circle cx="470" cy="328" r="9" fill="#171615"/>
+      </svg>
+      <div class="inflect">Most production agents fail somewhere in this region — not because the model is incapable, but because the context has become longer than the model's effective attention.</div>
+    </div>
+  </div>
+</section>
+
+<section class="slide">
+  <div class="kicker">§ 5. The Loop, in Code</div>
+  <h2>A minimal ReAct controller.</h2>
+  <div class="code-layout">
+<pre>def react(model, tools, question, max_steps=8):
+    trace = []
+    state = {"question": question}
+
+    for step in range(max_steps):
+        prompt = render_prompt(state, trace)
+
+        thought = model.complete(
+            prompt,
+            stop=["ACTION:"]
+        )
+        trace.append(("THOUGHT", thought))
+
+        action = model.complete(
+            prompt + thought + "\nACTION:",
+            stop=["OBSERVATION:"]
+        )
+        name, args = parse_action(action)
+        trace.append(("ACTION", action))
+
+        if name == "final":
+            return args["answer"], trace
+
+        result = tools[name](**args)
+        observation = summarize(result)
+
+        trace.append(("OBSERVATION", observation))
+        state = update_state(state, observation)
+
+    return "No answer within budget.", trace</pre>
+    <div>
+      <div class="code-ann">THINK: the model proposes the next move in language, making intent inspectable before side effects occur.</div>
+      <div class="code-ann">ACT: parsing constrains free text into a typed tool invocation with arguments.</div>
+      <div class="code-ann">OBSERVE: tool output is summarized and returned to the prompt as new evidence.</div>
+    </div>
+  </div>
+  <p class="remark">The structure strictly interleaves reasoning and action. Forcing the model to externalize its thought before acting gives the system interpretability and reduces hallucinated state changes.</p>
+</section>
+
+<section class="slide ending">
+  <div>
+    <div class="kicker">§ 6. Ending</div>
+    <p class="closing">The architecture is the loop. Everything else is a refinement of how the loop decides what to do next.</p>
+  </div>
+  <div class="refs">
+    <div>[01] Smith et al. (1983). <em>The Cybernetic Loop.</em></div>
+    <div>[02] Yao et al. (2023). <em>ReAct: Synergizing Reasoning and Acting in Language Models.</em></div>
+    <div>[03] Shinn et al. (2023). <em>Reflexion: Language Agents with Verbal Reinforcement Learning.</em></div>
+  </div>
+</section>
+
+</main>
+</body>
+</html>

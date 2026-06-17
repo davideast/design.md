@@ -1,0 +1,494 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Agent Architecture</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Spectral:ital,wght@0,400;0,500;0,600;1,400&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #1a1814;
+    --paper: #f4f1ea;
+    --rule: #c9c3b6;
+    --accent: #8a3a2a;
+    --muted: #6b655a;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body {
+    background: #2a2824;
+    color: var(--ink);
+    font-family: 'Spectral', Georgia, serif;
+  }
+  .deck {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 32px;
+    padding: 40px 20px;
+  }
+  .slide {
+    width: 1100px;
+    max-width: 100%;
+    aspect-ratio: 16 / 9;
+    background: var(--paper);
+    color: var(--ink);
+    padding: 56px 64px;
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.4);
+  }
+  .section-label {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 13px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 28px;
+  }
+  h1 {
+    font-weight: 600;
+    font-size: 72px;
+    line-height: 1.0;
+    letter-spacing: -0.02em;
+  }
+  .standfirst {
+    font-style: italic;
+    font-size: 26px;
+    color: var(--muted);
+    margin-top: 24px;
+    max-width: 700px;
+    line-height: 1.4;
+  }
+  .meta {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 13px;
+    letter-spacing: 0.05em;
+    color: var(--ink);
+    position: absolute;
+    bottom: 56px;
+    left: 64px;
+  }
+  .meta .name { font-weight: 500; }
+  .meta .date {
+    position: absolute;
+    bottom: 56px;
+    right: 64px;
+    left: auto;
+  }
+  p.body {
+    font-size: 19px;
+    line-height: 1.55;
+    max-width: 440px;
+  }
+  .caption {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11.5px;
+    line-height: 1.5;
+    color: var(--muted);
+    margin-top: 14px;
+    max-width: 460px;
+  }
+
+  /* Slide 1 title positioning */
+  .slide-title { display: flex; flex-direction: column; justify-content: center; }
+
+  /* Slide 2 layout */
+  .two-col {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 56px;
+    height: 100%;
+    align-items: center;
+  }
+  .loop-diagram {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+  }
+  .node {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 14px;
+    letter-spacing: 0.1em;
+    border: 1.5px solid var(--ink);
+    padding: 12px 26px;
+    background: var(--paper);
+  }
+  .arrow {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 18px;
+    color: var(--accent);
+  }
+  .return-arrow {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 12px;
+    color: var(--accent);
+    border-left: 1.5px solid var(--accent);
+    border-bottom: 1.5px solid var(--accent);
+    border-top: 1.5px solid var(--accent);
+    padding: 4px 10px;
+    margin-top: 8px;
+    align-self: stretch;
+    text-align: center;
+  }
+
+  /* Slide 3 trace */
+  .query {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 15px;
+    background: var(--ink);
+    color: var(--paper);
+    padding: 12px 18px;
+    margin-bottom: 18px;
+  }
+  .trace {
+    display: grid;
+    grid-template-columns: 1fr 220px;
+    gap: 0 30px;
+    font-size: 13.5px;
+  }
+  .trace-steps { display: flex; flex-direction: column; gap: 9px; }
+  .step { display: grid; grid-template-columns: 1fr 200px; gap: 24px; align-items: start; }
+  .step .lines { font-family: 'IBM Plex Mono', monospace; font-size: 12px; line-height: 1.5; }
+  .lbl { color: var(--accent); }
+  .annot {
+    font-style: italic;
+    font-size: 12px;
+    color: var(--muted);
+    border-left: 1px solid var(--rule);
+    padding-left: 12px;
+    line-height: 1.35;
+  }
+
+  /* Slide 4 grid */
+  .quad {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 1fr 1fr;
+    gap: 0;
+    height: calc(100% - 0px);
+    border-top: 1px solid var(--rule);
+    border-left: 1px solid var(--rule);
+  }
+  .quad-cell {
+    border-right: 1px solid var(--rule);
+    border-bottom: 1px solid var(--rule);
+    padding: 18px 22px;
+    display: flex;
+    flex-direction: column;
+  }
+  .quad-cell h3 {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 12px;
+    letter-spacing: 0.15em;
+    color: var(--accent);
+    margin-bottom: 8px;
+  }
+  .mini-diagram {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .mini-diagram svg { overflow: visible; }
+  .mini-node {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 8.5px;
+    fill: var(--ink);
+  }
+  .mini-mem { fill: var(--accent); }
+  .quad-cell .caption { margin-top: 6px; font-size: 10.5px; max-width: none; }
+
+  /* Slide 5 */
+  .plot-wrap { display: flex; flex-direction: column; }
+  .plot-annot {
+    font-style: italic;
+    font-size: 13px;
+    color: var(--muted);
+    max-width: 380px;
+    line-height: 1.4;
+    margin-top: 14px;
+  }
+  .axis-label {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 10px;
+    fill: var(--muted);
+  }
+
+  /* Slide 6 code */
+  .code-layout { display: grid; grid-template-columns: 1.6fr 1fr; gap: 36px; height: calc(100% - 60px); }
+  pre {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 12.5px;
+    line-height: 1.5;
+    color: var(--ink);
+  }
+  .kw { color: var(--accent); }
+  .cm { color: var(--muted); font-style: italic; }
+  .code-annots { display: flex; flex-direction: column; gap: 18px; padding-top: 10px; }
+  .code-annot {
+    font-style: italic;
+    font-size: 13px;
+    color: var(--muted);
+    border-left: 2px solid var(--accent);
+    padding-left: 12px;
+    line-height: 1.4;
+  }
+  .code-annot strong { font-style: normal; font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: var(--accent); display: block; letter-spacing: 0.1em; margin-bottom: 4px; }
+  .closing-remark {
+    font-style: italic;
+    font-size: 14px;
+    color: var(--ink);
+    max-width: 760px;
+    line-height: 1.45;
+    margin-top: 18px;
+    border-top: 1px solid var(--rule);
+    padding-top: 14px;
+  }
+
+  /* Slide 7 */
+  .end-line {
+    font-size: 34px;
+    font-weight: 500;
+    line-height: 1.3;
+    max-width: 760px;
+    letter-spacing: -0.01em;
+  }
+  .refs {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 13px;
+    line-height: 1.9;
+    color: var(--muted);
+    position: absolute;
+    bottom: 56px;
+    left: 64px;
+  }
+  .refs .num { color: var(--accent); }
+</style>
+</head>
+<body>
+<div class="deck">
+
+  <!-- SLIDE 1 -->
+  <section class="slide slide-title">
+    <div class="section-label">Technical Talk · Agent Systems</div>
+    <h1>Agent Architecture</h1>
+    <p class="standfirst">On loops, traces, and the structures by which language models act.</p>
+    <div class="meta">
+      <div class="name">Dr. Mara Vesely</div>
+      <div>Institute for Computational Systems</div>
+    </div>
+    <div class="meta date">14 October 2026</div>
+  </section>
+
+  <!-- SLIDE 2 -->
+  <section class="slide">
+    <div class="section-label">§ 1. The Loop</div>
+    <div class="two-col">
+      <div>
+        <p class="body">The ReAct loop is the smallest complete agent. The model first <em>thinks</em>: it states, in natural language, what it intends to do and why. It then <em>acts</em>, emitting a single tool call or final answer. The environment returns an <em>observation</em>, which the model reads before thinking again. Reasoning and action alternate in lockstep — each observation conditions the next thought. Because the loop has no fixed length and decides at every turn whether to continue, it behaves as a controller responding to feedback rather than a script executing fixed stages. The trace it leaves is its reasoning, made legible.</p>
+      </div>
+      <div class="loop-diagram">
+        <div class="node">THINK</div>
+        <div class="arrow">↓</div>
+        <div class="node">ACT</div>
+        <div class="arrow">↓</div>
+        <div class="node">OBSERVE</div>
+        <div class="return-arrow">⟲ returns to THINK</div>
+        <p class="caption">Fig. 1. The basic loop. Note that OBSERVE returns to THINK; this is what makes the architecture a controller, not a pipeline.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- SLIDE 3 -->
+  <section class="slide">
+    <div class="section-label">§ 2. A Worked Trace</div>
+    <div class="query">Query: "What was the closing price of NVDA the day after Jensen Huang's 2024 keynote?"</div>
+    <div class="trace-steps">
+      <div class="step">
+        <div class="lines"><span class="lbl">THOUGHT</span> I need the date of Jensen Huang's 2024 keynote first.</div>
+        <div class="annot">Decomposes the query before any tool fires.</div>
+      </div>
+      <div class="step">
+        <div class="lines"><span class="lbl">ACTION</span> search("Jensen Huang 2024 keynote date")</div>
+        <div class="annot">A single, scoped tool call — not a batch.</div>
+      </div>
+      <div class="step">
+        <div class="lines"><span class="lbl">OBSERVATION</span> GTC 2024 keynote held 18 March 2024.</div>
+        <div class="annot">Result re-enters the context as plain text.</div>
+      </div>
+      <div class="step">
+        <div class="lines"><span class="lbl">THOUGHT</span> "Day after" means the trading day of 19 March 2024.</div>
+        <div class="annot">Resolves the relative reference explicitly.</div>
+      </div>
+      <div class="step">
+        <div class="lines"><span class="lbl">ACTION</span> quote("NVDA", date="2024-03-19", field="close")</div>
+        <div class="annot">Now over-specified to avoid ambiguity.</div>
+      </div>
+      <div class="step">
+        <div class="lines"><span class="lbl">OBSERVATION</span> NVDA close 2024-03-19 = 893.98 (pre-split).</div>
+        <div class="annot">Note the caveat the model must reconcile.</div>
+      </div>
+      <div class="step">
+        <div class="lines"><span class="lbl">THOUGHT</span> Value is pre-split; report as-is with that caveat.</div>
+        <div class="annot">Decides it has enough to stop looping.</div>
+      </div>
+      <div class="step">
+        <div class="lines"><span class="lbl">ACTION</span> finish("NVDA closed at $893.98 on 19 Mar 2024, pre-split.")</div>
+        <div class="annot">The terminating action ends the loop.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SLIDE 4 -->
+  <section class="slide">
+    <div class="section-label">§ 3. Four Architectures</div>
+    <div class="quad">
+      <div class="quad-cell">
+        <h3>REACT</h3>
+        <div class="mini-diagram">
+          <svg width="200" height="120" viewBox="0 0 200 120">
+            <text x="100" y="20" text-anchor="middle" class="mini-node">THINK</text>
+            <text x="100" y="64" text-anchor="middle" class="mini-node">ACT</text>
+            <text x="100" y="108" text-anchor="middle" class="mini-node">OBSERVE</text>
+            <line x1="100" y1="26" x2="100" y2="54" stroke="#1a1814"/>
+            <line x1="100" y1="70" x2="100" y2="98" stroke="#1a1814"/>
+            <path d="M 140 104 Q 178 60 130 16" fill="none" stroke="#8a3a2a"/>
+            <polygon points="130,16 138,22 126,24" fill="#8a3a2a"/>
+          </svg>
+        </div>
+        <p class="caption">Fig. 2a. The bare cycle; reasoning interleaved with action.</p>
+      </div>
+      <div class="quad-cell">
+        <h3>REFLEXION</h3>
+        <div class="mini-diagram">
+          <svg width="220" height="120" viewBox="0 0 220 120">
+            <text x="80" y="20" text-anchor="middle" class="mini-node">THINK</text>
+            <text x="80" y="64" text-anchor="middle" class="mini-node">ACT</text>
+            <text x="80" y="108" text-anchor="middle" class="mini-node">OBSERVE</text>
+            <line x1="80" y1="26" x2="80" y2="54" stroke="#1a1814"/>
+            <line x1="80" y1="70" x2="80" y2="98" stroke="#1a1814"/>
+            <path d="M 118 104 Q 156 60 110 16" fill="none" stroke="#1a1814"/>
+            <polygon points="110,16 118,22 106,24" fill="#1a1814"/>
+            <text x="185" y="64" text-anchor="middle" class="mini-node mini-mem">MEMORY</text>
+            <line x1="110" y1="104" x2="170" y2="70" stroke="#8a3a2a"/>
+            <line x1="170" y1="58" x2="110" y2="18" stroke="#8a3a2a"/>
+            <polygon points="110,18 118,18 114,26" fill="#8a3a2a"/>
+          </svg>
+        </div>
+        <p class="caption">Fig. 2b. A MEMORY node records failures and re-conditions the next THINK.</p>
+      </div>
+      <div class="quad-cell">
+        <h3>PLAN-AND-EXECUTE</h3>
+        <div class="mini-diagram">
+          <svg width="220" height="120" viewBox="0 0 220 120">
+            <text x="38" y="64" text-anchor="middle" class="mini-node mini-mem">PLAN</text>
+            <text x="135" y="20" text-anchor="middle" class="mini-node">THINK</text>
+            <text x="135" y="64" text-anchor="middle" class="mini-node">ACT</text>
+            <text x="135" y="108" text-anchor="middle" class="mini-node">OBSERVE</text>
+            <line x1="135" y1="26" x2="135" y2="54" stroke="#1a1814"/>
+            <line x1="135" y1="70" x2="135" y2="98" stroke="#1a1814"/>
+            <path d="M 170 104 Q 205 60 162 16" fill="none" stroke="#1a1814"/>
+            <polygon points="162,16 170,22 158,24" fill="#1a1814"/>
+            <line x1="58" y1="58" x2="108" y2="20" stroke="#8a3a2a"/>
+            <polygon points="108,20 100,18 106,28" fill="#8a3a2a"/>
+          </svg>
+        </div>
+        <p class="caption">Fig. 2c. A PLAN node fixes a sequence of subgoals feeding the cycle.</p>
+      </div>
+      <div class="quad-cell">
+        <h3>TREE-OF-THOUGHTS</h3>
+        <div class="mini-diagram">
+          <svg width="220" height="120" viewBox="0 0 220 120">
+            <text x="110" y="18" text-anchor="middle" class="mini-node">THINK</text>
+            <text x="60" y="58" text-anchor="middle" class="mini-node mini-mem">THINK&#8321;</text>
+            <text x="160" y="58" text-anchor="middle" class="mini-node mini-mem">THINK&#8322;</text>
+            <text x="110" y="100" text-anchor="middle" class="mini-node">ACT</text>
+            <line x1="100" y1="24" x2="65" y2="48" stroke="#8a3a2a"/>
+            <line x1="120" y1="24" x2="155" y2="48" stroke="#8a3a2a"/>
+            <line x1="68" y1="64" x2="100" y2="90" stroke="#1a1814"/>
+            <line x1="152" y1="64" x2="120" y2="90" stroke="#1a1814"/>
+          </svg>
+        </div>
+        <p class="caption">Fig. 2d. THINK branches into two candidate children, evaluated before acting.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- SLIDE 5 -->
+  <section class="slide">
+    <div class="section-label">§ 4. Where Loops Fail</div>
+    <div class="two-col">
+      <div>
+        <p class="body">Every iteration appends its thought, action, and observation to the context. Nothing is freed by default, so the prompt grows monotonically — and observations, raw tool output, grow fastest of all. The curve is not linear: as the window fills, the model attends less reliably to its earliest instructions, and errors compound. The loop does not crash; it quietly degrades, looping past the point where it can still reason over its own history.</p>
+      </div>
+      <div class="plot-wrap">
+        <svg width="440" height="260" viewBox="0 0 440 260">
+          <line x1="50" y1="20" x2="50" y2="210" stroke="#c9c3b6"/>
+          <line x1="50" y1="210" x2="420" y2="210" stroke="#c9c3b6"/>
+          <text x="22" y="115" text-anchor="middle" transform="rotate(-90 22 115)" class="axis-label">TOKENS</text>
+          <text x="50" y="226" text-anchor="middle" class="axis-label">0</text>
+          <text x="124" y="226" text-anchor="middle" class="axis-label">5</text>
+          <text x="198" y="226" text-anchor="middle" class="axis-label">10</text>
+          <text x="272" y="226" text-anchor="middle" class="axis-label">15</text>
+          <text x="346" y="226" text-anchor="middle" class="axis-label">20</text>
+          <text x="412" y="226" text-anchor="middle" class="axis-label">25 ITER</text>
+          <path d="M 50 200 C 130 190, 200 175, 250 150 C 300 125, 340 70, 412 25" fill="none" stroke="#8a3a2a" stroke-width="2"/>
+          <circle cx="250" cy="150" r="3.5" fill="#8a3a2a"/>
+          <line x1="250" y1="150" x2="250" y2="210" stroke="#c9c3b6" stroke-dasharray="3 3"/>
+        </svg>
+        <p class="plot-annot">Most production agents fail somewhere in this region — not because the model is incapable, but because the context has become longer than the model's effective attention.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- SLIDE 6 -->
+  <section class="slide">
+    <div class="section-label">§ 5. The Loop, in Code</div>
+    <div class="code-layout">
+      <div>
+<pre><span class="cm"># minimal ReAct loop</span>
+<span class="kw">def</span> run(query, tools, model, max_steps=10):
+    history = [system_prompt(tools)]
+    history.append(f<span class="cm">"Query: {query}"</span>)
+
+    <span class="kw">for</span> step <span class="kw">in</span> range(max_steps):
+        thought = model.complete(history)
+        history.append(f<span class="cm">"THOUGHT: {thought}"</span>)
+
+        action = parse_action(thought)
+        <span class="kw">if</span> action.name == <span class="cm">"finish"</span>:
+            <span class="kw">return</span> action.args[<span class="cm">"answer"</span>]
+        history.append(f<span class="cm">"ACTION: {action}"</span>)
+
+        result = tools[action.name](**action.args)
+        observation = format_obs(result)
+        history.append(f<span class="cm">"OBSERVATION: {observation}"</span>)
+
+    <span class="kw">raise</span> StepLimit(<span class="cm">"loop did not converge"</span>)</pre>
+      </div>
+      <div class="code-annots">
+        <div class="code-annot"><strong>THINK</strong> The model writes a thought conditioned on the full history; it must reason in words before it is allowed to act.</div>
+        <div class="code-annot"><strong>ACT</strong> The thought is parsed into a single typed action — either a tool call or the terminating <code>finish</code>.</div>
+        <div class="code-annot"><strong>OBSERVE</strong> Tool output is formatted and appended, becoming context the next THINK must read.</div>
+      </div>
+    </div>
+    <p class="closing-remark">The structure strictly interleaves reasoning and action. Forcing the model to externalize its thought before acting gives the system interpretability and reduces hallucinated state changes.</p>
+  </section>
+
+  <!-- SLIDE 7 -->
+  <section class="slide slide-title">
+    <div class="section-label">§ 6. Ending</div>
+    <p class="end-line">The architecture is the loop. Everything else is a refinement of how the loop decides what to do next.</p>
+    <div class="refs">
+      <div><span class="num">[01]</span> Smith et al. (1983). The Cybernetic Loop. Journal of Control Systems.</div>
+      <div><span class="num">[02]</span> Yao et al. (2023). ReAct: Synergizing Reasoning and Acting. ICLR.</div>
+      <div><span class="num">[03]</span> Shinn et al. (2023). Reflexion: Verbal Reinforcement Learning. NeurIPS.</div>
+    </div>
+  </section>
+
+</div>
+</body>
+</html>

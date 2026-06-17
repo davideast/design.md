@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Kettle &amp; Leaf</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400&family=Libre+Franklin:wght@700&family=Source+Serif+4:opsz,wght@8..60,400&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary: #1B1B1B;
+      --secondary: #6E675C;
+      --tertiary: #E8590C;
+      --neutral: #F4EFE6;
+      --sm: 8px;
+      --md: 16px;
+      --lg: 32px;
+      --xl: 64px;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      background: var(--neutral);
+      color: var(--primary);
+      font-family: "Source Serif 4", serif;
+      font-size: 16px;
+      font-weight: 400;
+      line-height: 1.65;
+    }
+
+    .page {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      padding: var(--xl);
+    }
+
+    header {
+      max-width: 720px;
+      margin-bottom: var(--xl);
+    }
+
+    h1 {
+      margin: 0;
+      font-family: "Libre Franklin", sans-serif;
+      font-size: 44px;
+      font-weight: 700;
+      line-height: 1.05;
+      letter-spacing: -0.01em;
+      color: var(--primary);
+    }
+
+    .bloom {
+      width: 96px;
+      height: 8px;
+      background: var(--tertiary);
+      margin: var(--md) 0;
+    }
+
+    .welcome {
+      margin: 0;
+      font-family: "Source Serif 4", serif;
+      font-size: 16px;
+      font-weight: 400;
+      line-height: 1.65;
+      color: var(--primary);
+    }
+
+    main {
+      flex: 1;
+    }
+
+    .teas {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: var(--lg);
+      margin-bottom: var(--xl);
+    }
+
+    .tea {
+      font-family: "Source Serif 4", serif;
+      font-size: 16px;
+      font-weight: 400;
+      line-height: 1.65;
+      color: var(--primary);
+    }
+
+    .tea h2 {
+      margin: 0 0 var(--sm);
+      font: inherit;
+      color: var(--primary);
+    }
+
+    .tea h2::first-letter {
+      color: var(--tertiary);
+    }
+
+    .tea p {
+      margin: 0;
+    }
+
+    .origin {
+      color: var(--secondary);
+    }
+
+    .essay {
+      max-width: 760px;
+      margin-bottom: var(--xl);
+      font-family: "Source Serif 4", serif;
+      font-size: 16px;
+      font-weight: 400;
+      line-height: 1.65;
+      color: var(--primary);
+    }
+
+    .essay p {
+      margin: 0;
+    }
+
+    .quiet-hours {
+      max-width: 520px;
+      margin-bottom: var(--xl);
+      color: var(--secondary);
+    }
+
+    .quiet-hours h2 {
+      margin: 0 0 var(--md);
+      font-family: "IBM Plex Mono", monospace;
+      font-size: 12px;
+      font-weight: 400;
+      line-height: 1.4;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--secondary);
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-family: "IBM Plex Mono", monospace;
+      font-size: 12px;
+      font-weight: 400;
+      line-height: 1.4;
+      letter-spacing: 0.08em;
+      color: var(--secondary);
+    }
+
+    th,
+    td {
+      padding: var(--sm) 0;
+      border-top: 1px solid var(--secondary);
+      text-align: left;
+      font-weight: 400;
+    }
+
+    tr:last-child td {
+      border-bottom: 1px solid var(--secondary);
+    }
+
+    .address-line {
+      margin-bottom: var(--lg);
+      font-family: "IBM Plex Mono", monospace;
+      font-size: 12px;
+      font-weight: 400;
+      line-height: 1.4;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--secondary);
+    }
+
+    footer {
+      border-top: 1px solid var(--secondary);
+      padding-top: var(--md);
+      display: flex;
+      justify-content: space-between;
+      gap: var(--lg);
+      font-family: "IBM Plex Mono", monospace;
+      font-size: 12px;
+      font-weight: 400;
+      line-height: 1.4;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--secondary);
+    }
+
+    footer p {
+      margin: 0;
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <header>
+      <h1>Kettle &amp; Leaf</h1>
+      <div class="bloom" aria-hidden="true"></div>
+      <p class="welcome">Welcome to our neighborhood tea house, where each cup is brewed slowly and served with care.</p>
+    </header>
+
+    <main>
+      <section class="teas" aria-label="Today's brewed teas">
+        <article class="tea">
+          <h2>Alishan Oolong</h2>
+          <p class="origin">Origin: Chiayi County, Taiwan</p>
+          <p>Tasting note: orchid aroma, cream, and a clean mountain finish.</p>
+        </article>
+        <article class="tea">
+          <h2>Nandi Hills Black</h2>
+          <p class="origin">Origin: Nandi County, Kenya</p>
+          <p>Tasting note: bright malt, red currant, and a brisk coppery lift.</p>
+        </article>
+        <article class="tea">
+          <h2>Uji Sencha</h2>
+          <p class="origin">Origin: Kyoto Prefecture, Japan</p>
+          <p>Tasting note: steamed greens, sweet grass, and a soft sea breeze.</p>
+        </article>
+      </section>
+
+      <section class="essay" aria-label="Sourcing trips">
+        <p>Owner Mara Lin spends each spring visiting tea gardens in Taiwan and each autumn with smallholder growers in Kenya, tasting early lots, walking the rows, and choosing leaves from producers who tend their fields with patience and respect.</p>
+      </section>
+
+      <section class="quiet-hours" aria-label="Weekly quiet hours schedule">
+        <h2>Quiet Hours</h2>
+        <table>
+          <thead>
+            <tr>
+              <th scope="col">Day</th>
+              <th scope="col">Time</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Tuesday</td>
+              <td>9:00 AM–11:00 AM</td>
+            </tr>
+            <tr>
+              <td>Thursday</td>
+              <td>2:00 PM–4:00 PM</td>
+            </tr>
+            <tr>
+              <td>Sunday</td>
+              <td>10:00 AM–12:00 PM</td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
+
+      <div class="address-line">Map: 412 Maple Row</div>
+    </main>
+
+    <footer>
+      <p>Hours: Tue–Sun 8:00 AM–6:00 PM</p>
+      <p>Phone: (555) 412-0658</p>
+    </footer>
+  </div>
+</body>
+</html>

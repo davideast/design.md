@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Kettle &amp; Leaf — Today's Brew</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Libre+Franklin:wght@700&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,700;1,8..60,400&family=IBM+Plex+Mono:wght@400&display=swap" rel="stylesheet">
+<style>
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+  :root{
+    --primary:#1B1B1B;
+    --secondary:#6E675C;
+    --tertiary:#E8590C;
+    --neutral:#F4EFE6;
+    --sm:8px;--md:16px;--lg:32px;--xl:64px;
+    --h-lg:44px;--b-md:16px;--l-sm:12px;
+  }
+  html,body{background:var(--neutral);color:var(--primary);font-family:'Source Serif 4',serif;font-size:var(--b-md);line-height:1.65;-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}
+  .label{font-family:'IBM Plex Mono',monospace;font-size:var(--l-sm);line-height:1.4;letter-spacing:0.08em;text-transform:uppercase}
+  .headline{font-family:'Libre Franklin',sans-serif;font-weight:700;font-size:var(--h-lg);line-height:1.05;letter-spacing:-0.01em}
+
+  .jacket{
+    max-width:1280px;
+    margin:0 auto;
+    padding:var(--xl) var(--xl) var(--lg);
+    background:var(--neutral);
+  }
+
+  /* Masthead */
+  .masthead{display:flex;justify-content:space-between;align-items:flex-start;gap:var(--lg);margin-bottom:var(--lg)}
+  .masthead .left{flex:1}
+  .masthead .right{text-align:right;color:var(--secondary);white-space:nowrap}
+  .catalogue-no{display:block;margin-bottom:var(--sm)}
+
+  .title-block{margin-bottom:var(--lg)}
+  .title-block .label{color:var(--secondary);margin-bottom:var(--md);display:block}
+  .title-block .welcome{
+    font-family:'Libre Franklin',sans-serif;font-weight:700;font-size:var(--h-lg);
+    line-height:1.05;letter-spacing:-0.01em;color:var(--primary);
+  }
+  .brick-rule{
+    height:3px;width:96px;background:var(--tertiary);margin-top:var(--lg);
+  }
+
+  /* Date strip */
+  .date-strip{
+    display:flex;align-items:baseline;gap:var(--md);
+    border-top:1px solid var(--primary);border-bottom:1px solid var(--primary);
+    padding:var(--md) 0;margin-bottom:var(--xl);
+  }
+  .date-strip .bullet{color:var(--tertiary);font-size:14px;line-height:1}
+  .date-strip .label{color:var(--primary)}
+  .date-strip .spacer{flex:1;border-bottom:1px dotted var(--secondary);height:0;align-self:center}
+  .date-strip .right{color:var(--secondary)}
+
+  /* Two columns */
+  .columns{
+    display:grid;grid-template-columns:1.05fr 1fr;gap:var(--xl);
+    margin-bottom:var(--xl);
+  }
+
+  /* Track listing */
+  .track-listing .section-label{display:block;margin-bottom:var(--md)}
+  .track{
+    display:grid;grid-template-columns:36px 1fr;
+    padding:var(--md) 0;border-bottom:1px solid var(--secondary);
+  }
+  .track:first-of-type{border-top:1px solid var(--primary)}
+  .track .num{font-family:'IBM Plex Mono',monospace;font-size:var(--l-sm);letter-spacing:0.08em;color:var(--secondary);padding-top:4px}
+  .track .tea-name{font-family:'Source Serif 4',serif;font-weight:700;font-size:var(--b-md);color:var(--primary);display:block;margin-bottom:2px}
+  .track .tea-credit{font-family:'Source Serif 4',serif;font-size:var(--b-md);font-weight:400;color:var(--secondary);line-height:1.5}
+
+  /* Liner essay */
+  .liner-essay .section-label{display:block;margin-bottom:var(--md)}
+  .liner-essay p{
+    font-family:'Source Serif 4',serif;font-size:var(--b-md);font-weight:400;
+    line-height:1.7;color:var(--primary);
+  }
+  .liner-essay p + p{margin-top:var(--md)}
+  .liner-essay .drop{font-weight:700}
+
+  /* Catalogue block */
+  .catalogue{
+    display:grid;grid-template-columns:1fr 1.4fr;gap:var(--xl);
+    padding:var(--lg) 0;
+    border-top:1px solid var(--primary);
+    border-bottom:1px solid var(--primary);
+    margin-bottom:var(--xl);
+  }
+  .catalogue .col .section-label{display:block;margin-bottom:var(--md);color:var(--secondary)}
+
+  /* Quiet hours table */
+  .hours-table{width:100%;border-collapse:collapse}
+  .hours-table th,.hours-table td{
+    font-family:'IBM Plex Mono',monospace;font-size:var(--l-sm);
+    letter-spacing:0.08em;text-transform:uppercase;
+    padding:var(--sm) 0;text-align:left;vertical-align:top;color:var(--primary);
+  }
+  .hours-table th{color:var(--secondary);font-weight:400;width:44%}
+  .hours-table tr + tr td,.hours-table tr + tr th{border-top:1px solid var(--secondary)}
+  .hours-table .note{color:var(--secondary);text-transform:none;letter-spacing:0.04em}
+
+  /* Address block */
+  .address-block .line{display:block}
+  .address-block .map-line{color:var(--primary);margin-bottom:var(--sm)}
+  .address-block .street{color:var(--primary);margin-bottom:2px;font-family:'IBM Plex Mono',monospace;font-size:var(--l-sm);letter-spacing:0.08em;text-transform:uppercase}
+  .address-block .city{color:var(--secondary);font-family:'IBM Plex Mono',monospace;font-size:var(--l-sm);letter-spacing:0.08em;text-transform:uppercase}
+  .address-block .coord{display:block;margin-top:var(--md);color:var(--secondary);font-family:'IBM Plex Mono',monospace;font-size:var(--l-sm);letter-spacing:0.08em;text-transform:uppercase}
+
+  /* Credits footer */
+  .credits{
+    display:grid;grid-template-columns:repeat(3,1fr);gap:var(--lg);
+    padding-top:var(--lg);
+  }
+  .credits .col{display:flex;flex-direction:column;gap:var(--sm)}
+  .credits .section-label{color:var(--secondary)}
+  .credits .val{color:var(--primary)}
+  .credits .col.right{justify-self:end;text-align:right;align-items:flex-end}
+  .credits .col.center{justify-self:center;text-align:center;align-items:center}
+  .credits .val.link{color:var(--tertiary)}
+
+  /* Print authenticity */
+  @media (max-width:980px){
+    .columns{grid-template-columns:1fr;gap:var(--lg)}
+    .catalogue{grid-template-columns:1fr;gap:var(--lg)}
+    .credits{grid-template-columns:1fr;gap:var(--md)}
+    .credits .col.right,.credits .col.center{justify-self:start;text-align:left;align-items:flex-start}
+  }
+  @media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+</style>
+</head>
+<body>
+
+<main class="jacket">
+
+  <header class="masthead">
+    <div class="left">
+      <span class="label catalogue-no">K&amp;L — 412 / Maple Row Press</span>
+      <span class="label" style="color:var(--secondary)">Side B · The Daily Sleeve</span>
+    </div>
+    <div class="right">
+      <span class="label catalogue-no">Vol. XI · No. 47</span>
+      <span class="label">Pressed on warm paper stock</span>
+    </div>
+  </header>
+
+  <section class="title-block">
+    <span class="label">The Tea House · A Neighborhood Sleeve</span>
+    <h1 class="welcome">Kettle &amp; Leaf —<br>brewed slow on the row,<br>poured for whoever walks in.</h1>
+    <div class="brick-rule" aria-hidden="true"></div>
+  </section>
+
+  <div class="date-strip" role="group" aria-label="Today">
+    <span class="bullet" aria-hidden="true">●</span>
+    <span class="label">Today's Brew · Tuesday</span>
+    <span class="spacer" aria-hidden="true"></span>
+    <span class="label right">Pressed fresh at 6:00 a.m.</span>
+  </div>
+
+  <div class="columns">
+    <section class="track-listing" aria-label="Today's brewed teas">
+      <span class="label section-label">Today's Brewed Teas — Three Steeps</span>
+
+      <article class="track">
+        <span class="num">01</span>
+        <div class="track-body">
+          <span class="tea-name">Oriental Beauty</span>
+          <span class="tea-credit">Beipu, Taiwan — honey, muscat grape, a soft osmanthus finish.</span>
+        </div>
+      </article>
+
+      <article class="track">
+        <span class="num">02</span>
+        <div class="track-body">
+          <span class="tea-name">Purple Leaf Kericho</span>
+          <span class="tea-credit">Kericho, Kenya — black currant, wet earth, a clean mineral edge.</span>
+        </div>
+      </article>
+
+      <article class="track">
+        <span class="num">03</span>
+        <div class="track-body">
+          <span class="tea-name">Roasted Jin Xuan</span>
+          <span class="tea-credit">Nantou, Taiwan — toasted walnut, warm cream, brown sugar on the tail.</span>
+        </div>
+      </article>
+    </section>
+
+    <section class="liner-essay" aria-label="A note from the owner">
+      <span class="label section-label">A Note from the Owner — Liner Essay</span>
+      <p><span class="drop">Twice a year</span> I pack a duffel, a tasting set, and a notebook the size of a paperback, and I leave Maple Row for the hills where the leaves actually grow. In Taiwan that means the narrow switchbacks above Beipu and the older gardens outside Nantou, where the farmers I buy from have been finishing oolong the same way for three generations.</p>
+      <p>In Kenya it means a longer flight and a dustier road, climbing west toward Kericho, where smallholder plots sit at the cloud line and the purple-leaf cultivar was first coaxed into a black tea worth drinking on its own. I cup what they've dried, I argue gently about price, and I carry twenty kilos home in a hard-shell case that the customs officers have learned to expect.</p>
+      <p>Every tea on the board above the counter began as a handshake on a porch somewhere. That is the part of the work I love most, and the part you taste first.</p>
+    </section>
+  </div>
+
+  <section class="catalogue">
+    <div class="col">
+      <span class="label section-label">Weekly Quiet Hours</span>
+      <table class="hours-table" aria-label="Weekly quiet hours schedule">
+        <tbody>
+          <tr><th scope="row">Mon</th><td>2:00 – 4:00 p.m.</td></tr>
+          <tr><th scope="row">Tue</th><td>2:00 – 4:00 p.m.</td></tr>
+          <tr><th scope="row">Wed</th><td>2:00 – 4:00 p.m.</td></tr>
+          <tr><th scope="row">Thu</th><td>2:00 – 4:00 p.m.</td></tr>
+          <tr><th scope="row">Fri</th><td>2:00 – 4:00 p.m.</td></tr>
+          <tr><th scope="row">Sat</th><td>3:00 – 5:00 p.m.</td></tr>
+          <tr><th scope="row">Sun</th><td class="note">All day — phones off</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="col address-block">
+      <span class="label section-label">Find the Kettle</span>
+      <span class="label map-line">Map line — walk Maple Row past the bookshop, we are the blue door.</span>
+      <span class="street">412 Maple Row</span>
+      <span class="city">Cedar Hill, 02458</span>
+      <span class="coord">42.3716° N · 71.1160° W</span>
+    </div>
+  </section>
+
+  <footer class="credits">
+    <div class="col">
+      <span class="label section-label">House Hours</span>
+      <span class="label val">Mon – Fri · 6:30 a.m. – 7:00 p.m.</span>
+      <span class="label val">Sat – Sun · 7:30 a.m. – 6:00 p.m.</span>
+    </div>
+    <div class="col center">
+      <span class="label section-label">Reservations</span>
+      <span class="label val">No bookings — first cup, first seat.</span>
+    </div>
+    <div class="col right">
+      <span class="label section-label">Telephone</span>
+      <span class="label val">(413) 555-0148</span>
+      <span class="label val link">hello@kettleandleaf.co</span>
+    </div>
+  </footer>
+
+</main>
+
+</body>
+</html>

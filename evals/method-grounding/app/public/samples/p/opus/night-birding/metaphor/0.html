@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Urban Nocturnal: Field Notes</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=League+Spartan:wght@500;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#F9F6EE;
+  --ink:#1A1A1B;
+  --gray:#707372;
+  --accent:#C53030;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{
+  background:var(--bg);
+  color:var(--ink);
+  font-family:"Century Schoolbook","Times New Roman",serif;
+  font-size:15px;
+  line-height:1.4;
+  padding:0;
+}
+.sheet{
+  max-width:1100px;
+  margin:0 auto;
+  border-left:1px solid var(--ink);
+  border-right:1px solid var(--ink);
+}
+.masthead{
+  border-bottom:1px solid var(--ink);
+  padding:14px 16px;
+  display:flex;
+  justify-content:space-between;
+  align-items:baseline;
+}
+h1{
+  font-family:"League Spartan",sans-serif;
+  font-weight:700;
+  font-size:30px;
+  letter-spacing:-0.5px;
+  text-transform:uppercase;
+}
+.masthead .coord{
+  font-family:"League Spartan",sans-serif;
+  font-weight:500;
+  font-size:11px;
+  letter-spacing:1px;
+  text-transform:uppercase;
+  color:var(--gray);
+}
+h2{
+  font-family:"League Spartan",sans-serif;
+  font-weight:700;
+  font-size:14px;
+  letter-spacing:1px;
+  text-transform:uppercase;
+  padding:8px 16px;
+  border-bottom:1px solid var(--ink);
+  background:var(--bg);
+}
+.label{
+  font-family:"League Spartan",sans-serif;
+  font-weight:500;
+  font-size:11px;
+  letter-spacing:1px;
+  text-transform:uppercase;
+}
+.gray{color:var(--gray);}
+.section{border-bottom:1px solid var(--ink);}
+
+/* Moon grid */
+.moon-grid{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+}
+.moon-grid .cell{
+  padding:12px 16px;
+  border-right:1px solid var(--ink);
+}
+.moon-grid .cell:last-child{border-right:none;}
+.cell .label{display:block;color:var(--gray);margin-bottom:5px;}
+.cell .val{font-size:16px;}
+
+/* Species */
+.species{
+  display:grid;
+  grid-template-columns:160px 1fr;
+}
+.silhouette{
+  border-right:1px solid var(--ink);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding:16px;
+}
+.silhouette svg{width:100%;height:auto;max-width:120px;}
+.species-body{padding:14px 16px;}
+.species-body h3{
+  font-family:"League Spartan",sans-serif;
+  font-weight:700;
+  font-size:18px;
+  letter-spacing:0.5px;
+  text-transform:uppercase;
+  margin-bottom:10px;
+}
+.spec-row{
+  display:grid;
+  grid-template-columns:90px 1fr;
+  gap:10px;
+  padding:6px 0;
+  border-top:1px solid var(--gray);
+  align-items:start;
+}
+.spec-row:first-of-type{border-top:none;}
+.pointer{position:relative;padding-left:18px;}
+.pointer::before{
+  content:"►";
+  position:absolute;
+  left:0;
+  top:0;
+  color:var(--accent);
+  font-size:11px;
+}
+
+/* Sightings log */
+.log-grid{
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+}
+.log-grid .cell{
+  padding:12px 16px;
+  border-right:1px solid var(--ink);
+}
+.log-grid .cell:last-child{border-right:none;}
+.log-grid .cell.wide{
+  grid-column:1 / -1;
+  border-right:none;
+  border-top:1px solid var(--ink);
+}
+
+/* Listening guide */
+.guide{padding:16px;}
+.guide .intro{margin-bottom:14px;}
+.filter-step{
+  display:grid;
+  grid-template-columns:36px 120px 1fr;
+  border-top:1px solid var(--ink);
+  align-items:stretch;
+}
+.filter-step:last-child{border-bottom:1px solid var(--ink);}
+.step-num{
+  font-family:"League Spartan",sans-serif;
+  font-weight:700;
+  font-size:20px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  border-right:1px solid var(--ink);
+  color:var(--accent);
+  padding:10px 0;
+}
+.step-name{
+  padding:10px 12px;
+  border-right:1px solid var(--ink);
+  display:flex;
+  align-items:center;
+}
+.step-desc{padding:10px 12px;display:flex;align-items:center;}
+.signal{color:var(--accent);font-weight:bold;}
+.noise{color:var(--gray);}
+
+.footer{
+  padding:10px 16px;
+  border-top:1px solid var(--ink);
+}
+</style>
+</head>
+<body>
+<div class="sheet">
+
+  <header class="masthead">
+    <h1>Urban Nocturnal: Field Notes</h1>
+    <div class="coord">Analytical Specimen Sheet · No. 01</div>
+  </header>
+
+  <section class="section">
+    <h2>Moon &amp; Light Conditions</h2>
+    <div class="moon-grid">
+      <div class="cell">
+        <span class="label">Current Status</span>
+        <span class="val">Waxing Gibbous · 82% Illumination</span>
+      </div>
+      <div class="cell">
+        <span class="label">Moonrise</span>
+        <span class="val">17:42</span>
+      </div>
+      <div class="cell">
+        <span class="label">Sky Quality</span>
+        <span class="val">Bortle 8 — Inner City Sky</span>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <h2>Tonight's Likely Species</h2>
+    <div class="species">
+      <div class="silhouette">
+        <svg viewBox="0 0 120 100" fill="#1A1A1B" aria-label="Night Heron silhouette">
+          <path d="M20 75 C18 60 24 50 38 48 C40 38 48 30 60 28 C62 22 68 18 76 19 C70 22 70 26 72 30 C84 30 92 38 92 50 C100 52 104 60 102 70 C95 66 90 68 88 74 C86 80 78 82 70 80 L66 92 L62 92 L64 80 L48 80 L46 92 L42 92 L44 79 C32 78 24 80 20 75 Z"/>
+        </svg>
+      </div>
+      <div class="species-body">
+        <h3>Black-crowned Night Heron</h3>
+        <div class="spec-row">
+          <span class="label">Field Marks</span>
+          <span class="pointer">Stocky build, black crown and back, contrasting grey wings.</span>
+        </div>
+        <div class="spec-row">
+          <span class="label">In Flight</span>
+          <span class="pointer">Thick neck tucked, feet barely extending beyond tail.</span>
+        </div>
+        <div class="spec-row">
+          <span class="label">Context</span>
+          <span class="pointer">Often found near waterfront construction sites or park ponds.</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <h2>Sightings Log</h2>
+    <div class="log-grid">
+      <div class="cell">
+        <span class="label gray">Time</span><br>
+        <span class="val">23:14</span>
+      </div>
+      <div class="cell">
+        <span class="label gray">Location</span><br>
+        <span class="val">West Side Railyards</span>
+      </div>
+      <div class="cell">
+        <span class="label gray">Species</span><br>
+        <span class="val">Common Nighthawk (2)</span>
+      </div>
+      <div class="cell">
+        <span class="label gray">Coord.</span><br>
+        <span class="val">—</span>
+      </div>
+      <div class="cell wide">
+        <span class="label gray">Behavior</span><br>
+        <span>Aerial foraging under stadium lights; erratic, bat-like flight pattern.</span>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <h2>Guide to Listening: The Urban Filter</h2>
+    <div class="guide">
+      <p class="intro">To identify birds by sound in the city, you must mentally subtract the machine:</p>
+      <div class="filter-step">
+        <div class="step-num">1</div>
+        <div class="step-name label">The Base</div>
+        <div class="step-desc"><span class="noise">Ignore the low-frequency rumble of the expressway or subway vents.</span></div>
+      </div>
+      <div class="filter-step">
+        <div class="step-num">2</div>
+        <div class="step-name label">The Signal</div>
+        <div class="step-desc">Focus on the <span class="signal">"Peent"</span>—a sharp, nasal electric buzz cutting through the hum.</div>
+      </div>
+      <div class="filter-step">
+        <div class="step-num">3</div>
+        <div class="step-name label">The Physical</div>
+        <div class="step-desc">Listen for the <span class="signal">"Whoosh"</span> of air through primary feathers during a territorial dive.</div>
+      </div>
+    </div>
+  </section>
+
+  <footer class="footer">
+    <span class="label gray">Urban Nocturnal · Field Notes · Static Taxonomic Map</span>
+  </footer>
+
+</div>
+</body>
+</html>

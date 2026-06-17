@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Agent Architecture</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500&family=IBM+Plex+Mono:wght@400&family=Source+Serif+4:opsz,wght@8..60,400&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --primary:#1E1A14;
+    --secondary:#B8B0A2;
+    --tertiary:#C3402A;
+    --neutral:#F4F0E4;
+    --sm:8px;
+    --md:16px;
+    --lg:32px;
+    --xl:64px;
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;background:var(--neutral);color:var(--primary)}
+  body{
+    font-family:"Source Serif 4",serif;
+    font-size:17px;
+    line-height:1.62;
+  }
+  .slide{
+    width:1280px;
+    height:720px;
+    position:relative;
+    overflow:hidden;
+    background:var(--neutral);
+    page-break-after:always;
+    padding:64px;
+  }
+  .section-label{
+    position:absolute;
+    top:38px;
+    left:64px;
+    font-family:"IBM Plex Mono",monospace;
+    font-size:12px;
+    font-weight:400;
+    line-height:1.4;
+    letter-spacing:.08em;
+    text-transform:uppercase;
+  }
+  .roman{
+    position:absolute;
+    right:64px;
+    bottom:38px;
+    font-family:"IBM Plex Mono",monospace;
+    font-size:12px;
+    font-weight:400;
+    line-height:1.4;
+    letter-spacing:.08em;
+    color:var(--tertiary);
+  }
+  h1,h2{
+    font-family:"Fraunces",serif;
+    font-size:54px;
+    font-weight:500;
+    line-height:1.1;
+    letter-spacing:.01em;
+    margin:0;
+  }
+  p{margin:0}
+  .body{font-family:"Source Serif 4",serif;font-size:17px;font-weight:400;line-height:1.62}
+  .code,.trace,pre{
+    font-family:"IBM Plex Mono",monospace;
+    font-size:14px;
+    font-weight:400;
+    line-height:1.5;
+    margin:0;
+    white-space:pre;
+  }
+  .label{
+    font-family:"IBM Plex Mono",monospace;
+    font-size:12px;
+    font-weight:400;
+    line-height:1.4;
+    letter-spacing:.08em;
+  }
+  .caption{
+    font-family:"Source Serif 4",serif;
+    font-size:15px;
+    line-height:1.5;
+    color:var(--primary);
+  }
+  .title-slide h1{position:absolute;left:140px;top:192px}
+  .standfirst{position:absolute;left:144px;top:282px;width:590px;font-size:22px;line-height:1.45}
+  .speaker{position:absolute;left:144px;top:438px;width:430px}
+  .date{position:absolute;left:144px;top:525px}
+  .red-underline{position:absolute;left:143px;top:266px;width:312px;border-top:3px solid var(--tertiary);transform:rotate(-1.2deg)}
+  .two-col{display:grid;grid-template-columns:500px 1fr;gap:72px;position:absolute;left:96px;right:96px;top:145px}
+  .two-col h2{margin-bottom:28px}
+  svg{overflow:visible}
+  .sketch path,.sketch line,.sketch rect,.sketch circle,.sketch polyline{
+    stroke:var(--primary);
+    stroke-width:2;
+    fill:none;
+    stroke-linecap:round;
+    stroke-linejoin:round;
+  }
+  .sketch .thin{stroke:var(--secondary);stroke-width:1.2}
+  .sketch .red{stroke:var(--tertiary)}
+  .node-label{font-family:"IBM Plex Mono",monospace;font-size:12px;letter-spacing:.08em;fill:var(--primary)}
+  .loop-caption{width:410px;margin-top:22px}
+  .trace-wrap{position:absolute;left:96px;right:96px;top:142px}
+  .query{font-size:20px;margin:0 0 30px 0}
+  .trace-grid{display:grid;grid-template-columns:820px 250px;column-gap:32px;row-gap:8px}
+  .ann{font-family:"IBM Plex Mono",monospace;font-size:12px;line-height:1.4;letter-spacing:.08em;color:var(--primary);padding-top:2px}
+  .trace-line{font-family:"IBM Plex Mono",monospace;font-size:14px;line-height:1.5}
+  .red-mark{color:var(--tertiary)}
+  .arch-grid{position:absolute;left:86px;right:86px;top:128px;display:grid;grid-template-columns:1fr 1fr;gap:30px 38px}
+  .arch-card{height:226px;position:relative}
+  .arch-card h3{font-family:"IBM Plex Mono",monospace;font-size:12px;font-weight:400;letter-spacing:.08em;margin:0 0 8px 0}
+  .arch-caption{font-size:14px;line-height:1.38;width:440px;margin-top:4px}
+  .fail-layout{position:absolute;left:96px;right:96px;top:145px;display:grid;grid-template-columns:440px 1fr;gap:84px;align-items:start}
+  .plot-label{font-family:"IBM Plex Mono",monospace;font-size:12px;letter-spacing:.08em;fill:var(--primary)}
+  .plot-note{font-family:"Source Serif 4",serif;font-size:15px;line-height:1.35}
+  .code-layout{position:absolute;left:96px;right:96px;top:124px;display:grid;grid-template-columns:720px 310px;gap:44px}
+  .code-box{position:relative}
+  .code-ann{font-family:"IBM Plex Mono",monospace;font-size:12px;line-height:1.4;letter-spacing:.08em;margin-bottom:52px}
+  .remark{position:absolute;left:96px;right:150px;bottom:72px;font-size:18px;line-height:1.55}
+  .ending{position:absolute;left:142px;top:202px;width:760px;font-family:"Fraunces",serif;font-size:42px;line-height:1.18;letter-spacing:.01em}
+  .refs{position:absolute;left:146px;top:475px;width:680px;font-family:"IBM Plex Mono",monospace;font-size:14px;line-height:1.75}
+  .ending-line{position:absolute;left:145px;top:392px;width:520px;border-top:3px solid var(--tertiary);transform:rotate(.7deg)}
+  @media print{
+    body{background:var(--neutral)}
+    .slide{page-break-after:always}
+  }
+</style>
+</head>
+<body>
+
+<section class="slide title-slide">
+  <div class="section-label">agent architecture</div>
+  <h1>Agent Architecture</h1>
+  <div class="red-underline"></div>
+  <p class="standfirst">On loops, traces, and the structures by which language models act.</p>
+  <p class="speaker body">Avery Chen<br>Department of Computer Science<br>Northbridge Institute of Technology</p>
+  <p class="date label">14 OCTOBER 2026</p>
+  <div class="roman">i</div>
+</section>
+
+<section class="slide">
+  <div class="section-label">§ 1. the loop</div>
+  <div class="two-col">
+    <div>
+      <h2>§ 1. The Loop</h2>
+      <p class="body">The ReAct loop is the simplest useful shape for an agent. At each turn the model first thinks: it makes a local interpretation of the task, the evidence so far, and the next useful move. It then acts by calling a tool, issuing a search, running code, or asking for data. The world answers with an observation. That observation is appended to the trace, changing what the model knows, and the next thought is conditioned on the updated record. ReAct is therefore not a chain of prompts but a feedback controller written in language.</p>
+    </div>
+    <div style="padding-top:36px">
+      <svg class="sketch" width="480" height="310" viewBox="0 0 480 310" aria-label="THINK ACT OBSERVE loop diagram">
+        <rect x="42" y="52" width="116" height="58" rx="0"></rect>
+        <rect x="312" y="52" width="112" height="58" rx="0"></rect>
+        <rect x="174" y="182" width="142" height="58" rx="0"></rect>
+        <text class="node-label" x="75" y="87">THINK</text>
+        <text class="node-label" x="349" y="87">ACT</text>
+        <text class="node-label" x="204" y="217">OBSERVE</text>
+        <path d="M160 80 C204 76,252 75,310 81"></path>
+        <path d="M296 73 L311 81 L296 90"></path>
+        <path d="M370 113 C363 149,337 172,305 190"></path>
+        <path d="M310 174 L303 191 L321 188"></path>
+        <path class="red" d="M174 210 C111 201,70 164,91 112"></path>
+        <path class="red" d="M82 126 L92 111 L101 128"></path>
+      </svg>
+      <p class="caption loop-caption">Fig. 1. The basic loop. Note that OBSERVE returns to THINK; this is what makes the architecture a controller, not a pipeline.</p>
+    </div>
+  </div>
+  <div class="roman">ii</div>
+</section>
+
+<section class="slide">
+  <div class="section-label">§ 2. a worked trace</div>
+  <div class="trace-wrap">
+    <h2 style="margin-bottom:24px">§ 2. A Worked Trace</h2>
+    <p class="query body">Query: “What was the closing price of NVDA the day after Jensen Huang’s 2024 keynote?”</p>
+    <div class="trace-grid">
+      <div class="trace-line">01 THOUGHT      Need identify the keynote date, then the next trading day.</div><div class="ann">decompose names</div>
+      <div class="trace-line">02 ACTION       search_web("Jensen Huang 2024 keynote date")</div><div class="ann">ask the world</div>
+      <div class="trace-line">03 OBSERVATION  NVIDIA GTC 2024 keynote by Jensen Huang was March 18, 2024.</div><div class="ann">anchor event</div>
+      <div class="trace-line">04 THOUGHT      The day after is March 19, 2024; verify it was a market day.</div><div class="ann">calendar check</div>
+      <div class="trace-line">05 ACTION       market_calendar("NASDAQ", "2024-03-19")</div><div class="ann">avoid weekend trap</div>
+      <div class="trace-line">06 OBSERVATION  NASDAQ open on 2024-03-19.</div><div class="ann">date accepted</div>
+      <div class="trace-line">07 ACTION       get_price("NVDA", "2024-03-19", field="close")</div><div class="ann red-mark">tool call</div>
+      <div class="trace-line">08 OBSERVATION  NVDA close on 2024-03-19 was 89.40 USD, split-adjusted.</div><div class="ann">answer state</div>
+    </div>
+  </div>
+  <div class="roman">iii</div>
+</section>
+
+<section class="slide">
+  <div class="section-label">§ 3. four architectures</div>
+  <h2 style="position:absolute;left:86px;top:70px">§ 3. Four Architectures</h2>
+  <div class="arch-grid">
+    <div class="arch-card">
+      <h3>REACT</h3>
+      <svg class="sketch" width="470" height="132" viewBox="0 0 470 132">
+        <rect x="22" y="28" width="88" height="42"></rect><text class="node-label" x="44" y="54">THINK</text>
+        <rect x="186" y="28" width="78" height="42"></rect><text class="node-label" x="211" y="54">ACT</text>
+        <rect x="324" y="28" width="104" height="42"></rect><text class="node-label" x="344" y="54">OBSERVE</text>
+        <path d="M111 49 C136 47,157 47,185 49"></path><path d="M174 41 L187 49 L174 57"></path>
+        <path d="M265 49 C286 50,303 50,323 49"></path><path d="M311 41 L324 49 L311 57"></path>
+        <path class="red" d="M374 74 C332 121,84 119,65 73"></path><path class="red" d="M56 87 L65 72 L76 86"></path>
+      </svg>
+      <p class="caption arch-caption">Fig. 2. ReAct: reasoning, tool use, and observation as one repeated control loop.</p>
+    </div>
+    <div class="arch-card">
+      <h3>REFLEXION</h3>
+      <svg class="sketch" width="470" height="132" viewBox="0 0 470 132">
+        <rect x="22" y="28" width="88" height="42"></rect><text class="node-label" x="44" y="54">THINK</text>
+        <rect x="180" y="28" width="78" height="42"></rect><text class="node-label" x="205" y="54">ACT</text>
+        <rect x="310" y="28" width="104" height="42"></rect><text class="node-label" x="330" y="54">OBSERVE</text>
+        <rect x="178" y="88" width="100" height="36"></rect><text class="node-label" x="199" y="111">MEMORY</text>
+        <path d="M111 49 C135 47,156 47,179 49"></path><path d="M168 41 L181 49 L168 57"></path>
+        <path d="M259 49 C277 49,292 49,309 49"></path><path d="M297 41 L310 49 L297 57"></path>
+        <path class="thin" d="M362 72 C336 89,309 99,280 105"></path><path class="thin" d="M292 97 L278 105 L294 109"></path>
+        <path class="red" d="M177 106 C126 103,75 90,65 72"></path><path class="red" d="M58 86 L65 71 L77 83"></path>
+      </svg>
+      <p class="caption arch-caption">Fig. 3. Reflexion stores lessons from prior attempts and feeds them back into the next thought.</p>
+    </div>
+    <div class="arch-card">
+      <h3>PLAN-AND-EXECUTE</h3>
+      <svg class="sketch" width="470" height="132" viewBox="0 0 470 132">
+        <rect x="20" y="44" width="76" height="42"></rect><text class="node-label" x="40" y="70">PLAN</text>
+        <rect x="136" y="44" width="88" height="42"></rect><text class="node-label" x="158" y="70">THINK</text>
+        <rect x="276" y="44" width="78" height="42"></rect><text class="node-label" x="301" y="70">ACT</text>
+        <rect x="174" y="96" width="104" height="34"></rect><text class="node-label" x="194" y="119">OBSERVE</text>
+        <path class="red" d="M97 65 C108 64,121 64,135 65"></path><path class="red" d="M124 57 L137 65 L124 73"></path>
+        <path d="M225 65 C241 64,259 64,275 65"></path><path d="M264 57 L277 65 L264 73"></path>
+        <path d="M314 88 C301 104,290 112,278 114"></path><path d="M290 106 L277 114 L292 118"></path>
+        <path d="M174 113 C147 107,136 96,153 87"></path><path d="M139 91 L154 86 L151 101"></path>
+      </svg>
+      <p class="caption arch-caption">Fig. 4. A plan fixes a coarse route; the loop handles the local contingencies of execution.</p>
+    </div>
+    <div class="arch-card">
+      <h3>TREE-OF-THOUGHTS</h3>
+      <svg class="sketch" width="470" height="132" viewBox="0 0 470 132">
+        <rect x="20" y="46" width="88" height="42"></rect><text class="node-label" x="42" y="72">THINK</text>
+        <rect x="170" y="18" width="88" height="38"></rect><text class="node-label" x="192" y="42">THINK</text>
+        <rect x="170" y="80" width="88" height="38"></rect><text class="node-label" x="192" y="104">THINK</text>
+        <rect x="332" y="48" width="78" height="42"></rect><text class="node-label" x="357" y="74">ACT</text>
+        <path d="M109 61 C132 52,147 44,169 38"></path><path d="M156 35 L171 37 L160 48"></path>
+        <path d="M109 73 C132 82,148 92,169 99"></path><path d="M160 89 L171 99 L156 101"></path>
+        <path d="M259 38 C286 42,307 51,331 62"></path><path d="M317 54 L333 63 L316 66"></path>
+        <path class="red" d="M259 100 C288 94,309 86,331 75"></path><path class="red" d="M316 73 L332 75 L321 87"></path>
+      </svg>
+      <p class="caption arch-caption">Fig. 5. Tree-of-Thoughts samples competing continuations, scores them, and acts from a selected branch.</p>
+    </div>
+  </div>
+  <div class="roman">iv</div>
+</section>
+
+<section class="slide">
+  <div class="section-label">§ 4. where loops fail</div>
+  <div class="fail-layout">
+    <div>
+      <h2 style="margin-bottom:28px">§ 4. Where Loops Fail</h2>
+      <p class="body">Agent loops consume context as they operate. Each thought, tool call, result, retry, and correction is appended to the trace so that future decisions can see the past. This is useful until it is not. After enough iterations, the model is no longer reasoning over a compact state; it is searching through a transcript. Failures then look like stubbornness, forgotten constraints, duplicated actions, or confident answers based on the wrong part of the history.</p>
+    </div>
+    <div>
+      <svg class="sketch" width="610" height="390" viewBox="0 0 610 390">
+        <line x1="64" y1="316" x2="560" y2="316"></line>
+        <line x1="64" y1="316" x2="64" y2="54"></line>
+        <text class="plot-label" x="30" y="61" transform="rotate(-90 30 61)">TOKENS</text>
+        <text class="plot-label" x="468" y="360">ITER</text>
+        <text class="plot-label" x="58" y="342">0</text>
+        <text class="plot-label" x="155" y="342">5</text>
+        <text class="plot-label" x="252" y="342">10</text>
+        <text class="plot-label" x="350" y="342">15</text>
+        <text class="plot-label" x="448" y="342">20</text>
+        <text class="plot-label" x="540" y="342">25</text>
+        <path d="M64 302 C120 294,170 282,220 264 C268 247,305 226,335 198 C380 154,432 103,556 62"></path>
+        <circle class="red" cx="335" cy="198" r="5"></circle>
+        <line class="thin" x1="341" y1="193" x2="420" y2="132"></line>
+        <foreignObject x="410" y="64" width="170" height="120">
+          <div xmlns="http://www.w3.org/1999/xhtml" class="plot-note">Most production agents fail somewhere in this region — not because the model is incapable, but because the context has become longer than the model's effective attention.</div>
+        </foreignObject>
+      </svg>
+    </div>
+  </div>
+  <div class="roman">v</div>
+</section>
+
+<section class="slide">
+  <div class="section-label">§ 5. the loop, in code</div>
+  <h2 style="position:absolute;left:96px;top:68px">§ 5. The Loop, in Code</h2>
+  <div class="code-layout">
+    <div class="code-box">
+<pre>def react(model, tools, question, max_steps=8):
+    trace = []
+    state = {"question": question}
+
+    for i in range(max_steps):
+        prompt = render_prompt(question, trace)
+
+        thought = model.generate(
+            prompt,
+            stop=["ACTION:"]
+        )
+        trace.append(("THOUGHT", thought))
+
+        action = model.generate_action(
+            prompt + thought,
+            tools=tools
+        )
+        trace.append(("ACTION", action))
+
+        if action.name == "finish":
+            return action.arguments["answer"], trace
+
+        observation = tools[action.name](
+            **action.arguments
+        )
+        trace.append(("OBSERVATION", observation))
+
+        state = update_state(state, observation)
+
+    return summarize_failure(trace), trace</pre>
+    </div>
+    <div style="padding-top:78px">
+      <p class="code-ann">THINK: ask the model for a local interpretation before any side effect.</p>
+      <p class="code-ann red-mark">ACT: restrict the next move to an explicit tool call or finish action.</p>
+      <p class="code-ann">OBSERVE: append the world's reply to the trace, then loop.</p>
+    </div>
+  </div>
+  <p class="remark body">The structure strictly interleaves reasoning and action. Forcing the model to externalize its thought before acting gives the system interpretability and reduces hallucinated state changes.</p>
+  <div class="roman">vi</div>
+</section>
+
+<section class="slide">
+  <div class="section-label">§ 6. ending</div>
+  <p class="ending">The architecture is the loop. Everything else is a refinement of how the loop decides what to do next.</p>
+  <div class="ending-line"></div>
+  <div class="refs">
+    <div>[01] Smith et al. (1983). The Cybernetic Loop.</div>
+    <div>[02] Yao et al. (2023). ReAct: Synergizing Reasoning and Acting.</div>
+    <div>[03] Shinn et al. (2023). Reflexion: Language Agents with Verbal Reinforcement Learning.</div>
+  </div>
+  <div class="roman">vii</div>
+</section>
+
+</body>
+</html>

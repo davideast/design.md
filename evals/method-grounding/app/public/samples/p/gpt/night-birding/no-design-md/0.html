@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Urban Nocturnal: Field Notes</title>
+  <style>
+    :root {
+      --bg: #0b1020;
+      --panel: #141b2f;
+      --panel-alt: #101727;
+      --text: #e8edf7;
+      --muted: #aab4c7;
+      --accent: #d8c27a;
+      --line: #2b3550;
+      --shadow: rgba(0, 0, 0, 0.35);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      background:
+        radial-gradient(circle at 20% 10%, rgba(216, 194, 122, 0.12), transparent 28%),
+        radial-gradient(circle at 80% 0%, rgba(100, 130, 190, 0.14), transparent 30%),
+        linear-gradient(180deg, #080c18 0%, var(--bg) 55%, #060912 100%);
+      color: var(--text);
+      font-family: Georgia, "Times New Roman", serif;
+      line-height: 1.6;
+      padding: 48px 20px;
+    }
+
+    main {
+      width: min(860px, 100%);
+      margin: 0 auto;
+      background: rgba(20, 27, 47, 0.88);
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      box-shadow: 0 24px 70px var(--shadow);
+      overflow: hidden;
+    }
+
+    header {
+      padding: 44px 44px 30px;
+      border-bottom: 1px solid var(--line);
+      background:
+        linear-gradient(90deg, rgba(216, 194, 122, 0.11), transparent 65%),
+        var(--panel);
+    }
+
+    h1 {
+      margin: 0;
+      color: var(--text);
+      font-size: clamp(2.2rem, 5vw, 4rem);
+      line-height: 1.05;
+      letter-spacing: 0.02em;
+      font-weight: 700;
+    }
+
+    .content {
+      padding: 36px 44px 46px;
+    }
+
+    section {
+      padding: 28px 0;
+      border-bottom: 1px solid var(--line);
+    }
+
+    section:first-child {
+      padding-top: 0;
+    }
+
+    section:last-child {
+      border-bottom: 0;
+      padding-bottom: 0;
+    }
+
+    h2 {
+      margin: 0 0 18px;
+      color: var(--accent);
+      font-size: 1.45rem;
+      line-height: 1.2;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      font-weight: 700;
+    }
+
+    h3 {
+      margin: 8px 0 14px;
+      color: var(--text);
+      font-size: 1.35rem;
+      line-height: 1.25;
+      font-weight: 700;
+    }
+
+    p {
+      margin: 0 0 10px;
+      color: var(--muted);
+      font-size: 1.05rem;
+    }
+
+    p:last-child {
+      margin-bottom: 0;
+    }
+
+    strong {
+      color: var(--text);
+      font-weight: 700;
+    }
+
+    .note-card {
+      background: var(--panel-alt);
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      padding: 22px;
+      margin-top: 12px;
+    }
+
+    ul, ol {
+      margin: 0;
+      padding-left: 1.35rem;
+      color: var(--muted);
+      font-size: 1.05rem;
+    }
+
+    li {
+      margin: 8px 0;
+      padding-left: 4px;
+    }
+
+    li::marker {
+      color: var(--accent);
+    }
+
+    @media (max-width: 640px) {
+      body {
+        padding: 24px 14px;
+      }
+
+      header {
+        padding: 32px 24px 24px;
+      }
+
+      .content {
+        padding: 28px 24px 34px;
+      }
+
+      section {
+        padding: 24px 0;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <header>
+      <h1>Urban Nocturnal: Field Notes</h1>
+    </header>
+
+    <div class="content">
+      <section>
+        <h2>Moon &amp; Light Conditions</h2>
+        <p><strong>Current Status:</strong> Waxing Gibbous. 82% Illumination.</p>
+        <p><strong>Moonrise:</strong> 17:42.</p>
+        <p><strong>Sky Quality:</strong> Bortle 8 (Inner City Sky).</p>
+      </section>
+
+      <section>
+        <h2>Tonight’s Likely Species</h2>
+        <div class="note-card">
+          <h3>Black-crowned Night Heron</h3>
+          <p><strong>Field Marks:</strong> Stocky build, black crown and back, contrasting grey wings.</p>
+          <p><strong>In Flight:</strong> Thick neck tucked, feet barely extending beyond tail.</p>
+          <p><strong>Context:</strong> Often found near waterfront construction sites or park ponds.</p>
+        </div>
+      </section>
+
+      <section>
+        <h2>Sightings Log</h2>
+        <ul>
+          <li><strong>Time:</strong> 23:14</li>
+          <li><strong>Location:</strong> West Side Railyards</li>
+          <li><strong>Species:</strong> Common Nighthawk (2)</li>
+          <li><strong>Behavior:</strong> Aerial foraging under stadium lights; erratic, bat-like flight pattern.</li>
+        </ul>
+      </section>
+
+      <section>
+        <h2>Guide to Listening: The Urban Filter</h2>
+        <p>To identify birds by sound in the city, you must mentally subtract the machine:</p>
+        <ol>
+          <li><strong>The Base:</strong> Ignore the low-frequency rumble of the expressway or subway vents.</li>
+          <li><strong>The Signal:</strong> Focus on the "Peent"—a sharp, nasal electric buzz cutting through the hum.</li>
+          <li><strong>The Physical:</strong> Listen for the "Whoosh" of air through primary feathers during a territorial dive.</li>
+        </ol>
+      </section>
+    </div>
+  </main>
+</body>
+</html>

@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kettle &amp; Leaf</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Libre+Franklin:wght@700&family=Source+Serif+4:wght@400;600&family=IBM+Plex+Mono&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --primary: #1B1B1B;
+    --secondary: #6E675C;
+    --tertiary: #E8590C;
+    --neutral: #F4EFE6;
+    --sm: 8px;
+    --md: 16px;
+    --lg: 32px;
+    --xl: 64px;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    background: var(--neutral);
+    color: var(--primary);
+    font-family: 'Source Serif 4', serif;
+    font-size: 16px;
+    line-height: 1.65;
+    padding: var(--xl);
+  }
+  .wrap { max-width: 960px; margin: 0 auto; }
+
+  .headline {
+    font-family: 'Libre Franklin', sans-serif;
+    font-size: 44px;
+    font-weight: 700;
+    line-height: 1.05;
+    letter-spacing: -0.01em;
+  }
+  .label {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 12px;
+    font-weight: 400;
+    line-height: 1.4;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--secondary);
+  }
+
+  header { margin-bottom: var(--xl); }
+  header .welcome {
+    margin-top: var(--md);
+    color: var(--secondary);
+    font-size: 18px;
+  }
+
+  section { margin-bottom: var(--xl); }
+  .section-label {
+    display: block;
+    margin-bottom: var(--lg);
+    padding-bottom: var(--sm);
+    border-bottom: 1px solid var(--secondary);
+  }
+
+  .teas { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--lg); }
+  .tea h3 {
+    font-family: 'Libre Franklin', sans-serif;
+    font-size: 22px;
+    font-weight: 700;
+    letter-spacing: -0.01em;
+  }
+  .tea .origin {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 12px;
+    letter-spacing: 0.08em;
+    color: var(--tertiary);
+    margin: var(--sm) 0;
+    text-transform: uppercase;
+  }
+  .tea p { color: var(--secondary); }
+
+  .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: var(--xl); }
+
+  table { width: 100%; border-collapse: collapse; }
+  th, td {
+    text-align: left;
+    padding: var(--sm) 0;
+    border-bottom: 1px solid #d8d0c2;
+    font-size: 15px;
+  }
+  th {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 12px;
+    font-weight: 400;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--secondary);
+  }
+  td.time { text-align: right; font-family: 'IBM Plex Mono', monospace; font-size: 13px; }
+
+  .sourcing p { color: var(--secondary); }
+
+  .map {
+    border: 1px solid var(--secondary);
+    padding: var(--lg);
+  }
+  .map .addr {
+    font-family: 'Libre Franklin', sans-serif;
+    font-size: 22px;
+    font-weight: 700;
+    letter-spacing: -0.01em;
+  }
+
+  footer {
+    border-top: 2px solid var(--primary);
+    padding-top: var(--lg);
+    display: flex;
+    justify-content: space-between;
+    gap: var(--lg);
+  }
+  footer .col span { display: block; }
+  footer .phone {
+    color: var(--tertiary);
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 14px;
+    letter-spacing: 0.08em;
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header>
+    <h1 class="headline">Kettle &amp; Leaf</h1>
+    <p class="welcome">A quiet corner of the neighborhood, steeped one careful pot at a time.</p>
+  </header>
+
+  <section>
+    <span class="label section-label">Today's Three Brews</span>
+    <div class="teas">
+      <div class="tea">
+        <h3>Misty Ridge Oolong</h3>
+        <p class="origin">Nantou, Taiwan</p>
+        <p>Roasted chestnut and orchid, with a soft buttery finish that lingers between sips.</p>
+      </div>
+      <div class="tea">
+        <h3>Rift Valley Black</h3>
+        <p class="origin">Nandi Hills, Kenya</p>
+        <p>Brisk and malty, edged with ripe plum and a clean cocoa warmth.</p>
+      </div>
+      <div class="tea">
+        <h3>Maple Row Sencha</h3>
+        <p class="origin">Uji, Japan</p>
+        <p>Fresh-cut grass and sweet pea, bright and grassy with a gentle marine note.</p>
+      </div>
+    </div>
+  </section>
+
+  <div class="two-col">
+    <section>
+      <span class="label section-label">Weekly Quiet Hours</span>
+      <table>
+        <thead>
+          <tr><th>Day</th><th style="text-align:right">Quiet Hours</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Monday</td><td class="time">8:00 – 10:00</td></tr>
+          <tr><td>Wednesday</td><td class="time">14:00 – 16:00</td></tr>
+          <tr><td>Friday</td><td class="time">8:00 – 10:00</td></tr>
+          <tr><td>Sunday</td><td class="time">16:00 – 18:00</td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section class="sourcing">
+      <span class="label section-label">On Sourcing</span>
+      <p>Twice a year our owner, Mara, packs a small bag and travels to the gardens we pour from. In the high mist of Nantou she walks the oolong terraces with the families who roast each batch by hand; in the Nandi Hills of Kenya she sits with growers over the first picking of the season. Every leaf on the menu has a face and a place behind it.</p>
+    </section>
+  </div>
+
+  <section>
+    <span class="label section-label">Find Us</span>
+    <div class="map">
+      <span class="label">Map line · Neighborhood corner, ground floor</span>
+      <p class="addr" style="margin-top:var(--sm)">412 Maple Row</p>
+    </div>
+  </section>
+
+  <footer>
+    <div class="col">
+      <span class="label">Hours</span>
+      <span>Mon–Fri · 8:00 – 18:00</span>
+      <span>Sat–Sun · 9:00 – 19:00</span>
+    </div>
+    <div class="col">
+      <span class="label">Call</span>
+      <span class="phone">(503) 555–0142</span>
+    </div>
+  </footer>
+
+</div>
+</body>
+</html>

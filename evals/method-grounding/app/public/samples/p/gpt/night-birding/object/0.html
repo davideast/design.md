@@ -1,0 +1,499 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Urban Nocturnal: Field Notes</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Spartan:wght@500;700&family=Libre+Baskerville:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --background: #F9F6EE;
+      --text: #1A1A1B;
+      --primary: #1A1A1B;
+      --ui-neutral: #707372;
+      --accent: #C53030;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      background: var(--background);
+    }
+
+    body {
+      margin: 0;
+      background: var(--background);
+      color: var(--text);
+      font-family: "Libre Baskerville", "Century Schoolbook", Century, serif;
+      font-weight: 400;
+      line-height: 1.45;
+    }
+
+    .page {
+      width: min(1180px, calc(100vw - 28px));
+      margin: 14px auto;
+      border: 1pt solid var(--text);
+      background: var(--background);
+    }
+
+    header {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 0;
+      border-bottom: 1pt solid var(--text);
+    }
+
+    .title-block {
+      padding: 16px 18px 12px;
+      border-right: 1pt solid var(--text);
+    }
+
+    h1 {
+      margin: 0;
+      font-family: "Spartan", sans-serif;
+      font-weight: 700;
+      font-size: clamp(28px, 4vw, 54px);
+      line-height: 0.98;
+      letter-spacing: -0.04em;
+      text-transform: uppercase;
+    }
+
+    .folio {
+      display: flex;
+      align-items: stretch;
+      min-width: 150px;
+      font-family: "Spartan", sans-serif;
+      font-weight: 500;
+      color: var(--ui-neutral);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      font-size: 11px;
+    }
+
+    .folio span {
+      writing-mode: vertical-rl;
+      transform: rotate(180deg);
+      padding: 14px 10px;
+      border-left: 1pt solid var(--text);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .main-grid {
+      display: grid;
+      grid-template-columns: 1fr 1.12fr 0.88fr;
+      border-bottom: 1pt solid var(--text);
+    }
+
+    section {
+      min-width: 0;
+    }
+
+    .panel {
+      border-right: 1pt solid var(--text);
+    }
+
+    .panel:last-child {
+      border-right: 0;
+    }
+
+    .section-head {
+      padding: 8px 10px 6px;
+      border-bottom: 1pt solid var(--text);
+      font-family: "Spartan", sans-serif;
+      font-weight: 700;
+      text-transform: uppercase;
+      font-size: 13px;
+      letter-spacing: 0.04em;
+      line-height: 1.15;
+    }
+
+    .content {
+      padding: 12px 14px 14px;
+    }
+
+    .data-row {
+      display: grid;
+      grid-template-columns: 132px 1fr;
+      gap: 8px;
+      padding: 4px 0;
+      border-bottom: 1pt solid rgba(26, 26, 27, 0.28);
+    }
+
+    .data-row:last-child {
+      border-bottom: 0;
+    }
+
+    .label {
+      font-family: "Spartan", sans-serif;
+      font-weight: 500;
+      color: var(--text);
+      text-transform: uppercase;
+      letter-spacing: 0.035em;
+      font-size: 11px;
+      line-height: 1.35;
+    }
+
+    .value {
+      font-size: 15px;
+    }
+
+    h2, h3 {
+      font-family: "Spartan", sans-serif;
+      font-weight: 700;
+      margin: 0;
+      text-transform: uppercase;
+      letter-spacing: -0.02em;
+      line-height: 1.1;
+    }
+
+    h3 {
+      font-size: 18px;
+      margin-bottom: 10px;
+    }
+
+    p {
+      margin: 0 0 9px;
+      font-size: 15px;
+    }
+
+    p:last-child {
+      margin-bottom: 0;
+    }
+
+    strong {
+      font-weight: 700;
+    }
+
+    .species-layout {
+      display: grid;
+      grid-template-columns: 118px 1fr;
+      gap: 14px;
+      align-items: start;
+    }
+
+    .bird-plate {
+      position: relative;
+      height: 174px;
+      border: 1pt solid var(--text);
+      background:
+        linear-gradient(to bottom, transparent 0 49%, rgba(26,26,27,0.22) 49% 50%, transparent 50%),
+        linear-gradient(to right, transparent 0 49%, rgba(26,26,27,0.22) 49% 50%, transparent 50%);
+    }
+
+    .heron {
+      position: absolute;
+      left: 22px;
+      top: 27px;
+      width: 78px;
+      height: 110px;
+    }
+
+    .heron .body {
+      position: absolute;
+      left: 17px;
+      top: 38px;
+      width: 48px;
+      height: 52px;
+      background: var(--text);
+      clip-path: polygon(12% 16%, 68% 5%, 100% 45%, 76% 91%, 22% 96%, 0 57%);
+    }
+
+    .heron .wing {
+      position: absolute;
+      left: 24px;
+      top: 48px;
+      width: 38px;
+      height: 42px;
+      background: var(--ui-neutral);
+      clip-path: polygon(0 0, 100% 17%, 68% 100%, 15% 78%);
+    }
+
+    .heron .head {
+      position: absolute;
+      left: 47px;
+      top: 24px;
+      width: 25px;
+      height: 22px;
+      background: var(--text);
+      border-radius: 0;
+      clip-path: polygon(0 20%, 78% 0, 100% 48%, 58% 100%, 8% 82%);
+    }
+
+    .heron .beak {
+      position: absolute;
+      left: 69px;
+      top: 31px;
+      width: 28px;
+      height: 8px;
+      background: var(--text);
+      clip-path: polygon(0 25%, 100% 48%, 0 100%);
+    }
+
+    .heron .legs {
+      position: absolute;
+      left: 31px;
+      top: 88px;
+      width: 33px;
+      height: 47px;
+      border-left: 3px solid var(--text);
+      border-right: 3px solid var(--text);
+    }
+
+    .pointer {
+      position: absolute;
+      background: var(--accent);
+      height: 2px;
+      transform-origin: left center;
+    }
+
+    .pointer:after {
+      content: "";
+      position: absolute;
+      right: -1px;
+      top: -4px;
+      border-left: 9px solid var(--accent);
+      border-top: 5px solid transparent;
+      border-bottom: 5px solid transparent;
+    }
+
+    .pointer.one {
+      width: 43px;
+      left: 8px;
+      top: 31px;
+      transform: rotate(-8deg);
+    }
+
+    .pointer.two {
+      width: 46px;
+      left: 73px;
+      top: 80px;
+      transform: rotate(172deg);
+    }
+
+    .sighting {
+      display: grid;
+      gap: 0;
+    }
+
+    .log-row {
+      display: grid;
+      grid-template-columns: 104px 1fr;
+      gap: 8px;
+      padding: 6px 0;
+      border-bottom: 1pt solid rgba(26, 26, 27, 0.28);
+    }
+
+    .log-row:last-child {
+      border-bottom: 0;
+    }
+
+    .list-panel {
+      display: grid;
+      grid-template-columns: 0.72fr 1fr;
+    }
+
+    .listen-copy {
+      border-left: 1pt solid var(--text);
+    }
+
+    ol {
+      margin: 0;
+      padding-left: 23px;
+    }
+
+    li {
+      margin: 0 0 9px;
+      padding-left: 2px;
+      font-size: 15px;
+    }
+
+    li:last-child {
+      margin-bottom: 0;
+    }
+
+    .bottom-section {
+      display: grid;
+      grid-template-columns: 1fr 1.55fr;
+    }
+
+    .bottom-section > section:first-child {
+      border-right: 1pt solid var(--text);
+    }
+
+    .note {
+      color: var(--ui-neutral);
+      font-family: "Spartan", sans-serif;
+      font-weight: 500;
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      border-top: 1pt solid var(--text);
+      padding: 7px 10px;
+    }
+
+    @media (max-width: 900px) {
+      header,
+      .main-grid,
+      .bottom-section,
+      .list-panel {
+        grid-template-columns: 1fr;
+      }
+
+      .title-block,
+      .panel,
+      .bottom-section > section:first-child,
+      .listen-copy {
+        border-right: 0;
+        border-left: 0;
+      }
+
+      .panel,
+      .bottom-section > section:first-child {
+        border-bottom: 1pt solid var(--text);
+      }
+
+      .folio {
+        min-width: 0;
+        border-top: 1pt solid var(--text);
+      }
+
+      .folio span {
+        writing-mode: initial;
+        transform: none;
+        border-left: 0;
+        width: 100%;
+        padding: 8px 10px;
+      }
+    }
+
+    @media (max-width: 560px) {
+      .page {
+        width: calc(100vw - 16px);
+        margin: 8px auto;
+      }
+
+      .species-layout,
+      .data-row,
+      .log-row {
+        grid-template-columns: 1fr;
+      }
+
+      .bird-plate {
+        width: 118px;
+      }
+
+      .label {
+        margin-bottom: -3px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <header>
+      <div class="title-block">
+        <h1>Urban Nocturnal: Field Notes</h1>
+      </div>
+      <div class="folio">
+        <span>Inner City Sky / Night Field Index</span>
+      </div>
+    </header>
+
+    <main>
+      <div class="main-grid">
+        <section class="panel">
+          <div class="section-head">Moon &amp; Light Conditions</div>
+          <div class="content">
+            <div class="data-row">
+              <div class="label">Current Status</div>
+              <div class="value">Waxing Gibbous. 82% Illumination.</div>
+            </div>
+            <div class="data-row">
+              <div class="label">Moonrise</div>
+              <div class="value">17:42.</div>
+            </div>
+            <div class="data-row">
+              <div class="label">Sky Quality</div>
+              <div class="value">Bortle 8 (Inner City Sky).</div>
+            </div>
+          </div>
+        </section>
+
+        <section class="panel">
+          <div class="section-head">Tonight’s Likely Species</div>
+          <div class="content species-layout">
+            <div class="bird-plate" aria-hidden="true">
+              <div class="pointer one"></div>
+              <div class="pointer two"></div>
+              <div class="heron">
+                <div class="body"></div>
+                <div class="wing"></div>
+                <div class="head"></div>
+                <div class="beak"></div>
+                <div class="legs"></div>
+              </div>
+            </div>
+            <div>
+              <h3>Black-crowned Night Heron</h3>
+              <p><strong>Field Marks:</strong> Stocky build, black crown and back, contrasting grey wings.</p>
+              <p><strong>In Flight:</strong> Thick neck tucked, feet barely extending beyond tail.</p>
+              <p><strong>Context:</strong> Often found near waterfront construction sites or park ponds.</p>
+            </div>
+          </div>
+        </section>
+
+        <section class="panel">
+          <div class="section-head">Sightings Log</div>
+          <div class="content sighting">
+            <div class="log-row">
+              <div class="label">Time</div>
+              <div class="value">23:14</div>
+            </div>
+            <div class="log-row">
+              <div class="label">Location</div>
+              <div class="value">West Side Railyards</div>
+            </div>
+            <div class="log-row">
+              <div class="label">Species</div>
+              <div class="value">Common Nighthawk (2)</div>
+            </div>
+            <div class="log-row">
+              <div class="label">Behavior</div>
+              <div class="value">Aerial foraging under stadium lights; erratic, bat-like flight pattern.</div>
+            </div>
+          </div>
+        </section>
+      </div>
+
+      <div class="bottom-section">
+        <section>
+          <div class="section-head">Guide to Listening</div>
+          <div class="content">
+            <h3>The Urban Filter</h3>
+            <p>To identify birds by sound in the city, you must mentally subtract the machine:</p>
+          </div>
+        </section>
+
+        <section class="listen-copy">
+          <div class="section-head">Procedure</div>
+          <div class="content">
+            <ol>
+              <li><strong>The Base:</strong> Ignore the low-frequency rumble of the expressway or subway vents.</li>
+              <li><strong>The Signal:</strong> Focus on the "Peent"—a sharp, nasal electric buzz cutting through the hum.</li>
+              <li><strong>The Physical:</strong> Listen for the "Whoosh" of air through primary feathers during a territorial dive.</li>
+            </ol>
+          </div>
+        </section>
+      </div>
+    </main>
+
+    <div class="note">Pointer Red indicates critical field marks; all rules set in Midnight Ink.</div>
+  </div>
+</body>
+</html>

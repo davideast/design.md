@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Kettle &amp; Leaf</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400&family=Libre+Franklin:wght@700&family=Source+Serif+4:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary: #1B1B1B;
+      --secondary: #6E675C;
+      --tertiary: #E8590C;
+      --neutral: #F4EFE6;
+      --sm: 8px;
+      --md: 16px;
+      --lg: 32px;
+      --xl: 64px;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      background: var(--neutral);
+      color: var(--primary);
+      font-family: "Source Serif 4", serif;
+      font-size: 16px;
+      font-weight: 400;
+      line-height: 1.65;
+    }
+
+    .page {
+      min-height: 100vh;
+      padding: var(--xl);
+      display: flex;
+      flex-direction: column;
+    }
+
+    header {
+      margin-bottom: var(--xl);
+    }
+
+    h1 {
+      margin: 0;
+      font-family: "Libre Franklin", sans-serif;
+      font-size: 44px;
+      font-weight: 700;
+      line-height: 1.05;
+      letter-spacing: -0.01em;
+      color: var(--primary);
+    }
+
+    .welcome {
+      margin: var(--sm) 0 0;
+      max-width: 780px;
+      font-family: "Libre Franklin", sans-serif;
+      font-size: 44px;
+      font-weight: 700;
+      line-height: 1.05;
+      letter-spacing: -0.01em;
+      color: var(--primary);
+    }
+
+    .title-rule {
+      width: 180px;
+      height: 0;
+      border: 0;
+      border-top: 4px solid var(--tertiary);
+      margin: var(--lg) 0 0;
+    }
+
+    main {
+      flex: 1;
+    }
+
+    .content-grid {
+      display: grid;
+      grid-template-columns: 1.1fr 0.9fr;
+      gap: var(--xl);
+      align-items: start;
+    }
+
+    .label {
+      margin: 0 0 var(--md);
+      font-family: "IBM Plex Mono", monospace;
+      font-size: 12px;
+      font-weight: 400;
+      line-height: 1.4;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--secondary);
+    }
+
+    .today-label::before {
+      content: "•";
+      color: var(--tertiary);
+      margin-right: var(--sm);
+      font-size: 18px;
+      line-height: 0;
+      vertical-align: -1px;
+    }
+
+    .tea-list {
+      margin: 0 0 var(--xl);
+      padding: 0;
+      list-style: none;
+      border-top: 1px solid var(--secondary);
+    }
+
+    .tea-list li {
+      padding: var(--md) 0;
+      border-bottom: 1px solid var(--secondary);
+      font-family: "Source Serif 4", serif;
+      font-size: 16px;
+      font-weight: 400;
+      line-height: 1.65;
+    }
+
+    .tea-name {
+      font-weight: 700;
+    }
+
+    .quiet-hours {
+      margin-top: var(--lg);
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-family: "IBM Plex Mono", monospace;
+      font-size: 12px;
+      font-weight: 400;
+      line-height: 1.4;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--primary);
+    }
+
+    th,
+    td {
+      padding: var(--sm) 0;
+      text-align: left;
+      border-bottom: 1px solid var(--secondary);
+      vertical-align: top;
+    }
+
+    th {
+      color: var(--secondary);
+      font-weight: 400;
+    }
+
+    .essay {
+      margin: 0;
+      max-width: 560px;
+      font-family: "Source Serif 4", serif;
+      font-size: 16px;
+      font-weight: 700;
+      line-height: 1.65;
+      color: var(--primary);
+    }
+
+    .catalogue {
+      margin-top: var(--xl);
+      padding-top: var(--md);
+      border-top: 1px solid var(--secondary);
+      font-family: "IBM Plex Mono", monospace;
+      font-size: 12px;
+      font-weight: 400;
+      line-height: 1.4;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--secondary);
+    }
+
+    footer {
+      margin-top: var(--xl);
+      padding-top: var(--md);
+      border-top: 1px solid var(--secondary);
+      display: flex;
+      justify-content: space-between;
+      gap: var(--lg);
+      font-family: "IBM Plex Mono", monospace;
+      font-size: 12px;
+      font-weight: 400;
+      line-height: 1.4;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--primary);
+    }
+
+    footer p {
+      margin: 0;
+    }
+
+    @media (max-width: 900px) {
+      .page {
+        padding: var(--lg);
+      }
+
+      .content-grid {
+        grid-template-columns: 1fr;
+        gap: var(--lg);
+      }
+
+      footer {
+        flex-direction: column;
+        gap: var(--sm);
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <header>
+      <h1>Kettle &amp; Leaf</h1>
+      <p class="welcome">Welcome to the neighborhood tea house for slow cups and good company.</p>
+      <hr class="title-rule">
+    </header>
+
+    <main>
+      <div class="content-grid">
+        <section aria-labelledby="today-teas">
+          <p class="label today-label" id="today-teas">Today’s Brewed Teas</p>
+          <ul class="tea-list">
+            <li><span class="tea-name">Alishan Oolong</span> — Taiwan; creamy orchid, steamed pear, and a clean mineral finish.</li>
+            <li><span class="tea-name">Kangaita Black</span> — Kenya; brisk malt, red currant, and a bright coppery lift.</li>
+            <li><span class="tea-name">Genmaicha</span> — Japan; toasted rice, soft green grass, and a gentle savory note.</li>
+          </ul>
+
+          <section class="quiet-hours" aria-labelledby="quiet-hours">
+            <p class="label" id="quiet-hours">Weekly Quiet Hours</p>
+            <table>
+              <thead>
+                <tr>
+                  <th>Day</th>
+                  <th>Quiet Hours</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>Tuesday</td>
+                  <td>8:00 AM–10:00 AM</td>
+                </tr>
+                <tr>
+                  <td>Wednesday</td>
+                  <td>3:00 PM–5:00 PM</td>
+                </tr>
+                <tr>
+                  <td>Sunday</td>
+                  <td>9:00 AM–11:00 AM</td>
+                </tr>
+              </tbody>
+            </table>
+          </section>
+        </section>
+
+        <section aria-labelledby="sourcing">
+          <p class="label" id="sourcing">Sourcing Notes</p>
+          <p class="essay">
+            Owner Mara Lin travels each spring to Taiwan’s high mountain gardens and each autumn to Kenya’s central highlands, buying from growers who pluck by hand, rest the leaf carefully, and know every slope by weather and soil. Those trips shape the cups served here: teas chosen for clarity, freshness, and the stories carried from farm gate to kettle.
+          </p>
+          <div class="catalogue">Map Line: 412 Maple Row</div>
+        </section>
+      </div>
+    </main>
+
+    <footer>
+      <p>Hours: Monday–Friday 7:00 AM–6:00 PM; Saturday–Sunday 8:00 AM–5:00 PM</p>
+      <p>Phone: (555) 412-5333</p>
+    </footer>
+  </div>
+</body>
+</html>

@@ -1,0 +1,473 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Agent Architecture</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&family=IBM+Plex+Mono:wght@400&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --primary:#1E1A14;
+    --secondary:#B8B0A2;
+    --tertiary:#C3402A;
+    --neutral:#F4F0E4;
+    --sm:8px; --md:16px; --lg:32px; --xl:64px;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;background:#d8d2c4;}
+  body{
+    font-family:'Source Serif 4',serif;
+    color:var(--primary);
+    -webkit-font-smoothing:antialiased;
+  }
+  .slide{
+    position:relative;
+    width:1120px;
+    height:790px;
+    margin:32px auto;
+    background:var(--neutral);
+    padding:var(--xl);
+    box-shadow:0 1px 4px rgba(0,0,0,0.18);
+    overflow:hidden;
+  }
+  .label{
+    position:absolute;
+    top:var(--lg);
+    left:var(--lg);
+    font-family:'IBM Plex Mono',monospace;
+    font-size:12px;
+    letter-spacing:0.08em;
+    color:var(--primary);
+  }
+  .numeral{
+    position:absolute;
+    bottom:var(--lg);
+    right:var(--lg);
+    font-family:'IBM Plex Mono',monospace;
+    font-size:12px;
+    letter-spacing:0.08em;
+    color:var(--tertiary);
+  }
+  h1.display{
+    font-family:'Fraunces',serif;
+    font-weight:500;
+    font-size:54px;
+    line-height:1.1;
+    letter-spacing:0.01em;
+    margin:0;
+  }
+  h2.sectitle{
+    font-family:'Fraunces',serif;
+    font-weight:500;
+    font-size:54px;
+    line-height:1.1;
+    letter-spacing:0.01em;
+    margin:0 0 var(--lg) 0;
+  }
+  p.body{
+    font-size:17px;
+    line-height:1.62;
+    margin:0 0 var(--md) 0;
+  }
+  .lbl{
+    font-family:'IBM Plex Mono',monospace;
+    font-size:12px;
+    letter-spacing:0.08em;
+    line-height:1.4;
+  }
+  .code{
+    font-family:'IBM Plex Mono',monospace;
+    font-size:14px;
+    line-height:1.5;
+    white-space:pre;
+  }
+  .caption{
+    font-family:'IBM Plex Mono',monospace;
+    font-size:12px;
+    letter-spacing:0.08em;
+    line-height:1.4;
+    color:var(--primary);
+  }
+  text{font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:0.04em;fill:var(--primary);}
+  .vermilion{color:var(--tertiary);}
+
+  /* ---- Slide 1 ---- */
+  .title-wrap{
+    position:absolute;
+    top:50%;
+    left:var(--xl);
+    right:var(--xl);
+    transform:translateY(-55%);
+  }
+  .standfirst{
+    font-size:17px;
+    line-height:1.62;
+    max-width:640px;
+    margin:var(--md) 0 var(--xl) 0;
+  }
+  .meta{
+    font-family:'IBM Plex Mono',monospace;
+    font-size:12px;
+    letter-spacing:0.08em;
+    line-height:1.8;
+  }
+
+  /* ---- Slide 2 ---- */
+  .two-col{display:flex;gap:var(--xl);align-items:flex-start;}
+  .col-text{flex:1;}
+  .col-fig{flex:1;}
+
+  /* ---- Trace ---- */
+  .trace-query{
+    font-family:'IBM Plex Mono',monospace;
+    font-size:14px;
+    line-height:1.5;
+    margin-bottom:var(--lg);
+    color:var(--tertiary);
+  }
+  .trace-step{
+    display:flex;
+    gap:var(--lg);
+    margin-bottom:var(--sm);
+  }
+  .trace-main{flex:0 0 660px;}
+  .trace-line{font-family:'IBM Plex Mono',monospace;font-size:13px;line-height:1.5;}
+  .trace-note{
+    flex:1;
+    font-family:'Source Serif 4',serif;
+    font-style:italic;
+    font-size:13px;
+    line-height:1.4;
+    color:var(--primary);
+    border-left:1px solid var(--secondary);
+    padding-left:var(--md);
+  }
+  .ann-key{color:var(--secondary);}
+
+  /* ---- Slide 4 grid ---- */
+  .grid2{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    grid-template-rows:1fr 1fr;
+    gap:var(--lg) var(--xl);
+    height:560px;
+  }
+  .cell{display:flex;flex-direction:column;}
+  .cell svg{flex:1;}
+  .cell .caption{margin-top:var(--sm);}
+
+  /* ---- Slide 6 code ---- */
+  .code-row{display:flex;gap:var(--lg);}
+  .code-block{flex:0 0 600px;}
+  .code-notes{flex:1;}
+  .code-note{
+    font-family:'Source Serif 4',serif;
+    font-style:italic;
+    font-size:13px;
+    line-height:1.4;
+    border-left:1px solid var(--secondary);
+    padding-left:var(--md);
+    margin-bottom:var(--md);
+  }
+  .closing-remark{
+    font-size:17px;
+    line-height:1.62;
+    max-width:760px;
+    margin-top:var(--lg);
+  }
+
+  /* ---- Slide 7 ---- */
+  .ending-line{
+    font-family:'Fraunces',serif;
+    font-weight:500;
+    font-size:40px;
+    line-height:1.18;
+    letter-spacing:0.01em;
+    max-width:840px;
+    margin:0 0 var(--xl) 0;
+  }
+  .refs{font-family:'IBM Plex Mono',monospace;font-size:13px;line-height:1.9;}
+</style>
+</head>
+<body>
+
+<!-- SLIDE 1 -->
+<section class="slide">
+  <div class="label">AGENT ARCHITECTURE</div>
+  <div class="title-wrap">
+    <h1 class="display">Agent Architecture</h1>
+    <p class="standfirst">On loops, traces, and the structures by which language models act.</p>
+    <div class="meta">
+      Dr. Mara Ellison<br>
+      Computer Science, Northfield Institute<br>
+      14 October 2026
+    </div>
+  </div>
+  <div class="numeral">i</div>
+</section>
+
+<!-- SLIDE 2 -->
+<section class="slide">
+  <div class="label">§ 1. THE LOOP</div>
+  <h2 class="sectitle">§ 1. The Loop</h2>
+  <div class="two-col">
+    <div class="col-text">
+      <p class="body">The ReAct loop is the simplest thing that deserves to be called an agent. The model is given a goal and then asked, repeatedly, to do three things in turn. First it <em>thinks</em> — it writes, in plain language, what it believes and what it intends to try next. Then it <em>acts</em> — it calls a tool, runs a query, takes a single concrete step in the world. Then it <em>observes</em> — it reads back whatever the world returned. And then, crucially, it thinks again. The observation does not end the process; it feeds the next thought. Reasoning and action alternate until the goal is met.</p>
+    </div>
+    <div class="col-fig">
+      <svg viewBox="0 0 420 340" width="100%" height="320">
+        <!-- THINK -->
+        <rect x="150" y="20" width="120" height="56" rx="0" fill="none" stroke="var(--primary)" stroke-width="1.6" transform="rotate(-0.4 210 48)"/>
+        <text x="210" y="52" text-anchor="middle">THINK</text>
+        <!-- ACT -->
+        <rect x="270" y="150" width="120" height="56" fill="none" stroke="var(--primary)" stroke-width="1.6" transform="rotate(0.6 330 178)"/>
+        <text x="330" y="182" text-anchor="middle">ACT</text>
+        <!-- OBSERVE -->
+        <rect x="32" y="150" width="120" height="56" fill="none" stroke="var(--primary)" stroke-width="1.6" transform="rotate(-0.5 92 178)"/>
+        <text x="92" y="182" text-anchor="middle">OBSERVE</text>
+        <!-- THINK -> ACT -->
+        <path d="M268 70 C320 95 338 120 332 146" fill="none" stroke="var(--primary)" stroke-width="1.6"/>
+        <path d="M332 146 l-7 -10 m7 10 l8 -8" fill="none" stroke="var(--primary)" stroke-width="1.6"/>
+        <!-- ACT -> OBSERVE -->
+        <path d="M268 184 C220 200 168 198 156 184" fill="none" stroke="var(--primary)" stroke-width="1.6"/>
+        <path d="M156 184 l11 -5 m-11 5 l9 8" fill="none" stroke="var(--primary)" stroke-width="1.6"/>
+        <!-- OBSERVE -> THINK (vermilion) -->
+        <path d="M90 148 C80 110 110 78 152 64" fill="none" stroke="var(--tertiary)" stroke-width="2"/>
+        <path d="M152 64 l-13 1 m13 -1 l-7 -10" fill="none" stroke="var(--tertiary)" stroke-width="2"/>
+      </svg>
+      <div class="caption">Fig. 1. The basic loop. Note that OBSERVE returns to THINK; this is what makes the architecture a controller, not a pipeline.</div>
+    </div>
+  </div>
+  <div class="numeral">ii</div>
+</section>
+
+<!-- SLIDE 3 -->
+<section class="slide">
+  <div class="label">§ 2. A WORKED TRACE</div>
+  <h2 class="sectitle">§ 2. A Worked Trace</h2>
+  <div class="trace-query">Query: "What was the closing price of NVDA the day after Jensen Huang's 2024 keynote?"</div>
+
+  <div class="trace-step">
+    <div class="trace-main">
+      <div class="trace-line"><span class="ann-key">THOUGHT&nbsp;</span> I need the date of Jensen Huang's 2024 keynote first.</div>
+      <div class="trace-line"><span class="ann-key">ACTION&nbsp;&nbsp;</span> search("Jensen Huang 2024 keynote date")</div>
+      <div class="trace-line"><span class="ann-key">OBSERVE&nbsp;</span> GTC keynote held 18 March 2024.</div>
+    </div>
+    <div class="trace-note">The model decomposes; it cannot price what it cannot date.</div>
+  </div>
+
+  <div class="trace-step">
+    <div class="trace-main">
+      <div class="trace-line"><span class="ann-key">THOUGHT&nbsp;</span> "Day after" means the next trading day, 19 March.</div>
+      <div class="trace-line"><span class="ann-key">ACTION&nbsp;&nbsp;</span> calendar.next_trading_day("2024-03-18")</div>
+      <div class="trace-line"><span class="ann-key">OBSERVE&nbsp;</span> 2024-03-19 (Tuesday, market open).</div>
+    </div>
+    <div class="trace-note">Calendar reasoning is offloaded — a weekend would shift this.</div>
+  </div>
+
+  <div class="trace-step">
+    <div class="trace-main">
+      <div class="trace-line"><span class="ann-key">THOUGHT&nbsp;</span> Now fetch NVDA's close on that date.</div>
+      <div class="trace-line"><span class="ann-key">ACTION&nbsp;&nbsp;</span> prices.close("NVDA", "2024-03-19")</div>
+      <div class="trace-line"><span class="ann-key">OBSERVE&nbsp;</span> $89.78 (split-adjusted close).</div>
+    </div>
+    <div class="trace-note">A second tool, parameterized by the first tool's output.</div>
+  </div>
+
+  <div class="trace-step">
+    <div class="trace-main">
+      <div class="trace-line"><span class="ann-key">THOUGHT&nbsp;</span> I have a dated, source-backed figure. I can answer.</div>
+      <div class="trace-line"><span class="ann-key">ACTION&nbsp;&nbsp;</span> finish("NVDA closed at $89.78 on 19 Mar 2024.")</div>
+    </div>
+    <div class="trace-note">Termination is itself an action — the loop must elect to stop.</div>
+  </div>
+
+  <div class="numeral">iii</div>
+</section>
+
+<!-- SLIDE 4 -->
+<section class="slide">
+  <div class="label">§ 3. FOUR ARCHITECTURES</div>
+  <h2 class="sectitle">§ 3. Four Architectures</h2>
+  <div class="grid2">
+
+    <!-- REACT -->
+    <div class="cell">
+      <svg viewBox="0 0 320 150" width="100%" height="100%">
+        <rect x="30" y="20" width="80" height="38" fill="none" stroke="var(--primary)" stroke-width="1.5"/>
+        <text x="70" y="44" text-anchor="middle">THINK</text>
+        <rect x="200" y="20" width="80" height="38" fill="none" stroke="var(--primary)" stroke-width="1.5"/>
+        <text x="240" y="44" text-anchor="middle">ACT</text>
+        <rect x="115" y="95" width="90" height="38" fill="none" stroke="var(--primary)" stroke-width="1.5"/>
+        <text x="160" y="119" text-anchor="middle">OBSERVE</text>
+        <path d="M112 38 L197 38" fill="none" stroke="var(--primary)" stroke-width="1.5"/>
+        <path d="M197 38 l-9 -4 m9 4 l-9 4" stroke="var(--primary)" stroke-width="1.5" fill="none"/>
+        <path d="M238 60 C220 86 200 92 180 96" fill="none" stroke="var(--primary)" stroke-width="1.5"/>
+        <path d="M180 96 l9 -2 m-9 2 l6 7" stroke="var(--primary)" stroke-width="1.5" fill="none"/>
+        <path d="M134 95 C100 84 66 78 68 60" fill="none" stroke="var(--tertiary)" stroke-width="1.8"/>
+        <path d="M68 60 l-4 9 m4 -9 l5 8" stroke="var(--tertiary)" stroke-width="1.8" fill="none"/>
+      </svg>
+      <div class="caption">Fig. 2a. REACT — the bare cycle.</div>
+    </div>
+
+    <!-- REFLEXION -->
+    <div class="cell">
+      <svg viewBox="0 0 320 150" width="100%" height="100%">
+        <rect x="20" y="20" width="72" height="34" fill="none" stroke="var(--primary)" stroke-width="1.5"/>
+        <text x="56" y="42" text-anchor="middle">THINK</text>
+        <rect x="170" y="20" width="60" height="34" fill="none" stroke="var(--primary)" stroke-width="1.5"/>
+        <text x="200" y="42" text-anchor="middle">ACT</text>
+        <rect x="100" y="90" width="86" height="34" fill="none" stroke="var(--primary)" stroke-width="1.5"/>
+        <text x="143" y="112" text-anchor="middle">OBSERVE</text>
+        <rect x="248" y="90" width="66" height="34" fill="none" stroke="var(--tertiary)" stroke-width="1.8"/>
+        <text x="281" y="112" text-anchor="middle">MEMORY</text>
+        <path d="M94 36 L167 36" stroke="var(--primary)" stroke-width="1.5" fill="none"/>
+        <path d="M167 36 l-9 -4 m9 4 l-9 4" stroke="var(--primary)" stroke-width="1.5" fill="none"/>
+        <path d="M198 56 C180 78 165 84 150 88" stroke="var(--primary)" stroke-width="1.5" fill="none"/>
+        <path d="M150 88 l9 -2 m-9 2 l6 7" stroke="var(--primary)" stroke-width="1.5" fill="none"/>
+        <path d="M186 108 L246 108" stroke="var(--tertiary)" stroke-width="1.8" fill="none"/>
+        <path d="M246 108 l-9 -4 m9 4 l-9 4" stroke="var(--tertiary)" stroke-width="1.8" fill="none"/>
+        <path d="M280 90 C282 62 130 50 60 54" stroke="var(--tertiary)" stroke-width="1.8" fill="none"/>
+        <path d="M60 54 l9 -3 m-9 3 l8 5" stroke="var(--tertiary)" stroke-width="1.8" fill="none"/>
+      </svg>
+      <div class="caption">Fig. 2b. REFLEXION — a MEMORY node feeds lessons back into THINK.</div>
+    </div>
+
+    <!-- PLAN AND EXECUTE -->
+    <div class="cell">
+      <svg viewBox="0 0 320 150" width="100%" height="100%">
+        <rect x="14" y="50" width="64" height="38" fill="none" stroke="var(--tertiary)" stroke-width="1.8"/>
+        <text x="46" y="74" text-anchor="middle">PLAN</text>
+        <rect x="130" y="20" width="72" height="34" fill="none" stroke="var(--primary)" stroke-width="1.5"/>
+        <text x="166" y="42" text-anchor="middle">THINK</text>
+        <rect x="248" y="20" width="60" height="34" fill="none" stroke="var(--primary)" stroke-width="1.5"/>
+        <text x="278" y="42" text-anchor="middle">ACT</text>
+        <rect x="160" y="100" width="86" height="34" fill="none" stroke="var(--primary)" stroke-width="1.5"/>
+        <text x="203" y="122" text-anchor="middle">OBSERVE</text>
+        <path d="M78 64 C110 56 120 48 128 42" stroke="var(--tertiary)" stroke-width="1.8" fill="none"/>
+        <path d="M128 42 l-3 9 m3 -9 l8 4" stroke="var(--tertiary)" stroke-width="1.8" fill="none"/>
+        <path d="M204 36 L245 36" stroke="var(--primary)" stroke-width="1.5" fill="none"/>
+        <path d="M245 36 l-9 -4 m9 4 l-9 4" stroke="var(--primary)" stroke-width="1.5" fill="none"/>
+        <path d="M276 56 C260 84 240 92 222 98" stroke="var(--primary)" stroke-width="1.5" fill="none"/>
+        <path d="M222 98 l9 -2 m-9 2 l6 7" stroke="var(--primary)" stroke-width="1.5" fill="none"/>
+        <path d="M192 100 C180 78 175 64 168 56" stroke="var(--primary)" stroke-width="1.5" fill="none"/>
+        <path d="M168 56 l-4 8 m4 -8 l5 7" stroke="var(--primary)" stroke-width="1.5" fill="none"/>
+      </svg>
+      <div class="caption">Fig. 2c. PLAN-AND-EXECUTE — a PLAN node feeds the cycle.</div>
+    </div>
+
+    <!-- TREE OF THOUGHTS -->
+    <div class="cell">
+      <svg viewBox="0 0 320 150" width="100%" height="100%">
+        <rect x="120" y="14" width="80" height="34" fill="none" stroke="var(--primary)" stroke-width="1.5"/>
+        <text x="160" y="36" text-anchor="middle">THINK</text>
+        <rect x="20" y="74" width="84" height="32" fill="none" stroke="var(--primary)" stroke-width="1.5"/>
+        <text x="62" y="95" text-anchor="middle">THINK·a</text>
+        <rect x="216" y="74" width="84" height="32" fill="none" stroke="var(--primary)" stroke-width="1.5"/>
+        <text x="258" y="95" text-anchor="middle">THINK·b</text>
+        <rect x="118" y="120" width="84" height="28" fill="none" stroke="var(--primary)" stroke-width="1.5"/>
+        <text x="160" y="139" text-anchor="middle">ACT</text>
+        <path d="M140 48 L70 72" stroke="var(--primary)" stroke-width="1.5" fill="none"/>
+        <path d="M70 72 l3 -9 m-3 9 l9 -1" stroke="var(--primary)" stroke-width="1.5" fill="none"/>
+        <path d="M180 48 L250 72" stroke="var(--primary)" stroke-width="1.5" fill="none"/>
+        <path d="M250 72 l-9 -1 m9 1 l-3 -9" stroke="var(--primary)" stroke-width="1.5" fill="none"/>
+        <path d="M80 106 C110 122 120 126 130 130" stroke="var(--tertiary)" stroke-width="1.8" fill="none"/>
+        <path d="M130 130 l-9 0 m9 0 l-6 -6" stroke="var(--tertiary)" stroke-width="1.8" fill="none"/>
+        <path d="M240 106 C210 122 200 126 190 130" stroke="var(--primary)" stroke-width="1.5" fill="none"/>
+        <path d="M190 130 l9 0 m-9 0 l6 -6" stroke="var(--primary)" stroke-width="1.5" fill="none"/>
+      </svg>
+      <div class="caption">Fig. 2d. TREE-OF-THOUGHTS — THINK branches into two before acting.</div>
+    </div>
+
+  </div>
+  <div class="numeral">iv</div>
+</section>
+
+<!-- SLIDE 5 -->
+<section class="slide">
+  <div class="label">§ 4. WHERE LOOPS FAIL</div>
+  <h2 class="sectitle">§ 4. Where Loops Fail</h2>
+  <div class="two-col">
+    <div class="col-text">
+      <p class="body">Each iteration appends to the context: the thought, the action, the observation, all of it kept so the model can reason over its own history. The cost is silent and compounding. Early iterations add little; later ones drag the full transcript along. The curve of tokens against iterations does not climb steadily — it inflects, bending upward as observations accumulate and re-enter the prompt. Long before the hard token limit, the effective limit arrives.</p>
+    </div>
+    <div class="col-fig">
+      <svg viewBox="0 0 460 320" width="100%" height="300">
+        <!-- axes -->
+        <path d="M50 20 L50 250 L430 250" fill="none" stroke="var(--primary)" stroke-width="1.5"/>
+        <text x="20" y="135" transform="rotate(-90 20 135)" text-anchor="middle">TOKENS</text>
+        <!-- x ticks -->
+        <text x="50" y="270" text-anchor="middle">0</text>
+        <text x="125" y="270" text-anchor="middle">5</text>
+        <text x="200" y="270" text-anchor="middle">10</text>
+        <text x="275" y="270" text-anchor="middle">15</text>
+        <text x="350" y="270" text-anchor="middle">20</text>
+        <text x="425" y="270" text-anchor="middle">25 ITER</text>
+        <!-- curve -->
+        <path d="M50 245 C120 238 175 222 215 195 C255 168 285 120 320 70 C345 40 375 28 410 25" fill="none" stroke="var(--primary)" stroke-width="1.8"/>
+        <!-- inflection marker (vermilion) -->
+        <circle cx="240" cy="178" r="5" fill="none" stroke="var(--tertiary)" stroke-width="1.8"/>
+        <path d="M245 178 L340 130" stroke="var(--tertiary)" stroke-width="1.5" fill="none"/>
+      </svg>
+      <div class="caption" style="color:var(--tertiary);max-width:380px;">Most production agents fail somewhere in this region — not because the model is incapable, but because the context has become longer than the model's effective attention.</div>
+    </div>
+  </div>
+  <div class="numeral">v</div>
+</section>
+
+<!-- SLIDE 6 -->
+<section class="slide">
+  <div class="label">§ 5. THE LOOP, IN CODE</div>
+  <h2 class="sectitle">§ 5. The Loop, in Code</h2>
+  <div class="code-row">
+    <div class="code-block">
+<div class="code">def react(goal, tools, llm, max_iters=20):
+    history = []
+    for step in range(max_iters):
+
+        thought = llm.think(goal, history)
+        history.append(("THOUGHT", thought))
+
+        action = llm.decide_action(thought)
+        if action.name == "finish":
+            return action.answer
+
+        result = tools[action.name](
+            **action.args
+        )
+
+        observation = format_obs(result)
+        history.append(("ACTION", action))
+        history.append(("OBSERVE", observation))
+
+    raise LoopExhausted(
+        "no answer within max_iters"
+    )</div>
+    </div>
+    <div class="code-notes">
+      <div class="code-note"><strong>THINK.</strong> The model writes its reasoning over the goal and full history before committing to anything.</div>
+      <div class="code-note"><strong>ACT.</strong> A single tool call is selected and executed; "finish" is the one action that exits the loop.</div>
+      <div class="code-note"><strong>OBSERVE.</strong> The tool's return is formatted and appended, becoming input to the next THINK.</div>
+    </div>
+  </div>
+  <p class="closing-remark">The structure strictly interleaves reasoning and action. Forcing the model to externalize its thought before acting gives the system interpretability and reduces hallucinated state changes.</p>
+  <div class="numeral">vi</div>
+</section>
+
+<!-- SLIDE 7 -->
+<section class="slide">
+  <div class="label">§ 6. ENDING</div>
+  <h2 class="sectitle">§ 6. Ending</h2>
+  <p class="ending-line">The architecture is the loop. Everything else is a refinement of how the loop decides what to do next.</p>
+  <div class="refs">
+    [01]&nbsp; Smith et al. (1983). The Cybernetic Loop. Journal of Control Systems.<br>
+    [02]&nbsp; Yao et al. (2023). ReAct: Synergizing Reasoning and Acting in Language Models.<br>
+    [03]&nbsp; Shinn et al. (2023). Reflexion: Language Agents with Verbal Reinforcement Learning.
+  </div>
+  <div class="numeral">vii</div>
+</section>
+
+</body>
+</html>

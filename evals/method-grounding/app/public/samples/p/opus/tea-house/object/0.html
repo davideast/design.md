@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kettle &amp; Leaf</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Libre+Franklin:wght@400;700&family=Source+Serif+4:ital,wght@0,400;0,700;1,400&family=IBM+Plex+Mono:wght@400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --primary: #1B1B1B;
+    --secondary: #6E675C;
+    --tertiary: #E8590C;
+    --neutral: #F4EFE6;
+    --sm: 8px;
+    --md: 16px;
+    --lg: 32px;
+    --xl: 64px;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { background: var(--neutral); }
+  body {
+    color: var(--primary);
+    font-family: 'Source Serif 4', serif;
+    -webkit-font-smoothing: antialiased;
+  }
+  .jacket {
+    max-width: 980px;
+    margin: var(--lg) auto;
+    background: var(--neutral);
+    padding: var(--xl);
+    border: 1px solid var(--primary);
+  }
+
+  /* Title */
+  .title {
+    font-family: 'Libre Franklin', sans-serif;
+    font-weight: 700;
+    font-size: 44px;
+    line-height: 1.05;
+    letter-spacing: -0.01em;
+  }
+  .welcome {
+    font-family: 'Libre Franklin', sans-serif;
+    font-weight: 700;
+    font-size: 44px;
+    line-height: 1.05;
+    letter-spacing: -0.01em;
+    color: var(--secondary);
+    margin-top: var(--sm);
+    max-width: 16ch;
+  }
+  .title-rule {
+    border: none;
+    border-top: 3px solid var(--tertiary);
+    margin: var(--lg) 0;
+  }
+
+  /* Middle: two columns */
+  .middle {
+    display: grid;
+    grid-template-columns: 1.1fr 1fr;
+    gap: var(--xl);
+    margin-top: var(--lg);
+  }
+
+  .label {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 12px;
+    font-weight: 400;
+    line-height: 1.4;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--secondary);
+  }
+
+  .listing-head {
+    display: flex;
+    align-items: baseline;
+    gap: var(--sm);
+    margin-bottom: var(--md);
+  }
+  .listing-head .bullet { color: var(--tertiary); font-weight: 700; }
+
+  .track {
+    margin-bottom: var(--md);
+    font-family: 'Source Serif 4', serif;
+    font-size: 16px;
+    line-height: 1.65;
+  }
+  .track .name {
+    font-weight: 700;
+  }
+  .track .detail {
+    color: var(--secondary);
+  }
+
+  .essay {
+    font-family: 'Source Serif 4', serif;
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 1.65;
+  }
+  .essay .label { display: block; margin-bottom: var(--md); }
+  .essay p { font-weight: 400; }
+  .essay p + p { margin-top: var(--md); }
+
+  /* Catalogue data: quiet hours + address */
+  .catalogue {
+    margin-top: var(--xl);
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--xl);
+  }
+  table {
+    border-collapse: collapse;
+    width: 100%;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 12px;
+    line-height: 1.4;
+    letter-spacing: 0.08em;
+  }
+  caption {
+    text-align: left;
+    color: var(--secondary);
+    text-transform: uppercase;
+    margin-bottom: var(--sm);
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 12px;
+    letter-spacing: 0.08em;
+  }
+  th, td {
+    text-align: left;
+    padding: 4px var(--md) 4px 0;
+    color: var(--primary);
+  }
+  td.day { color: var(--secondary); }
+
+  .map .label { display: block; margin-bottom: var(--sm); }
+  .map .address {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 12px;
+    letter-spacing: 0.08em;
+    color: var(--primary);
+  }
+
+  /* Footer credits */
+  .credits {
+    margin-top: var(--xl);
+    border-top: 1px solid var(--secondary);
+    padding-top: var(--md);
+    display: flex;
+    justify-content: space-between;
+    gap: var(--lg);
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 12px;
+    letter-spacing: 0.08em;
+    color: var(--secondary);
+    text-transform: uppercase;
+  }
+  .credits span.k { color: var(--primary); }
+</style>
+</head>
+<body>
+  <div class="jacket">
+
+    <h1 class="title">Kettle &amp; Leaf</h1>
+    <p class="welcome">Pull up a chair; the pot is already warm.</p>
+
+    <hr class="title-rule">
+
+    <div class="middle">
+
+      <section class="listing">
+        <div class="listing-head">
+          <span class="bullet">●</span>
+          <span class="label">Brewed today — Tuesday</span>
+        </div>
+
+        <p class="track">
+          <span class="name">Alishan High Mountain Oolong.</span>
+          <span class="detail"> Nantou, Taiwan — buttery, with a long finish of orchid and cream.</span>
+        </p>
+        <p class="track">
+          <span class="name">Nandi Hills Purple.</span>
+          <span class="detail"> Rift Valley, Kenya — bright and plum-skinned, a clean tannic snap.</span>
+        </p>
+        <p class="track">
+          <span class="name">Roasted Tieguanyin.</span>
+          <span class="detail"> Fujian, China — toasted chestnut, dark honey, a whisper of smoke.</span>
+        </p>
+      </section>
+
+      <section class="essay">
+        <span class="label">From the owner</span>
+        <p>Every spring I close the shop for three weeks and go to the source. In the cool hills above Nantou I sit with the same family I have bought from for nine years, drinking the season's first oolong as it comes off the roaster, choosing by the cup rather than the catalogue.</p>
+        <p>Later in the year the trip turns to the Rift Valley in Kenya, where smallholder gardens grow the strange purple-leaf cultivars almost no one else carries. I bring back only what I would happily pour for a friend — which is to say, everything you find steeping here.</p>
+      </section>
+
+    </div>
+
+    <div class="catalogue">
+
+      <section class="hours-table">
+        <table>
+          <caption>Quiet hours — no music, low voices</caption>
+          <thead>
+            <tr><th>Day</th><th>Begins</th><th>Ends</th></tr>
+          </thead>
+          <tbody>
+            <tr><td class="day">Monday</td><td>8:00</td><td>11:00</td></tr>
+            <tr><td class="day">Tuesday</td><td>14:00</td><td>16:00</td></tr>
+            <tr><td class="day">Wednesday</td><td>8:00</td><td>11:00</td></tr>
+            <tr><td class="day">Thursday</td><td>14:00</td><td>16:00</td></tr>
+            <tr><td class="day">Friday</td><td>8:00</td><td>10:00</td></tr>
+            <tr><td class="day">Saturday</td><td>9:00</td><td>12:00</td></tr>
+            <tr><td class="day">Sunday</td><td>All day</td><td>—</td></tr>
+          </tbody>
+        </table>
+      </section>
+
+      <section class="map">
+        <span class="label">Find us</span>
+        <p class="address">412 Maple Row — corner of Maple &amp; Fifth, ground floor, green door.</p>
+      </section>
+
+    </div>
+
+    <footer class="credits">
+      <div>
+        <span class="k">Open</span> Mon–Fri 7:00–18:00 · Sat 8:00–17:00 · Sun 9:00–15:00
+      </div>
+      <div>
+        <span class="k">Call</span> (503) 555-0142
+      </div>
+    </footer>
+
+  </div>
+</body>
+</html>

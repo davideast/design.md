@@ -1,0 +1,928 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Tracks of Washington DC</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,500;0,9..144,600;0,9..144,700;1,9..144,300;1,9..144,400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #1a1410;
+    --paper: #f1ece2;
+    --paper-warm: #e8dfd0;
+    --terracotta: #b8533a;
+    --terracotta-deep: #8a3a26;
+    --rust: #6b2a18;
+    --bone: #d9cdb8;
+    --mute: #6b5d4d;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html, body {
+    background: var(--paper);
+    color: var(--ink);
+    font-family: 'Inter', sans-serif;
+    font-weight: 400;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+
+  .panel {
+    position: relative;
+    min-height: 100vh;
+    width: 100%;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+  }
+
+  /* ───────── Panel 1 — Hero ───────── */
+  .panel-hero {
+    background: var(--ink);
+    color: var(--paper);
+    justify-content: flex-end;
+  }
+  .hero-bg {
+    position: absolute;
+    inset: 0;
+    background-image: url('https://picsum.photos/seed/terrtrack-dawn-aerial-7/1920/1200');
+    background-size: cover;
+    background-position: center;
+    filter: saturate(0.85) contrast(1.05) brightness(0.78);
+  }
+  .hero-bg::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background:
+      linear-gradient(180deg, rgba(26,20,16,0.45) 0%, rgba(26,20,16,0.1) 35%, rgba(26,20,16,0.78) 100%),
+      radial-gradient(ellipse at 50% 30%, rgba(184,83,58,0.18), transparent 60%);
+  }
+  .hero-meta {
+    position: absolute;
+    top: 2.5rem;
+    left: 2.5rem;
+    right: 2.5rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-family: 'Inter', sans-serif;
+    font-size: 0.7rem;
+    font-weight: 500;
+    letter-spacing: 0.32em;
+    text-transform: uppercase;
+    color: var(--bone);
+    z-index: 3;
+  }
+  .hero-meta .crest {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+  }
+  .hero-meta .crest .mark {
+    width: 22px; height: 22px;
+    border: 1px solid var(--bone);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .hero-meta .crest .mark::after {
+    content: '';
+    width: 6px; height: 6px;
+    background: var(--terracotta);
+    border-radius: 50%;
+  }
+  .hero-content {
+    position: relative;
+    z-index: 2;
+    padding: 0 3rem 4rem;
+    max-width: 1200px;
+  }
+  .hero-edition {
+    font-size: 0.72rem;
+    letter-spacing: 0.4em;
+    text-transform: uppercase;
+    color: var(--terracotta);
+    margin-bottom: 1.75rem;
+    font-weight: 500;
+  }
+  .hero-title {
+    font-family: 'Fraunces', serif;
+    font-weight: 400;
+    font-size: clamp(3rem, 8vw, 7.5rem);
+    line-height: 0.95;
+    letter-spacing: -0.02em;
+    margin-bottom: 1.75rem;
+    font-variation-settings: "opsz" 144;
+  }
+  .hero-title .of {
+    font-style: italic;
+    font-weight: 300;
+    color: var(--bone);
+  }
+  .hero-sub {
+    font-family: 'Fraunces', serif;
+    font-style: italic;
+    font-weight: 300;
+    font-size: clamp(1.05rem, 1.7vw, 1.4rem);
+    line-height: 1.45;
+    max-width: 38rem;
+    color: var(--bone);
+    margin-bottom: 3rem;
+  }
+  .hero-cta {
+    display: inline-flex;
+    align-items: center;
+    gap: 1.5rem;
+    padding: 1.1rem 2rem 1.1rem 2.25rem;
+    border: 1px solid var(--paper);
+    background: transparent;
+    color: var(--paper);
+    text-decoration: none;
+    font-size: 0.75rem;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    font-weight: 500;
+    transition: background 0.4s ease, color 0.4s ease, padding 0.4s ease;
+    cursor: pointer;
+  }
+  .hero-cta:hover {
+    background: var(--paper);
+    color: var(--ink);
+    padding-right: 2.5rem;
+  }
+  .hero-cta .arrow {
+    width: 28px;
+    height: 1px;
+    background: currentColor;
+    position: relative;
+  }
+  .hero-cta .arrow::after {
+    content: '';
+    position: absolute;
+    right: 0; top: -3px;
+    width: 7px; height: 7px;
+    border-top: 1px solid currentColor;
+    border-right: 1px solid currentColor;
+    transform: rotate(45deg);
+  }
+  .hero-sidemark {
+    position: absolute;
+    right: 2.5rem;
+    bottom: 4rem;
+    z-index: 2;
+    writing-mode: vertical-rl;
+    transform: rotate(180deg);
+    font-size: 0.65rem;
+    letter-spacing: 0.4em;
+    text-transform: uppercase;
+    color: var(--bone);
+    opacity: 0.7;
+  }
+
+  /* ───────── Panel 2 & 4 — Track editorial ───────── */
+  .panel-track {
+    flex-direction: row;
+    background: var(--paper);
+  }
+  .panel-track .image-side {
+    flex: 1 1 55%;
+    background-size: cover;
+    background-position: center;
+    position: relative;
+  }
+  .panel-track .image-side::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(180deg, rgba(26,20,16,0.15) 0%, transparent 30%, transparent 70%, rgba(26,20,16,0.25) 100%);
+  }
+  .panel-track .text-side {
+    flex: 1 1 45%;
+    padding: 5rem 4.5rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    position: relative;
+    background: var(--paper);
+  }
+  .panel-track.mirror .image-side { order: 2; }
+  .panel-track.mirror .text-side { order: 1; }
+  .track-number {
+    position: absolute;
+    top: 3rem;
+    right: 4.5rem;
+    font-family: 'Fraunces', serif;
+    font-style: italic;
+    font-weight: 300;
+    font-size: 0.95rem;
+    color: var(--terracotta);
+    letter-spacing: 0.05em;
+  }
+  .panel-track.mirror .track-number {
+    right: auto;
+    left: 4.5rem;
+  }
+  .eyebrow {
+    font-size: 0.7rem;
+    font-weight: 600;
+    letter-spacing: 0.32em;
+    text-transform: uppercase;
+    color: var(--terracotta);
+    margin-bottom: 2rem;
+    display: flex;
+    align-items: center;
+    gap: 0.85rem;
+  }
+  .eyebrow::before {
+    content: '';
+    width: 28px;
+    height: 1px;
+    background: var(--terracotta);
+  }
+  .track-headline {
+    font-family: 'Fraunces', serif;
+    font-weight: 400;
+    font-size: clamp(2.2rem, 3.6vw, 3.4rem);
+    line-height: 1.05;
+    letter-spacing: -0.015em;
+    margin-bottom: 2rem;
+    color: var(--ink);
+    font-variation-settings: "opsz" 96;
+  }
+  .track-headline em {
+    font-style: italic;
+    font-weight: 300;
+    color: var(--terracotta-deep);
+  }
+  .track-body {
+    font-family: 'Fraunces', serif;
+    font-weight: 400;
+    font-size: 1.05rem;
+    line-height: 1.65;
+    color: var(--mute);
+    margin-bottom: 2.75rem;
+    max-width: 32rem;
+  }
+  .track-data {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.5rem;
+    padding-top: 2rem;
+    border-top: 1px solid var(--bone);
+    max-width: 32rem;
+  }
+  .track-data .label {
+    font-size: 0.62rem;
+    font-weight: 600;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--mute);
+    margin-bottom: 0.5rem;
+  }
+  .track-data .value {
+    font-family: 'Fraunces', serif;
+    font-size: 1.3rem;
+    font-weight: 500;
+    color: var(--ink);
+    letter-spacing: -0.01em;
+  }
+  .track-data .value .unit {
+    font-size: 0.75rem;
+    color: var(--mute);
+    font-weight: 400;
+    letter-spacing: 0.05em;
+  }
+
+  /* Georgetown image */
+  .panel-georgetown .image-side {
+    background-image: url('https://picsum.photos/seed/georgetown-waterfront-track-3/1400/1600');
+  }
+  /* Anacostia image */
+  .panel-anacostia .image-side {
+    background-image: url('https://picsum.photos/seed/anacostia-park-track-9/1400/1600');
+  }
+
+  .image-caption {
+    position: absolute;
+    bottom: 2rem;
+    left: 2rem;
+    z-index: 2;
+    color: var(--paper);
+    font-size: 0.62rem;
+    letter-spacing: 0.28em;
+    text-transform: uppercase;
+    font-weight: 500;
+    opacity: 0.85;
+  }
+
+  /* ───────── Panel 3 — Pull quote ───────── */
+  .panel-quote {
+    background: var(--ink);
+    color: var(--paper);
+    position: relative;
+  }
+  .quote-bg {
+    position: absolute;
+    inset: 0;
+    background-image: url('https://picsum.photos/seed/runner-back-stride-cinema-5/1920/1080');
+    background-size: cover;
+    background-position: center 40%;
+    filter: contrast(1.1) saturate(0.7) brightness(0.55);
+  }
+  .quote-bg::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background:
+      linear-gradient(90deg, rgba(26,20,16,0.85) 0%, rgba(26,20,16,0.35) 50%, rgba(26,20,16,0.7) 100%);
+  }
+  .quote-content {
+    position: relative;
+    z-index: 2;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 0 8vw;
+    max-width: 1400px;
+    margin: 0 auto;
+  }
+  .quote-mark {
+    font-family: 'Fraunces', serif;
+    font-style: italic;
+    font-weight: 300;
+    font-size: 6rem;
+    line-height: 0.6;
+    color: var(--terracotta);
+    margin-bottom: 1.5rem;
+  }
+  .pull-quote {
+    font-family: 'Fraunces', serif;
+    font-weight: 300;
+    font-style: italic;
+    font-size: clamp(1.8rem, 4.2vw, 3.6rem);
+    line-height: 1.2;
+    letter-spacing: -0.01em;
+    max-width: 24ch;
+    color: var(--paper);
+  }
+  .pull-quote .accent {
+    color: var(--terracotta);
+    font-style: normal;
+    font-weight: 400;
+  }
+  .quote-attribution {
+    margin-top: 3rem;
+    font-size: 0.7rem;
+    letter-spacing: 0.32em;
+    text-transform: uppercase;
+    color: var(--bone);
+    opacity: 0.75;
+  }
+  .quote-chapter {
+    position: absolute;
+    top: 3rem;
+    right: 4rem;
+    z-index: 2;
+    font-family: 'Fraunces', serif;
+    font-style: italic;
+    font-weight: 300;
+    font-size: 0.9rem;
+    color: var(--bone);
+    opacity: 0.7;
+  }
+
+  /* ───────── Panel 5 — Map ───────── */
+  .panel-map {
+    background: var(--paper-warm);
+    padding: 5rem 4rem;
+    flex-direction: column;
+  }
+  .map-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    margin-bottom: 3.5rem;
+    border-bottom: 1px solid var(--bone);
+    padding-bottom: 2rem;
+  }
+  .map-header .title-block .eyebrow { margin-bottom: 1.25rem; }
+  .map-header .title-block h2 {
+    font-family: 'Fraunces', serif;
+    font-weight: 400;
+    font-size: clamp(2rem, 3.5vw, 3rem);
+    line-height: 1;
+    letter-spacing: -0.015em;
+    color: var(--ink);
+  }
+  .map-header .title-block h2 em {
+    font-style: italic;
+    color: var(--terracotta-deep);
+    font-weight: 300;
+  }
+  .map-header .legend {
+    font-size: 0.65rem;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--mute);
+    text-align: right;
+    line-height: 1.8;
+  }
+  .map-container {
+    flex: 1;
+    display: grid;
+    grid-template-columns: 1.6fr 1fr;
+    gap: 3rem;
+    min-height: 60vh;
+  }
+  .map-svg-wrap {
+    position: relative;
+    background: var(--paper);
+    border: 1px solid var(--bone);
+    padding: 1.5rem;
+  }
+  .map-svg-wrap svg { width: 100%; height: 100%; display: block; }
+  .map-corner {
+    position: absolute;
+    font-size: 0.55rem;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--mute);
+    font-weight: 500;
+  }
+  .map-corner.tl { top: 0.75rem; left: 0.85rem; }
+  .map-corner.br { bottom: 0.75rem; right: 0.85rem; font-style: italic; font-family: 'Fraunces', serif; text-transform: none; letter-spacing: 0.05em; }
+
+  .map-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+  }
+  .map-list-item {
+    display: grid;
+    grid-template-columns: 1.4rem 1fr auto;
+    gap: 1rem;
+    padding: 1.1rem 0;
+    border-bottom: 1px solid var(--bone);
+    align-items: baseline;
+  }
+  .map-list-item:first-child { border-top: 1px solid var(--bone); }
+  .map-list-item .dot {
+    width: 9px; height: 9px;
+    background: var(--terracotta);
+    border-radius: 50%;
+    margin-top: 0.4rem;
+    position: relative;
+  }
+  .map-list-item .dot::after {
+    content: '';
+    position: absolute;
+    inset: -4px;
+    border: 1px solid var(--terracotta);
+    border-radius: 50%;
+    opacity: 0.35;
+  }
+  .map-list-item .name {
+    font-family: 'Fraunces', serif;
+    font-size: 1.05rem;
+    font-weight: 500;
+    color: var(--ink);
+    letter-spacing: -0.005em;
+  }
+  .map-list-item .name .ward {
+    font-size: 0.62rem;
+    font-family: 'Inter', sans-serif;
+    font-weight: 500;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--mute);
+    margin-left: 0.5rem;
+  }
+  .map-list-item .meta {
+    font-size: 0.7rem;
+    color: var(--mute);
+    letter-spacing: 0.04em;
+    text-align: right;
+    line-height: 1.5;
+  }
+  .map-list-item .meta .surface {
+    display: block;
+    font-style: italic;
+    font-family: 'Fraunces', serif;
+    color: var(--terracotta-deep);
+    font-size: 0.78rem;
+  }
+
+  /* ───────── Panel 6 — Guide ───────── */
+  .panel-guide {
+    background: var(--ink);
+    color: var(--paper);
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding: 5rem 2rem;
+    position: relative;
+  }
+  .panel-guide::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(ellipse at 50% 50%, rgba(184,83,58,0.15), transparent 60%),
+      radial-gradient(circle at 20% 80%, rgba(184,83,58,0.08), transparent 40%);
+  }
+  .guide-inner {
+    position: relative;
+    z-index: 2;
+    max-width: 720px;
+  }
+  .guide-eyebrow {
+    font-size: 0.7rem;
+    letter-spacing: 0.4em;
+    text-transform: uppercase;
+    color: var(--terracotta);
+    margin-bottom: 2.5rem;
+    font-weight: 500;
+  }
+  .guide-title {
+    font-family: 'Fraunces', serif;
+    font-weight: 400;
+    font-size: clamp(2.8rem, 7vw, 5.5rem);
+    line-height: 1;
+    letter-spacing: -0.02em;
+    margin-bottom: 1.75rem;
+    font-variation-settings: "opsz" 144;
+  }
+  .guide-title em {
+    font-style: italic;
+    font-weight: 300;
+    color: var(--terracotta);
+  }
+  .guide-body {
+    font-family: 'Fraunces', serif;
+    font-style: italic;
+    font-weight: 300;
+    font-size: 1.1rem;
+    line-height: 1.55;
+    color: var(--bone);
+    max-width: 32rem;
+    margin: 0 auto 3rem;
+  }
+  .guide-form {
+    display: flex;
+    gap: 0;
+    max-width: 480px;
+    margin: 0 auto;
+    border-bottom: 1px solid var(--bone);
+    padding-bottom: 0.5rem;
+  }
+  .guide-form input {
+    flex: 1;
+    background: transparent;
+    border: none;
+    outline: none;
+    color: var(--paper);
+    font-family: 'Inter', sans-serif;
+    font-size: 0.95rem;
+    padding: 0.75rem 0;
+    letter-spacing: 0.02em;
+  }
+  .guide-form input::placeholder { color: rgba(217,205,184,0.5); }
+  .guide-cta {
+    background: transparent;
+    border: none;
+    color: var(--paper);
+    font-family: 'Inter', sans-serif;
+    font-size: 0.7rem;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    font-weight: 600;
+    cursor: pointer;
+    padding: 0.75rem 0 0.75rem 1.5rem;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.85rem;
+    transition: color 0.3s ease;
+  }
+  .guide-cta:hover { color: var(--terracotta); }
+  .guide-cta .arrow {
+    width: 24px; height: 1px;
+    background: currentColor;
+    position: relative;
+    transition: width 0.3s ease;
+  }
+  .guide-cta .arrow::after {
+    content: '';
+    position: absolute;
+    right: 0; top: -3px;
+    width: 6px; height: 6px;
+    border-top: 1px solid currentColor;
+    border-right: 1px solid currentColor;
+    transform: rotate(45deg);
+  }
+  .guide-cta:hover .arrow { width: 32px; }
+  .guide-footer {
+    position: absolute;
+    bottom: 2.5rem;
+    left: 0; right: 0;
+    display: flex;
+    justify-content: space-between;
+    padding: 0 3rem;
+    font-size: 0.6rem;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--bone);
+    opacity: 0.55;
+    z-index: 2;
+  }
+
+  /* ───────── Responsive ───────── */
+  @media (max-width: 900px) {
+    .panel-track { flex-direction: column; }
+    .panel-track .image-side { min-height: 50vh; flex: 1 1 50vh; }
+    .panel-track .text-side { padding: 3.5rem 2rem; }
+    .panel-track.mirror .image-side { order: 1; }
+    .panel-track.mirror .text-side { order: 2; }
+    .track-number, .panel-track.mirror .track-number { top: 2rem; right: 2rem; left: auto; }
+    .panel-map { padding: 3.5rem 1.5rem; }
+    .map-header { flex-direction: column; align-items: flex-start; gap: 1.5rem; }
+    .map-container { grid-template-columns: 1fr; }
+    .map-svg-wrap { min-height: 50vh; }
+    .hero-content { padding: 0 1.5rem 3rem; }
+    .hero-meta { left: 1.5rem; right: 1.5rem; top: 1.5rem; font-size: 0.6rem; }
+    .hero-sidemark { display: none; }
+    .quote-content { padding: 0 2rem; }
+    .quote-chapter { right: 2rem; top: 2rem; }
+    .guide-footer { flex-direction: column; gap: 0.5rem; align-items: center; padding: 0 1.5rem; text-align: center; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ═══════════ Panel 1 — Hero ═══════════ -->
+<section class="panel panel-hero" id="hero">
+  <div class="hero-bg"></div>
+
+  <header class="hero-meta">
+    <div class="crest">
+      <span class="mark"></span>
+      <span>The Tracks of Washington DC</span>
+    </div>
+    <span>Volume I · MMXXIV</span>
+  </header>
+
+  <div class="hero-content">
+    <div class="hero-edition">A Field Guide — Issue One</div>
+    <h1 class="hero-title">The Tracks<br><span class="of">of</span> Washington DC</h1>
+    <p class="hero-sub">A field guide to the city's ovals — their surfaces, their histories, their regulars.</p>
+    <a href="#georgetown" class="hero-cta">
+      Begin the Circuit
+      <span class="arrow"></span>
+    </a>
+  </div>
+
+  <div class="hero-sidemark">N 38°54′ — W 77°02′</div>
+</section>
+
+
+<!-- ═══════════ Panel 2 — Georgetown ═══════════ -->
+<section class="panel panel-track panel-georgetown" id="georgetown">
+  <div class="image-side">
+    <div class="image-caption">Pl. 01 — Georgetown Waterfront</div>
+  </div>
+  <div class="text-side">
+    <div class="track-number">No. 01 / 06</div>
+    <div class="eyebrow">Georgetown Waterfront Track</div>
+    <h2 class="track-headline">Where the river keeps the time, and the oarsmen <em>set the pace.</em></h2>
+    <p class="track-body">Tucked beneath the Key Bridge and the watchful stroke of eights from the Potomac Boat Club, this four-lane oval is the quietest quarter-mile in the District. The surface is forgiving; the view, less so — you will run slower than you intended, and you will not mind.</p>
+    <div class="track-data">
+      <div>
+        <div class="label">Distance</div>
+        <div class="value">400<span class="unit"> m</span></div>
+      </div>
+      <div>
+        <div class="label">Surface</div>
+        <div class="value">All-Weather</div>
+      </div>
+      <div>
+        <div class="label">Ward</div>
+        <div class="value">Ward 2</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ═══════════ Panel 3 — Pull Quote ═══════════ -->
+<section class="panel panel-quote" id="quote">
+  <div class="quote-bg"></div>
+  <div class="quote-chapter">Chapter III — On the Back Straight</div>
+  <div class="quote-content">
+    <div class="quote-mark">"</div>
+    <p class="pull-quote">The oval asks nothing of direction — only that you <span class="accent">return to where you began,</span> changed.</p>
+    <div class="quote-attribution">— from the Editor's Note</div>
+  </div>
+</section>
+
+
+<!-- ═══════════ Panel 4 — Anacostia ═══════════ -->
+<section class="panel panel-track panel-anacostia mirror" id="anacostia">
+  <div class="image-side">
+    <div class="image-caption">Pl. 02 — Anacostia Park</div>
+  </div>
+  <div class="text-side">
+    <div class="track-number">No. 02 / 06</div>
+    <div class="eyebrow">Anacostia Park Track</div>
+    <h2 class="track-headline">A wide, windswept oval where the city <em>finally exhales.</em></h2>
+    <p class="track-body">East of the river, the track opens onto a mile of waterfront most Washingtonians never see. Eight lanes of polyurethane, a steady off-river breeze, and the long, unbroken sightlines that make tempo runs feel like meditation. This is where the local clubs come to suffer, kindly.</p>
+    <div class="track-data">
+      <div>
+        <div class="label">Distance</div>
+        <div class="value">400<span class="unit"> m</span></div>
+      </div>
+      <div>
+        <div class="label">Surface</div>
+        <div class="value">Polyurethane</div>
+      </div>
+      <div>
+        <div class="label">Ward</div>
+        <div class="value">Ward 7</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ═══════════ Panel 5 — Map ═══════════ -->
+<section class="panel panel-map" id="circuit">
+  <div class="map-header">
+    <div class="title-block">
+      <div class="eyebrow">The Washington Circuit</div>
+      <h2>Six ovals, <em>one city.</em></h2>
+    </div>
+    <div class="legend">
+      ● Public Track<br>
+      ─ Major Avenues<br>
+      ╌ District Boundary
+    </div>
+  </div>
+
+  <div class="map-container">
+    <div class="map-svg-wrap">
+      <span class="map-corner tl">Fig. 1 — District of Columbia</span>
+      <svg viewBox="0 0 600 600" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg">
+        <!-- District boundary (diamond shape, DC is roughly square rotated) -->
+        <path d="M 80 300 L 300 80 L 520 300 L 300 520 Z" fill="none" stroke="#c9bda9" stroke-width="1" stroke-dasharray="4 4"/>
+
+        <!-- Rivers (Potomac + Anacostia) -->
+        <path d="M 60 280 Q 150 270 200 310 Q 240 360 280 380" fill="none" stroke="#a8b8a0" stroke-width="6" opacity="0.45"/>
+        <path d="M 280 380 Q 350 410 420 460 Q 480 490 540 510" fill="none" stroke="#a8b8a0" stroke-width="5" opacity="0.4"/>
+
+        <!-- Major avenues (radial from Capitol-ish center) -->
+        <line x1="300" y1="300" x2="180" y2="180" stroke="#c9bda9" stroke-width="1.2"/>
+        <line x1="300" y1="300" x2="420" y2="180" stroke="#c9bda9" stroke-width="1.2"/>
+        <line x1="300" y1="300" x2="180" y2="420" stroke="#c9bda9" stroke-width="1.2"/>
+        <line x1="300" y1="300" x2="420" y2="420" stroke="#c9bda9" stroke-width="1.2"/>
+        <line x1="300" y1="300" x2="300" y2="120" stroke="#c9bda9" stroke-width="1.2"/>
+        <line x1="300" y1="300" x2="300" y2="480" stroke="#c9bda9" stroke-width="1.2"/>
+        <line x1="300" y1="300" x2="120" y2="300" stroke="#c9bda9" stroke-width="1.2"/>
+        <line x1="300" y1="300" x2="480" y2="300" stroke="#c9bda9" stroke-width="1.2"/>
+
+        <!-- Grid streets -->
+        <g stroke="#d9cdb8" stroke-width="0.5" opacity="0.7">
+          <line x1="80" y1="220" x2="520" y2="220"/>
+          <line x1="80" y1="260" x2="520" y2="260"/>
+          <line x1="80" y1="340" x2="520" y2="340"/>
+          <line x1="80" y1="380" x2="520" y2="380"/>
+          <line x1="220" y1="80" x2="220" y2="520"/>
+          <line x1="260" y1="80" x2="260" y2="520"/>
+          <line x1="340" y1="80" x2="340" y2="520"/>
+          <line x1="380" y1="80" x2="380" y2="520"/>
+        </g>
+
+        <!-- Capitol marker -->
+        <circle cx="300" cy="300" r="3" fill="#6b5d4d"/>
+        <text x="308" y="296" font-family="Inter, sans-serif" font-size="8" fill="#6b5d4d" letter-spacing="1">U.S. CAPITOL</text>
+
+        <!-- Track points -->
+        <!-- 1 Georgetown (W) -->
+        <g>
+          <circle cx="165" cy="275" r="11" fill="none" stroke="#b8533a" stroke-width="1" opacity="0.4"/>
+          <circle cx="165" cy="275" r="5" fill="#b8533a"/>
+          <text x="165" y="258" font-family="Fraunces, serif" font-size="11" fill="#1a1410" text-anchor="middle" font-style="italic">Georgetown</text>
+          <text x="165" y="296" font-family="Inter, sans-serif" font-size="7" fill="#6b5d4d" text-anchor="middle" letter-spacing="0.5">400m · ALL-WEATHER</text>
+        </g>
+
+        <!-- 2 Anacostia (E) -->
+        <g>
+          <circle cx="420" cy="395" r="11" fill="none" stroke="#b8533a" stroke-width="1" opacity="0.4"/>
+          <circle cx="420" cy="395" r="5" fill="#b8533a"/>
+          <text x="420" y="378" font-family="Fraunces, serif" font-size="11" fill="#1a1410" text-anchor="middle" font-style="italic">Anacostia</text>
+          <text x="420" y="416" font-family="Inter, sans-serif" font-size="7" fill="#6b5d4d" text-anchor="middle" letter-spacing="0.5">400m · POLYURETHANE</text>
+        </g>
+
+        <!-- 3 Wilson (N) -->
+        <g>
+          <circle cx="305" cy="155" r="11" fill="none" stroke="#b8533a" stroke-width="1" opacity="0.4"/>
+          <circle cx="305" cy="155" r="5" fill="#b8533a"/>
+          <text x="305" y="138" font-family="Fraunces, serif" font-size="11" fill="#1a1410" text-anchor="middle" font-style="italic">Wilson HS</text>
+          <text x="305" y="176" font-family="Inter, sans-serif" font-size="7" fill="#6b5d4d" text-anchor="middle" letter-spacing="0.5">400m · LATEX</text>
+        </g>
+
+        <!-- 4 Cardozo (center-ish) -->
+        <g>
+          <circle cx="265" cy="240" r="11" fill="none" stroke="#b8533a" stroke-width="1" opacity="0.4"/>
+          <circle cx="265" cy="240" r="5" fill="#b8533a"/>
+          <text x="265" y="223" font-family="Fraunces, serif" font-size="11" fill="#1a1410" text-anchor="middle" font-style="italic">Cardozo</text>
+          <text x="265" y="261" font-family="Inter, sans-serif" font-size="7" fill="#6b5d4d" text-anchor="middle" letter-spacing="0.5">320m · ASPHALT</text>
+        </g>
+
+        <!-- 5 Kenilworth (SE) -->
+        <g>
+          <circle cx="455" cy="445" r="11" fill="none" stroke="#b8533a" stroke-width="1" opacity="0.4"/>
+          <circle cx="455" cy="445" r="5" fill="#b8533a"/>
+          <text x="455" y="468" font-family="Fraunces, serif" font-size="11" fill="#1a1410" text-anchor="middle" font-style="italic">Kenilworth</text>
+          <text x="455" y="481" font-family="Inter, sans-serif" font-size="7" fill="#6b5d4d" text-anchor="middle" letter-spacing="0.5">400m · DIRT</text>
+        </g>
+
+        <!-- 6 Spingarn (NE) -->
+        <g>
+          <circle cx="405" cy="240" r="11" fill="none" stroke="#b8533a" stroke-width="1" opacity="0.4"/>
+          <circle cx="405" cy="240" r="5" fill="#b8533a"/>
+          <text x="405" y="223" font-family="Fraunces, serif" font-size="11" fill="#1a1410" text-anchor="middle" font-style="italic">Spingarn</text>
+          <text x="405" y="261" font-family="Inter, sans-serif" font-size="7" fill="#6b5d4d" text-anchor="middle" letter-spacing="0.5">400m · CINDER</text>
+        </g>
+
+        <!-- Compass -->
+        <g transform="translate(540, 540)">
+          <line x1="0" y1="-18" x2="0" y2="18" stroke="#6b5d4d" stroke-width="0.6"/>
+          <line x1="-18" y1="0" x2="18" y2="0" stroke="#6b5d4d" stroke-width="0.6"/>
+          <text x="0" y="-22" font-family="Inter, sans-serif" font-size="8" fill="#6b5d4d" text-anchor="middle" font-weight="600">N</text>
+        </g>
+      </svg>
+      <span class="map-corner br">scale approx. 1:60,000</span>
+    </div>
+
+    <div class="map-list">
+      <div class="map-list-item">
+        <span class="dot"></span>
+        <div class="name">Georgetown Waterfront <span class="ward">W2</span></div>
+        <div class="meta">400m<span class="surface">All-Weather</span></div>
+      </div>
+      <div class="map-list-item">
+        <span class="dot"></span>
+        <div class="name">Anacostia Park <span class="ward">W7</span></div>
+        <div class="meta">400m<span class="surface">Polyurethane</span></div>
+      </div>
+      <div class="map-list-item">
+        <span class="dot"></span>
+        <div class="name">Wilson High School <span class="ward">W3</span></div>
+        <div class="meta">400m<span class="surface">Latex</span></div>
+      </div>
+      <div class="map-list-item">
+        <span class="dot"></span>
+        <div class="name">Cardozo Education Campus <span class="ward">W1</span></div>
+        <div class="meta">320m<span class="surface">Asphalt</span></div>
+      </div>
+      <div class="map-list-item">
+        <span class="dot"></span>
+        <div class="name">Kenilworth Park <span class="ward">W7</span></div>
+        <div class="meta">400m<span class="surface">Dirt</span></div>
+      </div>
+      <div class="map-list-item">
+        <span class="dot"></span>
+        <div class="name">Spingarn High School <span class="ward">W5</span></div>
+        <div class="meta">400m<span class="surface">Cinder</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ═══════════ Panel 6 — Guide ═══════════ -->
+<section class="panel panel-guide" id="guide">
+  <div class="guide-inner">
+    <div class="guide-eyebrow">The Guide — Dispatched Weekly</div>
+    <h2 class="guide-title">Know every <em>oval.</em></h2>
+    <p class="guide-body">A weekly dispatch on the surfaces, the regulars, and the small histories of the District's running tracks. No training tips. No gear reviews. Just the circuit.</p>
+    <form class="guide-form" onsubmit="event.preventDefault();">
+      <input type="email" placeholder="your@address.com" aria-label="Email address">
+      <button type="submit" class="guide-cta">
+        Get the Guide
+        <span class="arrow"></span>
+      </button>
+    </form>
+  </div>
+  <footer class="guide-footer">
+    <span>The Tracks of Washington DC · Vol. I</span>
+    <span>Printed in the District</span>
+  </footer>
+</section>
+
+</body>
+</html>

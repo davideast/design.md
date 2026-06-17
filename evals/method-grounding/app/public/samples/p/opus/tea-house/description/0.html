@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kettle &amp; Leaf</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Libre+Franklin:wght@400;700&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&family=IBM+Plex+Mono:wght@400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --primary: #1B1B1B;
+    --secondary: #6E675C;
+    --tertiary: #E8590C;
+    --neutral: #F4EFE6;
+    --sm: 8px;
+    --md: 16px;
+    --lg: 32px;
+    --xl: 64px;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    background-color: var(--neutral);
+    color: var(--primary);
+    font-family: 'Source Serif 4', serif;
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 1.65;
+    -webkit-font-smoothing: antialiased;
+  }
+  .wrap {
+    max-width: 880px;
+    margin: 0 auto;
+    padding: var(--xl) var(--lg);
+  }
+  .headline {
+    font-family: 'Libre Franklin', sans-serif;
+    font-size: 44px;
+    font-weight: 700;
+    line-height: 1.05;
+    letter-spacing: -0.01em;
+  }
+  .label {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 12px;
+    font-weight: 400;
+    line-height: 1.4;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--secondary);
+  }
+  .welcome {
+    margin-top: var(--md);
+    color: var(--secondary);
+    max-width: 46ch;
+  }
+
+  section { margin-top: var(--xl); }
+  .section-label { margin-bottom: var(--lg); }
+
+  .teas {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--lg);
+  }
+  .tea-name {
+    font-family: 'Libre Franklin', sans-serif;
+    font-weight: 700;
+    font-size: 20px;
+    line-height: 1.2;
+  }
+  .tea-origin {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 12px;
+    letter-spacing: 0.08em;
+    color: var(--tertiary);
+    margin-top: var(--sm);
+  }
+  .tea-note {
+    margin-top: var(--md);
+    color: var(--primary);
+  }
+
+  table {
+    border-collapse: collapse;
+    width: 100%;
+    max-width: 420px;
+  }
+  td {
+    padding: var(--sm) var(--md) var(--sm) 0;
+    border-bottom: 1px solid rgba(110,103,92,0.25);
+    vertical-align: top;
+  }
+  td.day {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 12px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--secondary);
+    white-space: nowrap;
+    width: 40%;
+  }
+  td.time { color: var(--primary); }
+
+  .story { max-width: 58ch; }
+
+  .map-line {
+    margin-top: var(--md);
+    font-size: 18px;
+  }
+  .map-line .addr { color: var(--tertiary); }
+
+  footer {
+    margin-top: var(--xl);
+    padding-top: var(--lg);
+    border-top: 1px solid rgba(110,103,92,0.3);
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: var(--lg);
+    color: var(--secondary);
+  }
+  footer .label { color: var(--secondary); margin-bottom: var(--sm); }
+  footer p { color: var(--primary); }
+</style>
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <h1 class="headline">Kettle &amp; Leaf</h1>
+      <p class="welcome">A small tea house on the corner — come in, sit a while, and let the kettle do the talking.</p>
+    </header>
+
+    <section>
+      <p class="label section-label">Today's Three Brews</p>
+      <div class="teas">
+        <article>
+          <h2 class="tea-name">Misty Ridge Oolong</h2>
+          <p class="tea-origin">Nantou, Taiwan</p>
+          <p class="tea-note">Soft and buttery, with a lingering note of orchid and warm cream.</p>
+        </article>
+        <article>
+          <h2 class="tea-name">Rift Valley Gold</h2>
+          <p class="tea-origin">Kericho, Kenya</p>
+          <p class="tea-note">Bright and brisk, a malty cup that holds up beautifully with a splash of milk.</p>
+        </article>
+        <article>
+          <h2 class="tea-name">Maple Row Roast</h2>
+          <p class="tea-origin">Our house blend</p>
+          <p class="tea-note">A gentle roasted oolong, toasty and round, made for grey afternoons.</p>
+        </article>
+      </div>
+    </section>
+
+    <section>
+      <p class="label section-label">Quiet Hours This Week</p>
+      <table>
+        <tbody>
+          <tr><td class="day">Monday</td><td class="time">8 – 10 am</td></tr>
+          <tr><td class="day">Wednesday</td><td class="time">2 – 4 pm</td></tr>
+          <tr><td class="day">Friday</td><td class="time">8 – 10 am</td></tr>
+          <tr><td class="day">Sunday</td><td class="time">All day</td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section>
+      <p class="label section-label">From the Owner</p>
+      <p class="story">Once a year I close the shop and go looking. In the hills of Nantou, Taiwan, I sit with the same family who has rolled oolong for three generations, and we drink until the light goes. In Kericho, Kenya, I walk the high green fields and pick the cup I'll be pouring you all winter. Nothing fancy — just people who care, and tea I'm proud to bring home.</p>
+    </section>
+
+    <section>
+      <p class="label section-label">Find Us</p>
+      <p class="map-line">On the quiet end of <span class="addr">412 Maple Row</span> — look for the fogged window and the kettle on.</p>
+    </section>
+
+    <footer>
+      <div>
+        <p class="label">Hours</p>
+        <p>Tuesday – Sunday, 8 am – 6 pm</p>
+        <p>Closed Mondays</p>
+      </div>
+      <div>
+        <p class="label">Call</p>
+        <p>(207) 555-0148</p>
+      </div>
+    </footer>
+  </div>
+</body>
+</html>

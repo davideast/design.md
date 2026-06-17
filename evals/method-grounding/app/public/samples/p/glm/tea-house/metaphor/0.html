@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Kettle & Leaf — A neighborhood tea house</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Libre+Franklin:wght@700&family=Source+Serif+4:opsz,wght@8..60,400&family=IBM+Plex+Mono:wght@400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --primary: #1B1B1B;
+    --secondary: #6E675C;
+    --tertiary: #E8590C;
+    --neutral: #F4EFE6;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html, body {
+    background: var(--neutral);
+    color: var(--primary);
+    font-family: 'Source Serif 4', Georgia, serif;
+    font-size: 16px;
+    line-height: 1.65;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .page {
+    max-width: 1080px;
+    margin: 0 auto;
+    padding: 64px 64px 32px;
+  }
+
+  /* Head */
+  .masthead {
+    border-bottom: 1px solid var(--secondary);
+    padding-bottom: 32px;
+    margin-bottom: 64px;
+  }
+
+  .masthead .topbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    margin-bottom: 32px;
+  }
+
+  .label {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 12px;
+    font-weight: 400;
+    line-height: 1.4;
+    letter-spacing: 0.08em;
+    color: var(--secondary);
+    text-transform: uppercase;
+  }
+
+  .label.primary { color: var(--primary); }
+
+  .headline {
+    font-family: 'Libre Franklin', sans-serif;
+    font-size: 44px;
+    font-weight: 700;
+    line-height: 1.05;
+    letter-spacing: -0.01em;
+    color: var(--primary);
+  }
+
+  .welcome {
+    margin-top: 16px;
+    max-width: 640px;
+  }
+
+  .brew-mark {
+    margin-top: 32px;
+    height: 10px;
+    width: 120px;
+    background: var(--tertiary);
+  }
+
+  /* Teas */
+  .teas {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 32px;
+    padding-bottom: 64px;
+    border-bottom: 1px solid var(--secondary);
+    margin-bottom: 64px;
+  }
+
+  .tea { display: flex; flex-direction: column; }
+
+  .tea .label { margin-bottom: 16px; }
+
+  .tea-name {
+    font-family: 'Source Serif 4', serif;
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 1.65;
+    color: var(--primary);
+    margin-bottom: 8px;
+  }
+
+  .tea-name .initial {
+    color: var(--tertiary);
+    font-size: 28px;
+    line-height: 1;
+    margin-right: 2px;
+    font-weight: 400;
+  }
+
+  .tea-meta {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 12px;
+    line-height: 1.65;
+    letter-spacing: 0.08em;
+    color: var(--secondary);
+    text-transform: uppercase;
+  }
+
+  .tea-meta .origin { display: block; margin-bottom: 4px; }
+  .tea-meta .note {
+    display: block;
+    font-family: 'Source Serif 4', serif;
+    font-size: 16px;
+    letter-spacing: 0;
+    text-transform: none;
+    color: var(--primary);
+    margin-top: 8px;
+    font-style: italic;
+  }
+
+  /* Essay */
+  .essay {
+    max-width: 680px;
+    margin-bottom: 64px;
+    padding-bottom: 64px;
+    border-bottom: 1px solid var(--secondary);
+  }
+
+  .essay .label { margin-bottom: 16px; }
+
+  .essay p {
+    font-family: 'Source Serif 4', serif;
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 1.65;
+    color: var(--primary);
+  }
+
+  .essay p + p { margin-top: 16px; }
+
+  /* Hours table */
+  .hours-block {
+    margin-bottom: 64px;
+    padding-bottom: 64px;
+    border-bottom: 1px solid var(--secondary);
+  }
+
+  .hours-block .label { margin-bottom: 16px; }
+
+  .hours-table {
+    width: 100%;
+    max-width: 420px;
+    border-collapse: collapse;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 12px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  .hours-table td {
+    padding: 8px 0;
+    border-bottom: 1px solid var(--secondary);
+    color: var(--secondary);
+  }
+
+  .hours-table td:last-child { text-align: right; }
+
+  .hours-table tr.is-today td { color: var(--primary); }
+
+  .hours-table tr.is-today td:first-child { position: relative; padding-left: 20px; }
+
+  .hours-table tr.is-today td:first-child::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 10px;
+    height: 10px;
+    background: var(--tertiary);
+  }
+
+  /* Map line */
+  .map-line {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    padding-bottom: 64px;
+    margin-bottom: 32px;
+    border-bottom: 1px solid var(--secondary);
+  }
+
+  .map-line .address {
+    font-family: 'Source Serif 4', serif;
+    font-size: 16px;
+    color: var(--primary);
+  }
+
+  .map-line .address strong {
+    font-weight: 400;
+  }
+
+  /* Footer */
+  footer {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 32px;
+    padding-top: 32px;
+    border-top: 1px solid var(--secondary);
+  }
+
+  footer .col .label { display: block; margin-bottom: 8px; }
+
+  footer .col .value {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 12px;
+    letter-spacing: 0.08em;
+    line-height: 1.65;
+    color: var(--primary);
+    text-transform: uppercase;
+  }
+
+  footer .col .value .sub {
+    color: var(--secondary);
+    display: block;
+  }
+</style>
+</head>
+<body>
+  <main class="page">
+
+    <header class="masthead">
+      <div class="topbar">
+        <span class="label">Kettle &amp; Leaf — Tea House</span>
+        <span class="label">Est. 2014</span>
+      </div>
+      <h1 class="headline">Kettle &amp; Leaf</h1>
+      <p class="welcome headline" style="font-weight:400; font-family:'Source Serif 4', serif; font-size:16px; line-height:1.65; letter-spacing:0;">A pot is always on, and the door is always open. Come in from the row, find a seat by the window, and let us pour you something warm.</p>
+      <div class="brew-mark" aria-hidden="true"></div>
+    </header>
+
+    <section class="teas">
+      <article class="tea">
+        <span class="label">Steep No. 01</span>
+        <h2 class="tea-name"><span class="initial">O</span>riental Beauty</h2>
+        <div class="tea-meta">
+          <span class="origin">Beipu, Hsinchu · Taiwan</span>
+          <span class="note">Honey, muscat grape, a whisper of late-summer grass.</span>
+        </div>
+      </article>
+
+      <article class="tea">
+        <span class="label">Steep No. 02</span>
+        <h2 class="tea-name"><span class="initial">K</span>ericho Gold</h2>
+        <div class="tea-meta">
+          <span class="origin">Kericho Highlands · Kenya</span>
+          <span class="note">Bright malt, dried apricot, a clean copper finish.</span>
+        </div>
+      </article>
+
+      <article class="tea">
+        <span class="label">Steep No. 03</span>
+        <h2 class="tea-name"><span class="initial">R</span>oasted Jin Xuan</h2>
+        <div class="tea-meta">
+          <span class="origin">Nantou · Taiwan</span>
+          <span class="note">Toasted grain, caramel, roasted chestnut.</span>
+        </div>
+      </article>
+    </section>
+
+    <section class="essay">
+      <span class="label">From the Source</span>
+      <p>Twice a year I pack a single bag and a notebook and go to where the leaf is grown. In the spring I fly to Taiwan, to the narrow mountain lanes above Beipu, where Mrs. Tsai walks me through rows of Oriental Beauty bushes and shows me the white leafhopper bites that give the tea its honey. We taste the new harvest in small porcelain cups, the steep still warm from the kettle.</p>
+      <p>In the autumn I travel to Kenya, to the high ridges above Kericho, where the tea fields roll in long green lines under red earth. The pickers work before the heat sets in, and by mid-morning we are sorting leaf in the withering loft, the air thick with the smell of bruised green leaf. Every tea on this shelf began as a hand I shook and

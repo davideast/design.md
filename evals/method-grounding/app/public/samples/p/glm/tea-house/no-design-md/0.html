@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kettle and Leaf — A Neighborhood Tea House</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..900;1,9..144,300..900&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#F4EFE6;
+  --bg-2:#EDE6D8;
+  --ink:#1F1A14;
+  --ink-soft:#3A3228;
+  --leaf:#2D4A2B;
+  --leaf-deep:#1A2E18;
+  --terra:#B8593A;
+  --paper:#FBF7EF;
+  --rule:#D8CFBE;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{background:var(--bg);color:var(--ink)}
+body{
+  font-family:'Inter',sans-serif;
+  font-weight:400;
+  line-height:1.6;
+  -webkit-font-smoothing:antialiased;
+}
+.serif{font-family:'Fraunces',serif;font-optical-sizing:auto}
+
+.wrap{
+  max-width:1240px;
+  margin:0 auto;
+  padding:0 48px;
+}
+
+/* Top bar */
+.top{
+  display:flex;
+  justify-content:space-between;
+  align-items:baseline;
+  padding:28px 0 24px;
+  border-bottom:1px solid var(--rule);
+}
+.brand{
+  font-family:'Fraunces',serif;
+  font-weight:600;
+  font-size:22px;
+  letter-spacing:-.01em;
+  color:var(--leaf-deep);
+}
+.brand .amp{font-style:italic;font-weight:400;color:var(--terra)}
+.nav{
+  display:flex;
+  gap:36px;
+  font-size:13px;
+  letter-spacing:.12em;
+  text-transform:uppercase;
+  font-weight:500;
+  color:var(--ink-soft);
+}
+.nav a{color:inherit;text-decoration:none;transition:color .2s}
+.nav a:hover{color:var(--terra)}
+
+/* Hero */
+.hero{
+  display:grid;
+  grid-template-columns:1.15fr 1fr;
+  gap:80px;
+  padding:96px 0 88px;
+  align-items:end;
+}
+.hero h1{
+  font-family:'Fraunces',serif;
+  font-weight:300;
+  font-size:clamp(54px,7vw,104px);
+  line-height:.95;
+  letter-spacing:-.025em;
+  color:var(--leaf-deep);
+}
+.hero h1 em{
+  font-style:italic;
+  font-weight:300;
+  color:var(--terra);
+}
+.hero h1 .leaf-mark{
+  display:inline-block;
+  font-style:italic;
+  color:var(--leaf);
+}
+.welcome{
+  font-family:'Fraunces',serif;
+  font-weight:300;
+  font-style:italic;
+  font-size:21px;
+  line-height:1.45;
+  color:var(--ink-soft);
+  padding-bottom:14px;
+  border-left:1px solid var(--terra);
+  padding-left:22px;
+}
+.welcome::before{
+  content:"Welcome —";
+  display:block;
+  font-family:'Inter',sans-serif;
+  font-style:normal;
+  font-size:11px;
+  letter-spacing:.28em;
+  text-transform:uppercase;
+  color:var(--terra);
+  font-weight:500;
+  margin-bottom:10px;
+}
+
+/* Section label */
+.label{
+  display:flex;
+  align-items:center;
+  gap:14px;
+  font-size:11px;
+  letter-spacing:.28em;
+  text-transform:uppercase;
+  font-weight:500;
+  color:var(--terra);
+  margin-bottom:40px;
+}
+.label .line{
+  flex:1;
+  height:1px;
+  background:var(--rule);
+  max-width:80px;
+}
+.label .no{color:var(--ink-soft);opacity:.6}
+
+/* Teas */
+.teas{
+  padding:24px 0 96px;
+  border-top:1px solid var(--rule);
+}
+.teas-grid{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:0;
+}
+.tea{
+  padding:8px 36px 8px 0;
+  border-right:1px solid var(--rule);
+}
+.tea:last-child{border-right:none;padding-right:0;padding-left:36px}
+.tea:nth-child(2){padding-left:36px}
+.tea .idx{
+  font-family:'Fraunces',serif;
+  font-style:italic;
+  font-size:14px;
+  color:var(--terra);
+  margin-bottom:22px;
+}
+.tea h3{
+  font-family:'Fraunces',serif;
+  font-weight:400;
+  font-size:30px;
+  line-height:1.05;
+  letter-spacing:-.015em;
+  color:var(--leaf-deep);
+  margin-bottom:14px;
+}
+.tea .origin{
+  font-size:13px;
+  letter-spacing:.05em;
+  color:var(--ink-soft);
+  margin-bottom:24px;
+  display:flex;
+  align-items:center;
+  gap:8px;
+}
+.tea .origin::before{
+  content:"";
+  width:6px;height:6px;
+  background:var(--leaf);
+  border-radius:50%;
+  display:inline-block;
+}
+.tea .note{
+  font-family:'Fraunces',serif;
+  font-style:italic;
+  font-weight:300;
+  font-size:17px;
+  line-height:1.5;
+  color:var(--ink-soft);
+  border-top:1px solid var(--rule);
+  padding-top:18px;
+}
+.tea .note span{
+  display:block;
+  font-family:'Inter',sans-serif;
+  font-style:normal;
+  font-size:10px;
+  letter-spacing:.25em;
+  text-transform:uppercase;
+  color:var(--terra);
+  margin-bottom:8px;
+  font-weight:500;
+}
+
+/* Quiet hours */
+.quiet{
+  padding:80px 0;
+  border-top:1px solid var(--rule);
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:96px;
+  align-items:start;
+}
+.quiet-intro h2{
+  font-family:'Fraunces',serif;
+  font-weight:300;
+  font-size:46px;
+  line-height:1;
+  letter-spacing:-.02em;
+  color:var(--leaf-deep);
+  margin-bottom:24px;
+}
+.quiet-intro h2 em{font-style:italic;color:var(--terra)}
+.quiet-intro p{
+  font-size:15px;
+  line-height:1.65;
+  color:var(--ink-soft);
+  max-width:380px;
+}
+.schedule{
+  border-top:1px solid var(--ink-soft);
+}
+.schedule table{
+  width:100%;
+  border-collapse:collapse;
+}
+.schedule th,.schedule td{
+  text-align:left;
+  padding:18px 0;
+  border-bottom:1px solid var(--rule);
+  font-size:14px;
+  vertical-align:baseline;
+}
+.schedule th{
+  font-family:'Inter',sans-serif;
+  font-weight:500;
+  font-size:11px;
+  letter-spacing:.2em;
+  text-transform:uppercase;
+  color:var(--terra);
+}
+.schedule td.day{
+  font-family:'Fraunces',serif;
+  font-size:18px;
+  color:var(--leaf-deep);
+  width:42%;
+}
+.schedule td.time{
+  font-family:'Fraunces',serif;
+  font-style:italic;
+  font-weight:300;
+  color:var(--ink-soft);
+}
+.schedule tr:last-child td{border-bottom:none}
+
+/* Sourcing story */
+.sourcing{
+  padding:96px 0;
+  border-top:1px solid var(--rule);
+  display:grid;
+  grid-template-columns:0.85fr 1fr;
+  gap:96px;
+  align-items:start;
+}
+.sourcing-meta{
+  position:sticky;
+  top:40px;
+}
+.sourcing-meta h2{
+  font-family:'Fraunces',serif;
+  font-weight:300;
+  font-size:54px;
+  line-height:.95;
+  letter-spacing:-.025em;
+  color:var(--leaf-deep);
+  margin-bottom:28px;
+}
+.sourcing-meta h2 em{font-style:italic;color:var(--terra)}
+.sourcing-meta .signature{
+  font-family:'Fraunces',serif;
+  font-style:italic;
+  font-size:15px;
+  color:var(--ink-soft);
+  border-top:1px solid var(--rule);
+  padding-top:18px;
+  margin-top:24px;
+}
+.sourcing-meta .signature span{
+  display:block;
+  font-style:normal;
+  font-family:'Inter',sans-serif;
+  font-size:11px;
+  letter-spacing:.2em;
+  text-transform:uppercase;
+  color:var(--terra);
+  margin-top:6px;
+}
+.story p{
+  font-family:'Fraunces',serif;
+  font-weight:300;
+  font-size:20px;
+  line-height:1.6;
+  color:var(--ink-soft);
+  margin-bottom:22px;
+}
+.story p:first-child::first-letter{
+  font-family:'Fraunces',serif;
+  font-weight:400;
+  font-size:64px;
+  float:left;
+  line-height:.85;
+  padding:6px 12px 0 0;
+  color:var(--leaf);
+}
+.story .place{
+  color:var(--terra);
+  font-style:italic;
+}
+
+/* Map / address */
+.map{
+  padding:80px 0 96px;
+  border-top:1px solid var(--rule);
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:80px;
+  align-items:center;
+}
+.address-card h2{
+  font-family:'Fraunces',serif;
+  font-weight:300;
+  font-size:42px;
+  line-height:1;
+  letter-spacing:-.02em;
+  color:var(--leaf-deep);
+  margin-bottom:28px;
+}
+.address-line{
+  font-family:'Fraunces',serif;
+  font-size:26px;
+  font

@@ -1,0 +1,773 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Urban Nocturnal: Field Notes</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Spartan:wght@500;700&display=swap" rel="stylesheet">
+  <style>
+    @font-face {
+      font-family: "Century Schoolbook";
+      src: local("Century Schoolbook"), local("CenturySchoolbook");
+      font-weight: 400;
+      font-style: normal;
+    }
+
+    :root {
+      --background: #F9F6EE;
+      --text: #1A1A1B;
+      --primary: #1A1A1B;
+      --ui-neutral: #707372;
+      --accent: #C53030;
+      --rule: 1pt solid #1A1A1B;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html,
+    body {
+      margin: 0;
+      padding: 0;
+      background: var(--background);
+      color: var(--text);
+    }
+
+    body {
+      font-family: "Century Schoolbook", Georgia, serif;
+      font-weight: 400;
+      line-height: 1.35;
+    }
+
+    .sheet {
+      width: min(1120px, calc(100vw - 24px));
+      margin: 12px auto;
+      border: var(--rule);
+      background:
+        linear-gradient(to right, rgba(26,26,27,0.08) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(26,26,27,0.08) 1px, transparent 1px),
+        var(--background);
+      background-size: 32px 32px;
+    }
+
+    header {
+      display: grid;
+      grid-template-columns: 1fr 260px;
+      border-bottom: var(--rule);
+      min-height: 132px;
+    }
+
+    .title-block {
+      padding: 18px 18px 14px;
+      border-right: var(--rule);
+      position: relative;
+    }
+
+    h1,
+    h2,
+    h3,
+    .label,
+    .datum-label,
+    .tag {
+      font-family: "Spartan", Arial, sans-serif;
+    }
+
+    h1 {
+      margin: 0;
+      font-size: clamp(34px, 5vw, 64px);
+      line-height: 0.95;
+      letter-spacing: -0.045em;
+      font-weight: 700;
+      text-transform: uppercase;
+    }
+
+    .subtitle-line {
+      margin-top: 12px;
+      font-family: "Spartan", Arial, sans-serif;
+      font-weight: 500;
+      font-size: 11px;
+      letter-spacing: 0.13em;
+      text-transform: uppercase;
+      color: var(--ui-neutral);
+    }
+
+    .coordinates {
+      padding: 14px;
+      display: grid;
+      align-content: space-between;
+      gap: 12px;
+    }
+
+    .tag {
+      display: block;
+      font-size: 10px;
+      font-weight: 500;
+      letter-spacing: 0.12em;
+      color: var(--ui-neutral);
+      text-transform: uppercase;
+      border-bottom: var(--rule);
+      padding-bottom: 5px;
+      margin-bottom: 6px;
+    }
+
+    .coord-value {
+      font-family: "Spartan", Arial, sans-serif;
+      font-size: 18px;
+      line-height: 1.05;
+      font-weight: 700;
+      text-transform: uppercase;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: 320px 1fr 300px;
+      grid-template-areas:
+        "moon species species"
+        "log species species"
+        "filter filter filter";
+    }
+
+    section {
+      border-bottom: var(--rule);
+      min-width: 0;
+    }
+
+    .moon {
+      grid-area: moon;
+      border-right: var(--rule);
+    }
+
+    .species {
+      grid-area: species;
+    }
+
+    .log {
+      grid-area: log;
+      border-right: var(--rule);
+    }
+
+    .filter {
+      grid-area: filter;
+      border-bottom: 0;
+    }
+
+    .section-head {
+      padding: 10px 12px;
+      border-bottom: var(--rule);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      background: rgba(249,246,238,0.82);
+    }
+
+    h2 {
+      margin: 0;
+      font-size: 15px;
+      line-height: 1;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      text-transform: uppercase;
+    }
+
+    .cell-code {
+      font-family: "Spartan", Arial, sans-serif;
+      font-weight: 500;
+      font-size: 10px;
+      color: var(--ui-neutral);
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      white-space: nowrap;
+    }
+
+    .data-list {
+      margin: 0;
+      padding: 0;
+      list-style: none;
+    }
+
+    .data-list li {
+      display: grid;
+      grid-template-columns: 118px 1fr;
+      border-bottom: var(--rule);
+      min-height: 48px;
+    }
+
+    .data-list li:last-child {
+      border-bottom: 0;
+    }
+
+    .datum-label {
+      border-right: var(--rule);
+      padding: 10px 10px 8px 12px;
+      font-size: 10px;
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 0.09em;
+      color: var(--ui-neutral);
+    }
+
+    .datum-value {
+      padding: 9px 12px;
+      font-size: 17px;
+    }
+
+    .species-map {
+      display: grid;
+      grid-template-columns: 1fr 300px;
+      min-height: 430px;
+    }
+
+    .species-notes {
+      border-right: var(--rule);
+    }
+
+    .species-title {
+      padding: 16px 16px 12px;
+      border-bottom: var(--rule);
+    }
+
+    h3 {
+      margin: 0;
+      font-size: clamp(24px, 3vw, 42px);
+      line-height: 1.02;
+      font-weight: 700;
+      letter-spacing: -0.045em;
+      text-transform: uppercase;
+    }
+
+    .field-table {
+      margin: 0;
+      padding: 0;
+      list-style: none;
+    }
+
+    .field-table li {
+      display: grid;
+      grid-template-columns: 138px 1fr;
+      border-bottom: var(--rule);
+    }
+
+    .field-table li:last-child {
+      border-bottom: 0;
+    }
+
+    .field-table .datum-label {
+      min-height: 82px;
+    }
+
+    .field-table .datum-value {
+      padding: 12px 14px;
+      font-size: 18px;
+    }
+
+    .specimen {
+      position: relative;
+      min-height: 100%;
+      padding: 14px;
+      overflow: hidden;
+    }
+
+    .specimen-box {
+      position: relative;
+      height: 100%;
+      min-height: 394px;
+      border-left: 1pt solid rgba(26,26,27,0.25);
+      border-top: 1pt solid rgba(26,26,27,0.25);
+    }
+
+    .axis-x,
+    .axis-y {
+      position: absolute;
+      font-family: "Spartan", Arial, sans-serif;
+      font-weight: 500;
+      font-size: 9px;
+      letter-spacing: 0.12em;
+      color: var(--ui-neutral);
+      text-transform: uppercase;
+    }
+
+    .axis-x {
+      right: 6px;
+      bottom: 6px;
+    }
+
+    .axis-y {
+      left: 8px;
+      top: 8px;
+      writing-mode: vertical-rl;
+      transform: rotate(180deg);
+    }
+
+    .heron {
+      position: absolute;
+      left: 47px;
+      top: 103px;
+      width: 190px;
+      height: 190px;
+    }
+
+    .body {
+      position: absolute;
+      left: 34px;
+      top: 76px;
+      width: 112px;
+      height: 64px;
+      background: var(--primary);
+      clip-path: ellipse(50% 42% at 50% 50%);
+    }
+
+    .wing {
+      position: absolute;
+      left: 64px;
+      top: 86px;
+      width: 78px;
+      height: 42px;
+      background: var(--ui-neutral);
+      clip-path: polygon(0 8%, 100% 0, 82% 100%, 8% 82%);
+    }
+
+    .neck {
+      position: absolute;
+      left: 111px;
+      top: 61px;
+      width: 38px;
+      height: 42px;
+      background: var(--primary);
+      transform: rotate(-18deg);
+      clip-path: polygon(20% 0, 100% 16%, 78% 100%, 0 82%);
+    }
+
+    .head {
+      position: absolute;
+      left: 130px;
+      top: 48px;
+      width: 43px;
+      height: 34px;
+      background: var(--primary);
+      clip-path: ellipse(48% 42% at 50% 50%);
+    }
+
+    .beak {
+      position: absolute;
+      left: 166px;
+      top: 58px;
+      width: 40px;
+      height: 10px;
+      background: var(--primary);
+      clip-path: polygon(0 0, 100% 50%, 0 100%);
+    }
+
+    .leg {
+      position: absolute;
+      width: 3px;
+      height: 55px;
+      background: var(--primary);
+      top: 132px;
+    }
+
+    .leg.one {
+      left: 84px;
+      transform: rotate(8deg);
+    }
+
+    .leg.two {
+      left: 105px;
+      transform: rotate(-6deg);
+    }
+
+    .pointer {
+      position: absolute;
+      height: 1pt;
+      background: var(--accent);
+      transform-origin: left center;
+    }
+
+    .pointer:after {
+      content: "";
+      position: absolute;
+      right: -1px;
+      top: -4px;
+      width: 0;
+      height: 0;
+      border-top: 4px solid transparent;
+      border-bottom: 4px solid transparent;
+      border-left: 9px solid var(--accent);
+    }
+
+    .p-crown {
+      width: 68px;
+      left: 74px;
+      top: 70px;
+      transform: rotate(-21deg);
+    }
+
+    .p-wing {
+      width: 78px;
+      left: 18px;
+      top: 191px;
+      transform: rotate(-39deg);
+    }
+
+    .p-feet {
+      width: 64px;
+      left: 118px;
+      top: 310px;
+      transform: rotate(-67deg);
+    }
+
+    .pointer-label {
+      position: absolute;
+      font-family: "Spartan", Arial, sans-serif;
+      font-weight: 500;
+      font-size: 9px;
+      line-height: 1.15;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--accent);
+      max-width: 96px;
+    }
+
+    .l-crown {
+      left: 20px;
+      top: 42px;
+    }
+
+    .l-wing {
+      left: 14px;
+      top: 196px;
+    }
+
+    .l-feet {
+      right: 12px;
+      bottom: 54px;
+      text-align: right;
+    }
+
+    .log-card .data-list li {
+      grid-template-columns: 102px 1fr;
+    }
+
+    .log-card .datum-value {
+      font-size: 16px;
+    }
+
+    .filter-body {
+      display: grid;
+      grid-template-columns: 270px 1fr;
+      min-height: 270px;
+    }
+
+    .filter-intro {
+      border-right: var(--rule);
+      padding: 14px 14px 16px;
+      font-size: 18px;
+    }
+
+    .filter-map {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+    }
+
+    .filter-step {
+      position: relative;
+      padding: 14px 14px 18px;
+      border-right: var(--rule);
+      min-height: 220px;
+    }
+
+    .filter-step:last-child {
+      border-right: 0;
+    }
+
+    .step-number {
+      font-family: "Spartan", Arial, sans-serif;
+      font-weight: 700;
+      font-size: 48px;
+      line-height: 0.9;
+      letter-spacing: -0.08em;
+      color: var(--ui-neutral);
+      margin-bottom: 14px;
+    }
+
+    .filter-step:nth-child(2) .step-number,
+    .filter-step:nth-child(2) .signal-word {
+      color: var(--accent);
+    }
+
+    .filter-step:nth-child(3) .signal-word {
+      color: var(--accent);
+    }
+
+    .filter-step h3 {
+      font-size: 18px;
+      letter-spacing: -0.02em;
+      margin-bottom: 10px;
+    }
+
+    .filter-step p {
+      margin: 0;
+      font-size: 17px;
+    }
+
+    .noise-lines {
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: 18px;
+      height: 42px;
+      opacity: 0.85;
+      background:
+        repeating-linear-gradient(
+          0deg,
+          transparent 0,
+          transparent 7px,
+          var(--ui-neutral) 8px,
+          transparent 9px
+        );
+    }
+
+    .signal-arrow {
+      position: absolute;
+      left: 28px;
+      right: 26px;
+      bottom: 38px;
+      height: 1pt;
+      background: var(--accent);
+    }
+
+    .signal-arrow:after {
+      content: "";
+      position: absolute;
+      right: 0;
+      top: -5px;
+      width: 0;
+      height: 0;
+      border-left: 12px solid var(--accent);
+      border-top: 5px solid transparent;
+      border-bottom: 5px solid transparent;
+    }
+
+    .whoosh {
+      position: absolute;
+      left: 28px;
+      bottom: 24px;
+      width: 72%;
+      height: 70px;
+      border: 2px solid var(--accent);
+      border-left: 0;
+      border-bottom: 0;
+      transform: skewX(-18deg);
+      opacity: 0.95;
+    }
+
+    strong {
+      font-weight: 700;
+    }
+
+    @media (max-width: 900px) {
+      header,
+      .grid,
+      .species-map,
+      .filter-body,
+      .filter-map {
+        display: block;
+      }
+
+      .title-block,
+      .moon,
+      .log,
+      .species-notes,
+      .filter-intro,
+      .filter-step {
+        border-right: 0;
+      }
+
+      .coordinates,
+      .species-notes,
+      .filter-intro,
+      .filter-step {
+        border-top: var(--rule);
+      }
+
+      .specimen-box {
+        min-height: 360px;
+      }
+
+      .filter-step {
+        border-bottom: var(--rule);
+      }
+
+      .filter-step:last-child {
+        border-bottom: 0;
+      }
+    }
+
+    @media print {
+      .sheet {
+        width: 100%;
+        margin: 0;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="sheet">
+    <header>
+      <div class="title-block">
+        <h1>Urban Nocturnal:<br>Field Notes</h1>
+        <div class="subtitle-line">Analytical Specimen Sheet / Inner City Night Survey</div>
+      </div>
+      <div class="coordinates">
+        <div>
+          <span class="tag">Document Type</span>
+          <div class="coord-value">Static Taxonomic Map</div>
+        </div>
+        <div>
+          <span class="tag">Signal Color</span>
+          <div class="coord-value">Pointer Red</div>
+        </div>
+      </div>
+    </header>
+
+    <div class="grid">
+      <section class="moon">
+        <div class="section-head">
+          <h2>Moon &amp; Light Conditions</h2>
+          <span class="cell-code">A1</span>
+        </div>
+        <ul class="data-list">
+          <li>
+            <div class="datum-label">Current Status</div>
+            <div class="datum-value">Waxing Gibbous. 82% Illumination.</div>
+          </li>
+          <li>
+            <div class="datum-label">Moonrise</div>
+            <div class="datum-value">17:42.</div>
+          </li>
+          <li>
+            <div class="datum-label">Sky Quality</div>
+            <div class="datum-value">Bortle 8 (Inner City Sky).</div>
+          </li>
+        </ul>
+      </section>
+
+      <section class="species">
+        <div class="section-head">
+          <h2>Tonight’s Likely Species</h2>
+          <span class="cell-code">B1–C2</span>
+        </div>
+        <div class="species-map">
+          <div class="species-notes">
+            <div class="species-title">
+              <h3>Black-crowned Night Heron</h3>
+            </div>
+            <ul class="field-table">
+              <li>
+                <div class="datum-label">Field Marks</div>
+                <div class="datum-value">Stocky build, black crown and back, contrasting grey wings.</div>
+              </li>
+              <li>
+                <div class="datum-label">In Flight</div>
+                <div class="datum-value">Thick neck tucked, feet barely extending beyond tail.</div>
+              </li>
+              <li>
+                <div class="datum-label">Context</div>
+                <div class="datum-value">Often found near waterfront construction sites or park ponds.</div>
+              </li>
+            </ul>
+          </div>
+          <div class="specimen">
+            <div class="specimen-box">
+              <span class="axis-y">Morphology</span>
+              <span class="axis-x">Silhouette Reference</span>
+
+              <div class="pointer-label l-crown">Black crown / back</div>
+              <div class="pointer p-crown"></div>
+
+              <div class="pointer-label l-wing">Contrasting grey wing</div>
+              <div class="pointer p-wing"></div>
+
+              <div class="pointer-label l-feet">Feet barely beyond tail</div>
+              <div class="pointer p-feet"></div>
+
+              <div class="heron" aria-label="Black-crowned Night Heron silhouette">
+                <div class="body"></div>
+                <div class="wing"></div>
+                <div class="neck"></div>
+                <div class="head"></div>
+                <div class="beak"></div>
+                <div class="leg one"></div>
+                <div class="leg two"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="log">
+        <div class="section-head">
+          <h2>Sightings Log</h2>
+          <span class="cell-code">A2</span>
+        </div>
+        <div class="log-card">
+          <ul class="data-list">
+            <li>
+              <div class="datum-label">Time</div>
+              <div class="datum-value">23:14</div>
+            </li>
+            <li>
+              <div class="datum-label">Location</div>
+              <div class="datum-value">West Side Railyards</div>
+            </li>
+            <li>
+              <div class="datum-label">Species</div>
+              <div class="datum-value">Common Nighthawk (2)</div>
+            </li>
+            <li>
+              <div class="datum-label">Behavior</div>
+              <div class="datum-value">Aerial foraging under stadium lights; erratic, bat-like flight pattern.</div>
+            </li>
+          </ul>
+        </div>
+      </section>
+
+      <section class="filter">
+        <div class="section-head">
+          <h2>Guide to Listening: The Urban Filter</h2>
+          <span class="cell-code">A3–C3</span>
+        </div>
+        <div class="filter-body">
+          <div class="filter-intro">
+            To identify birds by sound in the city, you must mentally subtract the machine:
+          </div>
+          <div class="filter-map">
+            <div class="filter-step">
+              <div class="step-number">01</div>
+              <h3>The Base</h3>
+              <p>Ignore the low-frequency rumble of the expressway or subway vents.</p>
+              <div class="noise-lines"></div>
+            </div>
+            <div class="filter-step">
+              <div class="step-number">02</div>
+              <h3>The Signal</h3>
+              <p>Focus on the <span class="signal-word">“Peent”</span>—a sharp, nasal electric buzz cutting through the hum.</p>
+              <div class="noise-lines"></div>
+              <div class="signal-arrow"></div>
+            </div>
+            <div class="filter-step">
+              <div class="step-number">03</div>
+              <h3>The Physical</h3>
+              <p>Listen for the <span class="signal-word">“Whoosh”</span> of air through primary feathers during a territorial dive.</p>
+              <div class="whoosh"></div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+  </main>
+</body>
+</html>

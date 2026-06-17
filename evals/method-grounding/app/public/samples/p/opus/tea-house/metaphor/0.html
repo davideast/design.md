@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kettle &amp; Leaf</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Libre+Franklin:wght@700&family=Source+Serif+4:wght@400&family=IBM+Plex+Mono&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --primary: #1B1B1B;
+    --secondary: #6E675C;
+    --tertiary: #E8590C;
+    --neutral: #F4EFE6;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body {
+    background: var(--neutral);
+    color: var(--primary);
+  }
+  body {
+    font-family: 'Source Serif 4', serif;
+    padding: 96px 80px 48px;
+    max-width: 1080px;
+    margin: 0 auto;
+  }
+  .headline {
+    font-family: 'Libre Franklin', sans-serif;
+    font-size: 44px;
+    font-weight: 700;
+    line-height: 1.05;
+    letter-spacing: -0.01em;
+    position: relative;
+  }
+  .bloom {
+    display: block;
+    width: 120px;
+    height: 6px;
+    background: var(--tertiary);
+    margin-top: 16px;
+  }
+  .welcome {
+    font-family: 'Source Serif 4', serif;
+    font-size: 16px;
+    line-height: 1.65;
+    margin-top: 32px;
+    max-width: 48ch;
+  }
+
+  .label {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 12px;
+    font-weight: 400;
+    line-height: 1.4;
+    letter-spacing: 0.08em;
+    color: var(--secondary);
+    text-transform: uppercase;
+  }
+
+  .date-line {
+    margin-top: 64px;
+  }
+  .date-line .mark { color: var(--tertiary); }
+
+  .flight {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 32px;
+    margin-top: 16px;
+  }
+  .steep h3 {
+    font-family: 'Source Serif 4', serif;
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 1.65;
+  }
+  .steep h3 .first { color: var(--tertiary); }
+  .steep .origin {
+    margin-top: 8px;
+  }
+  .steep .note {
+    font-size: 16px;
+    line-height: 1.65;
+    margin-top: 8px;
+  }
+
+  .water {
+    font-size: 16px;
+    line-height: 1.65;
+    margin-top: 64px;
+    max-width: 64ch;
+    color: var(--primary);
+  }
+
+  .map-line {
+    margin-top: 64px;
+  }
+
+  .schedule {
+    margin-top: 64px;
+  }
+  table {
+    border-collapse: collapse;
+    margin-top: 16px;
+  }
+  table th, table td {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 12px;
+    font-weight: 400;
+    line-height: 1.4;
+    letter-spacing: 0.08em;
+    text-align: left;
+    padding: 8px 32px 8px 0;
+    color: var(--secondary);
+    border-bottom: 1px solid var(--secondary);
+  }
+  table th {
+    color: var(--primary);
+  }
+
+  footer {
+    margin-top: 64px;
+    border-top: 1px solid var(--secondary);
+    padding-top: 16px;
+    display: flex;
+    gap: 64px;
+    flex-wrap: wrap;
+  }
+  footer .label { color: var(--secondary); }
+  footer .label strong {
+    color: var(--primary);
+    font-weight: 400;
+    display: block;
+    margin-bottom: 8px;
+  }
+</style>
+</head>
+<body>
+
+  <header>
+    <h1 class="headline">Kettle &amp; Leaf<span class="bloom"></span></h1>
+    <p class="welcome">A neighborhood tea house — pull up a chair, the water is hot and the leaves are waiting.</p>
+  </header>
+
+  <section class="date-line">
+    <p class="label"><span class="mark">●</span> Today's Three Steeps</p>
+    <div class="flight">
+      <article class="steep">
+        <h3><span class="first">A</span>li Shan High Mountain</h3>
+        <p class="label origin">Chiayi, Taiwan</p>
+        <p class="note">Buttered orchid and cool air; a long sweet finish that lingers like fog leaving a ridge.</p>
+      </article>
+      <article class="steep">
+        <h3><span class="first">P</span>urple Leaf Black</h3>
+        <p class="label origin">Nandi Hills, Kenya</p>
+        <p class="note">Bright plum and red currant, a firm malty body, and a clean tannic snap at the edges.</p>
+      </article>
+      <article class="steep">
+        <h3><span class="first">R</span>uby 18 Black</h3>
+        <p class="label origin">Sun Moon Lake, Taiwan</p>
+        <p class="note">Wild mint and cinnamon over honey, with a faint cooling note that opens as it sits.</p>
+      </article>
+    </div>
+  </section>
+
+  <p class="water">
+    Twice a year the shop closes its doors and the owner travels to the gardens
+    themselves — the high terraces above Chiayi, the cool slopes of the Nandi Hills.
+    Every tea on this counter was tasted at its source, in the room where it was
+    rolled and dried, and chosen by hand from the season's lots. Nothing arrives
+    here that wasn't first met at the place it grew. The trips are slow and the
+    selections are small, but that is the point: a short list, fully known, brewed
+    the same way each morning until the next harvest comes in.
+  </p>
+
+  <section class="schedule">
+    <p class="label">Weekly Quiet Hours</p>
+    <table>
+      <thead>
+        <tr><th>Day</th><th>Quiet Hours</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>Monday</td><td>2:00 – 4:00 PM</td></tr>
+        <tr><td>Tuesday</td><td>2:00 – 4:00 PM</td></tr>
+        <tr><td>Wednesday</td><td>9:00 – 11:00 AM</td></tr>
+        <tr><td>Thursday</td><td>2:00 – 4:00 PM</td></tr>
+        <tr><td>Friday</td><td>9:00 – 11:00 AM</td></tr>
+        <tr><td>Saturday</td><td>8:00 – 9:30 AM</td></tr>
+        <tr><td>Sunday</td><td>All day</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <p class="label map-line">Find us → 412 Maple Row</p>
+
+  <footer>
+    <p class="label"><strong>Hours</strong>Mon–Fri 8AM – 6PM<br>Sat–Sun 8AM – 4PM</p>
+    <p class="label"><strong>Address</strong>412 Maple Row</p>
+    <p class="label"><strong>Phone</strong>(207) 555-0142</p>
+  </footer>
+
+</body>
+</html>

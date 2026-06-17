@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Kettle and Leaf</title>
+  <style>
+    :root {
+      --ink: #2f2a24;
+      --muted: #6f6257;
+      --paper: #fbf7ef;
+      --cream: #fffdf8;
+      --leaf: #607447;
+      --leaf-dark: #465733;
+      --line: #ddd2c1;
+      --steam: #efe4d2;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      background:
+        radial-gradient(circle at top left, rgba(96, 116, 71, 0.14), transparent 30rem),
+        linear-gradient(180deg, var(--paper), #f5ecdd);
+      color: var(--ink);
+      font-family: Georgia, "Times New Roman", serif;
+      line-height: 1.55;
+    }
+
+    main {
+      width: min(1120px, calc(100% - 80px));
+      margin: 0 auto;
+      padding: 56px 0 36px;
+    }
+
+    .page {
+      background: rgba(255, 253, 248, 0.88);
+      border: 1px solid var(--line);
+      border-radius: 28px;
+      box-shadow: 0 24px 60px rgba(64, 49, 31, 0.12);
+      overflow: hidden;
+    }
+
+    header {
+      padding: 64px 72px 46px;
+      border-bottom: 1px solid var(--line);
+      background:
+        linear-gradient(135deg, rgba(96, 116, 71, 0.11), transparent 50%),
+        var(--cream);
+    }
+
+    h1 {
+      margin: 0;
+      font-size: 64px;
+      line-height: 1;
+      font-weight: 500;
+      letter-spacing: -1.5px;
+      color: var(--leaf-dark);
+    }
+
+    .welcome {
+      margin: 18px 0 0;
+      max-width: 720px;
+      font-size: 22px;
+      color: var(--muted);
+    }
+
+    .content {
+      padding: 48px 72px 56px;
+      display: grid;
+      grid-template-columns: 1.6fr 1fr;
+      gap: 44px;
+    }
+
+    section {
+      margin: 0;
+    }
+
+    h2 {
+      margin: 0 0 22px;
+      font-size: 26px;
+      font-weight: 500;
+      color: var(--leaf-dark);
+    }
+
+    .tea-list {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 18px;
+    }
+
+    .tea-card {
+      min-height: 220px;
+      padding: 24px;
+      border: 1px solid var(--line);
+      border-radius: 20px;
+      background: #fffaf1;
+    }
+
+    .tea-card h3 {
+      margin: 0 0 10px;
+      font-size: 24px;
+      line-height: 1.18;
+      font-weight: 500;
+      color: var(--ink);
+    }
+
+    .origin {
+      margin: 0 0 18px;
+      font-size: 14px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--leaf);
+    }
+
+    .note {
+      margin: 0;
+      font-size: 17px;
+      color: var(--muted);
+    }
+
+    .side {
+      display: flex;
+      flex-direction: column;
+      gap: 34px;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      overflow: hidden;
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      background: #fffaf1;
+      font-size: 16px;
+    }
+
+    th,
+    td {
+      padding: 13px 16px;
+      border-bottom: 1px solid var(--line);
+      text-align: left;
+    }
+
+    th {
+      width: 42%;
+      font-weight: 500;
+      color: var(--leaf-dark);
+      background: var(--steam);
+    }
+
+    tr:last-child th,
+    tr:last-child td {
+      border-bottom: 0;
+    }
+
+    .story {
+      grid-column: 1 / -1;
+      padding: 30px 34px;
+      border-left: 5px solid var(--leaf);
+      border-radius: 18px;
+      background: #fffaf1;
+    }
+
+    .story p {
+      margin: 0;
+      max-width: 920px;
+      font-size: 20px;
+      color: var(--muted);
+    }
+
+    .map-line {
+      grid-column: 1 / -1;
+      padding-top: 4px;
+      font-size: 20px;
+      color: var(--ink);
+    }
+
+    .map-line strong {
+      color: var(--leaf-dark);
+      font-weight: 500;
+    }
+
+    footer {
+      display: flex;
+      justify-content: space-between;
+      gap: 24px;
+      padding: 28px 72px;
+      border-top: 1px solid var(--line);
+      background: var(--leaf-dark);
+      color: #fffaf1;
+      font-size: 17px;
+    }
+
+    footer p {
+      margin: 0;
+    }
+
+    @media (max-width: 900px) {
+      main {
+        width: min(100% - 32px, 1120px);
+        padding-top: 24px;
+      }
+
+      header,
+      .content,
+      footer {
+        padding-left: 28px;
+        padding-right: 28px;
+      }
+
+      h1 {
+        font-size: 44px;
+      }
+
+      .content {
+        grid-template-columns: 1fr;
+      }
+
+      .tea-list {
+        grid-template-columns: 1fr;
+      }
+
+      footer {
+        flex-direction: column;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <div class="page">
+      <header>
+        <h1>Kettle and Leaf</h1>
+        <p class="welcome">Welcome to our neighborhood tea house, where the kettle is warm and every cup has a story.</p>
+      </header>
+
+      <div class="content">
+        <section>
+          <h2>Today’s Brewed Teas</h2>
+          <div class="tea-list">
+            <article class="tea-card">
+              <h3>High Mountain Oolong</h3>
+              <p class="origin">Alishan, Taiwan</p>
+              <p class="note">Silky and floral with notes of lilac, cream, and a clean mineral finish.</p>
+            </article>
+
+            <article class="tea-card">
+              <h3>Golden Assam</h3>
+              <p class="origin">Assam, India</p>
+              <p class="note">Full-bodied and malty with hints of baked raisin and honeyed toast.</p>
+            </article>
+
+            <article class="tea-card">
+              <h3>Purple Leaf Black</h3>
+              <p class="origin">Nandi Hills, Kenya</p>
+              <p class="note">Bright and brisk with blackberry, cocoa shell, and a gentle citrus lift.</p>
+            </article>
+          </div>
+        </section>
+
+        <aside class="side">
+          <section>
+            <h2>Weekly Quiet Hours</h2>
+            <table aria-label="Weekly quiet hours schedule">
+              <tbody>
+                <tr>
+                  <th>Monday</th>
+                  <td>8:00–10:00 AM</td>
+                </tr>
+                <tr>
+                  <th>Wednesday</th>
+                  <td>2:00–4:00 PM</td>
+                </tr>
+                <tr>
+                  <th>Friday</th>
+                  <td>9:00–11:00 AM</td>
+                </tr>
+                <tr>
+                  <th>Sunday</th>
+                  <td>3:00–5:00 PM</td>
+                </tr>
+              </tbody>
+            </table>
+          </section>
+        </aside>
+
+        <section class="story">
+          <h2>From the Source</h2>
+          <p>Owner Mara Chen travels each spring to family-run gardens in Taiwan and Kenya, meeting growers, tasting fresh harvests, and choosing teas that reflect the character of their mountains, soils, and seasons.</p>
+        </section>
+
+        <div class="map-line">
+          <strong>Map:</strong> Find us at 412 Maple Row.
+        </div>
+      </div>
+
+      <footer>
+        <p>Hours: Monday–Friday 7:30 AM–7:00 PM; Saturday–Sunday 8:00 AM–6:00 PM</p>
+        <p>Phone: (555) 412-TEAS</p>
+      </footer>
+    </div>
+  </main>
+</body>
+</html>

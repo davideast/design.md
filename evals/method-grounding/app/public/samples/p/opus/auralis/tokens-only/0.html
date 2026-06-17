@@ -1,0 +1,562 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Auralis — Making digital experiences sound human</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --primary: #111111;
+    --secondary: #6B6B6B;
+    --tertiary: #9958ff;
+    --neutral: #F7F7F5;
+    --surface: #ffffff;
+    --outline: #E5E5E3;
+    --sm: 8px;
+    --md: 24px;
+    --lg: 64px;
+    --xl: 140px;
+    --r-sm: 0.25rem;
+    --r-md: 0.75rem;
+    --r-lg: 1.5rem;
+    --r-full: 9999px;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: 'Geist', sans-serif;
+    background: var(--surface);
+    color: var(--primary);
+    font-size: 16px;
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+  }
+  .wrap { max-width: 1200px; margin: 0 auto; padding: 0 var(--md); }
+  h1 {
+    font-size: 72px; font-weight: 600; line-height: 0.95; letter-spacing: -0.04em;
+  }
+  h2 {
+    font-size: 42px; font-weight: 600; line-height: 1.1; letter-spacing: -0.02em;
+  }
+  .label-caps {
+    font-size: 12px; font-weight: 600; line-height: 1; letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+  a { color: inherit; text-decoration: none; }
+
+  /* Buttons */
+  .btn {
+    font-family: 'Geist', sans-serif;
+    font-size: 14px; font-weight: 500; line-height: 1; letter-spacing: 0.01em;
+    border: none; cursor: pointer;
+    padding: 13px 22px; border-radius: var(--r-full);
+    display: inline-flex; align-items: center; gap: 8px;
+    transition: opacity .2s, background .2s;
+  }
+  .btn-dark { background: var(--primary); color: #fff; }
+  .btn-dark:hover { opacity: .85; }
+  .btn-light { background: var(--surface); color: var(--primary); border: 1px solid var(--outline); }
+  .btn-light:hover { background: var(--neutral); }
+  .btn-accent { background: var(--tertiary); color: #fff; }
+  .btn-accent:hover { opacity: .9; }
+
+  /* Nav */
+  nav {
+    position: sticky; top: 0; z-index: 100;
+    background: rgba(255,255,255,0.85); backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--outline);
+  }
+  .nav-inner {
+    display: flex; align-items: center; justify-content: space-between;
+    height: 64px;
+  }
+  .wordmark {
+    font-size: 20px; font-weight: 600; letter-spacing: -0.03em;
+    display: flex; align-items: center; gap: 7px;
+  }
+  .wordmark .dot {
+    width: 9px; height: 9px; border-radius: 50%; background: var(--tertiary);
+  }
+  .nav-links { display: flex; gap: 28px; }
+  .nav-links a {
+    font-size: 14px; color: var(--secondary); font-weight: 500;
+    transition: color .2s;
+  }
+  .nav-links a:hover { color: var(--primary); }
+  .nav-right { display: flex; align-items: center; gap: 16px; }
+
+  /* Hero */
+  .hero { padding: var(--xl) 0 var(--lg); text-align: center; }
+  .hero h1 { max-width: 900px; margin: 0 auto; }
+  .hero-actions { margin-top: 40px; display: flex; gap: 12px; justify-content: center; }
+
+  /* Demo panel */
+  .demo { padding-bottom: var(--xl); }
+  .panel {
+    background: var(--neutral); border: 1px solid var(--outline);
+    border-radius: var(--r-lg); overflow: hidden;
+    box-shadow: 0 40px 80px -40px rgba(0,0,0,.25);
+  }
+  .panel-tabs {
+    display: flex; gap: 4px; padding: 12px 16px;
+    border-bottom: 1px solid var(--outline); background: var(--surface);
+    align-items: center;
+  }
+  .tab {
+    font-size: 13px; font-weight: 500; color: var(--secondary);
+    padding: 8px 14px; border-radius: var(--r-md); cursor: pointer;
+  }
+  .tab.active { background: var(--neutral); color: var(--primary); }
+  .panel-status {
+    margin-left: auto; display: flex; align-items: center; gap: 8px;
+    font-size: 12px; font-weight: 600; color: var(--secondary);
+    letter-spacing: 0.04em;
+  }
+  .live-dot {
+    width: 8px; height: 8px; border-radius: 50%; background: #22c55e;
+    box-shadow: 0 0 0 0 rgba(34,197,94,.5);
+    animation: pulse 2s infinite;
+  }
+  @keyframes pulse {
+    0% { box-shadow: 0 0 0 0 rgba(34,197,94,.5); }
+    70% { box-shadow: 0 0 0 8px rgba(34,197,94,0); }
+    100% { box-shadow: 0 0 0 0 rgba(34,197,94,0); }
+  }
+  .preview {
+    min-height: 340px; display: flex; flex-direction: column;
+    align-items: center; justify-content: center; gap: 24px;
+    background:
+      radial-gradient(circle at 50% 40%, rgba(153,88,255,.12), transparent 60%),
+      var(--neutral);
+    position: relative;
+  }
+  .preview .bars {
+    display: flex; align-items: flex-end; gap: 4px; height: 80px;
+  }
+  .preview .bars span {
+    width: 5px; background: var(--tertiary); border-radius: var(--r-full);
+    opacity: .8; animation: bar 1.2s ease-in-out infinite;
+  }
+  @keyframes bar {
+    0%,100% { height: 12px; } 50% { height: 64px; }
+  }
+  .play-btn {
+    width: 76px; height: 76px; border-radius: 50%; background: var(--primary);
+    color: #fff; display: flex; align-items: center; justify-content: center;
+    cursor: pointer; border: none; box-shadow: 0 12px 30px -8px rgba(0,0,0,.4);
+    transition: transform .2s;
+  }
+  .play-btn:hover { transform: scale(1.06); }
+  .panel-modes {
+    display: flex; align-items: center; gap: 6px; flex-wrap: wrap;
+    padding: 14px 16px; border-top: 1px solid var(--outline);
+    background: var(--surface);
+  }
+  .mode-link {
+    font-size: 13px; color: var(--secondary); font-weight: 500;
+    padding: 7px 12px; border-radius: var(--r-full); cursor: pointer;
+  }
+  .mode-link.active { background: rgba(153,88,255,.12); color: var(--tertiary); }
+  .panel-modes .btn { margin-left: auto; }
+
+  /* Trust */
+  .trust { padding: var(--lg) 0; border-top: 1px solid var(--outline); border-bottom: 1px solid var(--outline); }
+  .trust h3 {
+    text-align: center; color: var(--secondary); font-size: 14px;
+    font-weight: 500; margin-bottom: 36px;
+  }
+  .brands {
+    display: flex; flex-wrap: wrap; justify-content: center; gap: 48px;
+    align-items: center;
+  }
+  .brand {
+    font-size: 22px; font-weight: 600; letter-spacing: -0.02em;
+    color: var(--secondary); opacity: .7;
+  }
+
+  /* Platform */
+  .section { padding: var(--xl) 0; }
+  .section-head { max-width: 760px; }
+  .section-head h2 { margin-bottom: 16px; }
+  .section-head p { color: var(--secondary); font-size: 18px; max-width: 600px; }
+  .blurbs {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 32px; margin: 56px 0;
+  }
+  .blurb h4 { font-size: 20px; font-weight: 600; margin-bottom: 8px; letter-spacing: -0.01em; }
+  .blurb p { color: var(--secondary); }
+
+  /* Dashboard mockup */
+  .dash {
+    background: #0c0c0e; border-radius: var(--r-lg); padding: 32px;
+    color: #fff; border: 1px solid #232327;
+  }
+  .dash-top {
+    display: flex; align-items: center; justify-content: space-between;
+    margin-bottom: 28px; flex-wrap: wrap; gap: 16px;
+  }
+  .dash-title { display: flex; align-items: center; gap: 14px; }
+  .dash-title .label-caps { color: #fff; }
+  .badge {
+    font-size: 11px; font-weight: 600; letter-spacing: 0.08em;
+    background: rgba(153,88,255,.2); color: var(--tertiary);
+    padding: 5px 10px; border-radius: var(--r-sm); text-transform: uppercase;
+  }
+  .dash-live {
+    display: flex; align-items: center; gap: 8px;
+    font-size: 12px; color: #a1a1aa; font-weight: 500;
+  }
+  .metrics { display: grid; grid-template-columns: repeat(3,1fr); gap: 16px; margin-bottom: 28px; }
+  .metric {
+    background: #161619; border: 1px solid #232327; border-radius: var(--r-md);
+    padding: 18px;
+  }
+  .metric .label-caps { color: #71717a; margin-bottom: 10px; display: block; }
+  .metric .val { font-size: 28px; font-weight: 600; letter-spacing: -0.02em; }
+  .metric .val.accent { color: var(--tertiary); }
+  .metric .val.green { color: #22c55e; }
+  .wave {
+    height: 90px; display: flex; align-items: center; gap: 3px;
+    background: #161619; border: 1px solid #232327; border-radius: var(--r-md);
+    padding: 0 20px; overflow: hidden; margin-bottom: 20px;
+  }
+  .wave span {
+    flex: 1; background: linear-gradient(to top, var(--tertiary), #c79dff);
+    border-radius: var(--r-full); animation: wv 1.4s ease-in-out infinite;
+  }
+  @keyframes wv { 0%,100% { height: 10%; } 50% { height: 90%; } }
+  .transport { display: flex; align-items: center; gap: 12px; }
+  .tcontrol {
+    width: 42px; height: 42px; border-radius: 50%; background: #161619;
+    border: 1px solid #232327; color: #fff; display: flex; align-items: center;
+    justify-content: center; cursor: pointer;
+  }
+  .tcontrol.main { background: var(--tertiary); border-color: var(--tertiary); }
+  .tprogress { flex: 1; height: 4px; background: #232327; border-radius: var(--r-full); position: relative; }
+  .tprogress::after { content:''; position:absolute; left:0; top:0; height:100%; width:38%; background: var(--tertiary); border-radius: var(--r-full); }
+  .ttime { font-size: 12px; color: #71717a; font-variant-numeric: tabular-nums; }
+
+  /* Studio cards */
+  .cards-2 { display: grid; grid-template-columns: 1.3fr 1fr; gap: 24px; margin: 56px 0; }
+  .card {
+    background: var(--neutral); border: 1px solid var(--outline);
+    border-radius: var(--r-lg); overflow: hidden;
+  }
+  .card-img {
+    height: 320px; position: relative; display: flex; align-items: flex-end;
+    padding: 20px;
+    background:
+      radial-gradient(circle at 30% 30%, rgba(153,88,255,.4), transparent 50%),
+      radial-gradient(circle at 80% 70%, rgba(153,88,255,.25), transparent 50%),
+      #15131c;
+  }
+  .card-img .label-caps { color: #fff; background: rgba(0,0,0,.4); padding: 6px 10px; border-radius: var(--r-sm); }
+  .ui-rows { position: absolute; inset: 20px 20px 60px; display: flex; flex-direction: column; gap: 10px; }
+  .ui-row { display: flex; align-items: center; gap: 10px; }
+  .ui-row .knob { width: 12px; height: 12px; border-radius: 50%; background: rgba(255,255,255,.4); }
+  .ui-row .track { flex: 1; height: 8px; border-radius: var(--r-full); background: rgba(255,255,255,.12); position: relative; }
+  .ui-row .track i { position: absolute; left: 0; top: 0; height: 100%; background: var(--tertiary); border-radius: var(--r-full); }
+  .card-text { padding: 28px; }
+  .card-text .label-caps { color: var(--tertiary); margin-bottom: 12px; display: block; }
+  .card-text h4 { font-size: 22px; font-weight: 600; letter-spacing: -0.01em; margin-bottom: 12px; }
+  .card-text p { color: var(--secondary); }
+  .modes-row { display: grid; grid-template-columns: repeat(4,1fr); gap: 16px; }
+  .mode-card {
+    border: 1px solid var(--outline); border-radius: var(--r-md);
+    padding: 24px; background: var(--surface);
+  }
+  .mode-card .ic {
+    width: 36px; height: 36px; border-radius: var(--r-sm);
+    background: rgba(153,88,255,.12); color: var(--tertiary);
+    display: flex; align-items: center; justify-content: center; margin-bottom: 14px;
+  }
+  .mode-card h5 { font-size: 16px; font-weight: 600; }
+
+  /* Agents */
+  .chat {
+    background: var(--surface); border: 1px solid var(--outline);
+    border-radius: var(--r-lg); overflow: hidden;
+  }
+  .chat-head {
+    padding: 18px 20px; border-bottom: 1px solid var(--outline);
+    display: flex; align-items: center; gap: 12px;
+  }
+  .avatar {
+    width: 38px; height: 38px; border-radius: 50%;
+    background: linear-gradient(135deg, var(--tertiary), #6a3bd1);
+    display: flex; align-items: center; justify-content: center; color: #fff;
+    font-weight: 600; font-size: 14px;
+  }
+  .chat-head .name { font-weight: 600; font-size: 15px; }
+  .chat-head .status { font-size: 11px; color: #22c55e; font-weight: 600; letter-spacing: 0.04em; }
+  .chat-body { padding: 24px 20px; display: flex; flex-direction: column; gap: 14px; background: var(--neutral); min-height: 300px; }
+  .bubble { max-width: 78%; padding: 12px 16px; border-radius: var(--r-md); font-size: 14px; line-height: 1.4; }
+  .bubble.bot { background: var(--surface); border: 1px solid var(--outline); align-self: flex-start; border-bottom-left-radius: var(--r-sm); }
+  .bubble.user { background: var(--tertiary); color: #fff; align-self: flex-end; border-bottom-right-radius: var(--r-sm); }
+  .typing { align-self: flex-start; background: var(--surface); border: 1px solid var(--outline); padding: 14px 16px; border-radius: var(--r-md); border-bottom-left-radius: var(--r-sm); display: flex; gap: 5px; }
+  .typing span { width: 7px; height: 7px; border-radius: 50%; background: var(--secondary); animation: type 1.2s infinite; }
+  .typing span:nth-child(2){ animation-delay:.2s; } .typing span:nth-child(3){ animation-delay:.4s; }
+  @keyframes type { 0%,60%,100%{ opacity:.3; transform: translateY(0);} 30%{ opacity:1; transform: translateY(-4px);} }
+  .insights .label-caps { color: var(--tertiary); display: block; margin-bottom: 12px; }
+  .insights h4 { font-size: 22px; font-weight: 600; letter-spacing: -0.01em; margin-bottom: 12px; }
+  .insights p { color: var(--secondary); margin-bottom: 24px; }
+  .stat-list { display: flex; flex-direction: column; gap: 14px; }
+  .stat-line { display: flex; justify-content: space-between; align-items: center; padding-bottom: 14px; border-bottom: 1px solid var(--outline); }
+  .stat-line:last-child { border-bottom: none; }
+  .stat-line .k { color: var(--secondary); font-size: 14px; }
+  .stat-line .v { font-weight: 600; }
+
+  /* Final CTA */
+  .final { text-align: center; padding: var(--xl) 0; }
+  .final h2 { font-size: 56px; margin-bottom: 32px; }
+  .final-actions { display: flex; gap: 12px; justify-content: center; }
+
+  /* Footer */
+  footer { border-top: 1px solid var(--outline); padding: var(--lg) 0; }
+  .footer-inner { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 20px; }
+  .footer-copy { color: var(--secondary); font-size: 14px; }
+  .footer-links { display: flex; gap: 24px; }
+  .footer-links a { font-size: 14px; color: var(--secondary); }
+  .footer-links a:hover { color: var(--primary); }
+
+  @media (max-width: 860px) {
+    h1 { font-size: 48px; } h2 { font-size: 32px; } .final h2 { font-size: 38px; }
+    .nav-links { display: none; }
+    .blurbs, .cards-2, .modes-row, .metrics { grid-template-columns: 1fr; }
+    .hero { padding: var(--lg) 0; }
+    .section { padding: var(--lg) 0; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="wrap nav-inner">
+    <div class="wordmark"><span class="dot"></span>Auralis</div>
+    <div class="nav-links">
+      <a href="#">Studio</a>
+      <a href="#">Agents</a>
+      <a href="#">API</a>
+      <a href="#">Resources</a>
+      <a href="#">Enterprise</a>
+      <a href="#">Pricing</a>
+    </div>
+    <div class="nav-right">
+      <button class="btn btn-dark">Sign up</button>
+    </div>
+  </div>
+</nav>
+
+<!-- Hero -->
+<header class="hero">
+  <div class="wrap">
+    <h1>Making digital experiences sound human</h1>
+    <div class="hero-actions">
+      <button class="btn btn-dark">Sign up</button>
+      <button class="btn btn-light">Contact sales</button>
+    </div>
+  </div>
+</header>
+
+<!-- Demo panel -->
+<section class="demo">
+  <div class="wrap">
+    <div class="panel">
+      <div class="panel-tabs">
+        <div class="tab active">Auralis Studio</div>
+        <div class="tab">Auralis Agents</div>
+        <div class="tab">Auralis API</div>
+        <div class="panel-status"><span class="live-dot"></span>AI Voice Generator</div>
+      </div>
+      <div class="preview">
+        <div class="bars">
+          <span style="animation-delay:0s"></span>
+          <span style="animation-delay:.1s"></span>
+          <span style="animation-delay:.2s"></span>
+          <span style="animation-delay:.3s"></span>
+          <span style="animation-delay:.4s"></span>
+          <span style="animation-delay:.5s"></span>
+          <span style="animation-delay:.4s"></span>
+          <span style="animation-delay:.3s"></span>
+          <span style="animation-delay:.2s"></span>
+          <span style="animation-delay:.1s"></span>
+        </div>
+        <button class="play-btn" aria-label="Play">
+          <svg width="26" height="26" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+        </button>
+      </div>
+      <div class="panel-modes">
+        <span class="mode-link active">AI Voice Generator</span>
+        <span class="mode-link">Text to Speech</span>
+        <span class="mode-link">Music</span>
+        <span class="mode-link">Sound Effects</span>
+        <span class="mode-link">Voice Cloning</span>
+        <button class="btn btn-accent">Sign up</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Trust -->
+<section class="trust">
+  <div class="wrap">
+    <h3>Trusted by teams building modern audio experiences</h3>
+    <div class="brands">
+      <span class="brand">Velocity</span>
+      <span class="brand">Nexus</span>
+      <span class="brand">Lumina</span>
+      <span class="brand">Stack</span>
+      <span class="brand">Quanta</span>
+      <span class="brand">Orbital</span>
+      <span class="brand">Scalar</span>
+    </div>
+  </div>
+</section>
+
+<!-- Platform overview -->
+<section class="section">
+  <div class="wrap">
+    <div class="section-head">
+      <h2>Two systems, one shared intelligence layer</h2>
+      <p>Studio and Agents are powered by the same neural core — generation, reasoning, and delivery built to operate as a single coherent platform.</p>
+    </div>
+    <div class="blurbs">
+      <div class="blurb">
+        <h4>Precision Generation</h4>
+        <p>Studio-grade synthesis with frame-accurate control over tone, pacing, and emotion across every render.</p>
+      </div>
+      <div class="blurb">
+        <h4>Agentic Architecture</h4>
+        <p>Voice agents that reason in real time, plan multi-step responses, and deliver them with natural human cadence.</p>
+      </div>
+    </div>
+    <div class="dash">
+      <div class="dash-top">
+        <div class="dash-title">
+          <span class="label-caps">Neural Engine V4.2 Pro</span>
+          <span class="badge">Studio Mode</span>
+        </div>
+        <div class="dash-live"><span class="live-dot"></span>Real-time Synthesis Active</div>
+      </div>
+      <div class="metrics">
+        <div class="metric"><span class="label-caps">Latency</span><div class="val accent">12 ms</div></div>
+        <div class="metric"><span class="label-caps">Confidence</span><div class="val">99.8%</div></div>
+        <div class="metric"><span class="label-caps">Status</span><div class="val green">Operational</div></div>
+      </div>
+      <div class="wave">
+        <span style="animation-delay:0s"></span><span style="animation-delay:.05s"></span><span style="animation-delay:.1s"></span><span style="animation-delay:.15s"></span><span style="animation-delay:.2s"></span><span style="animation-delay:.25s"></span><span style="animation-delay:.3s"></span><span style="animation-delay:.35s"></span><span style="animation-delay:.4s"></span><span style="animation-delay:.45s"></span><span style="animation-delay:.5s"></span><span style="animation-delay:.55s"></span><span style="animation-delay:.6s"></span><span style="animation-delay:.5s"></span><span style="animation-delay:.4s"></span><span style="animation-delay:.3s"></span><span style="animation-delay:.2s"></span><span style="animation-delay:.1s"></span><span style="animation-delay:0s"></span><span style="animation-delay:.1s"></span><span style="animation-delay:.2s"></span><span style="animation-delay:.3s"></span><span style="animation-delay:.4s"></span><span style="animation-delay:.5s"></span>
+      </div>
+      <div class="transport">
+        <button class="tcontrol" aria-label="Previous"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M6 6h2v12H6zm3.5 6l8.5 6V6z"/></svg></button>
+        <button class="tcontrol main" aria-label="Play"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></button>
+        <button class="tcontrol" aria-label="Next"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M16 6h2v12h-2zm-2.5 6L6 6v12z"/></svg></button>
+        <div class="tprogress"></div>
+        <span class="ttime">01:24 / 03:40</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Studio -->
+<section class="section">
+  <div class="wrap">
+    <div class="section-head">
+      <h2>Sculpt sound with absolute precision.</h2>
+      <p>A complete audio creation and editing suite — shape every detail from waveform to transcript in one unified workspace.</p>
+    </div>
+    <div class="cards-2">
+      <div class="card">
+        <div class="card-img">
+          <div class="ui-rows">
+            <div class="ui-row"><span class="knob"></span><span class="track"><i style="width:62%"></i></span></div>
+            <div class="ui-row"><span class="knob"></span><span class="track"><i style="width:38%"></i></span></div>
+            <div class="ui-row"><span class="knob"></span><span class="track"><i style="width:80%"></i></span></div>
+            <div class="ui-row"><span class="knob"></span><span class="track"><i style="width:50%"></i></span></div>
+          </div>
+          <span class="label-caps">Soft Editor UI</span>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-text">
+          <span class="label-caps">Transcript Panel</span>
+          <h4>Edit by reading, not scrubbing.</h4>
+          <p>A synced transcript lets you cut, rephrase, and re-voice your audio by editing words directly — every change ripples back into the timeline instantly.</p>
+        </div>
+      </div>
+    </div>
+    <div class="modes-row">
+      <div class="mode-card"><div class="ic"><svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M12 3v10.55A4 4 0 1014 17V7h4V3z"/></svg></div><h5>Music</h5></div>
+      <div class="mode-card"><div class="ic"><svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M3 9v6h4l5 5V4L7 9zm13.5 3a4.5 4.5 0 00-2.5-4v8a4.5 4.5 0 002.5-4z"/></svg></div><h5>SFX</h5></div>
+      <div class="mode-card"><div class="ic"><svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M12 14a3 3 0 003-3V5a3 3 0 00-6 0v6a3 3 0 003 3zm5-3a5 5 0 01-10 0H5a7 7 0 006 6.9V21h2v-3.1A7 7 0 0019 11z"/></svg></div><h5>Voices</h5></div>
+      <div class="mode-card"><div class="ic"><svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M21 19V5a2 2 0 00-2-2H5a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2zM8.5 13.5l2.5 3 3.5-4.5 4.5 6H5z"/></svg></div><h5>Image &amp; Video</h5></div>
+    </div>
+  </div>
+</section>
+
+<!-- Agents -->
+<section class="section">
+  <div class="wrap">
+    <div class="section-head">
+      <h2>Autonomous reasoning, human delivery.</h2>
+      <p>Conversational voice agents that understand intent, take action, and respond with natural, low-latency speech.</p>
+    </div>
+    <div class="cards-2">
+      <div class="chat">
+        <div class="chat-head">
+          <div class="avatar">N</div>
+          <div>
+            <div class="name">Nexus Support Agent</div>
+            <div class="status">ONLINE • LATENCY: 12ms</div>
+          </div>
+        </div>
+        <div class="chat-body">
+          <div class="bubble bot">Hello! How can I assist you today?</div>
+          <div class="bubble user">I need help checking my deployment status.</div>
+          <div class="typing"><span></span><span></span><span></span></div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-text insights">
+          <span class="label-caps">Deep Insights</span>
+          <h4>Every conversation, measured.</h4>
+          <p>Track sentiment, resolution rate, and intent across every interaction — turning raw voice data into actionable analytics in real time.</p>
+          <div class="stat-list">
+            <div class="stat-line"><span class="k">Resolution rate</span><span class="v">94.2%</span></div>
+            <div class="stat-line"><span class="k">Avg. handle time</span><span class="v">1m 08s</span></div>
+            <div class="stat-line"><span class="k">Positive sentiment</span><span class="v">88%</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Final CTA -->
+<section class="final">
+  <div class="wrap">
+    <h2>The future of voice starts here</h2>
+    <div class="final-actions">
+      <button class="btn btn-dark">Get started</button>
+      <button class="btn btn-light">Talk to sales</button>
+    </div>
+  </div>
+</section>
+
+<!-- Footer -->
+<footer>
+  <div class="wrap footer-inner">
+    <div class="wordmark"><span class="dot"></span>Auralis</div>
+    <div class="footer-copy">© 2024 Auralis AI. Engineered for precision.</div>
+    <div class="footer-links">
+      <a href="#">Twitter</a>
+      <a href="#">GitHub</a>
+      <a href="#">Terms</a>
+      <a href="#">Privacy</a>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>
