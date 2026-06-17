@@ -26,7 +26,7 @@ export const PROVIDERS: Provider[] = [
   { key: "opus", label: "Opus 4.8", runs: [] },
   { key: "gpt", label: "GPT 5.5", runs: [] },
   { key: "kimi", label: "Kimi K2.7", runs: [] },
-  { key: "glm", label: "GLM 5.1", runs: [] },
+  { key: "glm", label: "GLM 5.2", runs: [] },
 ];
 
 /** The report case for a provider × case, from the first of its runs that has it. */
