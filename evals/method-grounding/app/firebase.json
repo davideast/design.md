@@ -1,0 +1,9 @@
+{
+  "hosting": {
+    "site": "design-bench",
+    "public": "dist",
+    "cleanUrls": true,
+    "trailingSlash": false,
+    "ignore": ["firebase.json", "**/.*", "**/node_modules/**"]
+  }
+}
