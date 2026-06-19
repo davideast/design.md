@@ -1,0 +1,29 @@
+{
+  "cases": [
+    "agent-slides",
+    "auralis"
+  ],
+  "samples": 5,
+  "controlSamples": 2,
+  "arms": [
+    "no-design-md"
+  ],
+  "channels": [
+    "prompt"
+  ],
+  "experiment": "method-grounding",
+  "metric": "escape-from-center",
+  "tool": "gemini",
+  "model": "gemini-3-flash-preview",
+  "concurrency": 3,
+  "stitchSdkVersion": "0.3.5",
+  "evalHash": "5d7280c55ee4",
+  "caseHashes": {
+    "agent-slides": "8525083078d8",
+    "auralis": "3581bf373a0d"
+  },
+  "startedAt": "2026-06-16T14:15:28.842Z",
+  "resumedAt": [
+    "2026-06-16T14:18:18.018Z"
+  ]
+}

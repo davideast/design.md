@@ -1,0 +1,10 @@
+{
+  "demo": true,
+  "model": "GEMINI_3_FLASH",
+  "stitchSdkVersion": "synthetic-fixtures",
+  "evalHash": "50e2cc3f1a01",
+  "caseHashes": {
+    "auralis": "3581bf373a0d"
+  },
+  "startedAt": "demo"
+}

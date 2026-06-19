@@ -1,17 +1,21 @@
 /**
- * Build-time data layer: reads the real measured run (runs/demo) — report.json,
- * config.json, and the eval snapshot — and exposes typed views for the pages.
- * This is what makes the MVP real: the numbers and renderings come from an
- * actual generate+measure run, not placeholders.
+ * Build-time data layer: reads the committed snapshot (app/data/runs — written
+ * by scripts/snapshot.ts from the gitignored runs/) and exposes typed views for
+ * the pages. Reading the committed snapshot (not ../runs) is what lets a fresh
+ * clone build the current design with no raw runs/ present.
  */
 import { readFileSync, existsSync, readdirSync, statSync } from "node:fs";
 import { join, resolve } from "node:path";
 
-const RUNS = resolve(process.cwd(), "..", "runs");
+const RUNS = resolve(process.cwd(), "data", "runs");
 const RUN = "demo";
 const runDir = join(RUNS, RUN);
 
-const report = JSON.parse(readFileSync(join(runDir, "report.json"), "utf8"));
+// Resilient: if the snapshot is absent (e.g. before the first snapshot run),
+// fall back to an empty report rather than throwing at module load.
+const report = existsSync(join(runDir, "report.json"))
+  ? JSON.parse(readFileSync(join(runDir, "report.json"), "utf8"))
+  : { cases: [], config: {} };
 const config = report.config ?? {};
 
 // --- display vocabulary ---------------------------------------------------

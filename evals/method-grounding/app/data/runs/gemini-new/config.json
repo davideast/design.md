@@ -1,0 +1,32 @@
+{
+  "cases": [
+    "dc-tracks",
+    "night-birding",
+    "tea-house"
+  ],
+  "samples": 1,
+  "controlSamples": 1,
+  "arms": [
+    "no-design-md",
+    "tokens-only",
+    "description",
+    "object",
+    "metaphor"
+  ],
+  "channels": [
+    "prompt"
+  ],
+  "experiment": "method-grounding",
+  "metric": "escape-from-center",
+  "tool": "gemini",
+  "model": "gemini-3-flash-preview",
+  "concurrency": 3,
+  "stitchSdkVersion": "0.3.5",
+  "evalHash": "f52128f64edc",
+  "caseHashes": {
+    "dc-tracks": "8d590cb11d6b",
+    "night-birding": "1455cfc7e161",
+    "tea-house": "308525012293"
+  },
+  "startedAt": "2026-06-16T15:57:26.322Z"
+}

@@ -1,0 +1,79 @@
+{
+  "config": {
+    "cases": [
+      "auralis"
+    ],
+    "samples": 1,
+    "controlSamples": 1,
+    "arms": [
+      "no-design-md",
+      "object",
+      "description"
+    ],
+    "channels": [
+      "design-system"
+    ],
+    "model": "GEMINI_3_1_PRO",
+    "concurrency": 3,
+    "stitchSdkVersion": "0.3.5",
+    "evalHash": "50e2cc3f1a01",
+    "caseHashes": {
+      "auralis": "3581bf373a0d"
+    },
+    "startedAt": "2026-06-10T14:55:59.776Z",
+    "resumedAt": [
+      "2026-06-10T14:58:06.545Z"
+    ]
+  },
+  "cases": [
+    {
+      "case": "auralis",
+      "title": "Auralis — AI voice platform landing page",
+      "controlSamples": 1,
+      "controlDispersion": null,
+      "prohibitions": [
+        "darkBackground"
+      ],
+      "requirements": [
+        "gradients",
+        "roundedCorners",
+        "iconFonts"
+      ],
+      "cells": [
+        {
+          "cell": "no-design-md",
+          "samples": 1,
+          "paletteAdherence": null,
+          "meanPaletteDistance": null,
+          "fontMatchRate": null,
+          "violationRates": {
+            "darkBackground": 1,
+            "missing-gradients": 0,
+            "missing-roundedCorners": 0,
+            "missing-iconFonts": 0
+          },
+          "meanViolationCount": 1,
+          "meanCounts": {
+            "gradients": 4,
+            "shadows": 12,
+            "roundedCorners": 51,
+            "boldUses": 1,
+            "fontFamilies": 2
+          },
+          "intraArmDispersion": null,
+          "distanceFromControl": null,
+          "excessDistanceFromControl": null,
+          "sampleSummaries": [
+            {
+              "index": "0",
+              "violationCount": 1,
+              "paletteAdherence": null,
+              "distToControl": null
+            }
+          ]
+        }
+      ],
+      "comparisons": []
+    }
+  ]
+}

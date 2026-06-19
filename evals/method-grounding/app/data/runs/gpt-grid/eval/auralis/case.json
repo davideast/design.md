@@ -1,0 +1,7 @@
+{
+  "title": "Auralis — AI voice platform landing page",
+  "deviceType": "DESKTOP",
+  "genericCenter": "The canonical AI-product page: dark mode, purple-to-blue gradient hero, glowing centered headline, three icon cards with soft shadows, Inter. Note this case INVERTS the harness's usual austerity: the intended design requires pill radii, one vivid gradient region, and icon glyphs — on a light page.",
+  "prohibitions": ["darkBackground"],
+  "requirements": ["gradients", "roundedCorners", "iconFonts"]
+}

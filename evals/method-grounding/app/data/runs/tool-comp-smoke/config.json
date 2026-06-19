@@ -1,0 +1,25 @@
+{
+  "cases": [
+    "agent-slides"
+  ],
+  "samples": 2,
+  "controlSamples": 4,
+  "arms": [
+    "stitch",
+    "gemini"
+  ],
+  "channels": [
+    "prompt"
+  ],
+  "experiment": "tool-comparison",
+  "metric": "fidelity-to-direction",
+  "tool": "stitch",
+  "model": "GEMINI_3_1_PRO",
+  "concurrency": 2,
+  "stitchSdkVersion": "0.3.5",
+  "evalHash": "9255ea5d23ee",
+  "caseHashes": {
+    "agent-slides": "8525083078d8"
+  },
+  "startedAt": "2026-06-15T19:21:24.984Z"
+}

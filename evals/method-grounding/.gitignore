@@ -1,5 +1,7 @@
 node_modules/
-runs/
+# Only the top-level raw generation output — NOT app/data/runs (the committed
+# snapshot the viewer builds from). Anchored so a nested `runs/` isn't swept up.
+/runs/
 .stitch-key
 .agent-provider.json
 ignored/

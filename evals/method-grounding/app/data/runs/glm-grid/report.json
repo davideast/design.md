@@ -1,0 +1,1011 @@
+{
+  "config": {
+    "cases": [
+      "agent-slides",
+      "auralis",
+      "dc-tracks",
+      "night-birding",
+      "tea-house"
+    ],
+    "samples": 1,
+    "controlSamples": 1,
+    "arms": [
+      "no-design-md",
+      "tokens-only",
+      "description",
+      "object",
+      "metaphor"
+    ],
+    "channels": [
+      "prompt"
+    ],
+    "experiment": "method-grounding",
+    "metric": "escape-from-center",
+    "tool": "openrouter",
+    "model": "z-ai/glm-5.2",
+    "concurrency": 2,
+    "stitchSdkVersion": "0.3.5",
+    "evalHash": "ba595bb2c4cf",
+    "caseHashes": {
+      "agent-slides": "8525083078d8",
+      "auralis": "3581bf373a0d",
+      "dc-tracks": "8d590cb11d6b",
+      "night-birding": "1455cfc7e161",
+      "tea-house": "308525012293"
+    },
+    "startedAt": "2026-06-17T03:02:54.212Z"
+  },
+  "metric": "escape-from-center",
+  "cases": [
+    {
+      "case": "agent-slides",
+      "title": "Agent Architecture — slide deck for a technical talk",
+      "controlSamples": 1,
+      "controlDispersion": null,
+      "prohibitions": [
+        "gradients",
+        "shadows",
+        "roundedCorners",
+        "darkBackground",
+        "iconFonts"
+      ],
+      "requirements": [],
+      "cells": [
+        {
+          "cell": "no-design-md",
+          "samples": 1,
+          "paletteAdherence": null,
+          "meanPaletteDistance": null,
+          "fontMatchRate": null,
+          "violationRates": {
+            "gradients": 0,
+            "shadows": 1,
+            "roundedCorners": 1,
+            "darkBackground": 0,
+            "iconFonts": 0
+          },
+          "meanViolationCount": 2,
+          "meanCounts": {
+            "gradients": 0,
+            "shadows": 2,
+            "roundedCorners": 1,
+            "boldUses": 0,
+            "fontFamilies": 3
+          },
+          "intraArmDispersion": null,
+          "distanceFromControl": null,
+          "excessDistanceFromControl": null,
+          "sampleSummaries": [
+            {
+              "index": "0",
+              "violationCount": 2,
+              "paletteAdherence": null,
+              "distToControl": null
+            }
+          ]
+        },
+        {
+          "cell": "tokens-only+prompt",
+          "samples": 1,
+          "paletteAdherence": 0.9166666666666666,
+          "meanPaletteDistance": 0.007517664325986673,
+          "fontMatchRate": 1,
+          "violationRates": {
+            "gradients": 1,
+            "shadows": 1,
+            "roundedCorners": 0,
+            "darkBackground": 0,
+            "iconFonts": 0
+          },
+          "meanViolationCount": 2,
+          "meanCounts": {
+            "gradients": 8,
+            "shadows": 2,
+            "roundedCorners": 0,
+            "boldUses": 0,
+            "fontFamilies": 3
+          },
+          "intraArmDispersion": null,
+          "distanceFromControl": 0.41353874883286645,
+          "excessDistanceFromControl": null,
+          "sampleSummaries": [
+            {
+              "index": "0",
+              "violationCount": 2,
+              "paletteAdherence": 0.9166666666666666,
+              "distToControl": 0.41353874883286645
+            }
+          ]
+        },
+        {
+          "cell": "description+prompt",
+          "samples": 1,
+          "paletteAdherence": 0.9285714285714286,
+          "meanPaletteDistance": 0.009688230357160241,
+          "fontMatchRate": 1,
+          "violationRates": {
+            "gradients": 0,
+            "shadows": 1,
+            "roundedCorners": 0,
+            "darkBackground": 0,
+            "iconFonts": 0
+          },
+          "meanViolationCount": 1,
+          "meanCounts": {
+            "gradients": 0,
+            "shadows": 2,
+            "roundedCorners": 0,
+            "boldUses": 0,
+            "fontFamilies": 3
+          },
+          "intraArmDispersion": null,
+          "distanceFromControl": 0.2839285714285714,
+          "excessDistanceFromControl": null,
+          "sampleSummaries": [
+            {
+              "index": "0",
+              "violationCount": 1,
+              "paletteAdherence": 0.9285714285714286,
+              "distToControl": 0.2839285714285714
+            }
+          ]
+        },
+        {
+          "cell": "object+prompt",
+          "samples": 1,
+          "paletteAdherence": 0.6666666666666666,
+          "meanPaletteDistance": 0.06103562635294235,
+          "fontMatchRate": 1,
+          "violationRates": {
+            "gradients": 1,
+            "shadows": 1,
+            "roundedCorners": 0,
+            "darkBackground": 1,
+            "iconFonts": 0
+          },
+          "meanViolationCount": 3,
+          "meanCounts": {
+            "gradients": 2,
+            "shadows": 2,
+            "roundedCorners": 0,
+            "boldUses": 0,
+            "fontFamilies": 3
+          },
+          "intraArmDispersion": null,
+          "distanceFromControl": 0.3791666666666667,
+          "excessDistanceFromControl": null,
+          "sampleSummaries": [
+            {
+              "index": "0",
+              "violationCount": 3,
+              "paletteAdherence": 0.6666666666666666,
+              "distToControl": 0.3791666666666667
+            }
+          ]
+        },
+        {
+          "cell": "metaphor+prompt",
+          "samples": 1,
+          "paletteAdherence": 0.9722222222222222,
+          "meanPaletteDistance": 0.004094041202491207,
+          "fontMatchRate": 1,
+          "violationRates": {
+            "gradients": 1,
+            "shadows": 1,
+            "roundedCorners": 0,
+            "darkBackground": 1,
+            "iconFonts": 0
+          },
+          "meanViolationCount": 3,
+          "meanCounts": {
+            "gradients": 5,
+            "shadows": 2,
+            "roundedCorners": 0,
+            "boldUses": 0,
+            "fontFamilies": 3
+          },
+          "intraArmDispersion": null,
+          "distanceFromControl": 0.41904761904761906,
+          "excessDistanceFromControl": null,
+          "sampleSummaries": [
+            {
+              "index": "0",
+              "violationCount": 3,
+              "paletteAdherence": 0.9722222222222222,
+              "distToControl": 0.41904761904761906
+            }
+          ]
+        }
+      ],
+      "comparisons": [
+        {
+          "cell": "tokens-only+prompt",
+          "baseline": "description+prompt",
+          "deltaDistFromControl": 0.12961017740429503,
+          "pDistFromControl": null,
+          "deltaViolations": 1,
+          "pViolations": null,
+          "deltaDispersion": null,
+          "pDispersion": null
+        },
+        {
+          "cell": "object+prompt",
+          "baseline": "description+prompt",
+          "deltaDistFromControl": 0.09523809523809529,
+          "pDistFromControl": null,
+          "deltaViolations": 2,
+          "pViolations": null,
+          "deltaDispersion": null,
+          "pDispersion": null
+        },
+        {
+          "cell": "metaphor+prompt",
+          "baseline": "description+prompt",
+          "deltaDistFromControl": 0.13511904761904764,
+          "pDistFromControl": null,
+          "deltaViolations": 2,
+          "pViolations": null,
+          "deltaDispersion": null,
+          "pDispersion": null
+        }
+      ]
+    },
+    {
+      "case": "auralis",
+      "title": "Auralis — AI voice platform landing page",
+      "controlSamples": 1,
+      "controlDispersion": null,
+      "prohibitions": [
+        "darkBackground"
+      ],
+      "requirements": [
+        "gradients",
+        "roundedCorners",
+        "iconFonts"
+      ],
+      "cells": [
+        {
+          "cell": "no-design-md",
+          "samples": 1,
+          "paletteAdherence": null,
+          "meanPaletteDistance": null,
+          "fontMatchRate": null,
+          "violationRates": {
+            "darkBackground": 0,
+            "missing-gradients": 0,
+            "missing-roundedCorners": 0,
+            "missing-iconFonts": 1
+          },
+          "meanViolationCount": 1,
+          "meanCounts": {
+            "gradients": 8,
+            "shadows": 26,
+            "roundedCorners": 12,
+            "boldUses": 9,
+            "fontFamilies": 2
+          },
+          "intraArmDispersion": null,
+          "distanceFromControl": null,
+          "excessDistanceFromControl": null,
+          "sampleSummaries": [
+            {
+              "index": "0",
+              "violationCount": 1,
+              "paletteAdherence": null,
+              "distToControl": null
+            }
+          ]
+        },
+        {
+          "cell": "tokens-only+prompt",
+          "samples": 1,
+          "paletteAdherence": 0.7472527472527473,
+          "meanPaletteDistance": 0.04824743421696058,
+          "fontMatchRate": 1,
+          "violationRates": {
+            "darkBackground": 0,
+            "missing-gradients": 0,
+            "missing-roundedCorners": 0,
+            "missing-iconFonts": 1
+          },
+          "meanViolationCount": 1,
+          "meanCounts": {
+            "gradients": 18,
+            "shadows": 27,
+            "roundedCorners": 21,
+            "boldUses": 27,
+            "fontFamilies": 1
+          },
+          "intraArmDispersion": null,
+          "distanceFromControl": 0.4113159560729893,
+          "excessDistanceFromControl": null,
+          "sampleSummaries": [
+            {
+              "index": "0",
+              "violationCount": 1,
+              "paletteAdherence": 0.7472527472527473,
+              "distToControl": 0.4113159560729893
+            }
+          ]
+        },
+        {
+          "cell": "description+prompt",
+          "samples": 1,
+          "paletteAdherence": 0.7076923076923077,
+          "meanPaletteDistance": 0.054795416884264564,
+          "fontMatchRate": 1,
+          "violationRates": {
+            "darkBackground": 1,
+            "missing-gradients": 0,
+            "missing-roundedCorners": 0,
+            "missing-iconFonts": 1
+          },
+          "meanViolationCount": 2,
+          "meanCounts": {
+            "gradients": 27,
+            "shadows": 28,
+            "roundedCorners": 43,
+            "boldUses": 15,
+            "fontFamilies": 2
+          },
+          "intraArmDispersion": null,
+          "distanceFromControl": 0.4212317048031334,
+          "excessDistanceFromControl": null,
+          "sampleSummaries": [
+            {
+              "index": "0",
+              "violationCount": 2,
+              "paletteAdherence": 0.7076923076923077,
+              "distToControl": 0.4212317048031334
+            }
+          ]
+        },
+        {
+          "cell": "object+prompt",
+          "samples": 1,
+          "paletteAdherence": 0.8591549295774648,
+          "meanPaletteDistance": 0.0271460665439289,
+          "fontMatchRate": 1,
+          "violationRates": {
+            "darkBackground": 0,
+            "missing-gradients": 0,
+            "missing-roundedCorners": 0,
+            "missing-iconFonts": 1
+          },
+          "meanViolationCount": 1,
+          "meanCounts": {
+            "gradients": 15,
+            "shadows": 10,
+            "roundedCorners": 38,
+            "boldUses": 30,
+            "fontFamilies": 1
+          },
+          "intraArmDispersion": null,
+          "distanceFromControl": 0.5121414253127808,
+          "excessDistanceFromControl": null,
+          "sampleSummaries": [
+            {
+              "index": "0",
+              "violationCount": 1,
+              "paletteAdherence": 0.8591549295774648,
+              "distToControl": 0.5121414253127808
+            }
+          ]
+        },
+        {
+          "cell": "metaphor+prompt",
+          "samples": 1,
+          "paletteAdherence": 0.7545454545454545,
+          "meanPaletteDistance": 0.04654069170333519,
+          "fontMatchRate": 1,
+          "violationRates": {
+            "darkBackground": 0,
+            "missing-gradients": 0,
+            "missing-roundedCorners": 0,
+            "missing-iconFonts": 1
+          },
+          "meanViolationCount": 1,
+          "meanCounts": {
+            "gradients": 16,
+            "shadows": 22,
+            "roundedCorners": 21,
+            "boldUses": 37,
+            "fontFamilies": 1
+          },
+          "intraArmDispersion": null,
+          "distanceFromControl": 0.4287448072925483,
+          "excessDistanceFromControl": null,
+          "sampleSummaries": [
+            {
+              "index": "0",
+              "violationCount": 1,
+              "paletteAdherence": 0.7545454545454545,
+              "distToControl": 0.4287448072925483
+            }
+          ]
+        }
+      ],
+      "comparisons": [
+        {
+          "cell": "tokens-only+prompt",
+          "baseline": "description+prompt",
+          "deltaDistFromControl": -0.009915748730144058,
+          "pDistFromControl": null,
+          "deltaViolations": -1,
+          "pViolations": null,
+          "deltaDispersion": null,
+          "pDispersion": null
+        },
+        {
+          "cell": "object+prompt",
+          "baseline": "description+prompt",
+          "deltaDistFromControl": 0.09090972050964746,
+          "pDistFromControl": null,
+          "deltaViolations": -1,
+          "pViolations": null,
+          "deltaDispersion": null,
+          "pDispersion": null
+        },
+        {
+          "cell": "metaphor+prompt",
+          "baseline": "description+prompt",
+          "deltaDistFromControl": 0.007513102489414947,
+          "pDistFromControl": null,
+          "deltaViolations": -1,
+          "pViolations": null,
+          "deltaDispersion": null,
+          "pDispersion": null
+        }
+      ]
+    },
+    {
+      "case": "dc-tracks",
+      "title": "The Tracks of Washington DC — prestige editorial publication",
+      "controlSamples": 1,
+      "controlDispersion": null,
+      "prohibitions": [
+        "shadows",
+        "roundedCorners",
+        "darkBackground",
+        "iconFonts"
+      ],
+      "requirements": [],
+      "cells": [
+        {
+          "cell": "no-design-md",
+          "samples": 1,
+          "paletteAdherence": null,
+          "meanPaletteDistance": null,
+          "fontMatchRate": null,
+          "violationRates": {
+            "shadows": 0,
+            "roundedCorners": 1,
+            "darkBackground": 0,
+            "iconFonts": 0
+          },
+          "meanViolationCount": 1,
+          "meanCounts": {
+            "gradients": 6,
+            "shadows": 0,
+            "roundedCorners": 4,
+            "boldUses": 3,
+            "fontFamilies": 2
+          },
+          "intraArmDispersion": null,
+          "distanceFromControl": null,
+          "excessDistanceFromControl": null,
+          "sampleSummaries": [
+            {
+              "index": "0",
+              "violationCount": 1,
+              "paletteAdherence": null,
+              "distToControl": null
+            }
+          ]
+        },
+        {
+          "cell": "tokens-only+prompt",
+          "samples": 1,
+          "paletteAdherence": 0.8829787234042553,
+          "meanPaletteDistance": 0.009866362102594409,
+          "fontMatchRate": 1,
+          "violationRates": {
+            "shadows": 1,
+            "roundedCorners": 1,
+            "darkBackground": 0,
+            "iconFonts": 0
+          },
+          "meanViolationCount": 2,
+          "meanCounts": {
+            "gradients": 6,
+            "shadows": 7,
+            "roundedCorners": 3,
+            "boldUses": 0,
+            "fontFamilies": 3
+          },
+          "intraArmDispersion": null,
+          "distanceFromControl": 0.48809523809523814,
+          "excessDistanceFromControl": null,
+          "sampleSummaries": [
+            {
+              "index": "0",
+              "violationCount": 2,
+              "paletteAdherence": 0.8829787234042553,
+              "distToControl": 0.48809523809523814
+            }
+          ]
+        },
+        {
+          "cell": "description+prompt",
+          "samples": 1,
+          "paletteAdherence": 1,
+          "meanPaletteDistance": 0,
+          "fontMatchRate": 1,
+          "violationRates": {
+            "shadows": 0,
+            "roundedCorners": 0,
+            "darkBackground": 0,
+            "iconFonts": 0
+          },
+          "meanViolationCount": 0,
+          "meanCounts": {
+            "gradients": 4,
+            "shadows": 0,
+            "roundedCorners": 0,
+            "boldUses": 0,
+            "fontFamilies": 3
+          },
+          "intraArmDispersion": null,
+          "distanceFromControl": 0.5071428571428571,
+          "excessDistanceFromControl": null,
+          "sampleSummaries": [
+            {
+              "index": "0",
+              "violationCount": 0,
+              "paletteAdherence": 1,
+              "distToControl": 0.5071428571428571
+            }
+          ]
+        },
+        {
+          "cell": "object+prompt",
+          "samples": 1,
+          "paletteAdherence": 1,
+          "meanPaletteDistance": 0,
+          "fontMatchRate": 1,
+          "violationRates": {
+            "shadows": 0,
+            "roundedCorners": 1,
+            "darkBackground": 1,
+            "iconFonts": 0
+          },
+          "meanViolationCount": 2,
+          "meanCounts": {
+            "gradients": 3,
+            "shadows": 0,
+            "roundedCorners": 2,
+            "boldUses": 0,
+            "fontFamilies": 3
+          },
+          "intraArmDispersion": null,
+          "distanceFromControl": 0.450556586270872,
+          "excessDistanceFromControl": null,
+          "sampleSummaries": [
+            {
+              "index": "0",
+              "violationCount": 2,
+              "paletteAdherence": 1,
+              "distToControl": 0.450556586270872
+            }
+          ]
+        },
+        {
+          "cell": "metaphor+prompt",
+          "samples": 1,
+          "paletteAdherence": 1,
+          "meanPaletteDistance": 0,
+          "fontMatchRate": 1,
+          "violationRates": {
+            "shadows": 0,
+            "roundedCorners": 1,
+            "darkBackground": 0,
+            "iconFonts": 0
+          },
+          "meanViolationCount": 1,
+          "meanCounts": {
+            "gradients": 3,
+            "shadows": 0,
+            "roundedCorners": 1,
+            "boldUses": 0,
+            "fontFamilies": 3
+          },
+          "intraArmDispersion": null,
+          "distanceFromControl": 0.4811688311688312,
+          "excessDistanceFromControl": null,
+          "sampleSummaries": [
+            {
+              "index": "0",
+              "violationCount": 1,
+              "paletteAdherence": 1,
+              "distToControl": 0.4811688311688312
+            }
+          ]
+        }
+      ],
+      "comparisons": [
+        {
+          "cell": "tokens-only+prompt",
+          "baseline": "description+prompt",
+          "deltaDistFromControl": -0.01904761904761898,
+          "pDistFromControl": null,
+          "deltaViolations": 2,
+          "pViolations": null,
+          "deltaDispersion": null,
+          "pDispersion": null
+        },
+        {
+          "cell": "object+prompt",
+          "baseline": "description+prompt",
+          "deltaDistFromControl": -0.056586270871985145,
+          "pDistFromControl": null,
+          "deltaViolations": 2,
+          "pViolations": null,
+          "deltaDispersion": null,
+          "pDispersion": null
+        },
+        {
+          "cell": "metaphor+prompt",
+          "baseline": "description+prompt",
+          "deltaDistFromControl": -0.025974025974025927,
+          "pDistFromControl": null,
+          "deltaViolations": 1,
+          "pViolations": null,
+          "deltaDispersion": null,
+          "pDispersion": null
+        }
+      ]
+    },
+    {
+      "case": "night-birding",
+      "title": "Urban Nocturnal Field Guide",
+      "controlSamples": 1,
+      "controlDispersion": null,
+      "prohibitions": [
+        "gradients",
+        "shadows",
+        "roundedCorners"
+      ],
+      "requirements": [
+        "boldUses"
+      ],
+      "cells": [
+        {
+          "cell": "no-design-md",
+          "samples": 1,
+          "paletteAdherence": null,
+          "meanPaletteDistance": null,
+          "fontMatchRate": null,
+          "violationRates": {
+            "gradients": 1,
+            "shadows": 1,
+            "roundedCorners": 1,
+            "missing-boldUses": 1
+          },
+          "meanViolationCount": 4,
+          "meanCounts": {
+            "gradients": 4,
+            "shadows": 3,
+            "roundedCorners": 1,
+            "boldUses": 0,
+            "fontFamilies": 2
+          },
+          "intraArmDispersion": null,
+          "distanceFromControl": null,
+          "excessDistanceFromControl": null,
+          "sampleSummaries": [
+            {
+              "index": "0",
+              "violationCount": 4,
+              "paletteAdherence": null,
+              "distToControl": null
+            }
+          ]
+        },
+        {
+          "cell": "tokens-only+prompt",
+          "samples": 1,
+          "paletteAdherence": 1,
+          "meanPaletteDistance": 0,
+          "fontMatchRate": null,
+          "violationRates": {
+            "gradients": 0,
+            "shadows": 0,
+            "roundedCorners": 0,
+            "missing-boldUses": 0
+          },
+          "meanViolationCount": 0,
+          "meanCounts": {
+            "gradients": 0,
+            "shadows": 0,
+            "roundedCorners": 0,
+            "boldUses": 10,
+            "fontFamilies": 2
+          },
+          "intraArmDispersion": null,
+          "distanceFromControl": 0.6982374768089054,
+          "excessDistanceFromControl": null,
+          "sampleSummaries": [
+            {
+              "index": "0",
+              "violationCount": 0,
+              "paletteAdherence": 1,
+              "distToControl": 0.6982374768089054
+            }
+          ]
+        },
+        {
+          "cell": "description+prompt",
+          "samples": 1,
+          "paletteAdherence": 1,
+          "meanPaletteDistance": 0,
+          "fontMatchRate": null,
+          "violationRates": {
+            "gradients": 0,
+            "shadows": 0,
+            "roundedCorners": 0,
+            "missing-boldUses": 0
+          },
+          "meanViolationCount": 0,
+          "meanCounts": {
+            "gradients": 0,
+            "shadows": 0,
+            "roundedCorners": 0,
+            "boldUses": 13,
+            "fontFamilies": 2
+          },
+          "intraArmDispersion": null,
+          "distanceFromControl": 0.7010204081632654,
+          "excessDistanceFromControl": null,
+          "sampleSummaries": [
+            {
+              "index": "0",
+              "violationCount": 0,
+              "paletteAdherence": 1,
+              "distToControl": 0.7010204081632654
+            }
+          ]
+        },
+        {
+          "cell": "object+prompt",
+          "samples": 1,
+          "paletteAdherence": 1,
+          "meanPaletteDistance": 0,
+          "fontMatchRate": null,
+          "violationRates": {
+            "gradients": 1,
+            "shadows": 1,
+            "roundedCorners": 0,
+            "missing-boldUses": 0
+          },
+          "meanViolationCount": 2,
+          "meanCounts": {
+            "gradients": 4,
+            "shadows": 1,
+            "roundedCorners": 0,
+            "boldUses": 18,
+            "fontFamilies": 2
+          },
+          "intraArmDispersion": null,
+          "distanceFromControl": 0.5394199785177228,
+          "excessDistanceFromControl": null,
+          "sampleSummaries": [
+            {
+              "index": "0",
+              "violationCount": 2,
+              "paletteAdherence": 1,
+              "distToControl": 0.5394199785177228
+            }
+          ]
+        },
+        {
+          "cell": "metaphor+prompt",
+          "samples": 1,
+          "paletteAdherence": 1,
+          "meanPaletteDistance": 0,
+          "fontMatchRate": null,
+          "violationRates": {
+            "gradients": 1,
+            "shadows": 1,
+            "roundedCorners": 1,
+            "missing-boldUses": 0
+          },
+          "meanViolationCount": 3,
+          "meanCounts": {
+            "gradients": 4,
+            "shadows": 5,
+            "roundedCorners": 3,
+            "boldUses": 13,
+            "fontFamilies": 2
+          },
+          "intraArmDispersion": null,
+          "distanceFromControl": 0.49705215419501136,
+          "excessDistanceFromControl": null,
+          "sampleSummaries": [
+            {
+              "index": "0",
+              "violationCount": 3,
+              "paletteAdherence": 1,
+              "distToControl": 0.49705215419501136
+            }
+          ]
+        }
+      ],
+      "comparisons": [
+        {
+          "cell": "tokens-only+prompt",
+          "baseline": "description+prompt",
+          "deltaDistFromControl": -0.00278293135436003,
+          "pDistFromControl": null,
+          "deltaViolations": 0,
+          "pViolations": null,
+          "deltaDispersion": null,
+          "pDispersion": null
+        },
+        {
+          "cell": "object+prompt",
+          "baseline": "description+prompt",
+          "deltaDistFromControl": -0.16160042964554255,
+          "pDistFromControl": null,
+          "deltaViolations": 2,
+          "pViolations": null,
+          "deltaDispersion": null,
+          "pDispersion": null
+        },
+        {
+          "cell": "metaphor+prompt",
+          "baseline": "description+prompt",
+          "deltaDistFromControl": -0.20396825396825402,
+          "pDistFromControl": null,
+          "deltaViolations": 3,
+          "pViolations": null,
+          "deltaDispersion": null,
+          "pDispersion": null
+        }
+      ]
+    },
+    {
+      "case": "tea-house",
+      "title": "Kettle & Leaf — neighborhood tea house site",
+      "controlSamples": 1,
+      "controlDispersion": null,
+      "prohibitions": [
+        "shadows",
+        "darkBackground"
+      ],
+      "requirements": [],
+      "cells": [
+        {
+          "cell": "no-design-md",
+          "samples": 1,
+          "paletteAdherence": null,
+          "meanPaletteDistance": null,
+          "fontMatchRate": null,
+          "violationRates": {
+            "shadows": 0,
+            "darkBackground": 0
+          },
+          "meanViolationCount": 0,
+          "meanCounts": {
+            "gradients": 0,
+            "shadows": 0,
+            "roundedCorners": 1,
+            "boldUses": 1,
+            "fontFamilies": 2
+          },
+          "intraArmDispersion": null,
+          "distanceFromControl": null,
+          "excessDistanceFromControl": null,
+          "sampleSummaries": [
+            {
+              "index": "0",
+              "violationCount": 0,
+              "paletteAdherence": null,
+              "distToControl": null
+            }
+          ]
+        },
+        {
+          "cell": "tokens-only+prompt",
+          "samples": 1,
+          "paletteAdherence": 1,
+          "meanPaletteDistance": 0,
+          "fontMatchRate": 1,
+          "violationRates": {
+            "shadows": 0,
+            "darkBackground": 0
+          },
+          "meanViolationCount": 0,
+          "meanCounts": {
+            "gradients": 0,
+            "shadows": 0,
+            "roundedCorners": 0,
+            "boldUses": 5,
+            "fontFamilies": 3
+          },
+          "intraArmDispersion": null,
+          "distanceFromControl": 0.4070294784580498,
+          "excessDistanceFromControl": null,
+          "sampleSummaries": [
+            {
+              "index": "0",
+              "violationCount": 0,
+              "paletteAdherence": 1,
+              "distToControl": 0.4070294784580498
+            }
+          ]
+        },
+        {
+          "cell": "object+prompt",
+          "samples": 1,
+          "paletteAdherence": 1,
+          "meanPaletteDistance": 0,
+          "fontMatchRate": 1,
+          "violationRates": {
+            "shadows": 0,
+            "darkBackground": 0
+          },
+          "meanViolationCount": 0,
+          "meanCounts": {
+            "gradients": 0,
+            "shadows": 0,
+            "roundedCorners": 0,
+            "boldUses": 4,
+            "fontFamilies": 3
+          },
+          "intraArmDispersion": null,
+          "distanceFromControl": 0.3968253968253968,
+          "excessDistanceFromControl": null,
+          "sampleSummaries": [
+            {
+              "index": "0",
+              "violationCount": 0,
+              "paletteAdherence": 1,
+              "distToControl": 0.3968253968253968
+            }
+          ]
+        },
+        {
+          "cell": "metaphor+prompt",
+          "samples": 1,
+          "paletteAdherence": 1,
+          "meanPaletteDistance": 0,
+          "fontMatchRate": 1,
+          "violationRates": {
+            "shadows": 0,
+            "darkBackground": 0
+          },
+          "meanViolationCount": 0,
+          "meanCounts": {
+            "gradients": 0,
+            "shadows": 0,
+            "roundedCorners": 0,
+            "boldUses": 1,
+            "fontFamilies": 3
+          },
+          "intraArmDispersion": null,
+          "distanceFromControl": 0.3253968253968254,
+          "excessDistanceFromControl": null,
+          "sampleSummaries": [
+            {
+              "index": "0",
+              "violationCount": 0,
+              "paletteAdherence": 1,
+              "distToControl": 0.3253968253968254
+            }
+          ]
+        }
+      ],
+      "comparisons": []
+    }
+  ]
+}

@@ -10,7 +10,7 @@ import { readFileSync, existsSync, readdirSync, statSync } from "node:fs";
 import { join, resolve } from "node:path";
 import { CASE_TITLES, CASE_WORLDS, TREATMENTS, ORDER } from "./runs";
 
-const RUNS = resolve(process.cwd(), "..", "runs");
+const RUNS = resolve(process.cwd(), "data", "runs");
 
 export interface Provider {
   key: string;

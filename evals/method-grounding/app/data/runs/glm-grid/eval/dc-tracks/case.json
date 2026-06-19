@@ -1,0 +1,6 @@
+{
+  "title": "The Tracks of Washington DC — prestige editorial publication",
+  "deviceType": "DESKTOP",
+  "genericCenter": "Lifestyle/fitness-blog template: centered hero text over a darkened photo, rounded cards with soft shadows, icon badges for stats, pastel gradient CTAs, sans-serif everything, Instagram-grid galleries.",
+  "prohibitions": ["shadows", "roundedCorners", "darkBackground", "iconFonts"]
+}

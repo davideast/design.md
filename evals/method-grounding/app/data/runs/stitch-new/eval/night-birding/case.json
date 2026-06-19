@@ -1,0 +1,13 @@
+{
+  "title": "Urban Nocturnal Field Guide",
+  "deviceType": "MOBILE",
+  "genericCenter": "A clean, modern mobile app with generous white space, soft sans-serif typography, and subtle shadows on floating cards.",
+  "prohibitions": [
+    "gradients",
+    "shadows",
+    "roundedCorners"
+  ],
+  "requirements": [
+    "boldUses"
+  ]
+}

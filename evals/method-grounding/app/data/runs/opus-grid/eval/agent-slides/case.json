@@ -1,0 +1,6 @@
+{
+  "title": "Agent Architecture — slide deck for a technical talk",
+  "deviceType": "DESKTOP",
+  "genericCenter": "Conference-deck template: dark theme, gradient title slide, agenda slide, icon bullets (lightbulb for Think, lightning for Act, eye for Observe), sans-serif everything, persistent header/footer chrome on every slide, thank-you slide.",
+  "prohibitions": ["gradients", "shadows", "roundedCorners", "darkBackground", "iconFonts"]
+}

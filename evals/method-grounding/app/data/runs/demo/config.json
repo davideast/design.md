@@ -1,0 +1,11 @@
+{
+  "demo": true,
+  "model": "GEMINI_3_1_PRO",
+  "stitchSdkVersion": "synthetic-fixtures",
+  "evalHash": "5d7280c55ee4",
+  "caseHashes": {
+    "agent-slides": "8525083078d8",
+    "auralis": "3581bf373a0d"
+  },
+  "startedAt": "demo"
+}

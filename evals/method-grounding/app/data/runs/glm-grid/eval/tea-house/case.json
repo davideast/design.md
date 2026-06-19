@@ -1,0 +1,10 @@
+{
+  "title": "Kettle & Leaf — neighborhood tea house site",
+  "deviceType": "DESKTOP",
+  "genericCenter": "A centered hero with a big soft-focus teacup photo, three rounded cards with drop shadows for the teas, pill-shaped buttons, a generic humanist sans, and a dark footer bar — the default modern-restaurant template, friendly and weightless and indistinguishable from a thousand café landing pages.",
+  "prohibitions": [
+    "shadows",
+    "darkBackground"
+  ],
+  "requirements": []
+}

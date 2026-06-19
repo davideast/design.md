@@ -1,0 +1,19 @@
+{
+  "cases": [
+    "dc-tracks"
+  ],
+  "samples": 3,
+  "controlSamples": 6,
+  "arms": "all",
+  "channels": [
+    "design-system",
+    "prompt"
+  ],
+  "model": "GEMINI_3_1_PRO",
+  "stitchSdkVersion": "0.3.5",
+  "evalHash": "16119bc6a53a",
+  "caseHashes": {
+    "dc-tracks": "8d590cb11d6b"
+  },
+  "startedAt": "2026-06-10T14:15:38.790Z"
+}
