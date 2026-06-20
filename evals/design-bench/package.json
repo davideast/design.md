@@ -1,5 +1,5 @@
 {
-  "name": "method-grounding-eval",
+  "name": "design-bench",
   "private": true,
   "type": "module",
   "description": "Evaluation harness: does a grounded Method section produce more consistent, less generic, more constraint-respecting generations than tokens or adjectives alone?",
