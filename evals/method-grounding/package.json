@@ -4,7 +4,7 @@
   "type": "module",
   "description": "Evaluation harness: does a grounded Method section produce more consistent, less generic, more constraint-respecting generations than tokens or adjectives alone?",
   "scripts": {
-    "dev": "bun run src/viewer.ts",
+    "dev": "cd app && bun run dev",
     "mcp": "bun src/mcp.ts",
     "generate": "bun src/generate.ts",
     "measure": "bun src/measure.ts",

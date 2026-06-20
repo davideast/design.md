@@ -7,6 +7,8 @@ import { createHash } from "node:crypto";
 export const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
 
 export const ARM_KEYS = ["tokens-only", "description", "object", "constraint", "metaphor", "full-spec"] as const;
+/** Arms an agent drafts as prose (excludes the control and the prose-less tokens-only). */
+export const DRAFTABLE_ARMS = ["description", "object", "constraint", "metaphor", "full-spec"];
 export const CONTROL = "no-design-md";
 export const CELL_ORDER = [CONTROL, ...ARM_KEYS];
 

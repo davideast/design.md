@@ -9,9 +9,8 @@
 import { readFileSync, writeFileSync, existsSync } from "node:fs";
 import { join } from "node:path";
 import type { ToolHandler, ToolResult } from "@inbrowser/agent";
-import { ARM_KEYS } from "../cases.ts";
+import { ARM_KEYS, DRAFTABLE_ARMS } from "../cases.ts";
 import { findCase, loadCaseRef, validateCase, KNOWN_FLAGS, type CaseRef } from "../viewer/authoring.ts";
-import { DRAFTABLE_ARMS } from "../viewer/agent.ts";
 
 function fail(summary: string): ToolResult {
   return { ok: false, summary };
