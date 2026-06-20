@@ -168,7 +168,8 @@ tools.push({
   },
 });
 
-// ── generation: agent-as-generator (no API) + paid tools ─────────────────────
+// ── generation: agent-as-generator only. MCP hands over the prompt and stores
+//    the result; the connected agent does the rendering. The server never calls a model.
 function cellFor(arm: string): string {
   return arm === "no-design-md" ? "no-design-md" : `${arm}+prompt`;
 }
@@ -225,7 +226,7 @@ tools.push({
       JSON.stringify(
         {
           cases: allCaseKeys, samples: 1, controlSamples: 1, arms: "all", channels: ["prompt"],
-          experiment: "method-grounding", metric: "escape-from-center", tool: "openrouter", model: provider,
+          experiment: "method-grounding", metric: "escape-from-center", tool: "agent", model: provider,
           evalHash, caseHashes, startedAt: prior?.startedAt ?? new Date().toISOString(),
         },
         null,
@@ -240,7 +241,9 @@ tools.push({
   },
 });
 
-// ── paid generation / measure / publish (shell the validated CLIs) ───────────
+// ── measure / publish — purely mechanical (no LLM). All LLM work is the agent's:
+//    it renders get_render_prompt and stores the result via submit_render. These
+//    shell the deterministic CLIs (scoring math, file copy) — never a model call.
 function sh(cmd: string, args: string[]): Promise<{ ok: boolean; out: string }> {
   return new Promise((res) => {
     const p = spawn(cmd, args, { cwd: process.cwd() });
@@ -250,29 +253,6 @@ function sh(cmd: string, args: string[]): Promise<{ ok: boolean; out: string }> 
     p.on("close", (code) => res({ ok: code === 0, out }));
   });
 }
-tools.push({
-  name: "run_generation",
-  description: "Generate via a PAID tool (stitch | gemini | openrouter). Use this only when you want a metered model in the matrix; otherwise prefer get_render_prompt + submit_render.",
-  inputSchema: {
-    type: "object",
-    properties: {
-      tool: { type: "string", description: "stitch | gemini | openrouter" },
-      cases: { type: "string", description: "comma-separated case keys" },
-      arms: { type: "string", description: "comma-separated arm keys (include no-design-md for the control)" },
-      model: { type: "string" },
-      samples: { type: "number", default: 1 },
-      channels: { type: "string", default: "prompt" },
-      run: { type: "string" },
-    },
-    required: ["tool", "cases", "arms", "run"],
-  },
-  async run(a) {
-    const args = ["src/generate.ts", "--tool", a.tool, "--cases", a.cases, "--arms", a.arms, "--samples", String(a.samples ?? 1), "--channels", a.channels ?? "prompt", "--run", a.run];
-    if (a.model) args.push("--model", a.model);
-    const r = await sh("bun", args);
-    return { ok: r.ok, summary: r.ok ? `generation complete for run "${a.run}"` : `generation failed`, data: { log: r.out.slice(-2000) } };
-  },
-});
 tools.push({
   name: "measure",
   description: "Score a run (palette/type fidelity, prohibitions, distance from the default look). Writes report.json.",

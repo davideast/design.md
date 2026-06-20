@@ -2,7 +2,7 @@
 
 The Design Bench MCP server (`src/mcp.ts`) lets any MCP agent (Claude Code, Cursor, …)
 drive the whole brief → generation → measurement process as tools — no creation UI.
-It exposes **24 tools** in five groups.
+It exposes **23 tools** in five groups.
 
 ## Connect
 The server resolves `cases/`, `runs/`, `concepts/` from its **working directory**, so it
@@ -16,19 +16,18 @@ Launch your agent from `evals/design-bench/` so it picks up the project-scoped `
 
 ---
 
-## The two generation paths (read this first)
-A "render" is one tool's HTML for one case × arm. There are **two ways** to produce one,
-and this is the thing most worth understanding:
+## The server is purely mechanical (read this first)
+**No MCP tool ever calls an LLM.** The server only reads, writes, validates, scores, and
+publishes files. *All* LLM work — ideation, authoring prose, and rendering screens — is done
+by the **connected agent**, which then persists the result through a tool:
 
-| Path | Tools | Who generates | Cost |
-|---|---|---|---|
-| **Agent-as-generator** | `get_render_prompt` → `submit_render` | **the connected agent itself** (e.g. Claude on your subscription) | **no API call** |
-| **Paid tool** | `run_generation` | a metered provider (Stitch / Gemini-direct / an OpenRouter model) | **billed per token** |
+- **Authoring:** the agent writes the brief/arms; `capture_*` / `write_*` just persist them.
+- **Generation:** `get_render_prompt` hands the agent the exact prompt; the agent renders the
+  HTML itself; `submit_render` stores it as a measurable sample. **No model call in the server.**
 
-So `run_generation` *does* perform LLM generation — but only because you're explicitly
-asking a **paid provider** to render, e.g. to add an "Opus 4.8" or "Stitch" column to the
-matrix. For *your own* column, you (the agent) render the prompt yourself and `submit_render`
-it — free. Pick per cell/column.
+Generating a column with a *paid provider* (Stitch / Gemini / OpenRouter) is deliberately
+**not** an MCP tool — it's an operator-run CLI (`bun src/generate.ts …`), kept off the
+mechanical surface so an agent driving MCP can never trigger metered spend.
 
 ---
 
@@ -68,7 +67,6 @@ it — free. Pick per cell/column.
 |---|---|---|
 | `get_render_prompt` | `case*, arm*` | Returns the exact prompt (brief + the arm's DESIGN.md + the neutral instruction). **You render it, then `submit_render`. No API.** |
 | `submit_render` | `provider*, case*, arm*, html*`, `sampleIndex` | Store HTML you generated as a measurable sample under a provider run (e.g. `provider="claude-sub"`). Mirrors `generate.ts` run-init so it's measurable. **No API.** |
-| `run_generation` | `tool*, cases*, arms*, run*`, `model`, `samples`, `channels` | **Paid.** Generate via `stitch` \| `gemini` \| `openrouter` (a metered API call). Use only when you want that provider as a column; else prefer the two tools above. |
 
 ## Measurement / publish
 | Tool | Params | What it does |
@@ -95,12 +93,7 @@ submit_render("claude-sub", "garden-cal", "object", "<html>")
 measure("claude-sub")
 snapshot()                                       → matrix updates
 ```
-To add a *paid* column instead of rendering yourself:
-`run_generation(tool="gemini", cases="garden-cal", arms="no-design-md,object", run="gemini")` → `measure("gemini")` → `snapshot()`.
-
----
-
-## Note on naming
-`run_generation` is the vaguest name in the set — it reads like "generate" in general, but it
-specifically means "generate via a **paid** provider." A clearer name (`run_paid_generation`
-or `generate_with_model`) would remove the ambiguity. Left as-is for now; easy to rename.
+Paid-provider columns are **not** made through MCP — that's an operator action on the CLI,
+intentionally outside the mechanical surface:
+`bun src/generate.ts --tool gemini --cases garden-cal --arms no-design-md,object --run gemini`
+→ `measure("gemini")` → `snapshot()`.
