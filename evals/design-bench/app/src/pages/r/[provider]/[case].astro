@@ -2,7 +2,7 @@
 import Base from "../../../layouts/Base.astro";
 import TopRail from "../../../components/TopRail.astro";
 import ProofThumb from "../../../components/ProofThumb.astro";
-import { depthView, depthPaths } from "../../../lib/bench";
+import { depthView, depthPaths } from "../../../lib/data";
 
 export function getStaticPaths() {
   return depthPaths().map((p) => ({ params: { provider: p.provider, case: p.case } }));
@@ -11,8 +11,7 @@ const { provider, case: caseKey } = Astro.params;
 const d = depthView(provider!, caseKey!)!;
 ---
 <Base title={`${d.caseTitle} — ${d.providerLabel} — Design Bench`}>
-  <TopRail active="Cases" />
-  <main class="max-w-6xl mx-auto px-lg py-xl">
+  <TopRail />  <main class="max-w-6xl mx-auto px-lg py-xl">
     <!-- breadth → depth: back to the grid -->
     <div class="font-label text-label uppercase text-ink-muted mb-sm">
       <a href="/" class="hover:text-primary">All results</a> · {d.caseTitle}

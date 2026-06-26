@@ -1,67 +1,120 @@
 ---
 import Base from "../layouts/Base.astro";
 import TopRail from "../components/TopRail.astro";
-import { PROVIDERS, bestArm, gridTiles } from "../lib/bench";
-import { CASE_TITLES, CASE_WORLDS } from "../lib/runs";
+import { featuredProviders, providerCount, bestArm, gridTiles, CASE_TITLES, CASE_WORLDS } from "../lib/data";
 
-const rows = Array.from(new Set(gridTiles().map((t) => t.caseKey)));
-const cols = PROVIDERS;
+const tiles = gridTiles();
+const rows = Array.from(new Set(tiles.map((t) => t.caseKey)));
+const cols = featuredProviders();
+const totalProviders = providerCount();
 const caseNo = (i: number) => String(i + 1).padStart(2, "0");
-// Labels hang into the left gutter; the first proof sheet aligns with the title.
-// LEFT_MARGIN keeps the hanging labels off the viewport edge (aligned with the masthead).
-const LABEL_W = 220;
-const GAP = 32; // table showing between sheets; also crop-mark clearance
-const LEFT_MARGIN = 24;
-const TITLE_X = LABEL_W + GAP + LEFT_MARGIN; // where the title + first sheet begin
+const LABEL_W = 200;
+const COL_MIN = 200;
 ---
 <Base title="Design Bench">
-  <TopRail active="Cases" />
-  <main class="py-xl" style={`padding-left:${TITLE_X}px;padding-right:32px`}>
-    <header class="mb-lg max-w-3xl">
-      <h1 class="font-display text-display text-ink mb-sm">Design Bench</h1>
-      <p class="font-body text-body text-ink-muted">
-        The same brief, run through different AI design tools. Each cell is one tool's best result for that brief;
-        open it to see every arm side by side. Down a column is one tool across briefs; across a row is the tools on one brief.
-      </p>
-    </header>
+  <div id="page-shell">
+    <TopRail />
 
-    <!-- The press table: column/row labels printed on the neutral surround; each
-         result is a paper proof sheet laid on it, the table showing in the gaps. -->
-    <div class="overflow-x-auto" style={`margin-left:-${LABEL_W + GAP}px`}>
-      <div class="grid items-start" style={`grid-template-columns:${LABEL_W}px repeat(${cols.length}, minmax(170px,1fr));gap:${GAP}px;min-width:1280px`}>
-        <!-- origin: axis label, on the table -->
-        <div class="self-end pb-xs font-data text-data text-ink-muted" style="font-size:9px">CASE \ TOOL</div>
+    <div id="home-wrap">
+      <!-- ═══ MOBILE: stacked sections (< 768px) ═══ -->
+      <div id="mobile-grid">
+        <div class="px-md py-sm border-b border-line flex items-baseline justify-between">
+          <span class="font-data text-data text-ink-muted" style="font-size:9px">{cols.length} of {totalProviders} tools</span>
+          {totalProviders > cols.length && (
+            <a href="/matrix" class="font-label text-label uppercase text-primary hover:underline" style="font-size:9px">
+              See all {totalProviders} →
+            </a>
+          )}
+        </div>
 
-        <!-- provider column headers, printed on the table -->
+        {rows.map((caseKey, i) => (
+          <div class="mb-md">
+            {/* Case header — full width, compact */}
+            <div class="px-md py-sm border-b border-line">
+              <span class="font-data text-data text-ink-muted" style="font-size:9px">CASE {caseNo(i)}</span>
+              <a href={`/cases/${caseKey}`} class="font-display font-semibold text-ink hover:text-primary block" style="font-size:15px;line-height:1.2">
+                {CASE_TITLES[caseKey] ?? caseKey}
+              </a>
+            </div>
+
+            {/* Screens — horizontal scroll row */}
+            <div class="flex gap-md overflow-x-auto px-md py-sm" style="-webkit-overflow-scrolling:touch">
+              {cols.map((p) => {
+                const best = bestArm(p.key, caseKey);
+                if (best) {
+                  return (
+                    <a href={`/r/${p.key}/${caseKey}`} class="block group flex-shrink-0" style="width:260px">
+                      <div class="bg-paper p-1.5">
+                        <div class="relative overflow-hidden border border-line bg-neutral group-hover:border-primary db-frame" style="aspect-ratio:16/10">
+                          <iframe src={best.render} scrolling="no" tabindex="-1" loading="lazy"
+                            class="absolute top-0 left-0 origin-top-left border-0 pointer-events-none"
+                            style="width:1280px;height:800px"></iframe>
+                        </div>
+                      </div>
+                      <div class="flex items-baseline justify-between pt-1 px-1">
+                        <span class="font-label text-ink-muted group-hover:text-primary" style="font-size:8px;text-transform:uppercase;letter-spacing:0.04em">{best.name}</span>
+                        <span class="font-data text-ink-muted" style="font-size:8px;opacity:0.7">{p.label}</span>
+                      </div>
+                    </a>
+                  );
+                }
+                return (
+                  <div class="flex-shrink-0 flex items-center justify-center bg-paper border border-line" style="width:260px;aspect-ratio:16/10">
+                    <span class="font-data text-ink-muted" style="font-size:10px;opacity:0.4">{p.runs.length === 0 ? "no key" : "awaiting run"}</span>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+        ))}
+      </div>
+
+      <!-- ═══ DESKTOP: spreadsheet grid (≥ 768px) ═══ -->
+      <div id="desktop-grid" class="grid"
+        style={`grid-template-columns:${LABEL_W}px repeat(${cols.length},minmax(${COL_MIN}px,1fr));min-width:${LABEL_W + cols.length * COL_MIN}px`}>
+
+        <!-- STICKY ORIGIN -->
+        <div class="sticky-origin flex flex-col justify-end pb-xs px-sm"
+          style={`position:sticky;top:0;left:0;z-index:30;width:${LABEL_W}px;height:44px;border-bottom:1px solid var(--line)`}>
+          <span class="font-data text-data text-ink-muted" style="font-size:9px">{cols.length} of {totalProviders} tools</span>
+          {totalProviders > cols.length && (
+            <a href="/matrix" class="font-label text-label uppercase text-primary hover:underline" style="font-size:9px">
+              See all {totalProviders} →
+            </a>
+          )}
+        </div>
+
+        <!-- STICKY COLUMN HEADERS -->
         {cols.map((p) => (
-          <div class="self-end border-b border-line pb-xs">
-            <div class="font-label text-label uppercase tracking-wider text-ink leading-tight">{p.label}</div>
-            {p.runs.length === 0 && <div class="font-data text-data text-ink-muted mt-1" style="font-size:9px">no key</div>}
+          <div class="sticky-header flex items-end pb-xs px-sm border-b border-line"
+            style="position:sticky;top:0;z-index:20;height:44px">
+            <div class="font-label text-label uppercase tracking-wider text-ink leading-tight" style="font-size:11px">{p.label}</div>
           </div>
         ))}
 
-        <!-- one row per case -->
+        <!-- ROWS -->
         {rows.map((caseKey, i) => (
           <>
-            <div class="pt-xs">
+            <div class="sticky-label px-sm py-sm"
+              style={`position:sticky;left:0;z-index:10;width:${LABEL_W}px`}>
               <div class="font-data text-data text-ink-muted" style="font-size:9px">CASE {caseNo(i)}</div>
-              <div class="font-display font-semibold text-ink mt-1" style="font-size:15px;line-height:1.2">{CASE_TITLES[caseKey] ?? caseKey}</div>
-              <p class="font-body text-ink-muted mt-1" style="font-size:11.5px;line-height:1.4">{CASE_WORLDS[caseKey] ?? ""}</p>
+              <a href={`/cases/${caseKey}`} class="font-display font-semibold text-ink hover:text-primary mt-1 block" style="font-size:14px;line-height:1.2">
+                {CASE_TITLES[caseKey] ?? caseKey}
+              </a>
+              <p class="font-body text-ink-muted mt-1" style="font-size:10.5px;line-height:1.35;max-width:180px">
+                {CASE_WORLDS[caseKey] ?? ""}
+              </p>
             </div>
 
             {cols.map((p) => {
               const best = bestArm(p.key, caseKey);
               if (best) {
-                // A proof sheet: paper, the render inset on a paper margin, a
-                // caption slug, corner crop marks. The artwork sits ON the sheet.
                 return (
                   <a href={`/r/${p.key}/${caseKey}`} class="relative bg-paper p-2 block group hover:z-10">
-                    <div class="crop-mark-tl"></div><div class="crop-mark-tr"></div>
-                    <div class="crop-mark-bl"></div><div class="crop-mark-br"></div>
-                    <div class="relative overflow-hidden border border-line bg-neutral group-hover:border-primary" style="aspect-ratio:16/10">
+                    <div class="relative overflow-hidden border border-line bg-neutral group-hover:border-primary db-frame" style="aspect-ratio:16/10">
                       <iframe src={best.render} scrolling="no" tabindex="-1" loading="lazy"
                         class="absolute top-0 left-0 origin-top-left border-0 pointer-events-none"
-                        style="width:1280px;height:800px;transform:scale(0.225)"></iframe>
+                        style="width:1280px;height:800px"></iframe>
                     </div>
                     <div class="flex items-baseline justify-between pt-2">
                       <span class="font-label text-ink-muted group-hover:text-primary" style="font-size:9px;text-transform:uppercase;letter-spacing:0.04em">{best.name}</span>
@@ -70,10 +123,9 @@ const TITLE_X = LABEL_W + GAP + LEFT_MARGIN; // where the title + first sheet be
                   </a>
                 );
               }
-              // Empty slot: bare table, faint label — no paper, no white.
               const reason = p.runs.length === 0 ? "no key" : "awaiting run";
               return (
-                <div class="flex items-center justify-center h-full" style="min-height:170px">
+                <div class="flex items-center justify-center h-full" style="min-height:150px">
                   <span class="font-data text-ink-muted" style="font-size:10px;opacity:0.4">{reason}</span>
                 </div>
               );
@@ -82,9 +134,51 @@ const TITLE_X = LABEL_W + GAP + LEFT_MARGIN; // where the title + first sheet be
         ))}
       </div>
     </div>
-
-    <p class="font-data text-data text-ink-muted mt-lg" style="font-size:11px">
-      Each sheet is the tool's best render for that brief, measured on this machine — open one to see every arm. Empty slots are tools not yet run.
-    </p>
-  </main>
+  </div>
 </Base>
+
+<style>
+  html, body {
+    overflow: hidden;
+    height: 100dvh;
+    height: 100vh;
+  }
+  @supports (height: 100dvh) {
+    html, body { height: 100dvh; }
+  }
+
+  #page-shell {
+    display: flex;
+    flex-direction: column;
+    height: 100dvh;
+    height: 100vh;
+    overflow: hidden;
+  }
+  @supports (height: 100dvh) {
+    #page-shell { height: 100dvh; }
+  }
+
+  #home-wrap {
+    flex: 1;
+    min-height: 0;
+    overflow: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .sticky-origin,
+  .sticky-header,
+  .sticky-label {
+    background: var(--neutral, #e9e9ec);
+  }
+
+  #desktop-grid { gap: 24px; padding-bottom: 48px; }
+
+  /* Mobile: show stacked, hide grid */
+  #mobile-grid { display: block; padding-bottom: 48px; }
+  #desktop-grid { display: none; }
+
+  @media (min-width: 768px) {
+    #mobile-grid { display: none; }
+    #desktop-grid { display: grid; }
+  }
+</style>

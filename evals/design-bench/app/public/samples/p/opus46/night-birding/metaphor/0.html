@@ -1,0 +1,506 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Urban Nocturnal: Field Notes</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=League+Spartan:wght@500;700&display=swap" rel="stylesheet">
+<style>
+  @import url('https://fonts.cdnfonts.com/css/century-schoolbook');
+
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+  body {
+    font-family: 'Century Schoolbook', serif;
+    font-weight: 400;
+    background-color: #F9F6EE;
+    color: #1A1A1B;
+    max-width: 390px;
+    margin: 0 auto;
+    padding: 8px;
+    line-height: 1.4;
+    font-size: 13px;
+  }
+  /* === THE TAXONOMIC MAP ===
+     The screen is an analytical specimen sheet.
+     Information is a physical geography navigated with a magnifying glass.
+     Every species is a fixed coordinate in a landscape of data. */
+
+  .map {
+    border: 2px solid #1A1A1B;
+  }
+  /* Map cartouche — the title block */
+  .cartouche {
+    background: #1A1A1B;
+    color: #F9F6EE;
+    padding: 8px 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    border-bottom: 2px solid #1A1A1B;
+  }
+  .cartouche-title {
+    font-family: 'League Spartan', sans-serif;
+    font-weight: 700;
+    font-size: 16px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+  .cartouche-type {
+    font-family: 'League Spartan', sans-serif;
+    font-weight: 500;
+    font-size: 8px;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    color: #707372;
+  }
+  /* Map legend labels */
+  .legend-bar {
+    font-family: 'League Spartan', sans-serif;
+    font-weight: 700;
+    font-size: 7px;
+    text-transform: uppercase;
+    letter-spacing: 3px;
+    color: #707372;
+    padding: 4px 10px 3px;
+    border-bottom: 1px solid #1A1A1B;
+    background: #F9F6EE;
+  }
+  /* === COORDINATES LAYER: Moon & Light === */
+  .coordinates-layer {
+    border-bottom: 1px solid #1A1A1B;
+  }
+  .coord-primary {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    padding: 6px 10px;
+    border-bottom: 1px solid #1A1A1B;
+  }
+  .coord-phase {
+    font-family: 'League Spartan', sans-serif;
+    font-weight: 700;
+    font-size: 15px;
+  }
+  .coord-signal {
+    font-family: 'League Spartan', sans-serif;
+    font-weight: 700;
+    font-size: 20px;
+    color: #C53030;
+  }
+  .coord-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+  }
+  .coord-cell {
+    padding: 5px 8px;
+    border-right: 1px solid #1A1A1B;
+  }
+  .coord-cell:last-child {
+    border-right: none;
+  }
+  .cc-label {
+    font-family: 'League Spartan', sans-serif;
+    font-weight: 500;
+    font-size: 7px;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    color: #707372;
+  }
+  .cc-value {
+    font-family: 'League Spartan', sans-serif;
+    font-weight: 700;
+    font-size: 12px;
+  }
+  /* === SPECIMEN LAYER: Species === */
+  .specimen-layer {
+    border-bottom: 1px solid #1A1A1B;
+  }
+  .specimen-body {
+    padding: 6px 10px;
+  }
+  .specimen-name {
+    font-family: 'League Spartan', sans-serif;
+    font-weight: 700;
+    font-size: 14px;
+    margin-bottom: 6px;
+  }
+  /* Specimen display box — silhouette icon on the map */
+  .specimen-display {
+    background: #1A1A1B;
+    height: 100px;
+    position: relative;
+    margin-bottom: 6px;
+    overflow: hidden;
+  }
+  .display-ref {
+    position: absolute;
+    top: 3px;
+    right: 6px;
+    font-family: 'League Spartan', sans-serif;
+    font-weight: 500;
+    font-size: 7px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: #707372;
+  }
+  /* Specimen silhouette — icon on the map */
+  .specimen-icon {
+    position: absolute;
+    bottom: 16px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 90px;
+    height: 55px;
+  }
+  .si-body {
+    position: absolute;
+    width: 55px;
+    height: 32px;
+    background: #F9F6EE;
+    border-radius: 50% 50% 40% 60%;
+    top: 12px;
+    left: 10px;
+  }
+  .si-head {
+    position: absolute;
+    width: 20px;
+    height: 20px;
+    background: #F9F6EE;
+    border-radius: 50%;
+    top: 2px;
+    left: 48px;
+  }
+  .si-crown {
+    position: absolute;
+    width: 14px;
+    height: 8px;
+    background: #1A1A1B;
+    border-radius: 50%;
+    top: 0;
+    left: 51px;
+    z-index: 1;
+  }
+  .si-beak {
+    position: absolute;
+    width: 14px;
+    height: 3px;
+    background: #F9F6EE;
+    top: 10px;
+    left: 66px;
+  }
+  .si-leg1 {
+    position: absolute;
+    width: 2px;
+    height: 14px;
+    background: #F9F6EE;
+    top: 42px;
+    left: 28px;
+  }
+  .si-leg2 {
+    position: absolute;
+    width: 2px;
+    height: 14px;
+    background: #F9F6EE;
+    top: 42px;
+    left: 38px;
+  }
+  /* Pin callouts — the scientist's pins in a display box */
+  .pin {
+    display: flex;
+    align-items: flex-start;
+    gap: 5px;
+    margin-bottom: 3px;
+    font-size: 12px;
+    line-height: 1.4;
+  }
+  .pin-arrow {
+    color: #C53030;
+    font-size: 8px;
+    flex-shrink: 0;
+    margin-top: 3px;
+  }
+  .pin-label {
+    font-family: 'League Spartan', sans-serif;
+    font-weight: 500;
+    font-size: 7px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: #707372;
+    margin-right: 3px;
+  }
+  /* Red pointer lines on the specimen */
+  .ptr {
+    position: absolute;
+    background: #C53030;
+    height: 2px;
+    z-index: 2;
+  }
+  .ptr-1 {
+    width: 25px;
+    top: 26px;
+    left: 16px;
+  }
+  .ptr-1::after {
+    content: '◀';
+    position: absolute;
+    right: -9px;
+    top: -6px;
+    font-size: 9px;
+    color: #C53030;
+    line-height: 1;
+  }
+  .ptr-2 {
+    width: 25px;
+    top: 44px;
+    right: 36px;
+  }
+  .ptr-2::after {
+    content: '▶';
+    position: absolute;
+    left: -9px;
+    top: -6px;
+    font-size: 9px;
+    color: #C53030;
+    line-height: 1;
+  }
+  /* === SIGHTING COORDINATE === */
+  .sighting-layer {
+    border-bottom: 1px solid #1A1A1B;
+  }
+  .sighting-entry {
+    display: grid;
+    grid-template-columns: 46px 1fr;
+  }
+  .s-time {
+    font-family: 'League Spartan', sans-serif;
+    font-weight: 700;
+    font-size: 12px;
+    padding: 6px 4px;
+    border-right: 1px solid #1A1A1B;
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    padding-top: 8px;
+  }
+  .s-data {
+    padding: 6px 8px;
+  }
+  .s-loc {
+    font-family: 'League Spartan', sans-serif;
+    font-weight: 500;
+    font-size: 7px;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    color: #707372;
+    margin-bottom: 1px;
+  }
+  .s-name {
+    font-family: 'League Spartan', sans-serif;
+    font-weight: 700;
+    font-size: 13px;
+    margin-bottom: 2px;
+  }
+  .s-count {
+    color: #C53030;
+  }
+  .s-beh {
+    font-size: 12px;
+    line-height: 1.4;
+  }
+  /* === SIGNAL FILTER LAYER === */
+  .filter-layer {}
+  .filter-body {
+    padding: 6px 10px;
+  }
+  .filter-intro {
+    font-size: 11px;
+    color: #707372;
+    font-style: italic;
+    margin-bottom: 6px;
+    line-height: 1.45;
+  }
+  /* Layer subtraction visualization — stacked boxes showing noise removal */
+  .layer-stack {
+    border: 1px solid #1A1A1B;
+  }
+  .layer-row {
+    display: grid;
+    grid-template-columns: 28px 1fr;
+    border-bottom: 1px solid #1A1A1B;
+  }
+  .layer-row:last-child {
+    border-bottom: none;
+  }
+  /* The noise layer is gray (to be subtracted), the signal layer is red */
+  .layer-num {
+    font-family: 'League Spartan', sans-serif;
+    font-weight: 700;
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-right: 1px solid #1A1A1B;
+  }
+  .layer-noise {
+    color: #707372;
+  }
+  .layer-signal {
+    color: #C53030;
+  }
+  .layer-physical {
+    color: #1A1A1B;
+  }
+  .layer-content {
+    padding: 5px 7px;
+  }
+  .layer-name {
+    font-family: 'League Spartan', sans-serif;
+    font-weight: 700;
+    font-size: 11px;
+    margin-bottom: 1px;
+  }
+  .layer-desc {
+    font-size: 11px;
+    line-height: 1.4;
+  }
+  /* Noise indicator for base layer */
+  .noise-bg {
+    background: repeating-linear-gradient(
+      90deg,
+      transparent,
+      transparent 3px,
+      #707372 3px,
+      #707372 4px
+    );
+    opacity: 0.08;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    pointer-events: none;
+  }
+  .layer-row:first-child {
+    position: relative;
+  }
+</style>
+</head>
+<body>
+
+<div class="map">
+  <!-- Cartouche — map title block -->
+  <div class="cartouche">
+    <span class="cartouche-title">Urban Nocturnal</span>
+    <span class="cartouche-type">Taxonomic Map</span>
+  </div>
+
+  <!-- Coordinates Layer — Moon & Light -->
+  <div class="coordinates-layer">
+    <div class="legend-bar">Moon &amp; Light Conditions</div>
+    <div class="coord-primary">
+      <span class="coord-phase">Waxing Gibbous</span>
+      <span class="coord-signal">82%</span>
+    </div>
+    <div class="coord-grid">
+      <div class="coord-cell">
+        <div class="cc-label">Moonrise</div>
+        <div class="cc-value">17:42</div>
+      </div>
+      <div class="coord-cell">
+        <div class="cc-label">Sky Quality</div>
+        <div class="cc-value">Bortle 8</div>
+      </div>
+      <div class="coord-cell">
+        <div class="cc-label">Class</div>
+        <div class="cc-value">Inner City</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Specimen Layer — Species -->
+  <div class="specimen-layer">
+    <div class="legend-bar">Tonight's Likely Species</div>
+    <div class="specimen-body">
+      <div class="specimen-name">Black-crowned Night Heron</div>
+      <div class="specimen-display">
+        <div class="display-ref">Specimen I</div>
+        <div class="specimen-icon">
+          <div class="si-body"></div>
+          <div class="si-head"></div>
+          <div class="si-crown"></div>
+          <div class="si-beak"></div>
+          <div class="si-leg1"></div>
+          <div class="si-leg2"></div>
+        </div>
+        <div class="ptr ptr-1"></div>
+        <div class="ptr ptr-2"></div>
+      </div>
+      <div class="pin">
+        <span class="pin-arrow">◀</span>
+        <span><span class="pin-label">Field Marks</span> Stocky build, black crown and back, contrasting grey wings.</span>
+      </div>
+      <div class="pin">
+        <span class="pin-arrow">◀</span>
+        <span><span class="pin-label">In Flight</span> Thick neck tucked, feet barely extending beyond tail.</span>
+      </div>
+      <div class="pin">
+        <span class="pin-arrow">◀</span>
+        <span><span class="pin-label">Context</span> Often found near waterfront construction sites or park ponds.</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Sighting Coordinate -->
+  <div class="sighting-layer">
+    <div class="legend-bar">Sightings Log</div>
+    <div class="sighting-entry">
+      <div class="s-time">23:14</div>
+      <div class="s-data">
+        <div class="s-loc">West Side Railyards</div>
+        <div class="s-name">Common Nighthawk <span class="s-count">(2)</span></div>
+        <div class="s-beh">Aerial foraging under stadium lights; erratic, bat-like flight pattern.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Signal Filter Layer -->
+  <div class="filter-layer">
+    <div class="legend-bar">Guide to Listening: The Urban Filter</div>
+    <div class="filter-body">
+      <p class="filter-intro">To identify birds by sound in the city, you must mentally subtract the machine:</p>
+      <div class="layer-stack">
+        <div class="layer-row">
+          <div class="layer-num layer-noise">1</div>
+          <div class="layer-content">
+            <div class="layer-name">The Base</div>
+            <div class="layer-desc">Ignore the low-frequency rumble of the expressway or subway vents.</div>
+          </div>
+          <div class="noise-bg"></div>
+        </div>
+        <div class="layer-row">
+          <div class="layer-num layer-signal">2</div>
+          <div class="layer-content">
+            <div class="layer-name">The Signal</div>
+            <div class="layer-desc">Focus on the "Peent"—a sharp, nasal electric buzz cutting through the hum.</div>
+          </div>
+        </div>
+        <div class="layer-row">
+          <div class="layer-num layer-physical">3</div>
+          <div class="layer-content">
+            <div class="layer-name">The Physical</div>
+            <div class="layer-desc">Listen for the "Whoosh" of air through primary feathers during a territorial dive.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>

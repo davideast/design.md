@@ -11,3 +11,31 @@
 .crop-mark-bl { bottom: -16px; left: -16px; border-top: 1px solid #1c1b22; border-right: 1px solid #1c1b22; }
 .crop-mark-br { bottom: -16px; right: -16px; border-top: 1px solid #1c1b22; border-left: 1px solid #1c1b22; }
 .color-patch { width: 16px; height: 16px; display: block; }
+
+/* ── Scrollbars ──────────────────────────────────────────────── */
+/* Thin, translucent scrollbars that blend into the neutral surround. */
+
+/* Firefox */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(28, 27, 34, 0.18) transparent;
+}
+
+/* WebKit (Chrome, Safari, Edge) */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(28, 27, 34, 0.15);
+  border-radius: 3px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(28, 27, 34, 0.3);
+}
+::-webkit-scrollbar-corner {
+  background: transparent;
+}

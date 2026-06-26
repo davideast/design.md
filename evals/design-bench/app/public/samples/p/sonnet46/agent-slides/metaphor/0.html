@@ -1,0 +1,651 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Agent Architecture — Loop</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,500;1,9..144,300&family=Source+Serif+4:ital,wght@0,400;1,400&family=IBM+Plex+Mono:wght@400&display=swap" rel="stylesheet">
+<style>
+/*
+ * METAPHOR: The closed feedback loop is the geometric primitive.
+ * Every diagram closes back on itself. The returning arrow is vermilion.
+ * The loop motif recurs across every slide. The final slide redraws the
+ * opening loop large — the deck itself forms a loop.
+ *
+ * Principle: every element either IS the loop, or is contained by it.
+ * Decorative loop gestures appear in margins and backgrounds.
+ */
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  background: #c8c4b8;
+  display: flex;
+  flex-direction: column;
+  gap: 48px;
+  padding: 48px;
+}
+
+:root {
+  --P: #1E1A14;
+  --S: #B8B0A2;
+  --V: #C3402A; /* vermilion — the returning arrow */
+  --N: #F4F0E4;
+  --sm: 8px;
+  --md: 16px;
+  --lg: 32px;
+  --xl: 64px;
+}
+
+.slide {
+  width: 1280px;
+  height: 720px;
+  background: var(--N);
+  color: var(--P);
+  position: relative;
+  overflow: hidden;
+  margin: 0 auto;
+  flex-shrink: 0;
+}
+
+/* Shared section label / page num */
+.sec {
+  position: absolute;
+  top: 32px; left: 40px;
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 12px; letter-spacing: 0.08em;
+  color: var(--S);
+}
+.pg {
+  position: absolute;
+  bottom: 28px; right: 40px;
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 12px; letter-spacing: 0.08em;
+  color: var(--S);
+}
+
+/* Reusable: faint loop ghost in slide background (decorative) */
+.loop-ghost {
+  position: absolute;
+  opacity: 0.04;
+  pointer-events: none;
+}
+
+/* ===================================================================
+   SLIDE 1 — TITLE
+   Loop motif: large open loop behind the title (vermilion)
+   =================================================================== */
+.s1 {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding: 64px;
+}
+.s1 h1 {
+  font-family: 'Fraunces', serif;
+  font-size: 54px; font-weight: 500; line-height: 1.1;
+  margin-bottom: 16px;
+  position: relative; z-index: 1;
+}
+.s1 .sub {
+  font-family: 'Source Serif 4', serif;
+  font-size: 20px; font-style: italic; line-height: 1.45;
+  color: #5a5044; max-width: 680px;
+  margin-bottom: 32px;
+  position: relative; z-index: 1;
+}
+.s1 .byline {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 12px; letter-spacing: 0.08em; color: var(--S);
+  display: flex; gap: 40px;
+  position: relative; z-index: 1;
+}
+/* The loop motif on slide 1 — large vermilion arc (a partial loop hinting at the cycle) */
+.s1-loop {
+  position: absolute;
+  top: -60px; right: -60px;
+  opacity: 0.12;
+}
+
+/* ===================================================================
+   SLIDE 2 — THE LOOP
+   The central cycle diagram is THE loop. Every element wraps around.
+   =================================================================== */
+.s2 {
+  display: grid;
+  grid-template-columns: 520px 1fr;
+  padding: 64px 40px 64px 64px;
+  gap: 48px;
+  align-items: start;
+}
+.s2 h2 {
+  font-family: 'Fraunces', serif;
+  font-size: 54px; font-weight: 500; margin-bottom: 24px;
+}
+.s2 p {
+  font-family: 'Source Serif 4', serif;
+  font-size: 16px; line-height: 1.65; color: #3a3228;
+}
+.s2-fig {
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  height: 100%; gap: 16px; padding-top: 48px;
+}
+.fig-cap {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 11px; letter-spacing: 0.06em; color: var(--S);
+  text-align: center; line-height: 1.5;
+}
+
+/* ===================================================================
+   SLIDE 3 — WORKED TRACE
+   Loop motif: trace steps form a visual chain that closes back
+   =================================================================== */
+.s3 {
+  display: grid;
+  grid-template-columns: 1fr 240px;
+  padding: 52px 40px 52px 64px;
+  gap: 32px; align-items: start;
+}
+.s3 h2 {
+  font-family: 'Fraunces', serif;
+  font-size: 38px; font-weight: 500; margin-bottom: 8px;
+}
+.q-label {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 12px; letter-spacing: 0.05em; color: var(--S);
+  margin-bottom: 18px; border-left: 2px solid var(--V);
+  padding-left: 10px;
+}
+.tr { display: flex; gap: 14px; margin-bottom: 10px; align-items: baseline; }
+.tt {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 10px; letter-spacing: 0.06em; color: var(--S);
+  min-width: 96px; flex-shrink: 0;
+}
+.tb { font-family: 'Source Serif 4', serif; font-size: 14px; line-height: 1.5; }
+.tb.code { font-family: 'IBM Plex Mono', monospace; font-size: 12px; }
+.s3-marg {
+  border-left: 1px solid #d4cec4; padding-left: 18px;
+  margin-top: 80px;
+  display: flex; flex-direction: column; gap: 16px;
+}
+.mn { font-family: 'Source Serif 4', serif; font-size: 12px; font-style: italic; line-height: 1.5; color: var(--S); }
+
+/* ===================================================================
+   SLIDE 4 — FOUR ARCHITECTURES
+   Each 2×2 cell contains a loop or loop variant.
+   =================================================================== */
+.s4 { padding: 52px 40px 40px 64px; }
+.s4 h2 { font-family: 'Fraunces', serif; font-size: 38px; font-weight: 500; margin-bottom: 24px; }
+.quad {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: 1fr 1fr;
+  gap: 20px; height: 520px;
+}
+.qc { border-top: 1.5px solid var(--P); padding-top: 12px; display: flex; flex-direction: column; }
+.qc h3 { font-family: 'IBM Plex Mono', monospace; font-size: 11px; letter-spacing: 0.1em; color: var(--V); margin-bottom: 8px; }
+.qc p { font-family: 'Source Serif 4', serif; font-size: 13px; line-height: 1.5; color: #5a5044; margin-bottom: 8px; }
+.qc .d { flex: 1; display: flex; align-items: center; }
+
+/* ===================================================================
+   SLIDE 5 — WHERE LOOPS FAIL
+   =================================================================== */
+.s5 {
+  display: grid;
+  grid-template-columns: 480px 1fr;
+  padding: 64px 40px 64px 64px;
+  gap: 64px; align-items: center;
+}
+.s5 h2 { font-family: 'Fraunces', serif; font-size: 40px; font-weight: 500; line-height: 1.1; margin-bottom: 24px; }
+.s5 p { font-family: 'Source Serif 4', serif; font-size: 16px; line-height: 1.65; color: #3a3228; }
+
+/* ===================================================================
+   SLIDE 6 — CODE
+   Loop motif: arrows at left margin trace a visual loop shape
+   =================================================================== */
+.s6 {
+  display: grid;
+  grid-template-columns: 1fr 260px;
+  padding: 52px 40px 52px 64px;
+  gap: 32px; align-items: start;
+}
+.s6 h2 { font-family: 'Fraunces', serif; font-size: 34px; font-weight: 500; margin-bottom: 16px; }
+pre.L {
+  font-family: 'IBM Plex Mono', monospace; font-size: 12.5px; line-height: 1.52;
+  color: var(--P); white-space: pre; background: none; border: none;
+}
+.L .kw { color: #6e3060; }
+.L .fn { color: #1b4f72; }
+.L .str { color: #2d6a1f; }
+.L .cm { color: var(--S); }
+.L .num { color: var(--V); }
+.s6-c { font-family: 'Source Serif 4', serif; font-size: 13px; font-style: italic; color: var(--S); margin-top: 14px; line-height: 1.55; }
+.s6-a {
+  border-left: 1px solid #d4cec4; padding-left: 18px;
+  margin-top: 68px; display: flex; flex-direction: column; gap: 20px;
+}
+.ai .ar { font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: 0.06em; color: var(--V); margin-bottom: 4px; }
+.ai p { font-family: 'Source Serif 4', serif; font-size: 12px; font-style: italic; line-height: 1.5; color: var(--S); }
+
+/* ===================================================================
+   SLIDE 7 — ENDING
+   THE LARGE LOOP: final slide redraws the opening loop, large,
+   in the center. The deck itself has looped. Vermilion closure.
+   =================================================================== */
+.s7 {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 64px 80px;
+}
+.s7-text { max-width: 520px; }
+.s7 blockquote {
+  font-family: 'Fraunces', serif;
+  font-size: 32px; font-weight: 300; font-style: italic; line-height: 1.35;
+  margin-bottom: 40px;
+}
+.s7 .rh { font-family: 'IBM Plex Mono', monospace; font-size: 12px; letter-spacing: 0.08em; color: var(--S); margin-bottom: 14px; }
+.rl { font-family: 'Source Serif 4', serif; font-size: 14px; line-height: 1.6; color: #5a5044; margin-bottom: 6px; }
+.rl .rn { font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: var(--V); }
+</style>
+</head>
+<body>
+
+<!-- ========================= SLIDE 1: TITLE ========================= -->
+<div class="slide s1">
+  <div class="sec">AGENT SYSTEMS · LECTURE</div>
+
+  <!-- Loop motif: large arced circle in upper-right, vermilion -->
+  <div class="s1-loop">
+    <svg width="600" height="600" viewBox="0 0 600 600" fill="none">
+      <circle cx="300" cy="300" r="260" stroke="#C3402A" stroke-width="3"/>
+      <circle cx="300" cy="300" r="180" stroke="#C3402A" stroke-width="1.5" stroke-dasharray="8 6"/>
+      <circle cx="300" cy="300" r="100" stroke="#C3402A" stroke-width="1"/>
+    </svg>
+  </div>
+
+  <h1>Agent Architecture</h1>
+  <p class="sub">On loops, traces, and the structures by which language models act.</p>
+  <div class="byline">
+    <span>Speaker Name</span>
+    <span>14 October 2026</span>
+  </div>
+  <div class="pg">01</div>
+</div>
+
+<!-- ========================= SLIDE 2: THE LOOP ========================= -->
+<div class="slide s2">
+  <div class="sec">§ 1</div>
+  <!-- Ghost loop in background -->
+  <div class="loop-ghost" style="right:-80px;top:50%;transform:translateY(-50%)">
+    <svg width="500" height="500" viewBox="0 0 500 500" fill="none">
+      <circle cx="250" cy="250" r="230" stroke="#1E1A14" stroke-width="4"/>
+    </svg>
+  </div>
+  <div>
+    <h2>The Loop</h2>
+    <p>Every capable agent reduces to a single iterative pattern: perceive, reason, act, and observe consequences. The model generates a thought — an internal monologue framing the problem — selects an action from a vocabulary of tools, executes it against the world, and incorporates the resulting observation into its context window. This loop continues until a terminal condition is met: an answer is produced, a budget is exhausted, or the model determines no further steps are needed.</p>
+  </div>
+  <div class="s2-fig">
+    <!-- The loop IS the diagram. Every arrow closes the cycle. -->
+    <!-- Returning arrow in vermilion. -->
+    <svg width="380" height="320" viewBox="0 0 380 320" fill="none">
+      <!-- Outer guide ring -->
+      <circle cx="190" cy="160" r="130" stroke="#d4cec4" stroke-width="0.8"/>
+
+      <!-- THINK -->
+      <circle cx="190" cy="36" r="34" fill="#F4F0E4" stroke="#1E1A14" stroke-width="1.8"/>
+      <text x="190" y="32" text-anchor="middle" font-family="'IBM Plex Mono'" font-size="10" fill="#1E1A14" letter-spacing="1">THINK</text>
+      <text x="190" y="47" text-anchor="middle" font-family="'Source Serif 4'" font-size="9" font-style="italic" fill="#B8B0A2">reason</text>
+
+      <!-- ACT -->
+      <circle cx="306" cy="226" r="34" fill="#F4F0E4" stroke="#1E1A14" stroke-width="1.8"/>
+      <text x="306" y="222" text-anchor="middle" font-family="'IBM Plex Mono'" font-size="10" fill="#1E1A14" letter-spacing="1">ACT</text>
+      <text x="306" y="237" text-anchor="middle" font-family="'Source Serif 4'" font-size="9" font-style="italic" fill="#B8B0A2">execute</text>
+
+      <!-- OBSERVE -->
+      <circle cx="74" cy="226" r="34" fill="#F4F0E4" stroke="#1E1A14" stroke-width="1.8"/>
+      <text x="74" y="220" text-anchor="middle" font-family="'IBM Plex Mono'" font-size="9" fill="#1E1A14" letter-spacing="0.5">OBSERVE</text>
+      <text x="74" y="235" text-anchor="middle" font-family="'Source Serif 4'" font-size="9" font-style="italic" fill="#B8B0A2">sense</text>
+
+      <!-- Arrow THINK → ACT (closes the top-right arc) -->
+      <path d="M 217 58 Q 288 122 280 194" stroke="#1E1A14" stroke-width="1.6" fill="none"/>
+      <!-- Chevron arrowhead -->
+      <path d="M276,190 L280,194 L285,188" stroke="#1E1A14" stroke-width="1.6" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+
+      <!-- Arrow ACT → OBSERVE (closes the bottom arc) -->
+      <path d="M 272 244 Q 190 284 108 244" stroke="#1E1A14" stroke-width="1.6" fill="none"/>
+      <path d="M112,249 L108,244 L116,239" stroke="#1E1A14" stroke-width="1.6" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+
+      <!-- Arrow OBSERVE → THINK — VERMILION (the closing return) -->
+      <path d="M 82 192 Q 102 122 165 62" stroke="#C3402A" stroke-width="2" fill="none"/>
+      <path d="M 161,67 L165,62 L172,69" stroke="#C3402A" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+
+      <!-- Centre text -->
+      <text x="190" y="156" text-anchor="middle" font-family="'IBM Plex Mono'" font-size="10" fill="#d4cec4">context</text>
+      <text x="190" y="170" text-anchor="middle" font-family="'IBM Plex Mono'" font-size="10" fill="#d4cec4">window</text>
+    </svg>
+    <p class="fig-cap">Fig. 1 — The ReAct loop. The returning arc (vermilion)<br>is what makes it a loop, not a chain.</p>
+  </div>
+  <div class="pg">02</div>
+</div>
+
+<!-- ========================= SLIDE 3: WORKED TRACE ========================= -->
+<div class="slide s3">
+  <div class="sec">§ 2</div>
+  <!-- Loop motif: small closed loop in upper right margin -->
+  <div style="position:absolute;top:24px;right:40px;opacity:0.08;">
+    <svg width="60" height="60" viewBox="0 0 60 60" fill="none">
+      <circle cx="30" cy="30" r="26" stroke="#1E1A14" stroke-width="2"/>
+      <path d="M30 4 L38 14" stroke="#C3402A" stroke-width="2" fill="none" stroke-linecap="round"/>
+    </svg>
+  </div>
+  <div>
+    <h2>A Worked Trace</h2>
+    <div class="q-label">Query: "What was NVDA's closing price on 2024-01-15?"</div>
+    <div class="tr"><span class="tt">THOUGHT 1</span><span class="tb">I need NVDA's closing price for a specific date. I'll query the financial data API.</span></div>
+    <div class="tr"><span class="tt">ACTION 1</span><span class="tb code">get_stock_price(ticker="NVDA", date="2024-01-15")</span></div>
+    <div class="tr"><span class="tt">OBSERVATION 1</span><span class="tb">Error: Market closed on 2024-01-15 (Martin Luther King Jr. Day).</span></div>
+    <div class="tr"><span class="tt">THOUGHT 2</span><span class="tb">The market was closed. I need to find the last open trading day before Jan 15.</span></div>
+    <div class="tr"><span class="tt">ACTION 2</span><span class="tb code">get_trading_calendar(from="2024-01-12", to="2024-01-15")</span></div>
+    <div class="tr"><span class="tt">OBSERVATION 2</span><span class="tb">Trading days: [2024-01-12]. Last open: Friday, January 12.</span></div>
+    <div class="tr"><span class="tt">ACTION 3</span><span class="tb code">get_stock_price(ticker="NVDA", date="2024-01-12")</span></div>
+    <div class="tr"><span class="tt">OBSERVATION 3</span><span class="tb">NVDA closed at <strong>$547.10</strong> on 2024-01-12. Note: requested date was a holiday.</span></div>
+  </div>
+  <div class="s3-marg">
+    <!-- Vermilion: a small closed arrow at the top of the margin column -->
+    <svg width="30" height="30" viewBox="0 0 30 30" fill="none" style="margin-bottom:4px;">
+      <circle cx="15" cy="15" r="12" stroke="#C3402A" stroke-width="1.5"/>
+      <path d="M15 3 L20 10" stroke="#C3402A" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+    </svg>
+    <div class="mn">Thought articulates plan before any tool call.</div>
+    <div class="mn">Error is informative; recovery is graceful.</div>
+    <div class="mn">Calendar query supplies needed context for repair.</div>
+    <div class="mn">Answer grounds with explicit date caveat.</div>
+  </div>
+  <div class="pg">03</div>
+</div>
+
+<!-- ========================= SLIDE 4: FOUR ARCHITECTURES ========================= -->
+<div class="slide s4">
+  <div class="sec">§ 3</div>
+  <h2>Four Architectures</h2>
+  <div class="quad">
+
+    <!-- REACT: simple closed loop -->
+    <div class="qc">
+      <h3>REACT</h3>
+      <p>The minimal closed loop. Thought, action, observation — each completing the circuit before the next begins.</p>
+      <div class="d">
+        <svg width="100%" height="68" viewBox="0 0 480 68" fill="none">
+          <rect x="4" y="20" width="75" height="28" fill="#F4F0E4" stroke="#1E1A14" stroke-width="1.4"/>
+          <text x="41" y="37" text-anchor="middle" font-family="'IBM Plex Mono'" font-size="9" fill="#1E1A14">THINK</text>
+          <path d="M79 34 L99 34" stroke="#1E1A14" stroke-width="1.3"/>
+          <path d="M95,30 L99,34 L95,38" stroke="#1E1A14" stroke-width="1.3" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+          <rect x="99" y="20" width="60" height="28" fill="#F4F0E4" stroke="#1E1A14" stroke-width="1.4"/>
+          <text x="129" y="37" text-anchor="middle" font-family="'IBM Plex Mono'" font-size="9" fill="#1E1A14">ACT</text>
+          <path d="M159 34 L179 34" stroke="#1E1A14" stroke-width="1.3"/>
+          <path d="M175,30 L179,34 L175,38" stroke="#1E1A14" stroke-width="1.3" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+          <rect x="179" y="20" width="72" height="28" fill="#F4F0E4" stroke="#1E1A14" stroke-width="1.4"/>
+          <text x="215" y="37" text-anchor="middle" font-family="'IBM Plex Mono'" font-size="9" fill="#1E1A14">OBSERVE</text>
+          <!-- Return arc — VERMILION closes the loop -->
+          <path d="M251 34 L272 34 L272 8 L41 8 L41 20" stroke="#C3402A" stroke-width="1.3" fill="none"/>
+          <path d="M37,16 L41,12 L45,16" stroke="#C3402A" stroke-width="1.3" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </div>
+    </div>
+
+    <!-- REFLEXION: loop with self-loop -->
+    <div class="qc">
+      <h3>REFLEXION</h3>
+      <p>The loop with a self-loop: after failure, the agent circles back through verbal self-critique before rejoining the outer loop.</p>
+      <div class="d">
+        <svg width="100%" height="68" viewBox="0 0 480 68" fill="none">
+          <rect x="4" y="18" width="60" height="26" fill="#F4F0E4" stroke="#1E1A14" stroke-width="1.4"/>
+          <text x="34" y="34" text-anchor="middle" font-family="'IBM Plex Mono'" font-size="8" fill="#1E1A14">THINK</text>
+          <path d="M64 31 L78 31" stroke="#1E1A14" stroke-width="1.2"/>
+          <path d="M74,27 L78,31 L74,35" stroke="#1E1A14" stroke-width="1.2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+          <rect x="78" y="18" width="52" height="26" fill="#F4F0E4" stroke="#1E1A14" stroke-width="1.4"/>
+          <text x="104" y="34" text-anchor="middle" font-family="'IBM Plex Mono'" font-size="8" fill="#1E1A14">ACT</text>
+          <path d="M130 31 L144 31" stroke="#1E1A14" stroke-width="1.2"/>
+          <path d="M140,27 L144,31 L140,35" stroke="#1E1A14" stroke-width="1.2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+          <rect x="144" y="18" width="58" height="26" fill="#F4F0E4" stroke="#1E1A14" stroke-width="1.4"/>
+          <text x="173" y="34" text-anchor="middle" font-family="'IBM Plex Mono'" font-size="8" fill="#1E1A14">OBS</text>
+          <path d="M202 31 L218 31" stroke="#1E1A14" stroke-width="1.2"/>
+          <path d="M214,27 L218,31 L214,35" stroke="#1E1A14" stroke-width="1.2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+          <!-- REFLECT box -->
+          <rect x="218" y="18" width="66" height="26" fill="#F4F0E4" stroke="#1E1A14" stroke-width="1.4"/>
+          <text x="251" y="34" text-anchor="middle" font-family="'IBM Plex Mono'" font-size="8" fill="#1E1A14">REFLECT</text>
+          <!-- Main loop return — VERMILION -->
+          <path d="M284 44 L284 58 L34 58 L34 44" stroke="#C3402A" stroke-width="1.3" fill="none"/>
+          <path d="M30,48 L34,44 L38,48" stroke="#C3402A" stroke-width="1.3" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </div>
+    </div>
+
+    <!-- PLAN-AND-EXECUTE: loop with inner sub-loops -->
+    <div class="qc">
+      <h3>PLAN-AND-EXECUTE</h3>
+      <p>The outer loop contains inner loops. A plan decomposes into steps; each step is a small closed loop of action and observation.</p>
+      <div class="d">
+        <svg width="100%" height="68" viewBox="0 0 480 68" fill="none">
+          <rect x="4" y="20" width="65" height="28" fill="#F4F0E4" stroke="#1E1A14" stroke-width="1.4"/>
+          <text x="36" y="37" text-anchor="middle" font-family="'IBM Plex Mono'" font-size="8" fill="#1E1A14">PLAN</text>
+          <path d="M69 34 L86 34" stroke="#1E1A14" stroke-width="1.2"/>
+          <path d="M82,30 L86,34 L82,38" stroke="#1E1A14" stroke-width="1.2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+          <!-- Step mini-loops -->
+          <rect x="86" y="10" width="64" height="20" fill="#F4F0E4" stroke="#B8B0A2" stroke-width="1"/>
+          <text x="118" y="23" text-anchor="middle" font-family="'IBM Plex Mono'" font-size="8" fill="#5a5044">step 1 ↺</text>
+          <rect x="86" y="34" width="64" height="20" fill="#F4F0E4" stroke="#B8B0A2" stroke-width="1"/>
+          <text x="118" y="47" text-anchor="middle" font-family="'IBM Plex Mono'" font-size="8" fill="#5a5044">step 2 ↺</text>
+          <path d="M150 20 L168 20" stroke="#1E1A14" stroke-width="1.2"/>
+          <path d="M164,16 L168,20 L164,24" stroke="#1E1A14" stroke-width="1.2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+          <path d="M150 44 L168 44" stroke="#1E1A14" stroke-width="1.2"/>
+          <path d="M164,40 L168,44 L164,48" stroke="#1E1A14" stroke-width="1.2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+          <rect x="168" y="8" width="64" height="52" fill="#F4F0E4" stroke="#1E1A14" stroke-width="1.4"/>
+          <text x="200" y="36" text-anchor="middle" font-family="'IBM Plex Mono'" font-size="8" fill="#1E1A14">EXECUTE</text>
+          <!-- Outer return arc — VERMILION -->
+          <path d="M232 34 L250 34 L250 4 L36 4 L36 20" stroke="#C3402A" stroke-width="1" fill="none" stroke-dasharray="3 2"/>
+          <path d="M32,16 L36,12 L40,16" stroke="#C3402A" stroke-width="1" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </div>
+    </div>
+
+    <!-- TREE-OF-THOUGHTS: loop opens into branches, then closes -->
+    <div class="qc">
+      <h3>TREE-OF-THOUGHTS</h3>
+      <p>The loop opens into branches, then closes on the best path. The returning arc (vermilion) selects which branch completes the cycle.</p>
+      <div class="d">
+        <svg width="100%" height="68" viewBox="0 0 480 68" fill="none">
+          <circle cx="26" cy="34" r="16" fill="#F4F0E4" stroke="#1E1A14" stroke-width="1.4"/>
+          <text x="26" y="38" text-anchor="middle" font-family="'IBM Plex Mono'" font-size="7" fill="#1E1A14">root</text>
+          <path d="M42 26 L66 14" stroke="#1E1A14" stroke-width="1"/>
+          <path d="M42 34 L66 34" stroke="#1E1A14" stroke-width="1"/>
+          <path d="M42 42 L66 54" stroke="#1E1A14" stroke-width="1"/>
+          <circle cx="73" cy="14" r="9" fill="#F4F0E4" stroke="#1E1A14" stroke-width="1.2"/>
+          <circle cx="73" cy="34" r="9" fill="#F4F0E4" stroke="#B8B0A2" stroke-width="0.9"/>
+          <circle cx="73" cy="54" r="9" fill="#F4F0E4" stroke="#B8B0A2" stroke-width="0.9"/>
+          <path d="M82 9 L104 4" stroke="#1E1A14" stroke-width="1"/>
+          <path d="M82 18 L104 24" stroke="#1E1A14" stroke-width="1"/>
+          <circle cx="110" cy="4" r="7" fill="#F4F0E4" stroke="#1E1A14" stroke-width="1.4"/>
+          <circle cx="110" cy="24" r="7" fill="#F4F0E4" stroke="#1E1A14" stroke-width="1"/>
+          <!-- Best path — VERMILION arc closing back -->
+          <path d="M117 4 L140 4" stroke="#C3402A" stroke-width="1.5"/>
+          <path d="M136,0 L140,4 L136,8" stroke="#C3402A" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+          <!-- Return arc back to root — VERMILION -->
+          <path d="M140 4 L155 4 L155 62 L26 62 L26 50" stroke="#C3402A" stroke-width="1" stroke-dasharray="3 2" fill="none"/>
+          <path d="M22,54 L26,50 L30,54" stroke="#C3402A" stroke-width="1" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+          <text x="143" y="8" font-family="'IBM Plex Mono'" font-size="7" fill="#C3402A">→</text>
+        </svg>
+      </div>
+    </div>
+  </div>
+  <div class="pg">04</div>
+</div>
+
+<!-- ========================= SLIDE 5: WHERE LOOPS FAIL ========================= -->
+<div class="slide s5">
+  <div class="sec">§ 4</div>
+  <!-- Loop ghost background -->
+  <div style="position:absolute;right:-120px;top:50%;transform:translateY(-50%);opacity:0.04;">
+    <svg width="600" height="600" viewBox="0 0 600 600" fill="none">
+      <circle cx="300" cy="300" r="270" stroke="#1E1A14" stroke-width="5"/>
+      <circle cx="300" cy="300" r="180" stroke="#1E1A14" stroke-width="3"/>
+    </svg>
+  </div>
+  <div>
+    <h2>Where Loops Fail</h2>
+    <p>The loop's cost is cumulative. Every iteration extends the context window; every token consumed narrows future options. The agent performs well until an inflection point — beyond it, the loop runs but the model cannot. Context overflow silently corrupts earlier reasoning. The loop continues; the coherence does not.</p>
+  </div>
+  <div>
+    <svg width="100%" height="530" viewBox="0 0 620 530" fill="none">
+      <!-- Axes -->
+      <line x1="58" y1="460" x2="590" y2="460" stroke="#1E1A14" stroke-width="1.8"/>
+      <line x1="58" y1="460" x2="58" y2="28" stroke="#1E1A14" stroke-width="1.8"/>
+      <path d="M54,32 L58,25 L62,32" stroke="#1E1A14" fill="none" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+      <path d="M585,456 L591,460 L585,464" stroke="#1E1A14" fill="none" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+
+      <text x="14" y="248" text-anchor="middle" font-family="'IBM Plex Mono'" font-size="10" fill="#B8B0A2" transform="rotate(-90 14 248)">Task Success Rate</text>
+      <text x="324" y="500" text-anchor="middle" font-family="'IBM Plex Mono'" font-size="10" fill="#B8B0A2">Tokens / Iterations</text>
+
+      <!-- Curves -->
+      <path d="M58 420 C118 392 185 260 296 168 C344 132 382 140 424 174 C466 210 514 284 590 384"
+            stroke="#1E1A14" stroke-width="2" fill="none"/>
+      <text x="536" y="330" font-family="'IBM Plex Mono'" font-size="10" fill="#1E1A14">TOKENS</text>
+
+      <path d="M58 435 C128 410 200 290 310 196 C352 164 388 174 430 208 C472 244 515 316 590 400"
+            stroke="#B8B0A2" stroke-width="1.5" fill="none" stroke-dasharray="6 4"/>
+      <text x="536" y="388" font-family="'IBM Plex Mono'" font-size="10" fill="#B8B0A2">ITER</text>
+
+      <!-- Inflection — VERMILION -->
+      <circle cx="296" cy="168" r="7" fill="#F4F0E4" stroke="#C3402A" stroke-width="2"/>
+      <!-- Small loop symbol at inflection — the loop motif -->
+      <path d="M296 168 Q 320 152 330 160 Q 340 168 330 176 Q 320 184 296 168" stroke="#C3402A" stroke-width="1.5" fill="none"/>
+      <path d="M296,165 L296,168 L299,166" stroke="#C3402A" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+      <line x1="296" y1="168" x2="350" y2="128" stroke="#C3402A" stroke-width="1" stroke-dasharray="3 2"/>
+      <text x="354" y="124" font-family="'IBM Plex Mono'" font-size="10" fill="#C3402A">inflection</text>
+      <text x="354" y="138" font-family="'IBM Plex Mono'" font-size="10" fill="#B8B0A2">≈ 8k tokens</text>
+
+      <!-- Ticks -->
+      <text x="49" y="464" text-anchor="end" font-family="'IBM Plex Mono'" font-size="10" fill="#B8B0A2">0</text>
+      <line x1="53" y1="295" x2="58" y2="295" stroke="#B8B0A2" stroke-width="1"/>
+      <text x="49" y="299" text-anchor="end" font-family="'IBM Plex Mono'" font-size="10" fill="#B8B0A2">0.5</text>
+      <line x1="53" y1="130" x2="58" y2="130" stroke="#B8B0A2" stroke-width="1"/>
+      <text x="49" y="134" text-anchor="end" font-family="'IBM Plex Mono'" font-size="10" fill="#B8B0A2">1.0</text>
+      <line x1="58" y1="295" x2="590" y2="295" stroke="#e8e4da" stroke-width="0.5"/>
+      <line x1="58" y1="130" x2="590" y2="130" stroke="#e8e4da" stroke-width="0.5"/>
+      <text x="58"  y="478" text-anchor="middle" font-family="'IBM Plex Mono'" font-size="10" fill="#B8B0A2">0</text>
+      <line x1="214" y1="460" x2="214" y2="465" stroke="#B8B0A2" stroke-width="1"/>
+      <text x="214" y="478" text-anchor="middle" font-family="'IBM Plex Mono'" font-size="10" fill="#B8B0A2">4k</text>
+      <line x1="370" y1="460" x2="370" y2="465" stroke="#B8B0A2" stroke-width="1"/>
+      <text x="370" y="478" text-anchor="middle" font-family="'IBM Plex Mono'" font-size="10" fill="#B8B0A2">8k</text>
+      <line x1="590" y1="460" x2="590" y2="465" stroke="#B8B0A2" stroke-width="1"/>
+      <text x="590" y="478" text-anchor="middle" font-family="'IBM Plex Mono'" font-size="10" fill="#B8B0A2">16k</text>
+    </svg>
+  </div>
+  <div class="pg">05</div>
+</div>
+
+<!-- ========================= SLIDE 6: CODE ========================= -->
+<div class="slide s6">
+  <div class="sec">§ 5</div>
+  <!-- Loop motif: small loop in margin -->
+  <div style="position:absolute;top:50px;right:32px;opacity:0.09;">
+    <svg width="48" height="48" viewBox="0 0 48 48" fill="none">
+      <circle cx="24" cy="24" r="20" stroke="#1E1A14" stroke-width="2"/>
+      <path d="M24 4 L30 13" stroke="#C3402A" stroke-width="2" fill="none" stroke-linecap="round"/>
+    </svg>
+  </div>
+  <div>
+    <h2>The Loop, in Code</h2>
+    <pre class="L"><span class="kw">def</span> <span class="fn">react_loop</span>(query: str, tools: <span class="fn">dict</span>, max_steps: <span class="fn">int</span> = <span class="num">10</span>) -&gt; str:
+    history = [
+        {<span class="str">"role"</span>: <span class="str">"system"</span>, <span class="str">"content"</span>: SYSTEM_PROMPT},
+        {<span class="str">"role"</span>: <span class="str">"user"</span>,   <span class="str">"content"</span>: query},
+    ]
+
+    <span class="kw">for</span> step <span class="kw">in</span> <span class="fn">range</span>(max_steps):          <span class="cm"># budget guard</span>
+        response = llm.<span class="fn">complete</span>(history)
+        thought, action = <span class="fn">parse</span>(response)
+
+        <span class="kw">if</span> action.<span class="fn">is_final</span>():              <span class="cm"># terminal check</span>
+            <span class="kw">return</span> action.value
+
+        tool_fn = tools[action.name]
+        observation = tool_fn(**action.args)
+
+        history.<span class="fn">extend</span>([                    <span class="cm"># grow context</span>
+            {<span class="str">"role"</span>: <span class="str">"assistant"</span>, <span class="str">"content"</span>: response},
+            {<span class="str">"role"</span>: <span class="str">"user"</span>,
+             <span class="str">"content"</span>: <span class="fn">f</span><span class="str">"Observation: {observation}"</span>},
+        ])
+
+    <span class="kw">raise</span> <span class="fn">RuntimeError</span>(<span class="str">"Max steps exceeded"</span>)</pre>
+    <p class="s6-c">The loop is twenty lines. The difficulty is in everything that surrounds it.</p>
+  </div>
+  <div class="s6-a">
+    <div class="ai"><div class="ar">L 7</div><p>max_steps is a hard budget — the only guaranteed termination.</p></div>
+    <div class="ai"><div class="ar">L 11</div><p>The model decides when it is done. is_final() checks for a terminal token.</p></div>
+    <div class="ai"><div class="ar">L 17</div><p>History grows monotonically. No forgetting — until the window fills.</p></div>
+  </div>
+  <div class="pg">06</div>
+</div>
+
+<!-- ========================= SLIDE 7: ENDING ========================= -->
+<!-- Final slide redraws the opening loop, large — the deck itself has looped. -->
+<div class="slide s7">
+  <div class="sec">§ 6</div>
+  <div class="s7-text">
+    <blockquote>"The loop is not a bug in the design — it is the design. The question is only how many times around."</blockquote>
+    <div class="rh">References</div>
+    <p class="rl"><span class="rn">[1]</span> Yao et al. "ReAct: Synergizing Reasoning and Acting in Language Models." ICLR 2023.</p>
+    <p class="rl"><span class="rn">[2]</span> Shinn et al. "Reflexion: Language Agents with Verbal Reinforcement Learning." NeurIPS 2023.</p>
+    <p class="rl"><span class="rn">[3]</span> Yao et al. "Tree of Thoughts: Deliberate Problem Solving with Large Language Models." NeurIPS 2023.</p>
+  </div>
+
+  <!-- THE LARGE CLOSING LOOP — redraws slide 1's motif, now complete -->
+  <svg width="500" height="500" viewBox="0 0 500 500" fill="none">
+    <!-- Outer ring — solid, larger than slide 1 -->
+    <circle cx="250" cy="250" r="210" stroke="#1E1A14" stroke-width="1.5"/>
+    <circle cx="250" cy="250" r="145" stroke="#B8B0A2" stroke-width="0.8" stroke-dasharray="5 4"/>
+    <circle cx="250" cy="250" r="80" stroke="#d4cec4" stroke-width="0.5"/>
+
+    <!-- THINK (top) -->
+    <circle cx="250" cy="45" r="30" fill="#F4F0E4" stroke="#1E1A14" stroke-width="1.6"/>
+    <text x="250" y="41" text-anchor="middle" font-family="'IBM Plex Mono'" font-size="9" fill="#1E1A14" letter-spacing="1">THINK</text>
+    <text x="250" y="55" text-anchor="middle" font-family="'Source Serif 4'" font-size="8" font-style="italic" fill="#B8B0A2">reason</text>
+
+    <!-- ACT (lower-right) -->
+    <circle cx="420" cy="340" r="30" fill="#F4F0E4" stroke="#1E1A14" stroke-width="1.6"/>
+    <text x="420" y="337" text-anchor="middle" font-family="'IBM Plex Mono'" font-size="9" fill="#1E1A14" letter-spacing="1">ACT</text>
+    <text x="420" y="351" text-anchor="middle" font-family="'Source Serif 4'" font-size="8" font-style="italic" fill="#B8B0A2">execute</text>
+
+    <!-- OBSERVE (lower-left) -->
+    <circle cx="80" cy="340" r="30" fill="#F4F0E4" stroke="#1E1A14" stroke-width="1.6"/>
+    <text x="80" y="334" text-anchor="middle" font-family="'IBM Plex Mono'" font-size="8" fill="#1E1A14" letter-spacing="0.5">OBSERVE</text>
+    <text x="80" y="348" text-anchor="middle" font-family="'Source Serif 4'" font-size="8" font-style="italic" fill="#B8B0A2">sense</text>
+
+    <!-- THINK → ACT -->
+    <path d="M 274 68 Q 370 180 394 312" stroke="#1E1A14" stroke-width="1.6" fill="none"/>
+    <path d="M390,308 L394,312 L398,305" stroke="#1E1A14" stroke-width="1.6" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+
+    <!-- ACT → OBSERVE -->
+    <path d="M 390 350 Q 250 410 110 350" stroke="#1E1A14" stroke-width="1.6" fill="none"/>
+    <path d="M115,355 L110,350 L118,345" stroke="#1E1A14" stroke-width="1.6" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+
+    <!-- OBSERVE → THINK — VERMILION, large, the closing arc -->
+    <path d="M 100 312 Q 106 180 228 72" stroke="#C3402A" stroke-width="2.4" fill="none"/>
+    <path d="M 223,77 L228,72 L235,80" stroke="#C3402A" stroke-width="2.4" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+
+    <!-- Centre text -->
+    <text x="250" y="242" text-anchor="middle" font-family="'Source Serif 4'" font-size="14" font-style="italic" fill="#d4cec4">the loop</text>
+    <text x="250" y="262" text-anchor="middle" font-family="'Source Serif 4'" font-size="14" font-style="italic" fill="#d4cec4">closes</text>
+  </svg>
+  <div class="pg">07</div>
+</div>
+
+</body>
+</html>

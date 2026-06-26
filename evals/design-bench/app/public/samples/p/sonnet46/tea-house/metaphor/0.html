@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kettle &amp; Leaf</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Libre+Franklin:wght@400;700&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&family=IBM+Plex+Mono:wght@400&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --primary: #1B1B1B;
+    --secondary: #6E675C;
+    --tertiary: #E8590C;
+    --neutral: #F4EFE6;
+    --spacing-sm: 8px;
+    --spacing-md: 16px;
+    --spacing-lg: 32px;
+    --spacing-xl: 64px;
+  }
+
+  /*
+    The page is a clear glass of tea held up to a window.
+    Light passes straight through — flat, lit from within, nothing hovering.
+    No shadows, no dark panels: the field is #F4EFE6 everywhere.
+    Colour = the leaf releasing into the water = #E8590C, used sparingly,
+    only where something is steeping (bloom under the name, mark at date / tea).
+    Darkness = over-steeping = no place here.
+    Sediment settles at the foot: label-sm for hours/address/phone.
+  */
+
+  html, body {
+    background-color: var(--neutral);
+    min-height: 100vh;
+  }
+
+  body {
+    color: var(--primary);
+    font-family: 'Source Serif 4', serif;
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 1.65;
+  }
+
+  .glass {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: var(--spacing-xl);
+    /* A tall clear glass: wide margins, open field */
+  }
+
+  /* ── SHOP NAME — poured at the top of the glass ── */
+  .name-section {
+    margin-bottom: var(--spacing-xl);
+  }
+
+  .shop-name {
+    font-family: 'Libre Franklin', sans-serif;
+    font-size: 44px;
+    font-weight: 700;
+    line-height: 1.05;
+    letter-spacing: -0.01em;
+    color: var(--primary);
+    margin-bottom: var(--spacing-sm);
+  }
+
+  /* Bloom of colour beneath the shop name — leaf releasing into water */
+  .name-bloom {
+    height: 3px;
+    background-color: var(--tertiary);
+    width: 80px;
+    margin-top: var(--spacing-sm);
+    margin-bottom: var(--spacing-md);
+  }
+
+  .welcome {
+    font-family: 'Source Serif 4', serif;
+    font-size: 16px;
+    font-style: italic;
+    line-height: 1.65;
+    color: var(--secondary);
+  }
+
+  /* ── THREE STEEPS — ranked level across the middle ── */
+  .steeps-section {
+    margin-bottom: var(--spacing-xl);
+  }
+
+  .section-label {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 12px;
+    font-weight: 400;
+    line-height: 1.4;
+    letter-spacing: 0.08em;
+    color: var(--secondary);
+    text-transform: uppercase;
+    margin-bottom: var(--spacing-lg);
+  }
+
+  /* Three steeps side by side at equal strength */
+  .steeps-row {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--spacing-lg);
+  }
+
+  .steep {
+    padding-top: var(--spacing-md);
+    border-top: 1px solid rgba(27,27,27,0.15);
+  }
+
+  /* Accent: the first letter of each tea name = where the leaf is steeping */
+  .steep-initial {
+    font-family: 'Source Serif 4', serif;
+    font-size: 32px;
+    font-weight: 600;
+    line-height: 1;
+    color: var(--tertiary);
+    margin-bottom: var(--spacing-sm);
+    display: block;
+  }
+
+  .steep-name {
+    font-family: 'Source Serif 4', serif;
+    font-size: 16px;
+    font-weight: 600;
+    line-height: 1.4;
+    color: var(--primary);
+    margin-bottom: var(--spacing-sm);
+  }
+
+  .steep-origin {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 12px;
+    font-weight: 400;
+    letter-spacing: 0.08em;
+    color: var(--secondary);
+    line-height: 1.4;
+    margin-bottom: var(--spacing-sm);
+  }
+
+  .steep-note {
+    font-family: 'Source Serif 4', serif;
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 1.65;
+    color: var(--primary);
+  }
+
+  /* ── BODY OF WATER — the sourcing essay ── */
+  .water-section {
+    margin-bottom: var(--spacing-xl);
+    padding-top: var(--spacing-lg);
+    border-top: 1px solid rgba(27,27,27,0.1);
+  }
+
+  .essay {
+    font-family: 'Source Serif 4', serif;
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 1.65;
+    color: var(--primary);
+    max-width: 640px;
+  }
+
+  /* ── SEDIMENT — settling at the foot ── */
+  /* Quiet hours + address before final foot */
+  .sediment-section {
+    margin-bottom: var(--spacing-xl);
+    padding-top: var(--spacing-lg);
+    border-top: 1px solid rgba(110,103,92,0.3);
+  }
+
+  table.settled {
+    border-collapse: collapse;
+    max-width: 540px;
+    margin-bottom: var(--spacing-md);
+  }
+
+  table.settled th {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 12px;
+    font-weight: 400;
+    letter-spacing: 0.08em;
+    color: var(--secondary);
+    text-align: left;
+    padding: 4px var(--spacing-md) 4px 0;
+    border-bottom: 1px solid rgba(110,103,92,0.4);
+  }
+
+  table.settled td {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 12px;
+    font-weight: 400;
+    letter-spacing: 0.08em;
+    color: var(--secondary);
+    padding: 4px var(--spacing-md) 4px 0;
+    border-bottom: 1px solid rgba(110,103,92,0.15);
+    vertical-align: top;
+  }
+
+  table.settled td:first-child {
+    width: 140px;
+    color: var(--primary);
+  }
+
+  .address-settled {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 12px;
+    font-weight: 400;
+    letter-spacing: 0.08em;
+    color: var(--secondary);
+    padding-top: var(--spacing-sm);
+  }
+
+  /* ── FOOT — credits resting along the bottom ── */
+  .foot {
+    border-top: 1px solid rgba(27,27,27,0.2);
+    padding-top: var(--spacing-md);
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: var(--spacing-lg);
+  }
+
+  .foot-name {
+    font-family: 'Libre Franklin', sans-serif;
+    font-size: 18px;
+    font-weight: 700;
+    letter-spacing: -0.01em;
+    color: var(--primary);
+  }
+
+  .foot-credits {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 12px;
+    font-weight: 400;
+    letter-spacing: 0.08em;
+    color: var(--secondary);
+    text-align: right;
+    line-height: 1.8;
+  }
+</style>
+</head>
+<body>
+
+<div class="glass">
+
+  <!-- Shop name — poured at the top, bloom of colour beneath -->
+  <div class="name-section">
+    <h1 class="shop-name">Kettle &amp; Leaf</h1>
+    <div class="name-bloom"></div>
+    <p class="welcome">A neighborhood tea house at 412 Maple Row — clear light, an open door.</p>
+  </div>
+
+  <!-- Three steeps — ranked level, equal strength -->
+  <div class="steeps-section">
+    <p class="section-label">Today's brewed teas</p>
+    <div class="steeps-row">
+
+      <div class="steep">
+        <span class="steep-initial">A</span>
+        <div class="steep-name">lishan High Mountain</div>
+        <div class="steep-origin">Ali Shan, Taiwan · Oolong</div>
+        <div class="steep-note">Creamy orchid sweetness with a sustained floral finish, grown at 1,400 metres in morning mist.</div>
+      </div>
+
+      <div class="steep">
+        <span class="steep-initial">L</span>
+        <div class="steep-name">amu Island White</div>
+        <div class="steep-origin">Coast Province, Kenya · White Tea</div>
+        <div class="steep-note">Delicate and honeyed, with a clean melon note and a quiet mineral close.</div>
+      </div>
+
+      <div class="steep">
+        <span class="steep-initial">R</span>
+        <div class="steep-name">uby 18</div>
+        <div class="steep-origin">Sun Moon Lake, Taiwan · Black Tea</div>
+        <div class="steep-note">Warm cinnamon and natural wintergreen, smooth cocoa finish, no astringency.</div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Body of water — the sourcing essay, the medium everything dissolves into -->
+  <div class="water-section">
+    <p class="section-label">From the source</p>
+    <p class="essay">Owner Mei-Lin Huang travels twice a year to find what ends up in your cup. Each spring she visits the high-mountain gardens of Taiwan — Ali Shan and Sun Moon Lake — sitting with the families who have cultivated these slopes for three generations. The conversations are long, the meals shared, and the trust built slowly across many visits. Each autumn she travels to the coastal smallholdings near Lamu, Kenya, where a small community of growers has begun producing white and green teas of quiet distinction. She brings back only what she would want to drink herself, which is why the menu is short and changes with the seasons.</p>
+  </div>
+
+  <!-- Sediment — hours and address settling at the foot -->
+  <div class="sediment-section">
+    <p class="section-label">Quiet hours</p>
+    <table class="settled">
+      <thead>
+        <tr>
+          <th>Day</th>
+          <th>Hours</th>
+          <th>Notes</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Monday</td>
+          <td>8:00 – 10:00 am</td>
+          <td>Soft music, no calls please</td>
+        </tr>
+        <tr>
+          <td>Wednesday</td>
+          <td>2:00 – 5:00 pm</td>
+          <td>Reading hour, laptops welcome</td>
+        </tr>
+        <tr>
+          <td>Friday</td>
+          <td>8:00 – 11:00 am</td>
+          <td>Early quiet, full menu</td>
+        </tr>
+        <tr>
+          <td>Saturday</td>
+          <td>9:00 am – 12:00 pm</td>
+          <td>Table service only</td>
+        </tr>
+        <tr>
+          <td>Sunday</td>
+          <td>10:00 am – 1:00 pm</td>
+          <td>Ambient sounds only</td>
+        </tr>
+      </tbody>
+    </table>
+    <p class="address-settled">412 Maple Row</p>
+  </div>
+
+  <!-- Foot credits — settled at the very bottom -->
+  <div class="foot">
+    <div class="foot-name">Kettle &amp; Leaf</div>
+    <div class="foot-credits">
+      Mon–Fri 7:30 am – 7:00 pm &nbsp;·&nbsp; Sat 8:00 am – 6:00 pm &nbsp;·&nbsp; Sun 9:00 am – 5:00 pm<br>
+      (503) 741-2288
+    </div>
+  </div>
+
+</div>
+
+</body>
+</html>

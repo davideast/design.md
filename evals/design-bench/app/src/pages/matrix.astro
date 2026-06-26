@@ -1,0 +1,305 @@
+---
+/**
+ * Full Matrix — apples-to-apples comparison.
+ * Shows the SAME arm across all providers for fair comparison.
+ * User selects the arm from a dropdown; defaults to "tokens-only".
+ * Provider toggles still work for column filtering.
+ */
+import Base from "../layouts/Base.astro";
+import TopRail from "../components/TopRail.astro";
+import { providers, armForProvider, availableArms, gridTiles, CASE_TITLES, CASE_WORLDS, TREATMENTS } from "../lib/data";
+
+const allProviders = providers();
+const tiles = gridTiles();
+const rows = Array.from(new Set(tiles.map((t) => t.caseKey)));
+const arms = availableArms();
+const caseNo = (i: number) => String(i + 1).padStart(2, "0");
+const LABEL_W = 200;
+const COL_MIN = 180;
+
+// Pre-render all arm×provider×case data so the client can switch arms without a page reload
+const matrixData: Record<string, Record<string, { name: string; score: string; render: string } | null>> = {};
+for (const armKey of arms) {
+  matrixData[armKey] = {};
+  for (const caseKey of rows) {
+    for (const p of allProviders) {
+      const arm = armForProvider(p.key, caseKey, armKey);
+      const cellKey = `${p.key}::${caseKey}`;
+      matrixData[armKey][cellKey] = arm ? {
+        name: arm.name,
+        score: arm.score?.toFixed(2) ?? "",
+        render: arm.render ?? "",
+      } : null;
+    }
+  }
+}
+
+// Default arm — prefer "tokens-only" if it exists
+const defaultArm = arms.includes("tokens-only") ? "tokens-only" : arms[0] ?? "tokens-only";
+---
+<Base title="Full Matrix — Design Bench">
+  <div id="page-shell">
+    <TopRail active="Matrix" />
+
+    <!-- Controls bar: arm selector + provider toggles -->
+    <div id="toggle-bar" class="db-bar bg-neutral border-b border-line px-lg py-xs flex flex-wrap gap-xs items-center flex-shrink-0">
+      <!-- Arm selector -->
+      <span class="font-label text-label uppercase text-ink-muted mr-xs" style="font-size:9px">Arm:</span>
+      <select id="arm-select" class="font-label text-label uppercase bg-paper border border-line rounded-sm px-2 py-1 text-ink cursor-pointer" style="font-size:9px">
+        {arms.map((a) => (
+          <option value={a} selected={a === defaultArm}>
+            {TREATMENTS[a]?.name ?? a}
+          </option>
+        ))}
+      </select>
+
+      <span class="border-l border-line mx-xs" style="height:16px"></span>
+
+      <!-- Provider toggles -->
+      <span class="font-label text-label uppercase text-ink-muted mr-xs" style="font-size:9px">Show:</span>
+      {allProviders.map((p) => (
+        <label class="db-toggle inline-flex items-center gap-1 cursor-pointer select-none px-2 py-1 border border-line rounded-sm hover:border-primary transition-colors" data-provider={p.key}>
+          <input type="checkbox" checked class="accent-primary" data-pkey={p.key} style="width:11px;height:11px" />
+          <span class="font-label text-label uppercase text-ink" style="font-size:9px">{p.label}</span>
+        </label>
+      ))}
+      <button id="btn-select-all" class="font-label text-label uppercase text-primary hover:underline ml-xs" style="font-size:9px">all</button>
+      <button id="btn-select-none" class="font-label text-label uppercase text-ink-muted hover:text-primary hover:underline" style="font-size:9px">none</button>
+      <a href="/" class="font-label text-label uppercase text-primary hover:underline ml-auto" style="font-size:9px">← Featured</a>
+    </div>
+
+    <!-- Grid wrapper -->
+    <div id="matrix-wrap">
+      <div id="matrix-grid" class="grid"
+        style={`grid-template-columns:${LABEL_W}px repeat(${allProviders.length},minmax(${COL_MIN}px,1fr));min-width:${LABEL_W + allProviders.length * COL_MIN}px`}
+        data-label-w={LABEL_W} data-col-min={COL_MIN}
+        data-providers={JSON.stringify(allProviders.map(p => p.key))}
+      >
+        <!-- STICKY ORIGIN -->
+        <div class="sticky-origin font-data text-data text-ink-muted flex items-end pb-xs px-sm"
+          style={`position:sticky;top:0;left:0;z-index:30;width:${LABEL_W}px;height:44px;border-bottom:1px solid var(--line)`}>
+          CASE \ TOOL
+        </div>
+
+        <!-- STICKY COLUMN HEADERS -->
+        {allProviders.map((p) => (
+          <div class="sticky-header flex items-end pb-xs px-sm border-b border-line db-col"
+            data-col={p.key}
+            style="position:sticky;top:0;z-index:20;height:44px">
+            <div>
+              <div class="font-label text-label uppercase tracking-wider text-ink leading-tight" style="font-size:11px">{p.label}</div>
+              {!p.featured && <div class="font-data text-data text-ink-muted" style="font-size:8px">unlisted</div>}
+            </div>
+          </div>
+        ))}
+
+        <!-- ROWS -->
+        {rows.map((caseKey, i) => (
+          <>
+            <div class="sticky-label px-sm py-sm border-b border-line"
+              style={`position:sticky;left:0;z-index:10;width:${LABEL_W}px`}>
+              <div class="font-data text-data text-ink-muted" style="font-size:9px">CASE {caseNo(i)}</div>
+              <a href={`/cases/${caseKey}`} class="font-display font-semibold text-ink hover:text-primary mt-1 block" style="font-size:13px;line-height:1.2">
+                {CASE_TITLES[caseKey] ?? caseKey}
+              </a>
+              <p class="font-body text-ink-muted mt-1" style="font-size:10px;line-height:1.3;max-width:180px">
+                {(CASE_WORLDS[caseKey] ?? "").slice(0, 80)}{(CASE_WORLDS[caseKey] ?? "").length > 80 ? "…" : ""}
+              </p>
+            </div>
+
+            {allProviders.map((p) => {
+              const arm = armForProvider(p.key, caseKey, defaultArm);
+              const hasData = !!arm;
+              const noRuns = p.runs.length === 0;
+              return (
+                <div class="relative bg-paper p-1.5 border-b border-line db-col db-cell"
+                  data-col={p.key}
+                  data-cell={`${p.key}::${caseKey}`}
+                  style="min-height:120px">
+                  {/* Iframe container — shown when data exists */}
+                  <div class="db-cell-render" style={hasData ? "" : "display:none"}>
+                    <a href={`/r/${p.key}/${caseKey}`} class="block group hover:z-10">
+                      <div class="relative overflow-hidden border border-line bg-neutral group-hover:border-primary db-frame" style="aspect-ratio:16/10">
+                        <iframe src={hasData ? arm!.render : "about:blank"} scrolling="no" tabindex="-1" loading="lazy"
+                          class="absolute top-0 left-0 origin-top-left border-0 pointer-events-none"
+                          style="width:1280px;height:800px"></iframe>
+                      </div>
+                      <div class="flex items-baseline justify-between pt-1">
+                        <span class="db-cell-name font-label text-ink-muted group-hover:text-primary" style="font-size:8px;text-transform:uppercase;letter-spacing:0.04em">{hasData ? arm!.name : ""}</span>
+                        <span class="db-cell-score font-data text-ink-muted" style="font-size:7px;opacity:0.7">{hasData ? (arm!.score?.toFixed(2) ?? "") : ""}</span>
+                      </div>
+                    </a>
+                  </div>
+                  {/* Placeholder — shown when no data */}
+                  <div class="db-cell-empty flex items-center justify-center" style={hasData ? "display:none" : `min-height:120px`}>
+                    <span class="font-data text-ink-muted" style="font-size:10px;opacity:0.4">{noRuns ? "no key" : "no data for this arm"}</span>
+                  </div>
+                </div>
+              );
+            })}
+          </>
+        ))}
+      </div>
+    </div>
+  </div>
+</Base>
+
+<style>
+  html, body {
+    overflow: hidden;
+    height: 100dvh;
+    height: 100vh;
+  }
+  @supports (height: 100dvh) {
+    html, body { height: 100dvh; }
+  }
+
+  #page-shell {
+    display: flex;
+    flex-direction: column;
+    height: 100dvh;
+    height: 100vh;
+    overflow: hidden;
+  }
+  @supports (height: 100dvh) {
+    #page-shell { height: 100dvh; }
+  }
+
+  #matrix-wrap {
+    flex: 1;
+    min-height: 0;
+    overflow: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  #matrix-grid { padding-bottom: 48px; }
+
+  .sticky-origin,
+  .sticky-header,
+  .sticky-label {
+    background: var(--neutral, #e9e9ec);
+  }
+
+  .db-col[data-hidden] { display: none; }
+  .db-toggle[data-off] { opacity: 0.35; border-color: transparent; }
+  .db-toggle[data-off]:hover { opacity: 0.6; }
+</style>
+
+<script define:vars={{ matrixData, defaultArm }}>
+  // Hydrate: arm switching + provider filtering
+  const grid = document.getElementById("matrix-grid");
+  const allCols = Array.from(document.querySelectorAll(".db-col"));
+  const allCells = Array.from(document.querySelectorAll(".db-cell"));
+  const checks = Array.from(document.querySelectorAll("[data-pkey]"));
+  const toggles = Array.from(document.querySelectorAll(".db-toggle"));
+  const armSelect = document.getElementById("arm-select");
+  const providerKeys = JSON.parse(grid.dataset.providers ?? "[]");
+  const labelW = Number(grid.dataset.labelW ?? 200);
+  const colMin = Number(grid.dataset.colMin ?? 180);
+
+  let currentArm = defaultArm;
+
+  function readURL() {
+    const params = new URLSearchParams(location.search);
+    const show = params.get("show");
+    const arm = params.get("arm");
+    return {
+      visible: show ? new Set(show.split(",").filter((k) => providerKeys.includes(k))) : new Set(providerKeys),
+      arm: arm && matrixData[arm] ? arm : defaultArm,
+    };
+  }
+
+  function updateURL(visible, arm) {
+    const params = new URLSearchParams();
+    if (visible.size !== providerKeys.length) params.set("show", [...visible].join(","));
+    if (arm !== defaultArm) params.set("arm", arm);
+    const qs = params.toString();
+    history.replaceState(null, "", qs ? `${location.pathname}?${qs}` : location.pathname);
+  }
+
+  function switchArm(armKey) {
+    currentArm = armKey;
+    const armData = matrixData[armKey] ?? {};
+
+    allCells.forEach((el) => {
+      const cellKey = el.dataset.cell;
+      const data = armData[cellKey];
+      const renderEl = el.querySelector(".db-cell-render");
+      const emptyEl = el.querySelector(".db-cell-empty");
+      const iframe = el.querySelector("iframe");
+      const nameEl = el.querySelector(".db-cell-name");
+      const scoreEl = el.querySelector(".db-cell-score");
+
+      if (data && data.render) {
+        // Has data — show iframe, hide placeholder
+        if (renderEl) renderEl.style.display = "";
+        if (emptyEl) emptyEl.style.display = "none";
+        if (iframe) iframe.src = data.render;
+        if (nameEl) nameEl.textContent = data.name;
+        if (scoreEl) scoreEl.textContent = data.score;
+      } else {
+        // No data — hide iframe, show placeholder
+        if (renderEl) renderEl.style.display = "none";
+        if (emptyEl) emptyEl.style.display = "";
+        if (iframe) iframe.src = "about:blank";
+        if (nameEl) nameEl.textContent = "";
+        if (scoreEl) scoreEl.textContent = "";
+      }
+    });
+
+    requestAnimationFrame(() => window.__rescaleIframes?.());
+  }
+
+  function applyFilter(visible, pushState = true) {
+    allCols.forEach((el) => {
+      if (visible.has(el.dataset.col)) el.removeAttribute("data-hidden");
+      else el.setAttribute("data-hidden", "");
+    });
+
+    checks.forEach((cb) => { cb.checked = visible.has(cb.dataset.pkey); });
+    toggles.forEach((t) => {
+      if (visible.has(t.dataset.provider)) t.removeAttribute("data-off");
+      else t.setAttribute("data-off", "");
+    });
+
+    const n = visible.size;
+    grid.style.gridTemplateColumns = `${labelW}px repeat(${n}, minmax(${colMin}px, 1fr))`;
+    grid.style.minWidth = `${labelW + n * colMin}px`;
+
+    requestAnimationFrame(() => window.__rescaleIframes?.());
+
+    if (pushState) updateURL(visible, currentArm);
+  }
+
+  // Initialize from URL
+  const initial = readURL();
+  currentArm = initial.arm;
+  armSelect.value = currentArm;
+  if (currentArm !== defaultArm) switchArm(currentArm);
+  applyFilter(initial.visible, false);
+
+  // Arm selector
+  armSelect.addEventListener("change", () => {
+    const visible = new Set();
+    checks.forEach((c) => { if (c.checked) visible.add(c.dataset.pkey); });
+    switchArm(armSelect.value);
+    updateURL(visible, armSelect.value);
+  });
+
+  // Provider toggles
+  checks.forEach((cb) => {
+    cb.addEventListener("change", () => {
+      const visible = new Set();
+      checks.forEach((c) => { if (c.checked) visible.add(c.dataset.pkey); });
+      if (visible.size === 0) { cb.checked = true; return; }
+      applyFilter(visible);
+    });
+  });
+
+  document.getElementById("btn-select-all")?.addEventListener("click", () => {
+    applyFilter(new Set(providerKeys));
+  });
+  document.getElementById("btn-select-none")?.addEventListener("click", () => {
+    applyFilter(new Set([providerKeys[0]]));
+  });
+</script>

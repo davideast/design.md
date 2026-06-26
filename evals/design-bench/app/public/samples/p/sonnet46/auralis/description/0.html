@@ -1,0 +1,711 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Auralis — Making digital experiences sound human</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --primary: #111111;
+    --secondary: #6B6B6B;
+    --tertiary: #9958ff;
+    --neutral: #F7F7F5;
+    --surface-elevated: #ffffff;
+    --outline-muted: #E5E5E3;
+    --font: 'Geist', system-ui, sans-serif;
+    --r-sm: 0.25rem;
+    --r-md: 0.75rem;
+    --r-lg: 1.5rem;
+    --r-full: 9999px;
+    --sp-sm: 8px;
+    --sp-md: 24px;
+    --sp-lg: 64px;
+    --sp-xl: 140px;
+    --sp-gutter: 24px;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: var(--font);
+    background: var(--neutral);
+    color: var(--primary);
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+    font-size: 16px;
+    font-weight: 400;
+  }
+
+  /* ---- NAV ---- */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    height: 64px;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 0 var(--sp-md);
+    background: rgba(247,247,245,0.88);
+    backdrop-filter: blur(14px);
+    border-bottom: 1px solid var(--outline-muted);
+  }
+  .wordmark {
+    font-size: 12px; font-weight: 600; letter-spacing: 0.08em; line-height: 1;
+    text-transform: uppercase; color: var(--primary);
+  }
+  .nav-links {
+    display: flex; align-items: center; gap: 32px; list-style: none;
+  }
+  .nav-links a {
+    font-size: 14px; font-weight: 500; letter-spacing: 0.01em;
+    color: var(--secondary); text-decoration: none; transition: color 0.15s;
+  }
+  .nav-links a:hover { color: var(--primary); }
+  .nav-signup {
+    background: var(--primary); color: var(--surface-elevated);
+    font-size: 14px; font-weight: 500; letter-spacing: 0.01em; line-height: 1;
+    padding: 10px 22px; border-radius: var(--r-full); text-decoration: none;
+    transition: opacity 0.15s; border: none; cursor: pointer;
+  }
+  .nav-signup:hover { opacity: 0.82; }
+
+  /* ---- HERO ---- */
+  .hero {
+    padding: var(--sp-xl) var(--sp-md);
+    padding-top: calc(var(--sp-xl) + 64px);
+    text-align: center; display: flex; flex-direction: column;
+    align-items: center; min-height: 100vh; justify-content: center;
+  }
+  .hero h1 {
+    font-size: 72px; font-weight: 600; line-height: 0.95; letter-spacing: -0.04em;
+    color: var(--primary); max-width: 860px; margin-bottom: 40px;
+  }
+  .hero-ctas { display: flex; gap: var(--sp-sm); align-items: center; }
+  .btn-fill {
+    background: var(--primary); color: var(--surface-elevated);
+    font-size: 14px; font-weight: 500; letter-spacing: 0.01em; line-height: 1;
+    padding: 12px 28px; border-radius: var(--r-full); text-decoration: none;
+    border: none; cursor: pointer; transition: opacity 0.15s;
+  }
+  .btn-fill:hover { opacity: 0.82; }
+  .btn-ghost {
+    background: transparent; color: var(--primary);
+    font-size: 14px; font-weight: 500; letter-spacing: 0.01em; line-height: 1;
+    padding: 11px 28px; border-radius: var(--r-full); text-decoration: none;
+    border: 1px solid var(--outline-muted); cursor: pointer; transition: border-color 0.15s;
+  }
+  .btn-ghost:hover { border-color: var(--secondary); }
+
+  /* ---- DEMO PANEL ---- */
+  .demo-section { padding: 0 var(--sp-md) var(--sp-lg); max-width: 1200px; margin: 0 auto; }
+  .demo-panel {
+    background: var(--surface-elevated); border: 1px solid var(--outline-muted);
+    border-radius: var(--r-lg); overflow: hidden;
+    box-shadow: 0 48px 96px rgba(17,17,17,0.07);
+  }
+  .demo-tabs {
+    display: flex; border-bottom: 1px solid var(--outline-muted); align-items: stretch;
+  }
+  .dtab {
+    padding: 14px var(--sp-md); font-size: 14px; font-weight: 500;
+    letter-spacing: 0.01em; color: var(--secondary); cursor: pointer;
+    border-right: 1px solid var(--outline-muted);
+    border-bottom: 2px solid transparent; margin-bottom: -1px; transition: color 0.15s;
+  }
+  .dtab.active { color: var(--primary); border-bottom-color: var(--tertiary); }
+  .demo-status {
+    margin-left: auto; display: flex; align-items: center; gap: var(--sp-sm);
+    padding: 0 var(--sp-md); font-size: 12px; font-weight: 600;
+    letter-spacing: 0.08em; text-transform: uppercase; color: var(--secondary);
+  }
+  .live-dot {
+    width: 6px; height: 6px; border-radius: 50%; background: #16a34a;
+    box-shadow: 0 0 6px rgba(22,163,74,0.5); animation: pulse 2s infinite;
+  }
+  @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.3} }
+
+  .demo-preview {
+    height: 340px; position: relative;
+    display: flex; align-items: center; justify-content: center;
+    background: var(--neutral); overflow: hidden;
+  }
+  /* Vivid luminous cloud — the design brief's centerpiece */
+  .cloud-purple {
+    position: absolute; width: 480px; height: 420px; border-radius: 50%;
+    background: radial-gradient(ellipse at center, rgba(153,88,255,0.5) 0%, rgba(167,68,255,0.3) 30%, transparent 70%);
+    filter: blur(50px); top: 45%; left: 42%; transform: translate(-50%,-50%);
+  }
+  .cloud-cerulean {
+    position: absolute; width: 380px; height: 340px; border-radius: 50%;
+    background: radial-gradient(ellipse at center, rgba(56,189,248,0.4) 0%, rgba(34,211,238,0.3) 40%, transparent 70%);
+    filter: blur(54px); top: 55%; left: 60%; transform: translate(-50%,-50%);
+  }
+  .cloud-pink {
+    position: absolute; width: 300px; height: 260px; border-radius: 50%;
+    background: radial-gradient(ellipse at center, rgba(244,114,182,0.35) 0%, transparent 70%);
+    filter: blur(48px); top: 70%; left: 30%; transform: translate(-50%,-50%);
+  }
+  .cloud-magenta {
+    position: absolute; width: 250px; height: 200px; border-radius: 50%;
+    background: radial-gradient(ellipse at center, rgba(217,70,239,0.3) 0%, transparent 70%);
+    filter: blur(40px); top: 35%; left: 65%; transform: translate(-50%,-50%);
+  }
+  .play-button {
+    position: relative; z-index: 2;
+    width: 64px; height: 64px; border-radius: 50%;
+    background: rgba(255,255,255,0.85); backdrop-filter: blur(8px);
+    border: 1px solid rgba(255,255,255,0.7);
+    display: flex; align-items: center; justify-content: center;
+    cursor: pointer; transition: background 0.15s;
+    box-shadow: 0 4px 24px rgba(17,17,17,0.12);
+  }
+  .play-button:hover { background: rgba(255,255,255,0.95); }
+  .play-icon {
+    width: 0; height: 0; border-style: solid;
+    border-width: 10px 0 10px 18px;
+    border-color: transparent transparent transparent var(--primary);
+    margin-left: 3px;
+  }
+
+  .demo-modebar {
+    display: flex; align-items: center;
+    border-top: 1px solid var(--outline-muted); background: var(--surface-elevated);
+  }
+  .mode-link {
+    padding: 12px 20px; font-size: 12px; font-weight: 600;
+    letter-spacing: 0.08em; text-transform: uppercase; color: var(--secondary);
+    text-decoration: none; border-right: 1px solid var(--outline-muted);
+    white-space: nowrap; transition: color 0.15s;
+  }
+  .mode-link.active { color: var(--primary); }
+  .mode-link:hover { color: var(--primary); }
+  .modebar-signup {
+    margin-left: auto; margin-right: var(--sp-md);
+    background: var(--primary); color: var(--surface-elevated);
+    font-size: 14px; font-weight: 500; letter-spacing: 0.01em; line-height: 1;
+    padding: 8px 18px; border-radius: var(--r-full); border: none; cursor: pointer;
+  }
+
+  /* ---- TRUST STRIP ---- */
+  .trust-strip {
+    border-top: 1px solid var(--outline-muted); border-bottom: 1px solid var(--outline-muted);
+    padding: var(--sp-lg) var(--sp-md); text-align: center;
+  }
+  .trust-heading {
+    font-size: 12px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase;
+    color: var(--secondary); margin-bottom: var(--sp-md);
+  }
+  .trust-logos {
+    display: flex; align-items: center; justify-content: center; gap: 48px; flex-wrap: wrap;
+  }
+  .trust-name {
+    font-size: 16px; font-weight: 600; letter-spacing: -0.01em; color: var(--outline-muted);
+    transition: color 0.2s;
+  }
+  .trust-name:hover { color: var(--secondary); }
+
+  /* ---- PLATFORM OVERVIEW ---- */
+  .platform-section {
+    padding: var(--sp-xl) var(--sp-md); max-width: 1200px; margin: 0 auto;
+  }
+  .platform-header { text-align: center; margin-bottom: var(--sp-lg); }
+  .platform-header h2 {
+    font-size: 42px; font-weight: 600; line-height: 1.1; letter-spacing: -0.02em;
+    max-width: 640px; margin: 0 auto var(--sp-md);
+  }
+  .platform-header p { font-size: 16px; color: var(--secondary); max-width: 460px; margin: 0 auto; }
+  .platform-blurbs {
+    display: grid; grid-template-columns: 1fr 1fr;
+    gap: var(--sp-md); max-width: 680px; margin: 0 auto var(--sp-lg);
+  }
+  .blurb {
+    background: var(--surface-elevated); border: 1px solid var(--outline-muted);
+    border-radius: var(--r-md); padding: var(--sp-md);
+  }
+  .blurb h3 { font-size: 14px; font-weight: 600; margin-bottom: var(--sp-sm); }
+  .blurb p { font-size: 14px; color: var(--secondary); line-height: 1.5; }
+  /* Dashboard: dark, full-width, reads as a live control panel */
+  .dashboard {
+    background: var(--primary); border-radius: var(--r-lg); overflow: hidden;
+  }
+  .dash-head {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: var(--sp-sm) var(--sp-md); border-bottom: 1px solid rgba(255,255,255,0.07);
+  }
+  .dash-label {
+    font-size: 12px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase;
+    color: rgba(255,255,255,0.35);
+  }
+  .dash-pills { display: flex; gap: var(--sp-sm); align-items: center; }
+  .dpill {
+    font-size: 10px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase;
+    padding: 4px 10px; border-radius: var(--r-full); border: 1px solid;
+  }
+  .dpill-mode { color: #c084fc; border-color: rgba(192,132,252,0.35); }
+  .dpill-live {
+    color: #4ade80; border-color: rgba(74,222,128,0.35);
+    display: flex; align-items: center; gap: 5px;
+  }
+  .dpill-live-dot { width: 5px; height: 5px; border-radius: 50%; background: #4ade80; animation: pulse 2s infinite; }
+  .dash-metrics {
+    display: grid; grid-template-columns: repeat(3,1fr); border-bottom: 1px solid rgba(255,255,255,0.07);
+  }
+  .dash-metric {
+    padding: var(--sp-md); border-right: 1px solid rgba(255,255,255,0.07);
+  }
+  .dash-metric:last-child { border-right: none; }
+  .dm-label {
+    font-size: 10px; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase;
+    color: rgba(255,255,255,0.3); margin-bottom: var(--sp-sm);
+  }
+  .dm-val {
+    font-size: 32px; font-weight: 600; letter-spacing: -0.04em; line-height: 0.95;
+    color: rgba(255,255,255,0.92);
+  }
+  .dm-unit { font-size: 14px; color: rgba(255,255,255,0.35); font-weight: 400; }
+  .dm-ok { color: #4ade80; font-size: 24px; }
+  .dash-waveform {
+    height: 110px; padding: var(--sp-md); display: flex; align-items: center; gap: 2px;
+  }
+  .wbar { flex: 1; border-radius: 2px; background: var(--tertiary); opacity: 0.5; min-height: 4px; }
+  .dash-transport {
+    display: flex; align-items: center; justify-content: center; gap: 12px;
+    padding: var(--sp-sm) var(--sp-md); border-top: 1px solid rgba(255,255,255,0.07);
+  }
+  .tc {
+    width: 30px; height: 30px; border-radius: 50%;
+    background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1);
+    display: flex; align-items: center; justify-content: center;
+    color: rgba(255,255,255,0.35); font-size: 10px; cursor: pointer;
+  }
+  .tc-play {
+    width: 38px; height: 38px; border-radius: 50%;
+    background: var(--tertiary); border: none; cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .tc-play-icon {
+    width: 0; height: 0; border-style: solid;
+    border-width: 6px 0 6px 11px;
+    border-color: transparent transparent transparent #fff; margin-left: 2px;
+  }
+  .tc-time { font-size: 11px; color: rgba(255,255,255,0.25); letter-spacing: 0.05em; margin-left: 8px; }
+
+  /* ---- STUDIO SECTION ---- */
+  .studio-section {
+    border-top: 1px solid var(--outline-muted); padding: var(--sp-xl) var(--sp-md);
+  }
+  .studio-inner { max-width: 1200px; margin: 0 auto; }
+  .s-eyebrow {
+    font-size: 12px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase;
+    color: var(--secondary); margin-bottom: var(--sp-sm);
+  }
+  .s-h2 {
+    font-size: 42px; font-weight: 600; letter-spacing: -0.02em; line-height: 1.1;
+    max-width: 520px; margin-bottom: var(--sp-sm);
+  }
+  .s-body {
+    font-size: 16px; color: var(--secondary); max-width: 420px;
+    margin-bottom: var(--sp-lg);
+  }
+  .studio-cards { display: grid; grid-template-columns: 1fr 1fr; gap: var(--sp-md); margin-bottom: var(--sp-md); }
+  .sc-card {
+    background: var(--surface-elevated); border: 1px solid var(--outline-muted);
+    border-radius: var(--r-lg); overflow: hidden;
+  }
+  .sc-img {
+    height: 220px; background: linear-gradient(140deg, #f4f0ff 0%, #eaf4ff 100%);
+    display: flex; align-items: center; justify-content: center; position: relative;
+  }
+  /* Editor mock inside the card */
+  .emock {
+    width: 78%; height: 74%; border-radius: var(--r-md);
+    background: var(--surface-elevated); border: 1px solid var(--outline-muted);
+    overflow: hidden; box-shadow: 0 4px 24px rgba(17,17,17,0.09);
+  }
+  .emock-bar {
+    height: 26px; background: var(--neutral); border-bottom: 1px solid var(--outline-muted);
+    display: flex; align-items: center; padding: 0 10px; gap: 5px;
+  }
+  .emdot { width: 8px; height: 8px; border-radius: 50%; }
+  .emock-body { padding: 10px; display: flex; flex-direction: column; gap: 5px; }
+  .em-track {
+    height: 18px; border-radius: var(--r-sm);
+    background: rgba(153,88,255,0.1); border: 1px solid rgba(153,88,255,0.15);
+    position: relative; overflow: hidden;
+  }
+  .em-fill { position: absolute; left: 0; top: 0; bottom: 0; background: rgba(153,88,255,0.35); }
+  .sc-card-label {
+    padding: var(--sp-sm) var(--sp-md); font-size: 12px; font-weight: 600;
+    letter-spacing: 0.08em; text-transform: uppercase; color: var(--secondary);
+  }
+  .sc-card-body { padding: var(--sp-md); }
+  .sc-card-body h3 { font-size: 16px; font-weight: 600; margin-bottom: var(--sp-sm); }
+  .sc-card-body p { font-size: 14px; color: var(--secondary); line-height: 1.5; }
+  .studio-modes { display: flex; gap: var(--sp-sm); flex-wrap: wrap; }
+  .mpill {
+    padding: 9px 20px; border-radius: var(--r-full);
+    border: 1px solid var(--outline-muted); background: var(--surface-elevated);
+    font-size: 14px; font-weight: 500; letter-spacing: 0.01em; color: var(--secondary);
+    cursor: pointer; transition: all 0.15s;
+  }
+  .mpill:hover { border-color: var(--primary); color: var(--primary); }
+
+  /* ---- AGENTS SECTION ---- */
+  .agents-section {
+    border-top: 1px solid var(--outline-muted); padding: var(--sp-xl) var(--sp-md);
+  }
+  .agents-inner { max-width: 1200px; margin: 0 auto; }
+  .agents-grid { display: grid; grid-template-columns: 1.1fr 0.9fr; gap: var(--sp-md); margin-top: var(--sp-lg); }
+  .chat-card {
+    background: var(--surface-elevated); border: 1px solid var(--outline-muted);
+    border-radius: var(--r-lg); overflow: hidden;
+  }
+  .chat-head {
+    padding: 14px var(--sp-md); border-bottom: 1px solid var(--outline-muted);
+    display: flex; align-items: center; justify-content: space-between;
+  }
+  .chat-name { font-size: 14px; font-weight: 600; }
+  .chat-online {
+    font-size: 10px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase;
+    color: #16a34a; display: flex; align-items: center; gap: 4px;
+  }
+  .online-dot { width: 5px; height: 5px; border-radius: 50%; background: #16a34a; }
+  .chat-body { padding: var(--sp-md); display: flex; flex-direction: column; gap: 12px; }
+  .msg-in { display: flex; align-items: flex-start; gap: var(--sp-sm); }
+  .msg-ava {
+    width: 28px; height: 28px; border-radius: 50%;
+    background: rgba(153,88,255,0.1); border: 1px solid rgba(153,88,255,0.2);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 11px; font-weight: 600; color: var(--tertiary); flex-shrink: 0;
+  }
+  .bubble-in {
+    background: var(--neutral); border: 1px solid var(--outline-muted);
+    border-radius: var(--r-sm) var(--r-md) var(--r-md) var(--r-md);
+    padding: 10px 14px; font-size: 14px; max-width: 82%; line-height: 1.4;
+  }
+  .msg-out { display: flex; justify-content: flex-end; }
+  .bubble-out {
+    background: var(--primary); color: var(--surface-elevated);
+    border-radius: var(--r-md) var(--r-md) var(--r-sm) var(--r-md);
+    padding: 10px 14px; font-size: 14px; max-width: 82%; line-height: 1.4;
+  }
+  .typing-row { display: flex; align-items: flex-start; gap: var(--sp-sm); }
+  .typing-bub {
+    background: var(--neutral); border: 1px solid var(--outline-muted);
+    border-radius: var(--r-sm) var(--r-md) var(--r-md) var(--r-md);
+    padding: 12px 16px; display: flex; gap: 4px; align-items: center;
+  }
+  .td {
+    width: 6px; height: 6px; border-radius: 50%; background: var(--secondary);
+    animation: tdot 1.2s infinite ease-in-out;
+  }
+  .td:nth-child(2) { animation-delay: 0.15s; }
+  .td:nth-child(3) { animation-delay: 0.3s; }
+  @keyframes tdot { 0%,60%,100%{transform:translateY(0)} 30%{transform:translateY(-5px)} }
+  .insights-card {
+    background: var(--surface-elevated); border: 1px solid var(--outline-muted);
+    border-radius: var(--r-lg); padding: var(--sp-md);
+  }
+  .ins-label {
+    font-size: 12px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase;
+    color: var(--tertiary); margin-bottom: var(--sp-sm);
+  }
+  .insights-card h3 {
+    font-size: 20px; font-weight: 600; letter-spacing: -0.02em; margin-bottom: var(--sp-sm);
+  }
+  .insights-card p {
+    font-size: 14px; color: var(--secondary); line-height: 1.5; margin-bottom: var(--sp-md);
+  }
+  .stat-list { display: flex; flex-direction: column; gap: var(--sp-sm); }
+  .stat-row { display: flex; align-items: center; gap: var(--sp-sm); }
+  .slab { font-size: 12px; color: var(--secondary); width: 108px; flex-shrink: 0; }
+  .strack { flex: 1; height: 3px; background: var(--outline-muted); border-radius: 2px; }
+  .sfill { height: 3px; border-radius: 2px; background: var(--tertiary); }
+  .sval { font-size: 12px; font-weight: 600; width: 30px; text-align: right; }
+
+  /* ---- CTA ---- */
+  .cta-section {
+    border-top: 1px solid var(--outline-muted);
+    padding: var(--sp-xl) var(--sp-md);
+    text-align: center;
+  }
+  .cta-section h2 {
+    font-size: 42px; font-weight: 600; letter-spacing: -0.02em; line-height: 1.1;
+    margin-bottom: 40px;
+  }
+  .cta-row { display: flex; gap: var(--sp-sm); justify-content: center; }
+
+  /* ---- FOOTER ---- */
+  footer {
+    border-top: 1px solid var(--outline-muted);
+    padding: var(--sp-md);
+    display: flex; align-items: center; justify-content: space-between;
+    flex-wrap: wrap; gap: var(--sp-md);
+  }
+  .f-left { display: flex; flex-direction: column; gap: var(--sp-sm); }
+  .f-wordmark {
+    font-size: 12px; font-weight: 600; letter-spacing: 0.08em;
+    text-transform: uppercase; color: var(--primary);
+  }
+  .f-copy { font-size: 12px; color: var(--secondary); }
+  .f-links { display: flex; gap: var(--sp-md); }
+  .f-links a {
+    font-size: 14px; color: var(--secondary); text-decoration: none; transition: color 0.15s;
+  }
+  .f-links a:hover { color: var(--primary); }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="wordmark">Auralis</div>
+  <ul class="nav-links">
+    <li><a href="#">Studio</a></li>
+    <li><a href="#">Agents</a></li>
+    <li><a href="#">API</a></li>
+    <li><a href="#">Resources</a></li>
+    <li><a href="#">Enterprise</a></li>
+    <li><a href="#">Pricing</a></li>
+  </ul>
+  <a href="#" class="nav-signup">Sign up</a>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <h1>Making digital experiences sound human</h1>
+  <div class="hero-ctas">
+    <a href="#" class="btn-fill">Sign up</a>
+    <a href="#" class="btn-ghost">Contact sales</a>
+  </div>
+</section>
+
+<!-- DEMO PANEL -->
+<div class="demo-section">
+  <div class="demo-panel">
+    <div class="demo-tabs">
+      <div class="dtab active">Auralis Studio</div>
+      <div class="dtab">Auralis Agents</div>
+      <div class="dtab">Auralis API</div>
+      <div class="demo-status">
+        <div class="live-dot"></div>
+        AI Voice Generator
+      </div>
+    </div>
+    <div class="demo-preview">
+      <div class="cloud-purple"></div>
+      <div class="cloud-cerulean"></div>
+      <div class="cloud-pink"></div>
+      <div class="cloud-magenta"></div>
+      <div class="play-button">
+        <div class="play-icon"></div>
+      </div>
+    </div>
+    <div class="demo-modebar">
+      <a href="#" class="mode-link active">AI Voice Generator</a>
+      <a href="#" class="mode-link">Text to Speech</a>
+      <a href="#" class="mode-link">Music</a>
+      <a href="#" class="mode-link">Sound Effects</a>
+      <a href="#" class="mode-link">Voice Cloning</a>
+      <button class="modebar-signup">Sign up</button>
+    </div>
+  </div>
+</div>
+
+<!-- TRUST STRIP -->
+<div class="trust-strip">
+  <p class="trust-heading">Trusted by teams building modern audio experiences</p>
+  <div class="trust-logos">
+    <span class="trust-name">Velocity</span>
+    <span class="trust-name">Nexus</span>
+    <span class="trust-name">Lumina</span>
+    <span class="trust-name">Stack</span>
+    <span class="trust-name">Quanta</span>
+    <span class="trust-name">Orbital</span>
+    <span class="trust-name">Scalar</span>
+  </div>
+</div>
+
+<!-- PLATFORM OVERVIEW -->
+<section class="platform-section">
+  <div class="platform-header">
+    <h2>Two systems, one shared intelligence layer</h2>
+    <p>Studio and Agents share a unified neural synthesis core — one engine powering every voice output across the entire platform.</p>
+  </div>
+  <div class="platform-blurbs">
+    <div class="blurb">
+      <h3>Precision Generation</h3>
+      <p>Sub-20ms latency synthesis with full prosodic control. Every phoneme shaped with surgical accuracy and intent.</p>
+    </div>
+    <div class="blurb">
+      <h3>Agentic Architecture</h3>
+      <p>Autonomous voice agents that reason, adapt, and respond in real time — integrated with your existing systems.</p>
+    </div>
+  </div>
+  <div class="dashboard">
+    <div class="dash-head">
+      <span class="dash-label">Neural Engine V4.2 Pro</span>
+      <div class="dash-pills">
+        <span class="dpill dpill-mode">Studio Mode</span>
+        <span class="dpill dpill-live"><span class="dpill-live-dot"></span>Real-time Synthesis Active</span>
+      </div>
+    </div>
+    <div class="dash-metrics">
+      <div class="dash-metric">
+        <div class="dm-label">Latency</div>
+        <div class="dm-val">12 <span class="dm-unit">ms</span></div>
+      </div>
+      <div class="dash-metric">
+        <div class="dm-label">Confidence</div>
+        <div class="dm-val">99.8 <span class="dm-unit">%</span></div>
+      </div>
+      <div class="dash-metric">
+        <div class="dm-label">Status</div>
+        <div class="dm-val dm-ok">Operational</div>
+      </div>
+    </div>
+    <div class="dash-waveform">
+      <div class="wbar" style="height:20%"></div><div class="wbar" style="height:64%"></div>
+      <div class="wbar" style="height:38%"></div><div class="wbar" style="height:82%"></div>
+      <div class="wbar" style="height:52%"></div><div class="wbar" style="height:96%"></div>
+      <div class="wbar" style="height:30%"></div><div class="wbar" style="height:70%"></div>
+      <div class="wbar" style="height:45%"></div><div class="wbar" style="height:88%"></div>
+      <div class="wbar" style="height:22%"></div><div class="wbar" style="height:60%"></div>
+      <div class="wbar" style="height:48%"></div><div class="wbar" style="height:100%"></div>
+      <div class="wbar" style="height:26%"></div><div class="wbar" style="height:74%"></div>
+      <div class="wbar" style="height:40%"></div><div class="wbar" style="height:84%"></div>
+      <div class="wbar" style="height:18%"></div><div class="wbar" style="height:58%"></div>
+      <div class="wbar" style="height:44%"></div><div class="wbar" style="height:78%"></div>
+      <div class="wbar" style="height:28%"></div><div class="wbar" style="height:66%"></div>
+    </div>
+    <div class="dash-transport">
+      <div class="tc">⏮</div><div class="tc">⏪</div>
+      <div class="tc-play"><div class="tc-play-icon"></div></div>
+      <div class="tc">⏩</div><div class="tc">⏭</div>
+      <span class="tc-time">00:00:24 / 00:01:48</span>
+    </div>
+  </div>
+</section>
+
+<!-- STUDIO SECTION -->
+<div class="studio-section">
+  <div class="studio-inner">
+    <div class="s-eyebrow">Auralis Studio</div>
+    <h2 class="s-h2">Sculpt sound with absolute precision.</h2>
+    <p class="s-body">A professional-grade audio creation suite built for teams who demand control at every layer of their voice output.</p>
+    <div class="studio-cards">
+      <div class="sc-card">
+        <div class="sc-img">
+          <div class="emock">
+            <div class="emock-bar">
+              <div class="emdot" style="background:#ff5f57"></div>
+              <div class="emdot" style="background:#febc2e"></div>
+              <div class="emdot" style="background:#28c840"></div>
+            </div>
+            <div class="emock-body">
+              <div class="em-track"><div class="em-fill" style="width:68%"></div></div>
+              <div class="em-track" style="opacity:0.6"><div class="em-fill" style="width:42%"></div></div>
+              <div class="em-track" style="opacity:0.38"><div class="em-fill" style="width:85%"></div></div>
+            </div>
+          </div>
+        </div>
+        <div class="sc-card-label">Soft Editor UI</div>
+      </div>
+      <div class="sc-card">
+        <div class="sc-card-body" style="padding-top: 32px;">
+          <div class="s-eyebrow" style="margin-bottom:8px">Transcript Panel</div>
+          <h3>Transcript Panel</h3>
+          <p>Real-time synchronized transcripts with phoneme-level editing. Adjust timing, emphasis, and pronunciation directly from the transcript view — every word tied to its exact audio frame.</p>
+        </div>
+      </div>
+    </div>
+    <div class="studio-modes">
+      <button class="mpill">Music</button>
+      <button class="mpill">SFX</button>
+      <button class="mpill">Voices</button>
+      <button class="mpill">Image &amp; Video</button>
+    </div>
+  </div>
+</div>
+
+<!-- AGENTS SECTION -->
+<div class="agents-section">
+  <div class="agents-inner">
+    <div class="s-eyebrow">Auralis Agents</div>
+    <h2 class="s-h2">Autonomous reasoning, human delivery.</h2>
+    <p class="s-body">Deploy intelligent voice agents that understand context, handle complexity, and speak with warmth and nuance.</p>
+    <div class="agents-grid">
+      <div class="chat-card">
+        <div class="chat-head">
+          <span class="chat-name">Nexus Support Agent</span>
+          <span class="chat-online"><div class="online-dot"></div>ONLINE • LATENCY: 12ms</span>
+        </div>
+        <div class="chat-body">
+          <div class="msg-in">
+            <div class="msg-ava">N</div>
+            <div class="bubble-in">Hello! How can I assist you today?</div>
+          </div>
+          <div class="msg-out">
+            <div class="bubble-out">I need help checking my deployment status.</div>
+          </div>
+          <div class="typing-row">
+            <div class="msg-ava">N</div>
+            <div class="typing-bub">
+              <div class="td"></div><div class="td"></div><div class="td"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="insights-card">
+        <div class="ins-label">Analytics</div>
+        <h3>Deep Insights</h3>
+        <p>Surface the patterns hidden in every voice interaction. Understand sentiment, intent, resolution rates, and conversation quality at scale — across every agent deployment.</p>
+        <div class="stat-list">
+          <div class="stat-row">
+            <span class="slab">Resolution Rate</span>
+            <div class="strack"><div class="sfill" style="width:94%"></div></div>
+            <span class="sval">94%</span>
+          </div>
+          <div class="stat-row">
+            <span class="slab">Avg Sentiment</span>
+            <div class="strack"><div class="sfill" style="width:87%"></div></div>
+            <span class="sval">87%</span>
+          </div>
+          <div class="stat-row">
+            <span class="slab">Intent Accuracy</span>
+            <div class="strack"><div class="sfill" style="width:99%"></div></div>
+            <span class="sval">99%</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- CTA -->
+<section class="cta-section">
+  <h2>The future of voice starts here</h2>
+  <div class="cta-row">
+    <a href="#" class="btn-fill" style="font-size:15px;padding:14px 32px">Get started</a>
+    <a href="#" class="btn-ghost" style="font-size:15px;padding:13px 32px">Talk to sales</a>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="f-left">
+    <div class="f-wordmark">Auralis</div>
+    <div class="f-copy">© 2024 Auralis AI. Engineered for precision.</div>
+  </div>
+  <div class="f-links">
+    <a href="#">Twitter</a>
+    <a href="#">GitHub</a>
+    <a href="#">Terms</a>
+    <a href="#">Privacy</a>
+  </div>
+</footer>
+
+</body>
+</html>

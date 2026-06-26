@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Tracks of Washington DC</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Source+Serif+4:wght@400&family=IBM+Plex+Mono:wght@400&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+:root {
+  --primary: #1B3026;
+  --secondary: #7A6A5A;
+  --tertiary: #B5491C;
+  --neutral: #F2ECE2;
+  --sm: 8px;
+  --md: 16px;
+  --lg: 32px;
+  --xl: 64px;
+  --gutter: 24px;
+}
+
+/* The page is a lap. Scrolling is pacing: deliberate, metered, one stride per panel. */
+html { scroll-snap-type: y mandatory; scroll-behavior: smooth; }
+body {
+  font-family: 'Source Serif 4', serif;
+  font-size: 17px;
+  font-weight: 400;
+  line-height: 1.7;
+  color: var(--primary);
+  background: var(--neutral);
+  margin: 0;
+}
+
+section {
+  min-height: 100vh;
+  scroll-snap-align: start;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Monuments are inscribed, not decorated. Nothing glows, floats, or rounds. */
+
+.headline-lg {
+  font-family: 'DM Serif Display', serif;
+  font-size: 48px;
+  font-weight: 400;
+  line-height: 1.1;
+  letter-spacing: -0.01em;
+  color: var(--primary);
+}
+
+.label-sm {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 12px;
+  font-weight: 400;
+  line-height: 1.5;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+/* Lane markings — thin ruled lines, horizontal at full width between panels */
+.lane-marking {
+  width: 100%;
+  height: 1px;
+  background: rgba(27,48,38,0.07);
+}
+
+/* ── Panel 1: The Start Line ── */
+.start {
+  display: flex;
+  align-items: flex-end;
+  justify-content: flex-start;
+  background:
+    linear-gradient(180deg, rgba(27,48,38,0.15) 0%, rgba(27,48,38,0.55) 100%),
+    url('https://images.unsplash.com/photo-1590333748338-d629e4564ad9?w=1920&q=80') center/cover no-repeat;
+  color: var(--neutral);
+  padding: var(--xl) calc(var(--xl) + var(--gutter));
+}
+.start-inner { max-width: 580px; }
+.start .headline-lg {
+  font-size: clamp(42px, 6vw, 72px);
+  color: var(--neutral);
+  margin-bottom: var(--gutter);
+  text-align: left;
+}
+.start-sub {
+  font-size: 17px;
+  line-height: 1.7;
+  color: rgba(242,236,226,0.8);
+  max-width: 460px;
+  margin-bottom: var(--xl);
+}
+/* The start-line terracotta — once per lap */
+.terracotta-mark {
+  display: inline-block;
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 12px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  background: var(--tertiary);
+  color: var(--primary);
+  padding: 14px 36px;
+  text-decoration: none;
+  border: none;
+  border-radius: 0;
+}
+
+/* ── The Straights — track portrait panels ── */
+.straight {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  min-height: 100vh;
+}
+.straight .monument-plate {
+  background-size: cover;
+  background-position: center;
+  min-height: 100vh;
+}
+.straight .inscription {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: var(--xl) calc(var(--xl) + var(--gutter));
+  background: var(--neutral);
+  /* Vertical lane marking */
+  border-left: 1px solid rgba(27,48,38,0.07);
+}
+.straight .eyebrow {
+  color: var(--secondary);
+  margin-bottom: var(--md);
+}
+.straight .headline-lg {
+  margin-bottom: var(--gutter);
+  text-align: left;
+}
+.straight .prose {
+  margin-bottom: var(--lg);
+  max-width: 460px;
+}
+/* Chiseled data — the timekeeper's monospace */
+.chiseled-data {
+  display: flex;
+  gap: var(--lg);
+  border-top: 1px solid rgba(27,48,38,0.07);
+  padding-top: var(--gutter);
+}
+.chiseled-data .figure dt {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--secondary);
+  margin-bottom: 4px;
+}
+.chiseled-data .figure dd {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 16px;
+  color: var(--primary);
+  margin: 0;
+  letter-spacing: 0.04em;
+}
+
+/* Mirrored straight */
+.straight.opposite { direction: rtl; }
+.straight.opposite > * { direction: ltr; }
+.straight.opposite .inscription {
+  border-left: none;
+  border-right: 1px solid rgba(27,48,38,0.07);
+}
+
+/* ── Panel 3: The Back Straight — nothing to do but think ── */
+.back-straight {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  background:
+    linear-gradient(180deg, rgba(27,48,38,0.35) 0%, rgba(27,48,38,0.6) 100%),
+    url('https://images.unsplash.com/photo-1552674605-db6ffd4facb5?w=1920&q=80') center/cover no-repeat;
+  color: var(--neutral);
+  padding: var(--xl) calc(var(--xl) + var(--gutter));
+}
+.back-straight blockquote {
+  font-family: 'DM Serif Display', serif;
+  font-size: clamp(28px, 4vw, 44px);
+  line-height: 1.25;
+  max-width: 700px;
+  font-style: italic;
+  letter-spacing: -0.01em;
+  text-align: left;
+  /* One band of terracotta: the start line crossed once each lap */
+  border-left: 2px solid var(--tertiary);
+  padding-left: var(--gutter);
+}
+
+/* ── Panel 5: The Aerial View — the map a runner holds in their head ── */
+.aerial {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  background: var(--primary);
+  color: var(--neutral);
+  padding: var(--xl) calc(var(--xl) + var(--gutter));
+  min-height: 100vh;
+}
+.aerial .headline-lg {
+  color: var(--neutral);
+  margin-bottom: var(--xl);
+  text-align: left;
+}
+.aerial-field {
+  position: relative;
+  width: min(720px, 85vw);
+  height: min(480px, 58vh);
+}
+.aerial-field svg { width: 100%; height: 100%; }
+.marker {
+  position: absolute;
+  display: flex;
+  align-items: flex-start;
+  gap: var(--sm);
+}
+/* Terracotta once: the dots are the start-line marks */
+.marker-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 0;
+  background: var(--tertiary);
+  flex-shrink: 0;
+  margin-top: 4px;
+}
+.marker-name {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--neutral);
+}
+.marker-spec {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 10px;
+  color: var(--secondary);
+  letter-spacing: 0.04em;
+}
+
+/* ── Panel 6: The Final Bend — back where you began, breathing harder ── */
+.final-bend {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  min-height: 100vh;
+  background: var(--neutral);
+  padding: var(--xl) calc(var(--xl) + var(--gutter));
+  border-top: 1px solid rgba(27,48,38,0.07);
+}
+.final-bend .headline-lg {
+  margin-bottom: var(--gutter);
+}
+.final-bend .prose {
+  max-width: 440px;
+  margin-bottom: var(--xl);
+  color: var(--secondary);
+}
+
+@media (max-width: 768px) {
+  .straight { grid-template-columns: 1fr; }
+  .straight .monument-plate { min-height: 50vh; }
+  .straight .inscription { padding: var(--lg) var(--gutter); border-left: none; }
+  .straight.opposite { direction: ltr; }
+  .straight.opposite .inscription { border-right: none; }
+  .headline-lg { font-size: 36px; }
+  .start, .back-straight, .aerial, .final-bend { padding: var(--xl) var(--gutter); }
+}
+</style>
+</head>
+<body>
+
+<!-- Panel 1: The Start Line -->
+<section class="start">
+  <div class="start-inner">
+    <h1 class="headline-lg">The Tracks of Washington DC</h1>
+    <p class="start-sub">A field guide to the city's ovals — their surfaces, their histories, their regulars.</p>
+    <a href="#georgetown" class="terracotta-mark">Begin the Circuit</a>
+  </div>
+</section>
+
+<div class="lane-marking"></div>
+
+<!-- Panel 2: Georgetown Waterfront Track — the first straight -->
+<section id="georgetown" class="straight">
+  <div class="monument-plate" style="background-image: url('https://images.unsplash.com/photo-1596568362004-3f5a0f142dad?w=1200&q=80');"></div>
+  <div class="inscription">
+    <div class="label-sm eyebrow">Georgetown Waterfront Track</div>
+    <h2 class="headline-lg">Where the River Keeps the Pace</h2>
+    <p class="prose">The Georgetown Waterfront Track sits just above the Potomac, a 400-meter oval where the city's diplomats, students, and dawn regulars share lanes in quiet rotation. The surface is newer than most — a rubberized compound laid in 2016 — but the rhythm is old: the same river light each morning, the same towpath breeze pulling at the back straight. It is the kind of track that earns loyalty through consistency, not spectacle.</p>
+    <dl class="chiseled-data">
+      <div class="figure">
+        <dt>Distance</dt>
+        <dd>400m</dd>
+      </div>
+      <div class="figure">
+        <dt>Surface</dt>
+        <dd>Rubberized</dd>
+      </div>
+      <div class="figure">
+        <dt>Ward</dt>
+        <dd>Ward 2</dd>
+      </div>
+    </dl>
+  </div>
+</section>
+
+<div class="lane-marking"></div>
+
+<!-- Panel 3: The Back Straight — nothing to do but think -->
+<section class="back-straight">
+  <blockquote>"The oval teaches you that progress is not a straight line — it is the same turn, taken better."</blockquote>
+</section>
+
+<div class="lane-marking"></div>
+
+<!-- Panel 4: Anacostia Park Track — the opposite straight -->
+<section class="straight opposite">
+  <div class="monument-plate" style="background-image: url('https://images.unsplash.com/photo-1574629810360-7efbbe195018?w=1200&q=80');"></div>
+  <div class="inscription">
+    <div class="label-sm eyebrow">Anacostia Park Track</div>
+    <h2 class="headline-lg">The East Side's Quiet Engine</h2>
+    <p class="prose">Anacostia's track is older and less celebrated, but its regulars would not trade it. Set within the broad green expanse of Anacostia Park, the oval is a 440-yard cinder loop that still carries the texture of a different era. Morning runners here are neighborhood fixtures — coaches who trained on this same surface decades ago, families walking the outer lane, sprinters working intervals in lane one.</p>
+    <dl class="chiseled-data">
+      <div class="figure">
+        <dt>Distance</dt>
+        <dd>440yd</dd>
+      </div>
+      <div class="figure">
+        <dt>Surface</dt>
+        <dd>Cinder</dd>
+      </div>
+      <div class="figure">
+        <dt>Ward</dt>
+        <dd>Ward 8</dd>
+      </div>
+    </dl>
+  </div>
+</section>
+
+<div class="lane-marking"></div>
+
+<!-- Panel 5: The Aerial View -->
+<section class="aerial">
+  <h2 class="headline-lg">The Washington Circuit</h2>
+  <div class="aerial-field">
+    <svg viewBox="0 0 720 480" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <!-- Lane-marking grid -->
+      <line x1="0" y1="120" x2="720" y2="120" stroke="rgba(242,236,226,0.04)" stroke-width="1"/>
+      <line x1="0" y1="240" x2="720" y2="240" stroke="rgba(242,236,226,0.04)" stroke-width="1"/>
+      <line x1="0" y1="360" x2="720" y2="360" stroke="rgba(242,236,226,0.04)" stroke-width="1"/>
+      <line x1="180" y1="0" x2="180" y2="480" stroke="rgba(242,236,226,0.04)" stroke-width="1"/>
+      <line x1="360" y1="0" x2="360" y2="480" stroke="rgba(242,236,226,0.04)" stroke-width="1"/>
+      <line x1="540" y1="0" x2="540" y2="480" stroke="rgba(242,236,226,0.04)" stroke-width="1"/>
+      <!-- Potomac -->
+      <path d="M 80 10 Q 110 200, 50 480" stroke="rgba(122,106,90,0.12)" stroke-width="2" fill="none"/>
+      <!-- The Mall -->
+      <rect x="240" y="225" width="240" height="30" fill="none" stroke="rgba(242,236,226,0.03)" stroke-width="0.5"/>
+    </svg>
+    <div class="marker" style="top: 14%; left: 10%;">
+      <div class="marker-dot"></div>
+      <div>
+        <div class="marker-name">Georgetown Waterfront</div>
+        <div class="marker-spec">400m · Rubberized · W2</div>
+      </div>
+    </div>
+    <div class="marker" style="top: 62%; left: 58%;">
+      <div class="marker-dot"></div>
+      <div>
+        <div class="marker-name">Anacostia Park</div>
+        <div class="marker-spec">440yd · Cinder · W8</div>
+      </div>
+    </div>
+    <div class="marker" style="top: 26%; left: 46%;">
+      <div class="marker-dot"></div>
+      <div>
+        <div class="marker-name">Dunbar High School</div>
+        <div class="marker-spec">400m · Synthetic · W6</div>
+      </div>
+    </div>
+    <div class="marker" style="top: 40%; left: 22%;">
+      <div class="marker-dot"></div>
+      <div>
+        <div class="marker-name">National Mall Loop</div>
+        <div class="marker-spec">800m · Gravel · W2</div>
+      </div>
+    </div>
+    <div class="marker" style="top: 52%; left: 36%;">
+      <div class="marker-dot"></div>
+      <div>
+        <div class="marker-name">Banneker HS</div>
+        <div class="marker-spec">400m · Rubberized · W1</div>
+      </div>
+    </div>
+    <div class="marker" style="top: 76%; left: 18%;">
+      <div class="marker-dot"></div>
+      <div>
+        <div class="marker-name">Fort Stanton Park</div>
+        <div class="marker-spec">400m · Asphalt · W8</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="lane-marking"></div>
+
+<!-- Panel 6: The Final Bend — back where you began -->
+<section class="final-bend">
+  <h2 class="headline-lg">Know every oval.</h2>
+  <p class="prose">Surface reports, route maps, and stories from the regulars — delivered to your inbox each week.</p>
+  <a href="#" class="terracotta-mark">Get the Guide</a>
+</section>
+
+</body>
+</html>

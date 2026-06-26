@@ -1,0 +1,28 @@
+{
+  "cases": [
+    "agent-slides",
+    "auralis",
+    "dc-tracks",
+    "night-birding",
+    "tea-house"
+  ],
+  "samples": 1,
+  "controlSamples": 1,
+  "arms": "all",
+  "channels": [
+    "prompt"
+  ],
+  "experiment": "method-grounding",
+  "metric": "escape-from-center",
+  "tool": "agent",
+  "model": "claude-opus-4.6",
+  "evalHash": "ba595bb2c4cf",
+  "caseHashes": {
+    "agent-slides": "8525083078d8",
+    "auralis": "3581bf373a0d",
+    "dc-tracks": "8d590cb11d6b",
+    "night-birding": "1455cfc7e161",
+    "tea-house": "308525012293"
+  },
+  "startedAt": "2026-06-22T15:05:48.271Z"
+}

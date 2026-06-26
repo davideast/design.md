@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kettle &amp; Leaf</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Libre+Franklin:wght@400;700&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,700;1,8..60,400&family=IBM+Plex+Mono:wght@400&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --primary: #1B1B1B;
+    --secondary: #6E675C;
+    --tertiary: #E8590C;
+    --neutral: #F4EFE6;
+    --spacing-sm: 8px;
+    --spacing-md: 16px;
+    --spacing-lg: 32px;
+    --spacing-xl: 64px;
+  }
+
+  /*
+    Risograph constraint: two drums only.
+    Drum 1 = key ink #1B1B1B, all type and rules.
+    "Grey" = key drum screened back = #6E675C (secondary).
+    Drum 2 = warm accent #E8590C, used at most twice, never as fill.
+    No shadows, no dark panels, no reversed type.
+    Paper field #F4EFE6 everywhere.
+    Everything flat on the paper.
+  */
+
+  html, body {
+    background-color: var(--neutral);
+    min-height: 100vh;
+  }
+
+  body {
+    color: var(--primary);
+    font-family: 'Source Serif 4', serif;
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 1.65;
+  }
+
+  .sheet {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: var(--spacing-xl);
+    /* Wide margins — the grippers need them */
+  }
+
+  /* ── NAME BLOCK ── */
+  .name-block {
+    margin-bottom: var(--spacing-lg);
+  }
+
+  /* Accent drum: one band beneath the shop name */
+  .name-rule-accent {
+    height: 3px;
+    background-color: var(--tertiary); /* second drum, use 1 */
+    margin-bottom: var(--spacing-md);
+  }
+
+  .shop-name {
+    font-family: 'Libre Franklin', sans-serif;
+    font-size: 44px;
+    font-weight: 700;
+    line-height: 1.05;
+    letter-spacing: -0.01em;
+    color: var(--primary);
+    margin-bottom: var(--spacing-sm);
+  }
+
+  .welcome {
+    font-family: 'Source Serif 4', serif;
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 1.65;
+    color: var(--primary);
+  }
+
+  /* ── CONTENT INSET — open paper, breathing ── */
+  .content {
+    margin-top: var(--spacing-lg);
+    padding-top: var(--spacing-lg);
+    /* screened hairline = the only grey the press can make */
+    border-top: 1px solid var(--secondary);
+  }
+
+  /* ── TEAS ── */
+  .teas-section {
+    margin-bottom: var(--spacing-xl);
+  }
+
+  .section-label {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 12px;
+    font-weight: 400;
+    line-height: 1.4;
+    letter-spacing: 0.08em;
+    color: var(--secondary); /* key screened back */
+    text-transform: uppercase;
+    margin-bottom: var(--spacing-lg);
+  }
+
+  .tea-item {
+    display: grid;
+    grid-template-columns: 200px 1fr;
+    gap: var(--spacing-md);
+    padding-bottom: var(--spacing-md);
+    margin-bottom: var(--spacing-md);
+    border-bottom: 1px solid var(--secondary); /* screened hairline */
+  }
+
+  .tea-item:last-child {
+    border-bottom: none;
+  }
+
+  /* Second drum accent: mark at today's date / first tea item indicator */
+  .tea-mark {
+    display: inline-block;
+    width: 8px;
+    height: 8px;
+    background-color: var(--tertiary); /* second drum, use 2 */
+    margin-right: var(--spacing-sm);
+    vertical-align: middle;
+    flex-shrink: 0;
+  }
+
+  .tea-left {}
+
+  .tea-name {
+    font-family: 'Source Serif 4', serif;
+    font-size: 16px;
+    font-weight: 700;
+    line-height: 1.4;
+    color: var(--primary);
+  }
+
+  .tea-origin {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 12px;
+    font-weight: 400;
+    letter-spacing: 0.08em;
+    color: var(--secondary);
+    margin-top: 4px;
+    line-height: 1.4;
+  }
+
+  .tea-note {
+    font-family: 'Source Serif 4', serif;
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 1.65;
+    color: var(--primary);
+    padding-top: 2px;
+  }
+
+  /* ── TWO COLUMN: sourcing + data ── */
+  .two-col {
+    display: grid;
+    grid-template-columns: 1fr 360px;
+    gap: var(--spacing-xl);
+    margin-bottom: var(--spacing-xl);
+    padding-top: var(--spacing-lg);
+    border-top: 1px solid var(--secondary);
+  }
+
+  /* Sourcing essay */
+  .sourcing-essay {
+    font-family: 'Source Serif 4', serif;
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 1.65;
+    color: var(--primary);
+  }
+
+  /* Data column: hours table + address */
+  .data-col {}
+
+  .data-col .section-label {
+    margin-bottom: var(--spacing-md);
+  }
+
+  table.quiet-table {
+    border-collapse: collapse;
+    width: 100%;
+    margin-bottom: var(--spacing-lg);
+  }
+
+  table.quiet-table th {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 12px;
+    font-weight: 400;
+    letter-spacing: 0.08em;
+    color: var(--secondary);
+    text-align: left;
+    padding: 4px var(--spacing-sm) 4px 0;
+    border-bottom: 1px solid var(--secondary);
+  }
+
+  table.quiet-table td {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 12px;
+    font-weight: 400;
+    letter-spacing: 0.08em;
+    color: var(--primary);
+    padding: 4px var(--spacing-sm) 4px 0;
+    border-bottom: 1px solid rgba(110,103,92,0.3);
+    vertical-align: top;
+  }
+
+  table.quiet-table td:first-child {
+    width: 80px;
+    color: var(--secondary);
+  }
+
+  .address-line {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 12px;
+    font-weight: 400;
+    letter-spacing: 0.08em;
+    color: var(--secondary);
+    padding-top: var(--spacing-sm);
+  }
+
+  /* ── FOOT CREDITS — screened hairline, then credits ── */
+  .foot-credits {
+    border-top: 1px solid var(--primary);
+    padding-top: var(--spacing-md);
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: var(--spacing-lg);
+  }
+
+  .foot-name {
+    font-family: 'Libre Franklin', sans-serif;
+    font-size: 18px;
+    font-weight: 700;
+    letter-spacing: -0.01em;
+    color: var(--primary);
+  }
+
+  .foot-info {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 12px;
+    font-weight: 400;
+    letter-spacing: 0.08em;
+    color: var(--secondary);
+    text-align: right;
+    line-height: 1.8;
+  }
+</style>
+</head>
+<body>
+
+<div class="sheet">
+
+  <!-- Name block: drum-2 rule under the title (one use of the accent) -->
+  <div class="name-block">
+    <div class="name-rule-accent"></div>
+    <h1 class="shop-name">Kettle &amp; Leaf</h1>
+    <p class="welcome">A neighborhood tea house at 412 Maple Row — open every day, unhurried always.</p>
+  </div>
+
+  <div class="content">
+
+    <!-- Teas -->
+    <div class="teas-section">
+      <p class="section-label">Today's brewed teas</p>
+
+      <!-- First tea gets the lone accent mark (drum 2, second use) -->
+      <div class="tea-item">
+        <div class="tea-left">
+          <div class="tea-name"><span class="tea-mark" title="today's selection"></span>Alishan High Mountain</div>
+          <div class="tea-origin">Ali Shan, Taiwan<br>Oolong</div>
+        </div>
+        <div class="tea-note">Creamy orchid sweetness with a sustained floral finish. Grown at 1,400 metres in morning mist, picked by hand in early spring.</div>
+      </div>
+
+      <div class="tea-item">
+        <div class="tea-left">
+          <div class="tea-name">Lamu Island White</div>
+          <div class="tea-origin">Coast Province, Kenya<br>White Tea</div>
+        </div>
+        <div class="tea-note">Delicate and honeyed, with a clean melon note and a quiet mineral close. Sun-dried on woven mats at first light.</div>
+      </div>
+
+      <div class="tea-item">
+        <div class="tea-left">
+          <div class="tea-name">Ruby 18</div>
+          <div class="tea-origin">Sun Moon Lake, Taiwan<br>Black Tea</div>
+        </div>
+        <div class="tea-note">Warm cinnamon and natural wintergreen, with a smooth cocoa finish and no astringency.</div>
+      </div>
+    </div>
+
+    <!-- Two-column: sourcing essay + data -->
+    <div class="two-col">
+
+      <!-- Sourcing essay -->
+      <div>
+        <p class="section-label">From the source</p>
+        <p class="sourcing-essay">Owner Mei-Lin Huang travels twice a year to find what ends up in your cup. Each spring she visits the high-mountain gardens of Taiwan — Ali Shan and Sun Moon Lake — sitting with the families who have cultivated these slopes for three generations. Each autumn she travels to the coastal smallholdings near Lamu, Kenya, where a small community of growers has begun producing white and green teas of quiet distinction. These are friendships built cup by cup across many years. What arrives here is what those friendships allow.</p>
+      </div>
+
+      <!-- Data: quiet hours + address -->
+      <div class="data-col">
+        <p class="section-label">Quiet hours</p>
+        <table class="quiet-table">
+          <thead>
+            <tr>
+              <th>Day</th>
+              <th>Hours</th>
+              <th>Notes</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Mon</td>
+              <td>8:00–10 am</td>
+              <td>Soft music, no calls</td>
+            </tr>
+            <tr>
+              <td>Wed</td>
+              <td>2:00–5 pm</td>
+              <td>Reading hour</td>
+            </tr>
+            <tr>
+              <td>Fri</td>
+              <td>8:00–11 am</td>
+              <td>Early quiet</td>
+            </tr>
+            <tr>
+              <td>Sat</td>
+              <td>9 am–12 pm</td>
+              <td>Table service only</td>
+            </tr>
+            <tr>
+              <td>Sun</td>
+              <td>10 am–1 pm</td>
+              <td>Ambient sounds only</td>
+            </tr>
+          </tbody>
+        </table>
+        <p class="address-line">412 Maple Row</p>
+      </div>
+
+    </div>
+
+  </div>
+
+  <!-- Foot credits -->
+  <div class="foot-credits">
+    <div class="foot-name">Kettle &amp; Leaf</div>
+    <div class="foot-info">
+      Mon–Fri 7:30 am – 7:00 pm &nbsp;·&nbsp; Sat 8:00 am – 6:00 pm &nbsp;·&nbsp; Sun 9:00 am – 5:00 pm<br>
+      (503) 741-2288
+    </div>
+  </div>
+
+</div>
+
+</body>
+</html>

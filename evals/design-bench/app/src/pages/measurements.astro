@@ -2,7 +2,7 @@
 import Base from "../layouts/Base.astro";
 import TopRail from "../components/TopRail.astro";
 import ProofThumb from "../components/ProofThumb.astro";
-import { listCases, caseView, heroPair, listRuns } from "../lib/runs";
+import { listCases, caseView, heroPair, listRuns } from "../lib/data";
 const cases = listCases();
 const hero = heroPair();
 const runs = listRuns();
@@ -10,8 +10,7 @@ const measured = runs.filter((r) => r.measured);
 const unmeasured = runs.length - measured.length;
 ---
 <Base title="Measurements — Design Bench">
-  <TopRail active="All measurements" />
-  <main class="max-w-6xl mx-auto px-lg py-xl">
+  <TopRail active="Measurements" />  <main class="max-w-6xl mx-auto px-lg py-xl">
     <h1 class="text-display font-display tracking-tight">Measurements</h1>
     <p class="text-body text-ink-muted mt-xs max-w-prose">
       Every rendering on this site, with the distance it landed from the model's default look. Open any
@@ -53,15 +52,19 @@ const unmeasured = runs.length - measured.length;
         const shown = v.treatments.filter((t) => t.samplePath);
         return (
           <div class="mt-lg">
-            <a href={`/cases/${c.key}`} class="font-display font-semibold text-base text-ink hover:text-primary">{v.title} →</a>
+            <div class="flex items-baseline gap-md">
+              <a href={`/cases/${c.key}`} class="font-display font-semibold text-base text-ink hover:text-primary">{v.title} →</a>
+              <a href={`/cases/${c.key}/judge`} class="font-label text-label uppercase text-primary hover:underline" style="font-size:9px">judge blind →</a>
+            </div>
             <div class="grid grid-cols-2 md:grid-cols-4 gap-md mt-sm">
               {shown.map((t) => (
                 <a href={`/cases/${c.key}/${t.key}/0`} class="block group">
                   <ProofThumb src={t.samplePath} mini />
                   <div class="flex items-baseline justify-between mt-1">
-                    <span class="font-label text-label uppercase text-ink group-hover:text-primary">{t.name}</span>
+                    <span class="font-label text-label uppercase text-ink group-hover:text-primary" style="font-size:10px">{t.name}</span>
                     <span class="font-data text-data text-ink bg-accent-wash px-1">{t.isControl ? "0.00" : t.distance?.toFixed(2) ?? "—"}</span>
                   </div>
+                  <div class="font-data text-data text-ink-muted" style="font-size:9px">{v.tool}</div>
                 </a>
               ))}
             </div>
@@ -70,7 +73,7 @@ const unmeasured = runs.length - measured.length;
       })}
       <p class="text-body text-ink-muted mt-lg max-w-prose" style="font-size:13px">
         Every distance above is measured from the same no-direction control within its case. Click any
-        rendering for the full screen and its field marks; click a case name for the side-by-side ladder.
+        rendering for the full screen and its field marks; click a case name for the cross-provider comparison.
       </p>
     </section>
 
@@ -99,9 +102,9 @@ const unmeasured = runs.length - measured.length;
                 <td class="py-2 pr-md font-data text-data text-ink">{r.name}</td>
                 <td class="py-2 pr-md text-ink-muted">{r.date || "—"}</td>
                 <td class="py-2 pr-md text-ink">{r.experiment === "tool-comparison" ? "the tool, same brief" : "the design direction, same tool"}</td>
-                <td class="py-2 pr-md text-ink-muted">{r.toolLabel}</td>
-                <td class="py-2 pr-md font-data text-data text-ink-muted text-right">{r.samples}</td>
-                <td class="py-2 text-ink-muted">{r.metricLabel}</td>
+                <td class="py-2 pr-md text-ink-muted">{r.tool} · {r.model}</td>
+                <td class="py-2 pr-md font-data text-data text-ink-muted text-right">{r.sampleCount}</td>
+                <td class="py-2 text-ink-muted">{r.metric}</td>
               </tr>
             ))}
           </tbody>

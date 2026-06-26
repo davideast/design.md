@@ -4,7 +4,8 @@
   "type": "module",
   "description": "Evaluation harness: does a grounded Method section produce more consistent, less generic, more constraint-respecting generations than tokens or adjectives alone?",
   "scripts": {
-    "dev": "cd app && bun run dev",
+    "bench": "bun src/bench.ts",
+    "dev": "bun src/bench.ts dev",
     "mcp": "bun src/mcp.ts",
     "generate": "bun src/generate.ts",
     "measure": "bun src/measure.ts",
@@ -15,15 +16,11 @@
   "dependencies": {
     "@google/design.md": "^0.2.0",
     "@google/stitch-sdk": "^0.3.5",
-    "@inbrowser/agent": "file:vendor/inbrowser-agent-0.2.0.tgz",
-    "@inbrowser/relay": "file:vendor/inbrowser-relay-0.2.1.tgz",
+    "@inbrowser/model": "0.2.0",
     "hono": "^4.12.25"
   },
   "devDependencies": {
     "bun-types": "^1.3.12",
     "typescript": "latest"
-  },
-  "overrides": {
-    "@inbrowser/resumable": "file:vendor/inbrowser-resumable-0.2.0.tgz"
   }
 }

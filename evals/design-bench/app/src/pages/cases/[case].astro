@@ -1,61 +1,131 @@
 ---
 import Base from "../../layouts/Base.astro";
 import TopRail from "../../components/TopRail.astro";
-import ProofThumb from "../../components/ProofThumb.astro";
-import { listCases, caseView } from "../../lib/runs";
+import { listCases, crossProviderView, CASE_TITLES } from "../../lib/data";
 
 export function getStaticPaths() {
   return listCases().map((c) => ({ params: { case: c.key } }));
 }
 const { case: caseKey } = Astro.params;
-const v = caseView(caseKey!)!;
+const v = crossProviderView(caseKey!)!;
+const allCases = listCases();
+const caseIdx = allCases.findIndex((c) => c.key === caseKey);
+const prevCase = caseIdx > 0 ? allCases[caseIdx - 1] : null;
+const nextCase = caseIdx < allCases.length - 1 ? allCases[caseIdx + 1] : null;
+const withResults = v.results.filter((r) => r.best);
+const withoutResults = v.results.filter((r) => !r.best);
 ---
-<Base title={`${v.title} — Design Bench`}>
+<Base title={`${v.caseTitle} — Cross-Provider — Design Bench`}>
   <TopRail active="Cases" />
-  <main class="max-w-6xl mx-auto px-lg py-xl">
-    <div class="font-label text-label uppercase text-ink-muted mb-sm">
-      <a href="/" class="hover:text-primary">All cases</a> · {v.title}
+
+  <main class="max-w-7xl mx-auto px-lg py-xl">
+    <!-- Breadcrumb -->
+    <div class="font-label text-label uppercase text-ink-muted mb-sm flex items-center gap-sm">
+      <a href="/" class="hover:text-primary">Home</a> ·
+      <span>Case comparison</span>
     </div>
-    <h1 class="text-display font-display tracking-tight">{v.title}</h1>
-    <p class="text-body text-ink-muted mt-xs max-w-prose">{v.world} Every rendering below was asked for exactly the same brief; only the design direction changed.</p>
 
-    <!-- The claim — real measured result -->
-    <p class="text-body mt-lg max-w-prose border-l-2 border-primary pl-md">{v.headline}</p>
+    <!-- Header -->
+    <h1 class="text-display font-display tracking-tight">{v.caseTitle}</h1>
+    <p class="text-body text-ink-muted mt-xs max-w-prose">{v.world}</p>
+    <p class="text-body text-ink-muted mt-sm max-w-prose" style="font-size:13px">
+      One brief, every tool. Each card shows that tool's strongest rendering for this case.
+      Click any card to see all arms for that provider.
+    </p>
 
-    <!-- Try it blind before reading the labels -->
-    <a href={`/cases/${v.key}/judge`} class="inline-flex items-baseline gap-sm mt-md font-label text-label uppercase text-primary hover:underline">
+    <!-- Blind judgment link -->
+    <a href={`/cases/${caseKey}/judge`} class="inline-flex items-baseline gap-sm mt-md font-label text-label uppercase text-primary hover:underline">
       Judge these blind first → <span class="text-ink-muted">pick the strongest, then see the measurement</span>
     </a>
 
-    <!-- The treatment spread: one tool, increasing direction -->
-    <div class="mt-xl flex items-center justify-between border-b border-line pb-xs">
-      <span class="font-label text-label uppercase text-ink">{v.tool}</span>
-      <span class="font-label text-label uppercase text-ink-muted">distance from the default look</span>
-    </div>
-
-    <div class="mt-md grid grid-cols-2 md:grid-cols-4 gap-md">
-      {v.treatments.map((t) => (
-        <a href={`/cases/${v.key}/${t.key}`} class={`block group ${t.key === "object" ? "ring-1 ring-primary" : ""}`}>
-          <ProofThumb src={t.samplePath} label={t.name} />
-          <div class="mt-sm flex items-baseline justify-between">
-            <span class="font-label text-label uppercase text-ink group-hover:text-primary">{t.name}</span>
-            <span class="font-data text-data text-ink bg-accent-wash px-1">{t.isControl ? "0.00" : t.distance?.toFixed(2) ?? "—"}</span>
-          </div>
-          <p class="text-body text-ink-muted mt-xs" style="font-size:13px;line-height:1.4">{t.blurb}</p>
-          <span class="font-label text-label uppercase text-ink-muted group-hover:text-primary">{t.samples} renderings →</span>
-        </a>
+    <!-- Case selector pills -->
+    <div class="flex flex-wrap gap-xs mt-lg">
+      {allCases.map((c) => (
+        <a href={`/cases/${c.key}`}
+          class:list={[
+            "px-2 py-1 rounded-sm font-label text-label uppercase transition-colors",
+            { "bg-primary text-paper": c.key === caseKey, "bg-paper text-ink-muted hover:text-primary border border-line": c.key !== caseKey },
+          ]}
+          style="font-size:10px">{c.title}</a>
       ))}
     </div>
 
-    <!-- How to read -->
-    <div class="mt-xl border-t border-line pt-md max-w-prose">
-      <div class="font-label text-label uppercase text-ink-muted mb-sm">How to read the numbers</div>
-      <p class="text-body" style="font-size:13.5px"><b>Distance</b> is how far a rendering moved from this tool's default look (what it produces with no direction). Higher means the direction pushed it farther from the lazy default. Every distance here is measured against the same <span class="font-data text-data">{v.tool}</span> control.</p>
-    </div>
+    <!-- Cross-provider comparison: best arm per provider -->
+    <section class="mt-xl">
+      <div class="flex items-baseline justify-between border-b border-line pb-xs mb-md">
+        <span class="font-label text-label uppercase text-ink">{withResults.length} tools with results</span>
+        <span class="font-label text-label uppercase text-ink-muted" style="font-size:10px">Best arm per tool · distance from default</span>
+      </div>
 
-    <!-- Certification -->
-    <div class="mt-lg border-t border-line pt-sm font-data text-data text-ink-muted">
-      tool {v.tool} · {v.measuredCount} renderings measured · definitions {v.evalHash} · metric: distance from default look
+      <div class="grid gap-lg" style={`grid-template-columns: repeat(auto-fill, minmax(240px, 1fr))`}>
+        {withResults.map((r) => (
+          <a href={`/r/${r.providerKey}/${caseKey}`} class="group block">
+            <!-- Provider label -->
+            <div class="flex items-baseline justify-between mb-sm">
+              <span class="font-label text-label uppercase text-ink group-hover:text-primary" style="font-size:11px">
+                {r.providerLabel}
+              </span>
+              {r.best && (
+                <span class="font-data text-data text-ink bg-accent-wash px-1" style="font-size:11px">
+                  {r.best.score?.toFixed(2) ?? "—"}
+                </span>
+              )}
+            </div>
+
+            <!-- Proof sheet -->
+            <div class="relative bg-paper p-2">
+              <div class="crop-mark-tl"></div><div class="crop-mark-tr"></div>
+              <div class="crop-mark-bl"></div><div class="crop-mark-br"></div>
+              <div class="relative overflow-hidden border border-line bg-neutral group-hover:border-primary db-frame" style="aspect-ratio:16/10">
+                {r.best?.render && (
+                  <iframe src={r.best.render} scrolling="no" tabindex="-1" loading="lazy"
+                    class="absolute top-0 left-0 origin-top-left border-0 pointer-events-none"
+                    style="width:1280px;height:800px"></iframe>
+                )}
+              </div>
+              <!-- Caption -->
+              <div class="flex items-baseline justify-between pt-2">
+                <span class="font-label text-ink-muted group-hover:text-primary" style="font-size:9px;text-transform:uppercase;letter-spacing:0.04em">
+                  {r.best?.name ?? "—"}
+                </span>
+                <span class="font-data text-ink-muted" style="font-size:8px;opacity:0.7">
+                  {r.allArms.length} arms →
+                </span>
+              </div>
+            </div>
+          </a>
+        ))}
+      </div>
+    </section>
+
+    <!-- Tools awaiting runs -->
+    {withoutResults.length > 0 && (
+      <section class="mt-xl">
+        <div class="font-label text-label uppercase text-ink-muted mb-sm" style="font-size:10px">
+          {withoutResults.length} tools awaiting runs
+        </div>
+        <div class="flex flex-wrap gap-sm">
+          {withoutResults.map((r) => (
+            <span class="font-label text-label uppercase text-ink-muted px-2 py-1 border border-line rounded-sm" style="font-size:10px;opacity:0.5">
+              {r.providerLabel}
+            </span>
+          ))}
+        </div>
+      </section>
+    )}
+
+    <!-- Navigation -->
+    <div class="mt-xl border-t border-line pt-md flex items-center justify-between">
+      {prevCase ? (
+        <a href={`/cases/${prevCase.key}`} class="font-label text-label uppercase text-primary hover:underline" style="font-size:11px">
+          ← {prevCase.title}
+        </a>
+      ) : <span />}
+      {nextCase ? (
+        <a href={`/cases/${nextCase.key}`} class="font-label text-label uppercase text-primary hover:underline" style="font-size:11px">
+          {nextCase.title} →
+        </a>
+      ) : <span />}
     </div>
   </main>
 </Base>

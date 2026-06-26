@@ -10,7 +10,31 @@ const { title = "Design Bench" } = Astro.props;
     <title>{title}</title>
   </head>
   <!-- The press table surround = DESIGN.md `neutral`. Proof sheets (paper) lie on it. -->
-  <body class="bg-neutral text-ink font-body min-h-screen">
+  <body class="bg-neutral text-ink font-body">
     <slot />
+
+    <!-- Shared: scale all .db-frame iframes to fit their container width -->
+    <script>
+      function rescaleIframes() {
+        document.querySelectorAll<HTMLElement>(".db-frame").forEach((container) => {
+          // Skip hidden elements (toggled off in /matrix)
+          if (container.closest("[data-hidden]") || container.offsetParent === null) return;
+          const iframe = container.querySelector<HTMLIFrameElement>("iframe");
+          if (!iframe) return;
+          const w = container.clientWidth;
+          if (w > 0) {
+            iframe.style.transform = `scale(${w / 1280})`;
+          }
+        });
+      }
+
+      // Run on load, resize, and after Astro page transitions
+      requestAnimationFrame(rescaleIframes);
+      window.addEventListener("resize", rescaleIframes);
+      document.addEventListener("astro:page-load", rescaleIframes);
+
+      // Expose for matrix page toggle script
+      (window as any).__rescaleIframes = rescaleIframes;
+    </script>
   </body>
 </html>

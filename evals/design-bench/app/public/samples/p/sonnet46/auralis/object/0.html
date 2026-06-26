@@ -1,0 +1,707 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AURALIS — Making digital experiences sound human</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --primary: #111111;
+    --secondary: #6B6B6B;
+    --tertiary: #9958ff;
+    --neutral: #F7F7F5;
+    --surface-elevated: #ffffff;
+    --outline-muted: #E5E5E3;
+    --font: 'Geist', system-ui, sans-serif;
+    --r-sm: 0.25rem;
+    --r-md: 0.75rem;
+    --r-lg: 1.5rem;
+    --r-full: 9999px;
+    --sp-sm: 8px;
+    --sp-md: 24px;
+    --sp-lg: 64px;
+    --sp-xl: 140px;
+  }
+
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: var(--font);
+    background: var(--neutral);
+    color: var(--primary);
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* ---- NAV: engraved faceplate feel ---- */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    height: 64px;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 0 var(--sp-md);
+    background: rgba(247,247,245,0.92);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--outline-muted);
+  }
+  /* AURALIS as serial plate — label-caps engraved */
+  .wordmark {
+    font-size: 12px; font-weight: 600; letter-spacing: 0.2em; line-height: 1;
+    text-transform: uppercase; color: var(--primary);
+  }
+  .nav-links {
+    display: flex; align-items: center; gap: 28px; list-style: none;
+  }
+  .nav-links a {
+    font-size: 12px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase;
+    color: var(--secondary); text-decoration: none; transition: color 0.15s;
+  }
+  .nav-links a:hover { color: var(--primary); }
+  /* Machined capsule button */
+  .nav-pill {
+    background: var(--primary); color: var(--surface-elevated);
+    font-size: 14px; font-weight: 500; letter-spacing: 0.01em; line-height: 1;
+    padding: 10px 22px; border-radius: var(--r-full); text-decoration: none;
+    border: none; cursor: pointer; transition: opacity 0.15s;
+  }
+  .nav-pill:hover { opacity: 0.82; }
+
+  /* ---- HERO: vast quiet wall ---- */
+  .hero {
+    min-height: 100vh; display: flex; flex-direction: column;
+    align-items: center; justify-content: center; text-align: center;
+    padding: var(--sp-xl) var(--sp-md);
+    padding-top: calc(var(--sp-xl) + 64px);
+  }
+  .hero h1 {
+    font-size: 72px; font-weight: 600; line-height: 0.95;
+    letter-spacing: -0.04em; color: var(--primary);
+    max-width: 840px; margin-bottom: 40px;
+  }
+  .hero-actions { display: flex; gap: var(--sp-sm); }
+  /* Machined capsule controls */
+  .pill-dark {
+    background: var(--primary); color: var(--surface-elevated);
+    font-size: 14px; font-weight: 500; letter-spacing: 0.01em; line-height: 1;
+    padding: 12px 28px; border-radius: var(--r-full); text-decoration: none;
+    border: none; cursor: pointer; transition: opacity 0.15s;
+  }
+  .pill-dark:hover { opacity: 0.82; }
+  .pill-outline {
+    background: transparent; color: var(--primary);
+    font-size: 14px; font-weight: 500; letter-spacing: 0.01em; line-height: 1;
+    padding: 11px 28px; border-radius: var(--r-full); text-decoration: none;
+    border: 1px solid var(--outline-muted); cursor: pointer; transition: border-color 0.15s;
+  }
+  .pill-outline:hover { border-color: var(--secondary); }
+
+  /* ---- DEMO PANEL: the display where color blooms ---- */
+  .demo-wrap {
+    padding: 0 var(--sp-md) var(--sp-lg);
+    max-width: 1200px; margin: 0 auto;
+  }
+  /* Instrument chassis — sits flush, one soft shadow */
+  .demo-chassis {
+    background: var(--surface-elevated);
+    border: 1px solid var(--outline-muted);
+    border-radius: var(--r-lg);
+    overflow: hidden;
+    box-shadow: 0 8px 40px rgba(17,17,17,0.04);
+  }
+  .demo-tabs {
+    display: flex; border-bottom: 1px solid var(--outline-muted);
+    background: var(--neutral);
+  }
+  .dtab {
+    padding: 14px var(--sp-md); font-size: 12px; font-weight: 600;
+    letter-spacing: 0.08em; text-transform: uppercase; color: var(--secondary);
+    cursor: pointer; border-right: 1px solid var(--outline-muted);
+    border-bottom: 2px solid transparent; margin-bottom: -1px; transition: color 0.15s;
+  }
+  .dtab.active { color: var(--primary); border-bottom-color: var(--primary); }
+  .demo-status-bar {
+    margin-left: auto; display: flex; align-items: center; gap: var(--sp-sm);
+    padding: 0 var(--sp-md); font-size: 12px; font-weight: 600;
+    letter-spacing: 0.08em; text-transform: uppercase; color: var(--secondary);
+  }
+  .live-engraved {
+    width: 6px; height: 6px; border-radius: 50%; background: #16a34a;
+    animation: blink 2s infinite;
+  }
+  @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0.3} }
+
+  /* The display — vivid spectral color, pigment in water */
+  .demo-display {
+    height: 360px; position: relative;
+    display: flex; align-items: center; justify-content: center;
+    background: var(--neutral); overflow: hidden;
+  }
+  .spectral-1 {
+    position: absolute; width: 520px; height: 440px; border-radius: 50%;
+    background: radial-gradient(ellipse at 45% 50%, rgba(153,88,255,0.55) 0%, rgba(147,51,234,0.4) 25%, transparent 65%);
+    filter: blur(52px); top: 50%; left: 44%; transform: translate(-50%,-50%);
+  }
+  .spectral-2 {
+    position: absolute; width: 400px; height: 360px; border-radius: 50%;
+    background: radial-gradient(ellipse at 55% 45%, rgba(56,189,248,0.45) 0%, rgba(6,182,212,0.35) 35%, transparent 70%);
+    filter: blur(58px); top: 55%; left: 62%; transform: translate(-50%,-50%);
+  }
+  .spectral-3 {
+    position: absolute; width: 340px; height: 280px; border-radius: 50%;
+    background: radial-gradient(ellipse at 50% 60%, rgba(244,114,182,0.4) 0%, transparent 65%);
+    filter: blur(44px); top: 72%; left: 35%; transform: translate(-50%,-50%);
+  }
+  .spectral-4 {
+    position: absolute; width: 280px; height: 240px; border-radius: 50%;
+    background: radial-gradient(ellipse at 50% 40%, rgba(217,70,239,0.38) 0%, transparent 65%);
+    filter: blur(40px); top: 32%; left: 68%; transform: translate(-50%,-50%);
+  }
+  /* Single white capsule at center — talkback switch */
+  .talkback {
+    position: relative; z-index: 2;
+    width: 64px; height: 64px; border-radius: 50%;
+    background: rgba(255,255,255,0.88); backdrop-filter: blur(8px);
+    border: 1px solid rgba(255,255,255,0.6);
+    display: flex; align-items: center; justify-content: center;
+    cursor: pointer; box-shadow: 0 2px 16px rgba(17,17,17,0.1);
+    transition: background 0.15s;
+  }
+  .talkback:hover { background: rgba(255,255,255,0.96); }
+  .play-icon {
+    width: 0; height: 0; border-style: solid;
+    border-width: 10px 0 10px 18px;
+    border-color: transparent transparent transparent var(--primary);
+    margin-left: 3px;
+  }
+
+  .demo-modebar {
+    display: flex; align-items: center;
+    border-top: 1px solid var(--outline-muted); background: var(--neutral);
+  }
+  .mode-label {
+    padding: 12px var(--sp-md); font-size: 12px; font-weight: 600;
+    letter-spacing: 0.08em; text-transform: uppercase; color: var(--secondary);
+    border-right: 1px solid var(--outline-muted); white-space: nowrap;
+    text-decoration: none; transition: color 0.15s;
+  }
+  .mode-label.active { color: var(--primary); }
+  .mode-label:hover { color: var(--primary); }
+  .mode-cta {
+    margin-left: auto; margin-right: var(--sp-md);
+    background: var(--primary); color: var(--surface-elevated);
+    font-size: 14px; font-weight: 500; letter-spacing: 0.01em; line-height: 1;
+    padding: 8px 18px; border-radius: var(--r-full); border: none; cursor: pointer;
+  }
+
+  /* ---- TRUST: calibration scale typography ---- */
+  .trust-strip {
+    border-top: 1px solid var(--outline-muted);
+    border-bottom: 1px solid var(--outline-muted);
+    padding: var(--sp-lg) var(--sp-md); text-align: center;
+  }
+  .trust-heading {
+    font-size: 12px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase;
+    color: var(--secondary); margin-bottom: var(--sp-md);
+  }
+  .trust-logos { display: flex; align-items: center; justify-content: center; gap: 48px; flex-wrap: wrap; }
+  .trust-name {
+    font-size: 12px; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase;
+    color: var(--outline-muted); transition: color 0.2s;
+  }
+  .trust-name:hover { color: var(--secondary); }
+
+  /* ---- PLATFORM: front chassis, then service panel (dark) ---- */
+  .platform-section { padding: var(--sp-xl) var(--sp-md); max-width: 1200px; margin: 0 auto; }
+  .platform-header { text-align: center; margin-bottom: var(--sp-lg); }
+  .platform-header h2 {
+    font-size: 42px; font-weight: 600; line-height: 1.1; letter-spacing: -0.02em;
+    max-width: 600px; margin: 0 auto var(--sp-md);
+  }
+  .platform-header p { font-size: 16px; color: var(--secondary); max-width: 440px; margin: 0 auto; }
+  .platform-blurbs {
+    display: grid; grid-template-columns: 1fr 1fr; gap: var(--sp-md);
+    max-width: 660px; margin: 0 auto var(--sp-lg);
+  }
+  /* Modules seated flush — no shadow, hairline seam */
+  .module {
+    background: var(--surface-elevated); border: 1px solid var(--outline-muted);
+    border-radius: var(--r-lg); padding: var(--sp-md);
+  }
+  .module-stamp {
+    font-size: 12px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase;
+    color: var(--secondary); margin-bottom: var(--sp-sm);
+  }
+  .module h3 { font-size: 14px; font-weight: 600; margin-bottom: var(--sp-sm); }
+  .module p { font-size: 14px; color: var(--secondary); line-height: 1.5; }
+
+  /* Service panel — near-black, lit by its own readouts */
+  .service-panel {
+    background: var(--primary); border-radius: var(--r-lg); overflow: hidden;
+  }
+  .sp-head {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 12px var(--sp-md); border-bottom: 1px solid rgba(255,255,255,0.07);
+  }
+  .sp-serial {
+    font-size: 12px; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase;
+    color: rgba(255,255,255,0.3);
+  }
+  .sp-badges { display: flex; gap: var(--sp-sm); }
+  .sp-badge {
+    font-size: 10px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase;
+    padding: 4px 10px; border-radius: var(--r-full); border: 1px solid;
+  }
+  .sp-badge-mode { color: #c084fc; border-color: rgba(192,132,252,0.35); }
+  .sp-badge-live {
+    color: #4ade80; border-color: rgba(74,222,128,0.35);
+    display: flex; align-items: center; gap: 4px;
+  }
+  .sp-live-dot { width: 5px; height: 5px; border-radius: 50%; background: #4ade80; animation: blink 2s infinite; }
+  .sp-meters {
+    display: grid; grid-template-columns: repeat(3,1fr);
+    border-bottom: 1px solid rgba(255,255,255,0.06);
+  }
+  .sp-meter { padding: var(--sp-md); border-right: 1px solid rgba(255,255,255,0.06); }
+  .sp-meter:last-child { border-right: none; }
+  .sp-meter-label {
+    font-size: 10px; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase;
+    color: rgba(255,255,255,0.28); margin-bottom: var(--sp-sm);
+  }
+  .sp-meter-val {
+    font-size: 30px; font-weight: 600; letter-spacing: -0.04em; line-height: 0.95;
+    color: rgba(255,255,255,0.9);
+  }
+  .sp-unit { font-size: 13px; color: rgba(255,255,255,0.3); font-weight: 400; }
+  .sp-ok { color: #4ade80; font-size: 22px; }
+  .sp-waveform {
+    height: 108px; padding: var(--sp-md); display: flex; align-items: center; gap: 2px;
+  }
+  .sp-bar { flex: 1; border-radius: 2px; background: var(--tertiary); opacity: 0.5; min-height: 4px; }
+  .sp-transport {
+    display: flex; align-items: center; justify-content: center; gap: 12px;
+    padding: 12px var(--sp-md); border-top: 1px solid rgba(255,255,255,0.06);
+  }
+  .sp-ctrl {
+    width: 28px; height: 28px; border-radius: 50%;
+    background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.08);
+    display: flex; align-items: center; justify-content: center;
+    color: rgba(255,255,255,0.3); font-size: 10px; cursor: pointer;
+  }
+  .sp-play {
+    width: 36px; height: 36px; border-radius: 50%;
+    background: var(--tertiary); border: none; cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .sp-play-icon {
+    width: 0; height: 0; border-style: solid;
+    border-width: 6px 0 6px 11px;
+    border-color: transparent transparent transparent #fff; margin-left: 2px;
+  }
+  .sp-time { font-size: 11px; color: rgba(255,255,255,0.22); letter-spacing: 0.05em; margin-left: 8px; }
+
+  /* ---- STUDIO ---- */
+  .studio-section {
+    border-top: 1px solid var(--outline-muted); padding: var(--sp-xl) var(--sp-md);
+  }
+  .studio-inner { max-width: 1200px; margin: 0 auto; }
+  .stamp {
+    font-size: 12px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase;
+    color: var(--secondary); margin-bottom: var(--sp-sm);
+  }
+  .eng-h2 {
+    font-size: 42px; font-weight: 600; letter-spacing: -0.02em; line-height: 1.1;
+    max-width: 500px; margin-bottom: var(--sp-sm);
+  }
+  .eng-body { font-size: 16px; color: var(--secondary); max-width: 400px; margin-bottom: var(--sp-lg); }
+  .studio-cards { display: grid; grid-template-columns: 1fr 1fr; gap: var(--sp-md); margin-bottom: var(--sp-md); }
+  .s-mod {
+    background: var(--surface-elevated); border: 1px solid var(--outline-muted);
+    border-radius: var(--r-lg); overflow: hidden;
+  }
+  .s-mod-img {
+    height: 210px; background: linear-gradient(140deg, #f4f2ff 0%, #ebf4ff 100%);
+    display: flex; align-items: center; justify-content: center;
+  }
+  .ed-mock {
+    width: 78%; height: 72%; border-radius: var(--r-md);
+    background: var(--surface-elevated); border: 1px solid var(--outline-muted);
+    overflow: hidden;
+  }
+  .ed-bar {
+    height: 26px; background: var(--neutral); border-bottom: 1px solid var(--outline-muted);
+    display: flex; align-items: center; padding: 0 10px; gap: 5px;
+  }
+  .ed-dot { width: 8px; height: 8px; border-radius: 50%; }
+  .ed-tracks { padding: 10px; display: flex; flex-direction: column; gap: 5px; }
+  .ed-track {
+    height: 18px; border-radius: var(--r-sm);
+    background: rgba(153,88,255,0.1); border: 1px solid rgba(153,88,255,0.15);
+    position: relative; overflow: hidden;
+  }
+  .ed-fill { position: absolute; left:0; top:0; bottom:0; background: rgba(153,88,255,0.35); }
+  .s-mod-stamp {
+    padding: var(--sp-sm) var(--sp-md); font-size: 12px; font-weight: 600;
+    letter-spacing: 0.08em; text-transform: uppercase; color: var(--secondary);
+  }
+  .s-mod-body { padding: var(--sp-md); }
+  .s-mod-body h3 { font-size: 16px; font-weight: 600; margin-bottom: var(--sp-sm); }
+  .s-mod-body p { font-size: 14px; color: var(--secondary); line-height: 1.5; }
+  .mode-capsules { display: flex; gap: var(--sp-sm); flex-wrap: wrap; }
+  .mcap {
+    padding: 9px 20px; border-radius: var(--r-full);
+    border: 1px solid var(--outline-muted); background: var(--surface-elevated);
+    font-size: 14px; font-weight: 500; letter-spacing: 0.01em; color: var(--secondary);
+    cursor: pointer; transition: all 0.15s;
+  }
+  .mcap:hover { border-color: var(--primary); color: var(--primary); }
+
+  /* ---- AGENTS ---- */
+  .agents-section {
+    border-top: 1px solid var(--outline-muted); padding: var(--sp-xl) var(--sp-md);
+  }
+  .agents-inner { max-width: 1200px; margin: 0 auto; }
+  .agents-grid { display: grid; grid-template-columns: 1.1fr 0.9fr; gap: var(--sp-md); margin-top: var(--sp-lg); }
+  .chat-mod {
+    background: var(--surface-elevated); border: 1px solid var(--outline-muted);
+    border-radius: var(--r-lg); overflow: hidden;
+  }
+  .chat-hdr {
+    padding: 14px var(--sp-md); border-bottom: 1px solid var(--outline-muted);
+    display: flex; align-items: center; justify-content: space-between;
+  }
+  .chat-nm { font-size: 14px; font-weight: 600; }
+  .chat-st {
+    font-size: 10px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase;
+    color: #16a34a; display: flex; align-items: center; gap: 4px;
+  }
+  .ch-dot { width: 5px; height: 5px; border-radius: 50%; background: #16a34a; }
+  .chat-body { padding: var(--sp-md); display: flex; flex-direction: column; gap: 12px; }
+  .msg-in { display: flex; align-items: flex-start; gap: var(--sp-sm); }
+  .msg-ava {
+    width: 28px; height: 28px; border-radius: 50%;
+    background: rgba(153,88,255,0.1); border: 1px solid rgba(153,88,255,0.2);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 11px; font-weight: 600; color: var(--tertiary); flex-shrink: 0;
+  }
+  .bub-in {
+    background: var(--neutral); border: 1px solid var(--outline-muted);
+    border-radius: var(--r-sm) var(--r-md) var(--r-md) var(--r-md);
+    padding: 10px 14px; font-size: 14px; max-width: 82%;
+  }
+  .msg-out { display: flex; justify-content: flex-end; }
+  .bub-out {
+    background: var(--primary); color: var(--surface-elevated);
+    border-radius: var(--r-md) var(--r-md) var(--r-sm) var(--r-md);
+    padding: 10px 14px; font-size: 14px; max-width: 82%;
+  }
+  .typ-row { display: flex; align-items: flex-start; gap: var(--sp-sm); }
+  .typ-bub {
+    background: var(--neutral); border: 1px solid var(--outline-muted);
+    border-radius: var(--r-sm) var(--r-md) var(--r-md) var(--r-md);
+    padding: 12px 16px; display: flex; gap: 4px; align-items: center;
+  }
+  .td { width: 6px; height: 6px; border-radius: 50%; background: var(--secondary); animation: tdot 1.2s infinite ease-in-out; }
+  .td:nth-child(2) { animation-delay: 0.15s; }
+  .td:nth-child(3) { animation-delay: 0.3s; }
+  @keyframes tdot { 0%,60%,100%{transform:translateY(0)} 30%{transform:translateY(-5px)} }
+  .insights-mod {
+    background: var(--surface-elevated); border: 1px solid var(--outline-muted);
+    border-radius: var(--r-lg); padding: var(--sp-md);
+  }
+  .ins-stamp {
+    font-size: 12px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase;
+    color: var(--tertiary); margin-bottom: var(--sp-sm);
+  }
+  .insights-mod h3 { font-size: 20px; font-weight: 600; letter-spacing: -0.02em; margin-bottom: var(--sp-sm); }
+  .insights-mod p { font-size: 14px; color: var(--secondary); line-height: 1.5; margin-bottom: var(--sp-md); }
+  .stat-list { display: flex; flex-direction: column; gap: var(--sp-sm); }
+  .stat-row { display: flex; align-items: center; gap: var(--sp-sm); }
+  .slbl { font-size: 12px; color: var(--secondary); width: 110px; flex-shrink: 0; }
+  .stk { flex: 1; height: 3px; background: var(--outline-muted); border-radius: 2px; }
+  .sfil { height: 3px; border-radius: 2px; background: var(--tertiary); }
+  .svl { font-size: 12px; font-weight: 600; width: 30px; text-align: right; }
+
+  /* ---- CTA ---- */
+  .cta-section {
+    border-top: 1px solid var(--outline-muted); padding: var(--sp-xl) var(--sp-md);
+    text-align: center;
+  }
+  .cta-section h2 {
+    font-size: 42px; font-weight: 600; letter-spacing: -0.02em; line-height: 1.1;
+    margin-bottom: 40px;
+  }
+  .cta-row { display: flex; gap: var(--sp-sm); justify-content: center; }
+
+  /* ---- FOOTER ---- */
+  footer {
+    border-top: 1px solid var(--outline-muted); padding: var(--sp-md);
+    display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: var(--sp-md);
+  }
+  .f-left { display: flex; flex-direction: column; gap: var(--sp-sm); }
+  .f-plate {
+    font-size: 12px; font-weight: 600; letter-spacing: 0.2em;
+    text-transform: uppercase; color: var(--primary);
+  }
+  .f-copy { font-size: 12px; color: var(--secondary); }
+  .f-links { display: flex; gap: var(--sp-md); }
+  .f-links a { font-size: 14px; color: var(--secondary); text-decoration: none; transition: color 0.15s; }
+  .f-links a:hover { color: var(--primary); }
+</style>
+</head>
+<body>
+
+<!-- NAV — engraved faceplate -->
+<nav>
+  <div class="wordmark">AURALIS</div>
+  <ul class="nav-links">
+    <li><a href="#">Studio</a></li>
+    <li><a href="#">Agents</a></li>
+    <li><a href="#">API</a></li>
+    <li><a href="#">Resources</a></li>
+    <li><a href="#">Enterprise</a></li>
+    <li><a href="#">Pricing</a></li>
+  </ul>
+  <a href="#" class="nav-pill">Sign up</a>
+</nav>
+
+<!-- HERO — vast quiet wall -->
+<section class="hero">
+  <h1>Making digital experiences sound human</h1>
+  <div class="hero-actions">
+    <a href="#" class="pill-dark">Sign up</a>
+    <a href="#" class="pill-outline">Contact sales</a>
+  </div>
+</section>
+
+<!-- DEMO PANEL — the display where color blooms -->
+<div class="demo-wrap">
+  <div class="demo-chassis">
+    <div class="demo-tabs">
+      <div class="dtab active">Auralis Studio</div>
+      <div class="dtab">Auralis Agents</div>
+      <div class="dtab">Auralis API</div>
+      <div class="demo-status-bar">
+        <div class="live-engraved"></div>
+        AI Voice Generator
+      </div>
+    </div>
+    <div class="demo-display">
+      <div class="spectral-1"></div>
+      <div class="spectral-2"></div>
+      <div class="spectral-3"></div>
+      <div class="spectral-4"></div>
+      <div class="talkback">
+        <div class="play-icon"></div>
+      </div>
+    </div>
+    <div class="demo-modebar">
+      <a href="#" class="mode-label active">AI Voice Generator</a>
+      <a href="#" class="mode-label">Text to Speech</a>
+      <a href="#" class="mode-label">Music</a>
+      <a href="#" class="mode-label">Sound Effects</a>
+      <a href="#" class="mode-label">Voice Cloning</a>
+      <button class="mode-cta">Sign up</button>
+    </div>
+  </div>
+</div>
+
+<!-- TRUST STRIP -->
+<div class="trust-strip">
+  <p class="trust-heading">Trusted by teams building modern audio experiences</p>
+  <div class="trust-logos">
+    <span class="trust-name">Velocity</span>
+    <span class="trust-name">Nexus</span>
+    <span class="trust-name">Lumina</span>
+    <span class="trust-name">Stack</span>
+    <span class="trust-name">Quanta</span>
+    <span class="trust-name">Orbital</span>
+    <span class="trust-name">Scalar</span>
+  </div>
+</div>
+
+<!-- PLATFORM OVERVIEW -->
+<section class="platform-section">
+  <div class="platform-header">
+    <h2>Two systems, one shared intelligence layer</h2>
+    <p>Studio and Agents share a unified synthesis core — one neural engine powering every voice output across the entire platform.</p>
+  </div>
+  <div class="platform-blurbs">
+    <div class="module">
+      <div class="module-stamp">Function I</div>
+      <h3>Precision Generation</h3>
+      <p>Sub-20ms latency synthesis with full prosodic control. Every phoneme shaped with surgical accuracy.</p>
+    </div>
+    <div class="module">
+      <div class="module-stamp">Function II</div>
+      <h3>Agentic Architecture</h3>
+      <p>Autonomous voice agents that reason, adapt, and respond in real time, integrated with your existing systems.</p>
+    </div>
+  </div>
+  <!-- Service panel: the near-black module, lit by its own readouts -->
+  <div class="service-panel">
+    <div class="sp-head">
+      <span class="sp-serial">NEURAL ENGINE V4.2 PRO</span>
+      <div class="sp-badges">
+        <span class="sp-badge sp-badge-mode">STUDIO MODE</span>
+        <span class="sp-badge sp-badge-live"><span class="sp-live-dot"></span>Real-time Synthesis Active</span>
+      </div>
+    </div>
+    <div class="sp-meters">
+      <div class="sp-meter">
+        <div class="sp-meter-label">LATENCY</div>
+        <div class="sp-meter-val">12 <span class="sp-unit">ms</span></div>
+      </div>
+      <div class="sp-meter">
+        <div class="sp-meter-label">CONFIDENCE</div>
+        <div class="sp-meter-val">99.8 <span class="sp-unit">%</span></div>
+      </div>
+      <div class="sp-meter">
+        <div class="sp-meter-label">STATUS</div>
+        <div class="sp-meter-val sp-ok">Operational</div>
+      </div>
+    </div>
+    <div class="sp-waveform">
+      <div class="sp-bar" style="height:22%"></div><div class="sp-bar" style="height:64%"></div>
+      <div class="sp-bar" style="height:36%"></div><div class="sp-bar" style="height:82%"></div>
+      <div class="sp-bar" style="height:52%"></div><div class="sp-bar" style="height:96%"></div>
+      <div class="sp-bar" style="height:28%"></div><div class="sp-bar" style="height:70%"></div>
+      <div class="sp-bar" style="height:44%"></div><div class="sp-bar" style="height:88%"></div>
+      <div class="sp-bar" style="height:20%"></div><div class="sp-bar" style="height:60%"></div>
+      <div class="sp-bar" style="height:48%"></div><div class="sp-bar" style="height:100%"></div>
+      <div class="sp-bar" style="height:24%"></div><div class="sp-bar" style="height:74%"></div>
+      <div class="sp-bar" style="height:40%"></div><div class="sp-bar" style="height:84%"></div>
+      <div class="sp-bar" style="height:16%"></div><div class="sp-bar" style="height:58%"></div>
+      <div class="sp-bar" style="height:44%"></div><div class="sp-bar" style="height:76%"></div>
+    </div>
+    <div class="sp-transport">
+      <div class="sp-ctrl">⏮</div><div class="sp-ctrl">⏪</div>
+      <div class="sp-play"><div class="sp-play-icon"></div></div>
+      <div class="sp-ctrl">⏩</div><div class="sp-ctrl">⏭</div>
+      <span class="sp-time">00:00:24 / 00:01:48</span>
+    </div>
+  </div>
+</section>
+
+<!-- STUDIO SECTION -->
+<div class="studio-section">
+  <div class="studio-inner">
+    <div class="stamp">AURALIS STUDIO</div>
+    <h2 class="eng-h2">Sculpt sound with absolute precision.</h2>
+    <p class="eng-body">A professional-grade audio creation suite built for teams who demand control at every layer of their voice output.</p>
+    <div class="studio-cards">
+      <div class="s-mod">
+        <div class="s-mod-img">
+          <div class="ed-mock">
+            <div class="ed-bar">
+              <div class="ed-dot" style="background:#ff5f57"></div>
+              <div class="ed-dot" style="background:#febc2e"></div>
+              <div class="ed-dot" style="background:#28c840"></div>
+            </div>
+            <div class="ed-tracks">
+              <div class="ed-track"><div class="ed-fill" style="width:68%"></div></div>
+              <div class="ed-track" style="opacity:0.6"><div class="ed-fill" style="width:42%"></div></div>
+              <div class="ed-track" style="opacity:0.38"><div class="ed-fill" style="width:85%"></div></div>
+            </div>
+          </div>
+        </div>
+        <div class="s-mod-stamp">Soft Editor UI</div>
+      </div>
+      <div class="s-mod">
+        <div class="s-mod-body" style="padding-top:32px">
+          <div class="stamp" style="margin-bottom:8px">Transcript Panel</div>
+          <h3>Transcript Panel</h3>
+          <p>Real-time synchronized transcripts with phoneme-level editing. Adjust timing, emphasis, and pronunciation directly from the transcript view — every word tied to its exact audio frame.</p>
+        </div>
+      </div>
+    </div>
+    <div class="mode-capsules">
+      <button class="mcap">Music</button>
+      <button class="mcap">SFX</button>
+      <button class="mcap">Voices</button>
+      <button class="mcap">Image &amp; Video</button>
+    </div>
+  </div>
+</div>
+
+<!-- AGENTS SECTION -->
+<div class="agents-section">
+  <div class="agents-inner">
+    <div class="stamp">AURALIS AGENTS</div>
+    <h2 class="eng-h2">Autonomous reasoning, human delivery.</h2>
+    <p class="eng-body">Deploy intelligent voice agents that understand context, handle complexity, and respond with nuance.</p>
+    <div class="agents-grid">
+      <div class="chat-mod">
+        <div class="chat-hdr">
+          <span class="chat-nm">Nexus Support Agent</span>
+          <span class="chat-st"><div class="ch-dot"></div>ONLINE • LATENCY: 12ms</span>
+        </div>
+        <div class="chat-body">
+          <div class="msg-in">
+            <div class="msg-ava">N</div>
+            <div class="bub-in">Hello! How can I assist you today?</div>
+          </div>
+          <div class="msg-out">
+            <div class="bub-out">I need help checking my deployment status.</div>
+          </div>
+          <div class="typ-row">
+            <div class="msg-ava">N</div>
+            <div class="typ-bub">
+              <div class="td"></div><div class="td"></div><div class="td"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="insights-mod">
+        <div class="ins-stamp">Analytics</div>
+        <h3>Deep Insights</h3>
+        <p>Surface the patterns hidden in every voice interaction. Understand sentiment, intent, resolution rates, and conversation quality at scale.</p>
+        <div class="stat-list">
+          <div class="stat-row">
+            <span class="slbl">Resolution Rate</span>
+            <div class="stk"><div class="sfil" style="width:94%"></div></div>
+            <span class="svl">94%</span>
+          </div>
+          <div class="stat-row">
+            <span class="slbl">Avg Sentiment</span>
+            <div class="stk"><div class="sfil" style="width:87%"></div></div>
+            <span class="svl">87%</span>
+          </div>
+          <div class="stat-row">
+            <span class="slbl">Intent Accuracy</span>
+            <div class="stk"><div class="sfil" style="width:99%"></div></div>
+            <span class="svl">99%</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- CTA -->
+<section class="cta-section">
+  <h2>The future of voice starts here</h2>
+  <div class="cta-row">
+    <a href="#" class="pill-dark" style="font-size:15px;padding:14px 32px">Get started</a>
+    <a href="#" class="pill-outline" style="font-size:15px;padding:13px 32px">Talk to sales</a>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="f-left">
+    <div class="f-plate">AURALIS</div>
+    <div class="f-copy">© 2024 Auralis AI. Engineered for precision.</div>
+  </div>
+  <div class="f-links">
+    <a href="#">Twitter</a>
+    <a href="#">GitHub</a>
+    <a href="#">Terms</a>
+    <a href="#">Privacy</a>
+  </div>
+</footer>
+
+</body>
+</html>

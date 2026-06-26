@@ -9,7 +9,7 @@
  * the DESIGN.md preamble) on purpose: every raw-model column must receive the
  * identical framing, or a tool comparison measures the wrapper, not the tool.
  */
-import { openrouterProvider, type NormalizedRequest, type InferenceEvent } from "@inbrowser/relay";
+import { openrouterModelClient, type ModelRequest, type ModelEvent } from "@inbrowser/model";
 import { GENERATION_INSTRUCTION, DIRECTION_PREAMBLE, extractHtml } from "./gemini.ts";
 import type { GenerationTool, GenerationSession, GenerateRequest, Rendering, Logger, DirectionChannel } from "./types.ts";
 
@@ -46,21 +46,19 @@ class OpenRouterSession implements GenerationSession {
   async generate(log: Logger): Promise<Rendering> {
     const controller = new AbortController();
     const timer = setTimeout(() => controller.abort(), GENERATION_TIMEOUT_MS);
-    const req: NormalizedRequest = {
-      provider: "openrouter",
-      model: this.model,
+    const client = openrouterModelClient({ apiKey: this.apiKey, model: this.model });
+    const req: ModelRequest = {
       messages: [{ role: "user", text: this.prompt }],
       tools: [],
-      apiKey: this.apiKey,
+      toolUseEnabled: false,
       temperature: this.temperature,
-      signal: controller.signal,
     };
     let text = "";
-    let usage: InferenceEvent | undefined;
+    let usage: ModelEvent | undefined;
     let error: string | undefined;
     try {
-      for await (const ev of openrouterProvider(req)) {
-        if (ev.kind === "text") text += ev.chunk;
+      for await (const ev of client.chat(req, controller.signal)) {
+        if (ev.kind === "text") text += ev.text;
         else if (ev.kind === "usage") usage = ev;
         else if (ev.kind === "error") error = ev.message;
       }

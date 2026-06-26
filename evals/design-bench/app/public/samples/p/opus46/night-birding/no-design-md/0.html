@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Urban Nocturnal: Field Notes</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,400;0,500;0,700&family=DM+Serif+Display&display=swap" rel="stylesheet">
+<style>
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background-color: #0d1117;
+    color: #c9d1d9;
+    max-width: 390px;
+    margin: 0 auto;
+    padding: 20px 16px;
+    line-height: 1.6;
+  }
+  h1 {
+    font-family: 'DM Serif Display', serif;
+    font-size: 28px;
+    color: #e6edf3;
+    margin-bottom: 4px;
+    line-height: 1.2;
+  }
+  .subtitle {
+    font-size: 13px;
+    color: #7d8590;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    margin-bottom: 28px;
+  }
+  h2 {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 12px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    color: #7d8590;
+    margin-bottom: 12px;
+    padding-bottom: 6px;
+    border-bottom: 1px solid #21262d;
+  }
+  h3 {
+    font-family: 'DM Serif Display', serif;
+    font-size: 20px;
+    color: #e6edf3;
+    margin-bottom: 8px;
+  }
+  section {
+    margin-bottom: 28px;
+  }
+  .moon-card {
+    background: #161b22;
+    border: 1px solid #21262d;
+    border-radius: 12px;
+    padding: 16px;
+    margin-bottom: 28px;
+  }
+  .moon-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 14px;
+  }
+  .moon-icon {
+    width: 48px;
+    height: 48px;
+    background: linear-gradient(135deg, #0d1117 40%, #e6edf3 40%);
+    border-radius: 50%;
+    flex-shrink: 0;
+    position: relative;
+    overflow: hidden;
+  }
+  .moon-icon::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 8px;
+    width: 48px;
+    height: 48px;
+    background: #0d1117;
+    border-radius: 50%;
+  }
+  .moon-status {
+    font-size: 18px;
+    font-weight: 700;
+    color: #e6edf3;
+  }
+  .moon-illumination {
+    font-size: 13px;
+    color: #f0c75e;
+  }
+  .moon-details {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+  }
+  .moon-detail {
+    background: #0d1117;
+    border-radius: 8px;
+    padding: 10px 12px;
+  }
+  .moon-detail-label {
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: #7d8590;
+    margin-bottom: 2px;
+  }
+  .moon-detail-value {
+    font-size: 15px;
+    font-weight: 700;
+    color: #e6edf3;
+  }
+  .species-card {
+    background: #161b22;
+    border: 1px solid #21262d;
+    border-radius: 12px;
+    padding: 16px;
+    margin-bottom: 12px;
+  }
+  .field-mark {
+    margin-bottom: 6px;
+    font-size: 14px;
+  }
+  .field-mark strong {
+    color: #e6edf3;
+    font-weight: 500;
+  }
+  .sighting-card {
+    background: #161b22;
+    border-left: 3px solid #58a6ff;
+    border-radius: 0 12px 12px 0;
+    padding: 16px;
+    margin-bottom: 12px;
+  }
+  .sighting-time {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 24px;
+    font-weight: 700;
+    color: #58a6ff;
+    margin-bottom: 4px;
+  }
+  .sighting-location {
+    font-size: 13px;
+    color: #7d8590;
+    margin-bottom: 10px;
+  }
+  .sighting-species {
+    font-size: 16px;
+    font-weight: 700;
+    color: #e6edf3;
+    margin-bottom: 4px;
+  }
+  .sighting-behavior {
+    font-size: 14px;
+    color: #c9d1d9;
+    line-height: 1.5;
+  }
+  .listening-step {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 16px;
+    align-items: flex-start;
+  }
+  .step-number {
+    width: 28px;
+    height: 28px;
+    background: #58a6ff;
+    color: #0d1117;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 13px;
+    flex-shrink: 0;
+    margin-top: 2px;
+  }
+  .step-content {
+    flex: 1;
+  }
+  .step-title {
+    font-weight: 700;
+    color: #e6edf3;
+    font-size: 14px;
+    margin-bottom: 2px;
+  }
+  .step-description {
+    font-size: 14px;
+    color: #c9d1d9;
+    line-height: 1.5;
+  }
+  .intro-text {
+    font-size: 14px;
+    color: #c9d1d9;
+    margin-bottom: 16px;
+    line-height: 1.6;
+  }
+</style>
+</head>
+<body>
+
+<h1>Urban Nocturnal</h1>
+<div class="subtitle">Field Notes</div>
+
+<section>
+  <h2>Moon &amp; Light Conditions</h2>
+  <div class="moon-card">
+    <div class="moon-header">
+      <div class="moon-icon"></div>
+      <div>
+        <div class="moon-status">Waxing Gibbous</div>
+        <div class="moon-illumination">82% Illumination</div>
+      </div>
+    </div>
+    <div class="moon-details">
+      <div class="moon-detail">
+        <div class="moon-detail-label">Moonrise</div>
+        <div class="moon-detail-value">17:42</div>
+      </div>
+      <div class="moon-detail">
+        <div class="moon-detail-label">Sky Quality</div>
+        <div class="moon-detail-value">Bortle 8</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <h2>Tonight's Likely Species</h2>
+  <div class="species-card">
+    <h3>Black-crowned Night Heron</h3>
+    <div class="field-mark"><strong>Field Marks:</strong> Stocky build, black crown and back, contrasting grey wings.</div>
+    <div class="field-mark"><strong>In Flight:</strong> Thick neck tucked, feet barely extending beyond tail.</div>
+    <div class="field-mark"><strong>Context:</strong> Often found near waterfront construction sites or park ponds.</div>
+  </div>
+</section>
+
+<section>
+  <h2>Sightings Log</h2>
+  <div class="sighting-card">
+    <div class="sighting-time">23:14</div>
+    <div class="sighting-location">West Side Railyards</div>
+    <div class="sighting-species">Common Nighthawk (2)</div>
+    <div class="sighting-behavior">Aerial foraging under stadium lights; erratic, bat-like flight pattern.</div>
+  </div>
+</section>
+
+<section>
+  <h2>Guide to Listening: The Urban Filter</h2>
+  <p class="intro-text">To identify birds by sound in the city, you must mentally subtract the machine:</p>
+
+  <div class="listening-step">
+    <div class="step-number">1</div>
+    <div class="step-content">
+      <div class="step-title">The Base</div>
+      <div class="step-description">Ignore the low-frequency rumble of the expressway or subway vents.</div>
+    </div>
+  </div>
+
+  <div class="listening-step">
+    <div class="step-number">2</div>
+    <div class="step-content">
+      <div class="step-title">The Signal</div>
+      <div class="step-description">Focus on the "Peent"—a sharp, nasal electric buzz cutting through the hum.</div>
+    </div>
+  </div>
+
+  <div class="listening-step">
+    <div class="step-number">3</div>
+    <div class="step-content">
+      <div class="step-title">The Physical</div>
+      <div class="step-description">Listen for the "Whoosh" of air through primary feathers during a territorial dive.</div>
+    </div>
+  </div>
+</section>
+
+</body>
+</html>

@@ -1,0 +1,769 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Agent Architecture – Slide Deck</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Inter', sans-serif;
+    background: #0f0f0f;
+    color: #e8e8e8;
+    display: flex;
+    flex-direction: column;
+    gap: 48px;
+    padding: 48px;
+    min-height: 100vh;
+  }
+
+  .slide {
+    width: 1280px;
+    height: 720px;
+    background: #121212;
+    border: 1px solid #2a2a2a;
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    margin: 0 auto;
+    flex-shrink: 0;
+  }
+
+  /* Slide 1 – Title */
+  .slide-1 {
+    background: #0a0a0a;
+    justify-content: center;
+    align-items: flex-start;
+    padding: 96px;
+    border-left: 4px solid #e03a2f;
+  }
+  .slide-1 .kicker {
+    font-size: 12px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: #666;
+    margin-bottom: 24px;
+    font-weight: 500;
+  }
+  .slide-1 h1 {
+    font-size: 72px;
+    font-weight: 700;
+    color: #f0f0f0;
+    line-height: 1.05;
+    margin-bottom: 24px;
+  }
+  .slide-1 .subtitle {
+    font-size: 20px;
+    color: #9a9a9a;
+    font-weight: 300;
+    max-width: 640px;
+    line-height: 1.5;
+    margin-bottom: 48px;
+  }
+  .slide-1 .meta {
+    font-size: 14px;
+    color: #555;
+    font-weight: 400;
+    display: flex;
+    gap: 32px;
+  }
+  .slide-1 .meta span { color: #888; }
+  .slide-1 .accent-bar {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, #e03a2f 0%, #e03a2f 30%, transparent 100%);
+  }
+
+  /* Slide 2 – The Loop */
+  .slide-2 {
+    padding: 64px;
+    display: grid;
+    grid-template-columns: 1fr 480px;
+    gap: 64px;
+    align-items: start;
+  }
+  .slide-2 .text-col {}
+  .slide-2 .section-label {
+    font-size: 11px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: #e03a2f;
+    margin-bottom: 20px;
+    font-family: 'JetBrains Mono', monospace;
+    font-weight: 500;
+  }
+  .slide-2 h2 {
+    font-size: 42px;
+    font-weight: 600;
+    color: #f0f0f0;
+    margin-bottom: 28px;
+    line-height: 1.1;
+  }
+  .slide-2 p {
+    font-size: 16px;
+    line-height: 1.75;
+    color: #b0b0b0;
+  }
+  .slide-2 .diagram-col {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding-top: 24px;
+  }
+  .cycle-diagram {
+    width: 380px;
+    height: 340px;
+  }
+  .fig-caption {
+    font-size: 11px;
+    color: #555;
+    text-align: center;
+    margin-top: 16px;
+    font-family: 'JetBrains Mono', monospace;
+    letter-spacing: 0.05em;
+  }
+
+  /* Slide 3 – Worked Trace */
+  .slide-3 {
+    padding: 48px 64px;
+    display: grid;
+    grid-template-columns: 1fr 200px;
+    gap: 40px;
+  }
+  .slide-3 .section-label {
+    font-size: 11px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: #e03a2f;
+    margin-bottom: 12px;
+    font-family: 'JetBrains Mono', monospace;
+  }
+  .slide-3 h2 {
+    font-size: 36px;
+    font-weight: 600;
+    color: #f0f0f0;
+    margin-bottom: 24px;
+  }
+  .trace-steps {}
+  .trace-step {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 10px;
+    align-items: flex-start;
+  }
+  .trace-step .step-type {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    font-weight: 500;
+    padding: 2px 8px;
+    border-radius: 2px;
+    white-space: nowrap;
+    margin-top: 2px;
+    min-width: 88px;
+    text-align: center;
+  }
+  .step-type.thought { background: #1e2d1e; color: #6fcf97; border: 1px solid #2d4a2d; }
+  .step-type.action  { background: #1e1e2d; color: #6fa8cf; border: 1px solid #2d3a4a; }
+  .step-type.observe { background: #2d1e1e; color: #cf9f6f; border: 1px solid #4a2d2d; }
+  .trace-step .step-text {
+    font-size: 13px;
+    color: #aaa;
+    line-height: 1.5;
+  }
+  .annotations {
+    border-left: 1px solid #2a2a2a;
+    padding-left: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    padding-top: 48px;
+  }
+  .annotation {
+    font-size: 11px;
+    color: #555;
+    line-height: 1.5;
+    font-style: italic;
+  }
+  .annotation::before {
+    content: '← ';
+    color: #e03a2f;
+  }
+
+  /* Slide 4 – Four Architectures */
+  .slide-4 {
+    padding: 48px 64px;
+  }
+  .slide-4 .section-label {
+    font-size: 11px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: #e03a2f;
+    margin-bottom: 12px;
+    font-family: 'JetBrains Mono', monospace;
+  }
+  .slide-4 h2 {
+    font-size: 36px;
+    font-weight: 600;
+    color: #f0f0f0;
+    margin-bottom: 32px;
+  }
+  .arch-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 1fr 1fr;
+    gap: 24px;
+    height: 480px;
+  }
+  .arch-cell {
+    border: 1px solid #2a2a2a;
+    padding: 24px;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+  }
+  .arch-cell h3 {
+    font-size: 13px;
+    font-weight: 600;
+    color: #e03a2f;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    font-family: 'JetBrains Mono', monospace;
+    margin-bottom: 12px;
+  }
+  .arch-cell .arch-desc {
+    font-size: 12px;
+    color: #888;
+    line-height: 1.5;
+    margin-bottom: 12px;
+  }
+  .arch-diagram {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .arch-diagram svg { width: 100%; height: 100%; }
+
+  /* Slide 5 – Where Loops Fail */
+  .slide-5 {
+    padding: 64px;
+    display: grid;
+    grid-template-columns: 1fr 520px;
+    gap: 64px;
+    align-items: start;
+  }
+  .slide-5 .section-label {
+    font-size: 11px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: #e03a2f;
+    margin-bottom: 16px;
+    font-family: 'JetBrains Mono', monospace;
+  }
+  .slide-5 h2 {
+    font-size: 42px;
+    font-weight: 600;
+    color: #f0f0f0;
+    margin-bottom: 28px;
+    line-height: 1.1;
+  }
+  .slide-5 p { font-size: 16px; line-height: 1.75; color: #b0b0b0; }
+  .plot-area { display: flex; flex-direction: column; justify-content: center; height: 100%; }
+
+  /* Slide 6 – Code */
+  .slide-6 {
+    padding: 48px 64px;
+    display: grid;
+    grid-template-columns: 1fr 220px;
+    gap: 40px;
+  }
+  .slide-6 .section-label {
+    font-size: 11px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: #e03a2f;
+    margin-bottom: 12px;
+    font-family: 'JetBrains Mono', monospace;
+  }
+  .slide-6 h2 {
+    font-size: 28px;
+    font-weight: 600;
+    color: #f0f0f0;
+    margin-bottom: 20px;
+  }
+  .code-block {
+    background: #0a0a0a;
+    border: 1px solid #222;
+    padding: 20px 24px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13px;
+    line-height: 1.65;
+    color: #ccc;
+    overflow: hidden;
+  }
+  .code-block .kw { color: #c792ea; }
+  .code-block .fn { color: #82aaff; }
+  .code-block .str { color: #c3e88d; }
+  .code-block .cm { color: #546e7a; }
+  .code-block .num { color: #f78c6c; }
+  .slide-6 .code-annotations {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+    padding-top: 64px;
+    border-left: 1px solid #2a2a2a;
+    padding-left: 20px;
+  }
+  .code-annotation {
+    font-size: 11px;
+    color: #555;
+    line-height: 1.5;
+    font-style: italic;
+  }
+  .code-annotation .line-ref {
+    font-style: normal;
+    font-family: 'JetBrains Mono', monospace;
+    color: #e03a2f;
+    font-size: 10px;
+    display: block;
+    margin-bottom: 4px;
+  }
+  .slide-6 .closing-remark {
+    font-size: 13px;
+    color: #555;
+    margin-top: 16px;
+    font-style: italic;
+  }
+
+  /* Slide 7 – Ending */
+  .slide-7 {
+    background: #0a0a0a;
+    padding: 96px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    border-left: 4px solid #e03a2f;
+  }
+  .slide-7 .closing-line {
+    font-size: 36px;
+    font-weight: 300;
+    color: #e8e8e8;
+    max-width: 800px;
+    line-height: 1.4;
+    margin-bottom: 64px;
+    font-style: italic;
+  }
+  .slide-7 .refs-label {
+    font-size: 11px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: #555;
+    font-family: 'JetBrains Mono', monospace;
+    margin-bottom: 16px;
+  }
+  .slide-7 .references {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  .slide-7 .ref {
+    font-size: 13px;
+    color: #555;
+    line-height: 1.5;
+  }
+  .slide-7 .ref .ref-num {
+    color: #e03a2f;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    margin-right: 8px;
+  }
+  .slide-number {
+    position: absolute;
+    bottom: 24px;
+    right: 32px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: #333;
+  }
+</style>
+</head>
+<body>
+
+<!-- SLIDE 1: Title -->
+<div class="slide slide-1">
+  <div class="kicker">Technical Lecture · Agent Systems</div>
+  <h1>Agent Architecture</h1>
+  <p class="subtitle">On loops, traces, and the structures by which language models act.</p>
+  <div class="meta">
+    <span>Speaker Name</span>
+    <span>14 October 2026</span>
+  </div>
+  <div class="accent-bar"></div>
+  <div class="slide-number">01 / 07</div>
+</div>
+
+<!-- SLIDE 2: The Loop -->
+<div class="slide slide-2">
+  <div class="text-col">
+    <div class="section-label">§ 1</div>
+    <h2>The Loop</h2>
+    <p>Every capable agent, regardless of architecture, reduces to a single iterative pattern: perceive, reason, act, and observe the consequences. The model generates a thought — an internal monologue that frames the problem — selects an action from a vocabulary of tools, executes it against the world, and incorporates the resulting observation into its context window. This loop continues until a terminal condition is met: an answer is produced, a budget is exhausted, or the model determines no further steps are needed. Simple in structure, profound in consequence.</p>
+  </div>
+  <div class="diagram-col">
+    <svg class="cycle-diagram" viewBox="0 0 380 340" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <!-- Background circles -->
+      <circle cx="190" cy="170" r="130" stroke="#1e1e1e" stroke-width="1"/>
+      <circle cx="190" cy="170" r="80" stroke="#2a2a2a" stroke-width="1" stroke-dasharray="4 4"/>
+
+      <!-- THINK node -->
+      <circle cx="190" cy="48" r="36" fill="#1e2d1e" stroke="#2d4a2d" stroke-width="1.5"/>
+      <text x="190" y="44" text-anchor="middle" font-family="JetBrains Mono" font-size="11" fill="#6fcf97" font-weight="500">THINK</text>
+      <text x="190" y="58" text-anchor="middle" font-family="JetBrains Mono" font-size="9" fill="#3d7a50">reason</text>
+
+      <!-- ACT node -->
+      <circle cx="310" cy="230" r="36" fill="#1e1e2d" stroke="#2d3a4a" stroke-width="1.5"/>
+      <text x="310" y="226" text-anchor="middle" font-family="JetBrains Mono" font-size="11" fill="#6fa8cf" font-weight="500">ACT</text>
+      <text x="310" y="240" text-anchor="middle" font-family="JetBrains Mono" font-size="9" fill="#3d5f7a">execute</text>
+
+      <!-- OBSERVE node -->
+      <circle cx="70" cy="230" r="36" fill="#2d1e1e" stroke="#4a2d2d" stroke-width="1.5"/>
+      <text x="70" y="226" text-anchor="middle" font-family="JetBrains Mono" font-size="11" fill="#cf9f6f" font-weight="500">OBS</text>
+      <text x="70" y="240" text-anchor="middle" font-family="JetBrains Mono" font-size="9" fill="#7a5d3d">perceive</text>
+
+      <!-- Arrows: THINK → ACT -->
+      <path d="M 218 75 Q 290 130 285 198" stroke="#4a5a6a" stroke-width="1.5" fill="none" marker-end="url(#arr1)"/>
+      <!-- Arrows: ACT → OBSERVE -->
+      <path d="M 278 248 Q 190 290 102 248" stroke="#4a5a6a" stroke-width="1.5" fill="none" marker-end="url(#arr2)"/>
+      <!-- Arrows: OBSERVE → THINK -->
+      <path d="M 90 200 Q 110 130 162 75" stroke="#4a5a6a" stroke-width="1.5" fill="none" marker-end="url(#arr3)"/>
+
+      <defs>
+        <marker id="arr1" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+          <path d="M0,0 L0,6 L8,3 z" fill="#4a5a6a"/>
+        </marker>
+        <marker id="arr2" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+          <path d="M0,0 L0,6 L8,3 z" fill="#4a5a6a"/>
+        </marker>
+        <marker id="arr3" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+          <path d="M0,0 L0,6 L8,3 z" fill="#4a5a6a"/>
+        </marker>
+      </defs>
+
+      <!-- Context label -->
+      <text x="190" y="168" text-anchor="middle" font-family="JetBrains Mono" font-size="10" fill="#333">context</text>
+      <text x="190" y="182" text-anchor="middle" font-family="JetBrains Mono" font-size="10" fill="#333">window</text>
+    </svg>
+    <p class="fig-caption">Fig. 1 — The ReAct loop. Think → Act → Observe, repeated.</p>
+  </div>
+  <div class="slide-number">02 / 07</div>
+</div>
+
+<!-- SLIDE 3: Worked Trace -->
+<div class="slide slide-3">
+  <div>
+    <div class="section-label">§ 2</div>
+    <h2>A Worked Trace</h2>
+    <p style="font-size:12px;color:#666;margin-bottom:16px;font-family:'JetBrains Mono',monospace;">Query: "What was NVDA's closing price on 2024-01-15?"</p>
+    <div class="trace-steps">
+      <div class="trace-step">
+        <span class="step-type thought">THOUGHT 1</span>
+        <span class="step-text">I need to look up NVDA's closing price for a specific date. I'll use the financial data API.</span>
+      </div>
+      <div class="trace-step">
+        <span class="step-type action">ACTION 1</span>
+        <span class="step-text">get_stock_price(ticker="NVDA", date="2024-01-15")</span>
+      </div>
+      <div class="trace-step">
+        <span class="step-type observe">OBSERVE 1</span>
+        <span class="step-text">Error: Market was closed on 2024-01-15 (Martin Luther King Jr. Day).</span>
+      </div>
+      <div class="trace-step">
+        <span class="step-type thought">THOUGHT 2</span>
+        <span class="step-text">The market was closed. I should find the last trading day before 2024-01-15.</span>
+      </div>
+      <div class="trace-step">
+        <span class="step-type action">ACTION 2</span>
+        <span class="step-text">get_trading_calendar(from="2024-01-12", to="2024-01-15")</span>
+      </div>
+      <div class="trace-step">
+        <span class="step-type observe">OBSERVE 2</span>
+        <span class="step-text">Trading days: [2024-01-12]. Last open day was Friday, January 12th.</span>
+      </div>
+      <div class="trace-step">
+        <span class="step-type action">ACTION 3</span>
+        <span class="step-text">get_stock_price(ticker="NVDA", date="2024-01-12")</span>
+      </div>
+      <div class="trace-step">
+        <span class="step-type observe">OBSERVE 3</span>
+        <span class="step-text">NVDA closed at $547.10 on 2024-01-12. Note: market closed on requested date.</span>
+      </div>
+    </div>
+  </div>
+  <div class="annotations">
+    <div class="annotation">Model identifies tool need before calling it.</div>
+    <div class="annotation">Error is informative — handled gracefully.</div>
+    <div class="annotation">Recovery: agent queries for calendar context.</div>
+    <div class="annotation">Final answer grounds with caveat about the date.</div>
+  </div>
+  <div class="slide-number">03 / 07</div>
+</div>
+
+<!-- SLIDE 4: Four Architectures -->
+<div class="slide slide-4">
+  <div class="section-label">§ 3</div>
+  <h2>Four Architectures</h2>
+  <div class="arch-grid">
+
+    <!-- ReAct -->
+    <div class="arch-cell">
+      <h3>ReAct</h3>
+      <p class="arch-desc">Interleaves reasoning traces with action calls in a single pass. Thought precedes every action.</p>
+      <div class="arch-diagram">
+        <svg viewBox="0 0 300 100" fill="none">
+          <rect x="10" y="35" width="60" height="30" rx="2" fill="#1a1a1a" stroke="#333"/>
+          <text x="40" y="54" text-anchor="middle" font-family="JetBrains Mono" font-size="9" fill="#6fcf97">THINK</text>
+          <path d="M70 50 L90 50" stroke="#555" stroke-width="1.5" marker-end="url(#sm-arr)"/>
+          <rect x="90" y="35" width="60" height="30" rx="2" fill="#1a1a1a" stroke="#333"/>
+          <text x="120" y="54" text-anchor="middle" font-family="JetBrains Mono" font-size="9" fill="#6fa8cf">ACT</text>
+          <path d="M150 50 L170 50" stroke="#555" stroke-width="1.5" marker-end="url(#sm-arr)"/>
+          <rect x="170" y="35" width="60" height="30" rx="2" fill="#1a1a1a" stroke="#333"/>
+          <text x="200" y="54" text-anchor="middle" font-family="JetBrains Mono" font-size="9" fill="#cf9f6f">OBS</text>
+          <path d="M230 50 L250 50" stroke="#555" stroke-width="1.5"/>
+          <path d="M250 50 L250 15 L40 15 L40 35" stroke="#555" stroke-width="1" stroke-dasharray="3 3" marker-end="url(#sm-arr)"/>
+          <defs>
+            <marker id="sm-arr" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto">
+              <path d="M0,0 L0,6 L6,3 z" fill="#555"/>
+            </marker>
+          </defs>
+        </svg>
+      </div>
+    </div>
+
+    <!-- Reflexion -->
+    <div class="arch-cell">
+      <h3>Reflexion</h3>
+      <p class="arch-desc">Adds a verbal self-reflection step. After failure, the model critiques its own trace before retry.</p>
+      <div class="arch-diagram">
+        <svg viewBox="0 0 300 100" fill="none">
+          <rect x="10" y="10" width="55" height="25" rx="2" fill="#1a1a1a" stroke="#333"/>
+          <text x="37" y="26" text-anchor="middle" font-family="JetBrains Mono" font-size="8" fill="#6fcf97">THINK</text>
+          <path d="M65 22 L85 22" stroke="#555" stroke-width="1.5" marker-end="url(#sm2-arr)"/>
+          <rect x="85" y="10" width="55" height="25" rx="2" fill="#1a1a1a" stroke="#333"/>
+          <text x="112" y="26" text-anchor="middle" font-family="JetBrains Mono" font-size="8" fill="#6fa8cf">ACT</text>
+          <path d="M140 22 L160 22" stroke="#555" stroke-width="1.5" marker-end="url(#sm2-arr)"/>
+          <rect x="160" y="10" width="55" height="25" rx="2" fill="#1a1a1a" stroke="#333"/>
+          <text x="187" y="26" text-anchor="middle" font-family="JetBrains Mono" font-size="8" fill="#cf9f6f">OBS</text>
+          <path d="M215 22 L235 22" stroke="#555" stroke-width="1.5" marker-end="url(#sm2-arr)"/>
+          <rect x="225" y="10" width="65" height="25" rx="2" fill="#1e1e1a" stroke="#4a4a2d"/>
+          <text x="257" y="26" text-anchor="middle" font-family="JetBrains Mono" font-size="8" fill="#cfcf6f">REFLECT</text>
+          <!-- Reflection loop back -->
+          <path d="M257 35 L257 75 L37 75 L37 35" stroke="#4a4a2d" stroke-width="1" stroke-dasharray="3 3" marker-end="url(#sm2-arr)"/>
+          <text x="150" y="68" text-anchor="middle" font-family="JetBrains Mono" font-size="7" fill="#4a4a2d">on failure →</text>
+          <defs>
+            <marker id="sm2-arr" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto">
+              <path d="M0,0 L0,6 L6,3 z" fill="#555"/>
+            </marker>
+          </defs>
+        </svg>
+      </div>
+    </div>
+
+    <!-- Plan-and-Execute -->
+    <div class="arch-cell">
+      <h3>Plan-and-Execute</h3>
+      <p class="arch-desc">Separates planning from execution. A planner produces a task list; an executor works through each step.</p>
+      <div class="arch-diagram">
+        <svg viewBox="0 0 300 100" fill="none">
+          <rect x="10" y="35" width="65" height="30" rx="2" fill="#1a1a1a" stroke="#333"/>
+          <text x="42" y="53" text-anchor="middle" font-family="JetBrains Mono" font-size="8" fill="#c792ea">PLAN</text>
+          <path d="M75 50 L95 50" stroke="#555" stroke-width="1.5" marker-end="url(#sm3-arr)"/>
+          <rect x="95" y="22" width="55" height="22" rx="2" fill="#1a1a1a" stroke="#222"/>
+          <text x="122" y="37" text-anchor="middle" font-family="JetBrains Mono" font-size="8" fill="#888">step 1</text>
+          <rect x="95" y="50" width="55" height="22" rx="2" fill="#1a1a1a" stroke="#222"/>
+          <text x="122" y="65" text-anchor="middle" font-family="JetBrains Mono" font-size="8" fill="#888">step 2</text>
+          <rect x="95" y="78" width="55" height="15" rx="2" fill="#111" stroke="#1a1a1a"/>
+          <text x="122" y="89" text-anchor="middle" font-family="JetBrains Mono" font-size="7" fill="#444">...</text>
+          <path d="M150 33 L175 33" stroke="#555" stroke-width="1.5" marker-end="url(#sm3-arr)"/>
+          <path d="M150 61 L175 61" stroke="#555" stroke-width="1.5" marker-end="url(#sm3-arr)"/>
+          <rect x="175" y="22" width="55" height="61" rx="2" fill="#1a1a1a" stroke="#333"/>
+          <text x="202" y="56" text-anchor="middle" font-family="JetBrains Mono" font-size="8" fill="#6fa8cf">EXEC</text>
+          <defs>
+            <marker id="sm3-arr" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto">
+              <path d="M0,0 L0,6 L6,3 z" fill="#555"/>
+            </marker>
+          </defs>
+        </svg>
+      </div>
+    </div>
+
+    <!-- Tree-of-Thoughts -->
+    <div class="arch-cell">
+      <h3>Tree-of-Thoughts</h3>
+      <p class="arch-desc">Explores branching reasoning paths. A search heuristic selects the most promising partial solution.</p>
+      <div class="arch-diagram">
+        <svg viewBox="0 0 300 100" fill="none">
+          <!-- Root -->
+          <circle cx="50" cy="50" r="14" fill="#1a1a1a" stroke="#333"/>
+          <text x="50" y="54" text-anchor="middle" font-family="JetBrains Mono" font-size="8" fill="#888">root</text>
+          <!-- Branches -->
+          <path d="M64 42 L104 25" stroke="#333" stroke-width="1"/>
+          <path d="M64 50 L104 50" stroke="#333" stroke-width="1"/>
+          <path d="M64 58 L104 75" stroke="#333" stroke-width="1"/>
+          <!-- Level 2 -->
+          <circle cx="114" cy="25" r="10" fill="#1a1a1a" stroke="#2d4a2d"/>
+          <circle cx="114" cy="50" r="10" fill="#1a1a1a" stroke="#333"/>
+          <circle cx="114" cy="75" r="10" fill="#1a1a1a" stroke="#333"/>
+          <!-- Level 3 from top node -->
+          <path d="M124 20 L160 12" stroke="#2d4a2d" stroke-width="1"/>
+          <path d="M124 28 L160 38" stroke="#2d4a2d" stroke-width="1"/>
+          <circle cx="168" cy="12" r="8" fill="#1e2d1e" stroke="#4a7a4a"/>
+          <circle cx="168" cy="38" r="8" fill="#1a1a1a" stroke="#2d4a2d"/>
+          <!-- Best path highlight -->
+          <path d="M176 12 L200 12" stroke="#6fcf97" stroke-width="1.5" stroke-dasharray="2 2" marker-end="url(#sm4-arr)"/>
+          <text x="205" y="16" font-family="JetBrains Mono" font-size="7" fill="#6fcf97">best</text>
+          <!-- Search label -->
+          <text x="115" y="96" text-anchor="middle" font-family="JetBrains Mono" font-size="7" fill="#555">beam search / MCTS</text>
+          <defs>
+            <marker id="sm4-arr" markerWidth="5" markerHeight="5" refX="4" refY="2.5" orient="auto">
+              <path d="M0,0 L0,5 L5,2.5 z" fill="#6fcf97"/>
+            </marker>
+          </defs>
+        </svg>
+      </div>
+    </div>
+
+  </div>
+  <div class="slide-number">04 / 07</div>
+</div>
+
+<!-- SLIDE 5: Where Loops Fail -->
+<div class="slide slide-5">
+  <div class="text-col">
+    <div class="section-label">§ 4</div>
+    <h2>Where Loops Fail</h2>
+    <p>Iterative loops carry a hidden cost: every step consumes tokens. Performance degrades not at first, but at an inflection point — the agent appears functional until, quite suddenly, it is not. Context overflow corrupts earlier reasoning; the model loses track of its own plan. Iteration count compounds this: each new observation reshapes the context, and older information is silently displaced. Understanding the failure regime requires measuring both axes simultaneously.</p>
+  </div>
+  <div class="plot-area">
+    <svg viewBox="0 0 480 340" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <!-- Axes -->
+      <line x1="60" y1="280" x2="440" y2="280" stroke="#333" stroke-width="1.5"/>
+      <line x1="60" y1="280" x2="60" y2="30" stroke="#333" stroke-width="1.5"/>
+
+      <!-- Y axis label -->
+      <text x="20" y="160" text-anchor="middle" font-family="JetBrains Mono" font-size="10" fill="#555" transform="rotate(-90 20 160)">Task Success Rate</text>
+      <!-- X axis label -->
+      <text x="250" y="305" text-anchor="middle" font-family="JetBrains Mono" font-size="10" fill="#555">Tokens Used / Iterations</text>
+
+      <!-- Dual lines: tokens (left scale proxy) -->
+      <!-- Success curve – rises then falls -->
+      <path d="M60 240 C120 220 180 120 240 90 C280 75 310 80 340 110 C370 140 400 200 440 260"
+            stroke="#6fa8cf" stroke-width="2" fill="none"/>
+      <!-- Label TOKENS -->
+      <text x="380" y="180" font-family="JetBrains Mono" font-size="9" fill="#6fa8cf">TOKENS</text>
+
+      <!-- Iteration curve – linear decline after peak -->
+      <path d="M60 250 C120 230 200 150 260 100 C290 82 310 90 350 130 C390 170 420 230 440 270"
+            stroke="#cf9f6f" stroke-width="2" fill="none" stroke-dasharray="4 3"/>
+      <text x="380" y="255" font-family="JetBrains Mono" font-size="9" fill="#cf9f6f">ITER</text>
+
+      <!-- Inflection annotation -->
+      <circle cx="250" cy="88" r="5" fill="#e03a2f"/>
+      <line x1="250" y1="88" x2="310" y2="55" stroke="#e03a2f" stroke-width="1" stroke-dasharray="2 2"/>
+      <text x="314" y="50" font-family="JetBrains Mono" font-size="9" fill="#e03a2f">inflection</text>
+      <text x="314" y="62" font-family="JetBrains Mono" font-size="9" fill="#666">≈ 8k tokens</text>
+
+      <!-- Y ticks -->
+      <text x="50" y="284" text-anchor="end" font-family="JetBrains Mono" font-size="9" fill="#444">0</text>
+      <text x="50" y="180" text-anchor="end" font-family="JetBrains Mono" font-size="9" fill="#444">0.5</text>
+      <text x="50" y="84" text-anchor="end" font-family="JetBrains Mono" font-size="9" fill="#444">1.0</text>
+      <line x1="56" y1="180" x2="60" y2="180" stroke="#333" stroke-width="1"/>
+      <line x1="56" y1="84" x2="60" y2="84" stroke="#333" stroke-width="1"/>
+
+      <!-- X ticks -->
+      <text x="60" y="295" text-anchor="middle" font-family="JetBrains Mono" font-size="9" fill="#444">0</text>
+      <text x="190" y="295" text-anchor="middle" font-family="JetBrains Mono" font-size="9" fill="#444">4k</text>
+      <text x="320" y="295" text-anchor="middle" font-family="JetBrains Mono" font-size="9" fill="#444">8k</text>
+      <text x="440" y="295" text-anchor="middle" font-family="JetBrains Mono" font-size="9" fill="#444">16k</text>
+      <line x1="190" y1="280" x2="190" y2="284" stroke="#333" stroke-width="1"/>
+      <line x1="320" y1="280" x2="320" y2="284" stroke="#333" stroke-width="1"/>
+      <line x1="440" y1="280" x2="440" y2="284" stroke="#333" stroke-width="1"/>
+
+      <!-- Grid lines -->
+      <line x1="60" y1="180" x2="440" y2="180" stroke="#1a1a1a" stroke-width="1"/>
+      <line x1="60" y1="84" x2="440" y2="84" stroke="#1a1a1a" stroke-width="1"/>
+    </svg>
+  </div>
+  <div class="slide-number">05 / 07</div>
+</div>
+
+<!-- SLIDE 6: The Loop in Code -->
+<div class="slide slide-6">
+  <div>
+    <div class="section-label">§ 5</div>
+    <h2>The Loop, in Code</h2>
+    <div class="code-block">
+<span class="kw">def</span> <span class="fn">react_loop</span>(query: str, tools: <span class="fn">dict</span>, max_steps: <span class="fn">int</span> = <span class="num">10</span>) -&gt; str:
+    history = [
+        {<span class="str">"role"</span>: <span class="str">"system"</span>, <span class="str">"content"</span>: SYSTEM_PROMPT},
+        {<span class="str">"role"</span>: <span class="str">"user"</span>,   <span class="str">"content"</span>: query},
+    ]
+
+    <span class="kw">for</span> step <span class="kw">in</span> <span class="fn">range</span>(max_steps):          <span class="cm"># budget guard</span>
+        response = llm.<span class="fn">complete</span>(history)
+        thought, action = <span class="fn">parse</span>(response)
+
+        <span class="kw">if</span> action.<span class="fn">is_final</span>():              <span class="cm"># terminal check</span>
+            <span class="kw">return</span> action.value
+
+        tool_fn = tools[action.name]
+        observation = tool_fn(**action.args)
+
+        history.<span class="fn">extend</span>([                    <span class="cm"># grow context</span>
+            {<span class="str">"role"</span>: <span class="str">"assistant"</span>, <span class="str">"content"</span>: response},
+            {<span class="str">"role"</span>: <span class="str">"user"</span>,
+             <span class="str">"content"</span>: <span class="fn">f</span><span class="str">"Observation: {observation}"</span>},
+        ])
+
+    <span class="kw">raise</span> <span class="fn">RuntimeError</span>(<span class="str">"Max steps exceeded"</span>)
+    </div>
+    <p class="closing-remark">The loop is twenty lines. The difficulty is in what surrounds it.</p>
+  </div>
+  <div class="code-annotations">
+    <div class="code-annotation">
+      <span class="line-ref">line 7</span>
+      max_steps is a hard budget — the only guaranteed termination condition.
+    </div>
+    <div class="code-annotation">
+      <span class="line-ref">line 11</span>
+      The model decides when it is done. is_final() checks for a special action token.
+    </div>
+    <div class="code-annotation">
+      <span class="line-ref">line 18</span>
+      History grows monotonically. No forgetting — until the context window is full.
+    </div>
+  </div>
+  <div class="slide-number">06 / 07</div>
+</div>
+
+<!-- SLIDE 7: Ending -->
+<div class="slide slide-7">
+  <p class="closing-line">"The loop is not a bug in the design — it is the design. The question is only how many times around."</p>
+  <div class="refs-label">References</div>
+  <div class="references">
+    <div class="ref"><span class="ref-num">[1]</span> Yao et al. "ReAct: Synergizing Reasoning and Acting in Language Models." ICLR 2023.</div>
+    <div class="ref"><span class="ref-num">[2]</span> Shinn et al. "Reflexion: Language Agents with Verbal Reinforcement Learning." NeurIPS 2023.</div>
+    <div class="ref"><span class="ref-num">[3]</span> Yao et al. "Tree of Thoughts: Deliberate Problem Solving with Large Language Models." NeurIPS 2023.</div>
+  </div>
+  <div class="slide-number">07 / 07</div>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,613 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Agent Architecture</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500&family=IBM+Plex+Mono:wght@400&family=Source+Serif+4:opsz,wght@8..60,400&display=swap" rel="stylesheet">
+<style>
+  *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+
+  :root{
+    --primary:#1E1A14;
+    --secondary:#B8B0A2;
+    --tertiary:#C3402A;
+    --neutral:#F4F0E4;
+    --sp-sm:8px;
+    --sp-md:16px;
+    --sp-lg:32px;
+    --sp-xl:64px;
+  }
+
+  @page{size:landscape;margin:0}
+
+  html,body{
+    background:var(--neutral);
+    color:var(--primary);
+    font-family:'Source Serif 4',serif;
+    font-size:17px;
+    font-weight:400;
+    line-height:1.5;
+    -webkit-font-smoothing:antialiased;
+  }
+
+  .slide{
+    width:100vw;
+    min-height:100vh;
+    padding:var(--sp-xl);
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    page-break-after:always;
+    position:relative;
+    overflow:hidden;
+  }
+
+  /* Typography */
+  .display{
+    font-family:'Fraunces',serif;
+    font-size:54px;
+    font-weight:500;
+    line-height:1.15;
+    letter-spacing:-0.01em;
+  }
+  .body-md{
+    font-family:'Source Serif 4',serif;
+    font-size:17px;
+    font-weight:400;
+    line-height:1.6;
+  }
+  code,.code{
+    font-family:'IBM Plex Mono',monospace;
+    font-size:14px;
+    font-weight:400;
+    line-height:1.65;
+  }
+  .label-sm{
+    font-family:'IBM Plex Mono',monospace;
+    font-size:12px;
+    font-weight:400;
+    letter-spacing:0.08em;
+    text-transform:uppercase;
+  }
+
+  .section-num{
+    font-family:'Fraunces',serif;
+    font-size:34px;
+    font-weight:500;
+    margin-bottom:var(--sp-md);
+  }
+
+  /* Hairline rules */
+  .rule{
+    border:none;
+    border-top:1px solid var(--secondary);
+    margin:var(--sp-lg) 0;
+  }
+
+  /* Page number — the single vermilion mark on each slide */
+  .page-num{
+    position:absolute;
+    bottom:var(--sp-lg);
+    right:var(--sp-xl);
+    font-family:'IBM Plex Mono',monospace;
+    font-size:12px;
+    font-weight:400;
+    letter-spacing:0.08em;
+    color:var(--tertiary);
+  }
+
+  /* SVG hand-drawn style */
+  .hand-drawn line,
+  .hand-drawn path,
+  .hand-drawn circle,
+  .hand-drawn rect,
+  .hand-drawn polyline,
+  .hand-drawn polygon{
+    stroke:var(--primary);
+    stroke-width:1.8;
+    fill:none;
+    stroke-linecap:round;
+    stroke-linejoin:round;
+  }
+  .hand-drawn text{
+    font-family:'Source Serif 4',serif;
+    font-size:14px;
+    fill:var(--primary);
+  }
+  .hand-drawn .label{
+    font-family:'IBM Plex Mono',monospace;
+    font-size:11px;
+    letter-spacing:0.06em;
+    fill:var(--primary);
+  }
+  .vermilion{
+    stroke:var(--tertiary)!important;
+    fill:none;
+  }
+  .vermilion-fill{
+    fill:var(--tertiary)!important;
+    stroke:none;
+  }
+
+  /* Code block — NO fill, just text on paper */
+  pre.code-block{
+    font-family:'IBM Plex Mono',monospace;
+    font-size:14px;
+    line-height:1.65;
+    white-space:pre;
+    color:var(--primary);
+    background:none;
+    border:none;
+    padding:0;
+    overflow-x:auto;
+  }
+
+  /* References */
+  .ref{
+    font-family:'IBM Plex Mono',monospace;
+    font-size:12px;
+    line-height:1.8;
+    letter-spacing:0.02em;
+    color:var(--primary);
+  }
+
+  .standfirst{
+    font-family:'Source Serif 4',serif;
+    font-size:21px;
+    font-weight:400;
+    line-height:1.5;
+    max-width:540px;
+    margin-top:var(--sp-md);
+  }
+
+  .meta{
+    font-family:'IBM Plex Mono',monospace;
+    font-size:12px;
+    letter-spacing:0.08em;
+    margin-top:var(--sp-lg);
+    color:var(--primary);
+  }
+
+  .two-col{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:var(--sp-xl);
+    align-items:start;
+  }
+
+  .trace-step{
+    display:flex;
+    gap:var(--sp-md);
+    margin-bottom:var(--sp-sm);
+  }
+  .trace-step .step-num{
+    font-family:'IBM Plex Mono',monospace;
+    font-size:12px;
+    letter-spacing:0.08em;
+    color:var(--primary);
+    flex-shrink:0;
+    width:24px;
+    text-align:right;
+  }
+  .trace-step .step-text{
+    font-family:'Source Serif 4',serif;
+    font-size:15px;
+    line-height:1.5;
+  }
+  .trace-query{
+    font-family:'IBM Plex Mono',monospace;
+    font-size:14px;
+    line-height:1.6;
+    margin-bottom:var(--sp-lg);
+    padding-left:var(--sp-md);
+    border-left:1px solid var(--secondary);
+  }
+
+  .arch-grid{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    grid-template-rows:1fr 1fr;
+    gap:var(--sp-lg) var(--sp-xl);
+  }
+  .arch-cell{
+    display:flex;
+    flex-direction:column;
+    align-items:flex-start;
+  }
+  .arch-cell .arch-label{
+    font-family:'IBM Plex Mono',monospace;
+    font-size:12px;
+    letter-spacing:0.08em;
+    text-transform:uppercase;
+    margin-bottom:var(--sp-sm);
+  }
+
+  .closing-line{
+    font-family:'Fraunces',serif;
+    font-size:28px;
+    font-weight:500;
+    line-height:1.4;
+    max-width:600px;
+  }
+</style>
+</head>
+<body>
+
+<!-- =========================================
+     SLIDE 1 — Title
+     Vermilion mark: underline beneath title
+     ========================================= -->
+<section class="slide">
+  <h1 class="display">Agent Architecture</h1>
+  <svg width="180" height="6" style="margin-top:8px;" class="hand-drawn">
+    <path d="M2,3 C30,1 60,5 90,3 C120,1 150,5 178,3" class="vermilion" stroke-width="2.2"/>
+  </svg>
+  <p class="standfirst">
+    How a language model becomes an agent: the loop, the trace,
+    the architectures that emerge, and the places they break.
+  </p>
+  <div class="meta">
+    <div style="margin-bottom:4px;">David East</div>
+    <div>14 Oct 2026</div>
+  </div>
+  <span class="page-num" style="color:var(--primary);"><!-- no vermilion page num on title --></span>
+</section>
+
+<!-- =========================================
+     SLIDE 2 — The Loop
+     Vermilion mark: closing arrow in diagram
+     ========================================= -->
+<section class="slide">
+  <div class="section-num">§ 1</div>
+  <div class="two-col">
+    <div>
+      <h2 class="display" style="font-size:38px;margin-bottom:var(--sp-lg);">The Loop</h2>
+      <p class="body-md" style="max-width:440px;">
+        Every agent, regardless of its scaffolding, reduces to a single
+        primitive: a loop. The model thinks about the current state,
+        selects an action from its available tools, executes that action
+        in the environment, and observes the result. The observation
+        feeds back into the next cycle of thought. The loop terminates
+        when the model emits a final answer or an iteration budget is
+        exhausted. Everything else — memory, planning, reflection — is
+        decoration atop this core.
+      </p>
+    </div>
+    <div style="display:flex;align-items:center;justify-content:center;">
+      <svg width="280" height="280" viewBox="0 0 280 280" class="hand-drawn">
+        <!-- Triangle loop: THINK top, ACT bottom-right, OBSERVE bottom-left -->
+        <!-- THINK node -->
+        <text x="140" y="42" text-anchor="middle" class="label" style="font-size:13px;">THINK</text>
+        <!-- ACT node -->
+        <text x="248" y="232" text-anchor="middle" class="label" style="font-size:13px;">ACT</text>
+        <!-- OBSERVE node -->
+        <text x="32" y="232" text-anchor="middle" class="label" style="font-size:13px;">OBSERVE</text>
+
+        <!-- Edge: THINK → ACT -->
+        <path d="M160,52 C175,68 200,120 218,160 C228,182 238,200 242,210"
+              stroke-width="1.8"/>
+        <!-- arrowhead -->
+        <polygon points="242,210 234,200 244,202" style="fill:var(--primary);stroke:none;"/>
+
+        <!-- Edge: ACT → OBSERVE -->
+        <path d="M228,242 C200,250 140,258 80,248 C60,244 46,240 40,238"
+              stroke-width="1.8"/>
+        <!-- arrowhead -->
+        <polygon points="40,238 50,244 48,234" style="fill:var(--primary);stroke:none;"/>
+
+        <!-- Edge: OBSERVE → THINK (the vermilion closing arrow) -->
+        <path d="M38,218 C28,180 40,120 70,85 C95,58 118,50 132,48"
+              class="vermilion" stroke-width="2"/>
+        <!-- vermilion arrowhead -->
+        <polygon points="132,48 122,54 124,42" class="vermilion-fill"/>
+      </svg>
+    </div>
+  </div>
+  <span class="page-num">2</span>
+</section>
+
+<!-- =========================================
+     SLIDE 3 — A Worked Trace
+     Vermilion mark: underline on the query
+     ========================================= -->
+<section class="slide">
+  <div class="section-num">§ 2</div>
+  <h2 class="display" style="font-size:38px;margin-bottom:var(--sp-lg);">A Worked Trace</h2>
+  <div class="two-col">
+    <div>
+      <div class="label-sm" style="margin-bottom:var(--sp-sm);">USER QUERY</div>
+      <div class="trace-query">
+        "What was NVDA's closing price<br>yesterday, and is it above<br>the 50-day moving average?"
+      </div>
+      <svg width="220" height="6" class="hand-drawn" style="margin-top:-20px;margin-bottom:var(--sp-md);">
+        <path d="M0,3 C40,1 80,5 120,2 C160,0 190,4 218,3" class="vermilion" stroke-width="2"/>
+      </svg>
+    </div>
+    <div>
+      <div class="trace-step">
+        <span class="step-num">01</span>
+        <span class="step-text"><strong>Think:</strong> I need NVDA's closing price. I'll call the market data tool.</span>
+      </div>
+      <div class="trace-step">
+        <span class="step-num">02</span>
+        <span class="step-text"><strong>Act:</strong> <code>get_price(symbol="NVDA", date="2026-10-13")</code></span>
+      </div>
+      <div class="trace-step">
+        <span class="step-num">03</span>
+        <span class="step-text"><strong>Observe:</strong> Returns <code>{"close": 142.58, "currency": "USD"}</code></span>
+      </div>
+      <div class="trace-step">
+        <span class="step-num">04</span>
+        <span class="step-text"><strong>Think:</strong> Now I need the 50-day moving average for comparison.</span>
+      </div>
+      <div class="trace-step">
+        <span class="step-num">05</span>
+        <span class="step-text"><strong>Act:</strong> <code>get_moving_avg(symbol="NVDA", window=50)</code></span>
+      </div>
+      <div class="trace-step">
+        <span class="step-num">06</span>
+        <span class="step-text"><strong>Observe:</strong> Returns <code>{"sma_50": 138.21}</code></span>
+      </div>
+      <div class="trace-step">
+        <span class="step-num">07</span>
+        <span class="step-text"><strong>Think:</strong> 142.58 &gt; 138.21 — the price is above the SMA. I can answer.</span>
+      </div>
+      <div class="trace-step">
+        <span class="step-num">08</span>
+        <span class="step-text"><strong>Answer:</strong> NVDA closed at $142.58, which is above its 50-day moving average of $138.21.</span>
+      </div>
+    </div>
+  </div>
+  <span class="page-num">3</span>
+</section>
+
+<!-- =========================================
+     SLIDE 4 — Four Architectures
+     Vermilion mark: arrow in Router diagram
+     ========================================= -->
+<section class="slide">
+  <div class="section-num">§ 3</div>
+  <h2 class="display" style="font-size:38px;margin-bottom:var(--sp-lg);">Four Architectures</h2>
+  <div class="arch-grid">
+
+    <!-- 1: Single Agent -->
+    <div class="arch-cell">
+      <div class="arch-label">Single Agent</div>
+      <svg width="240" height="100" viewBox="0 0 240 100" class="hand-drawn">
+        <!-- single loop -->
+        <rect x="80" y="20" width="80" height="40" rx="0"/>
+        <text x="120" y="46" text-anchor="middle" class="label">LLM</text>
+        <!-- tools -->
+        <path d="M78,40 C60,40 40,36 20,40" stroke-width="1.6"/>
+        <text x="8" y="56" class="label" style="font-size:9px;">TOOLS</text>
+        <!-- loop back arrow -->
+        <path d="M120,62 C120,80 120,85 120,78" stroke-width="1.4"/>
+        <path d="M120,78 C100,90 80,85 80,60" stroke-width="1.4"/>
+        <polygon points="80,60 76,68 84,68" style="fill:var(--primary);stroke:none;"/>
+      </svg>
+    </div>
+
+    <!-- 2: Router / Handoff -->
+    <div class="arch-cell">
+      <div class="arch-label">Router / Handoff</div>
+      <svg width="260" height="100" viewBox="0 0 260 100" class="hand-drawn">
+        <!-- router node -->
+        <rect x="90" y="8" width="70" height="32" rx="0"/>
+        <text x="125" y="30" text-anchor="middle" class="label">ROUTER</text>
+        <!-- agent A -->
+        <rect x="10" y="60" width="60" height="28" rx="0"/>
+        <text x="40" y="79" text-anchor="middle" class="label" style="font-size:9px;">AGENT A</text>
+        <!-- agent B -->
+        <rect x="100" y="60" width="60" height="28" rx="0"/>
+        <text x="130" y="79" text-anchor="middle" class="label" style="font-size:9px;">AGENT B</text>
+        <!-- agent C -->
+        <rect x="190" y="60" width="60" height="28" rx="0"/>
+        <text x="220" y="79" text-anchor="middle" class="label" style="font-size:9px;">AGENT C</text>
+        <!-- lines down -->
+        <path d="M108,42 C80,50 55,55 42,58" stroke-width="1.4"/>
+        <path d="M125,42 L130,58" stroke-width="1.4"/>
+        <!-- vermilion arrow to C -->
+        <path d="M148,42 C170,50 200,55 218,58" class="vermilion" stroke-width="2"/>
+        <polygon points="218,58 210,54 212,62" class="vermilion-fill"/>
+      </svg>
+    </div>
+
+    <!-- 3: Orchestrator-Worker -->
+    <div class="arch-cell">
+      <div class="arch-label">Orchestrator–Worker</div>
+      <svg width="240" height="110" viewBox="0 0 240 110" class="hand-drawn">
+        <!-- orchestrator -->
+        <rect x="65" y="6" width="110" height="32" rx="0"/>
+        <text x="120" y="28" text-anchor="middle" class="label">ORCHESTRATOR</text>
+        <!-- workers -->
+        <rect x="8" y="68" width="50" height="26" rx="0"/>
+        <text x="33" y="85" text-anchor="middle" class="label" style="font-size:9px;">W1</text>
+        <rect x="95" y="68" width="50" height="26" rx="0"/>
+        <text x="120" y="85" text-anchor="middle" class="label" style="font-size:9px;">W2</text>
+        <rect x="182" y="68" width="50" height="26" rx="0"/>
+        <text x="207" y="85" text-anchor="middle" class="label" style="font-size:9px;">W3</text>
+        <!-- lines -->
+        <path d="M90,40 C70,50 48,58 35,66" stroke-width="1.4"/>
+        <path d="M120,40 L120,66" stroke-width="1.4"/>
+        <path d="M150,40 C170,50 192,58 205,66" stroke-width="1.4"/>
+        <!-- return lines (dashed) -->
+        <path d="M35,96 C48,102 70,104 90,100" stroke-width="1" stroke-dasharray="4,3"/>
+        <path d="M120,96 L120,104" stroke-width="1" stroke-dasharray="4,3"/>
+        <path d="M205,96 C192,102 170,104 150,100" stroke-width="1" stroke-dasharray="4,3"/>
+      </svg>
+    </div>
+
+    <!-- 4: Evaluator-Optimizer -->
+    <div class="arch-cell">
+      <div class="arch-label">Evaluator–Optimizer</div>
+      <svg width="260" height="110" viewBox="0 0 260 110" class="hand-drawn">
+        <!-- generator -->
+        <rect x="20" y="30" width="80" height="32" rx="0"/>
+        <text x="60" y="51" text-anchor="middle" class="label">GENERATOR</text>
+        <!-- evaluator -->
+        <rect x="160" y="30" width="80" height="32" rx="0"/>
+        <text x="200" y="51" text-anchor="middle" class="label">EVALUATOR</text>
+        <!-- forward arrow -->
+        <path d="M102,46 C120,46 138,46 158,46" stroke-width="1.6"/>
+        <polygon points="158,46 150,42 150,50" style="fill:var(--primary);stroke:none;"/>
+        <!-- feedback arrow (below) -->
+        <path d="M160,65 C140,78 120,80 102,68" stroke-width="1.4"/>
+        <polygon points="102,68 110,72 108,62" style="fill:var(--primary);stroke:none;"/>
+        <!-- labels -->
+        <text x="130" y="38" text-anchor="middle" class="label" style="font-size:9px;">OUTPUT</text>
+        <text x="130" y="92" text-anchor="middle" class="label" style="font-size:9px;">FEEDBACK</text>
+      </svg>
+    </div>
+
+  </div>
+  <span class="page-num">4</span>
+</section>
+
+<!-- =========================================
+     SLIDE 5 — Where Loops Fail
+     Vermilion mark: the spike in the chart
+     ========================================= -->
+<section class="slide">
+  <div class="section-num">§ 4</div>
+  <div class="two-col">
+    <div>
+      <h2 class="display" style="font-size:38px;margin-bottom:var(--sp-lg);">Where Loops Fail</h2>
+      <p class="body-md" style="max-width:420px;">
+        An unchecked loop is a liability. Each iteration consumes tokens,
+        and cost scales linearly while task completion often plateaus.
+        After roughly eight iterations the model begins to repeat itself
+        or hallucinate tool outputs. Guardrails — iteration caps, token
+        budgets, and self-evaluation checkpoints — are not optional; they
+        are structural requirements of any deployed agent.
+      </p>
+    </div>
+    <div style="display:flex;align-items:center;justify-content:center;">
+      <!-- Token cost chart — thin lines on paper -->
+      <svg width="300" height="220" viewBox="0 0 300 220" class="hand-drawn">
+        <!-- axes -->
+        <path d="M40,190 L40,20" stroke-width="1.4"/>
+        <path d="M40,190 L280,190" stroke-width="1.4"/>
+        <!-- Y axis label -->
+        <text x="14" y="110" text-anchor="middle" class="label" style="font-size:9px;" transform="rotate(-90 14 110)">TOKENS</text>
+        <!-- X axis label -->
+        <text x="160" y="210" text-anchor="middle" class="label" style="font-size:9px;">ITERATION</text>
+        <!-- tick marks -->
+        <line x1="40" y1="155" x2="36" y2="155" stroke-width="1"/>
+        <line x1="40" y1="120" x2="36" y2="120" stroke-width="1"/>
+        <line x1="40" y1="85" x2="36" y2="85" stroke-width="1"/>
+        <line x1="40" y1="50" x2="36" y2="50" stroke-width="1"/>
+        <!-- x ticks -->
+        <text x="70" y="202" text-anchor="middle" class="label" style="font-size:9px;">2</text>
+        <text x="110" y="202" text-anchor="middle" class="label" style="font-size:9px;">4</text>
+        <text x="150" y="202" text-anchor="middle" class="label" style="font-size:9px;">6</text>
+        <text x="190" y="202" text-anchor="middle" class="label" style="font-size:9px;">8</text>
+        <text x="230" y="202" text-anchor="middle" class="label" style="font-size:9px;">10</text>
+        <text x="265" y="202" text-anchor="middle" class="label" style="font-size:9px;">12</text>
+
+        <!-- Cumulative token line (steady growth then spike) -->
+        <polyline points="50,178 70,170 90,160 110,148 130,134 150,118 170,100 190,80 210,55 230,42 250,38 265,36"
+                  stroke-width="1.6" fill="none"/>
+
+        <!-- Completion % line (plateaus) — dashed -->
+        <polyline points="50,175 70,152 90,130 110,110 130,95 150,86 170,82 190,80 210,79 230,78 250,78 265,78"
+                  stroke-width="1.2" fill="none" stroke-dasharray="5,4"/>
+
+        <!-- Labels for lines -->
+        <text x="268" y="32" class="label" style="font-size:9px;">COST</text>
+        <text x="268" y="74" class="label" style="font-size:9px;">DONE %</text>
+
+        <!-- The vermilion spike marker at iteration 8–9 -->
+        <circle cx="210" cy="55" r="6" class="vermilion" stroke-width="2" fill="none"/>
+      </svg>
+    </div>
+  </div>
+  <span class="page-num">5</span>
+</section>
+
+<!-- =========================================
+     SLIDE 6 — The Loop, in Code
+     Vermilion mark: line number "1" marker
+     ========================================= -->
+<section class="slide">
+  <div class="section-num">§ 5</div>
+  <h2 class="display" style="font-size:38px;margin-bottom:var(--sp-lg);">The Loop, in Code</h2>
+  <div class="two-col" style="align-items:start;">
+    <div style="position:relative;">
+      <!-- Vermilion bracket beside line 1 -->
+      <svg width="12" height="24" style="position:absolute;left:-20px;top:0;" class="hand-drawn">
+        <path d="M10,2 C6,2 4,6 4,12 C4,18 6,22 10,22" class="vermilion" stroke-width="2"/>
+      </svg>
+      <pre class="code-block">def agent_loop(
+    model,
+    tools: dict,
+    query: str,
+    max_iter: int = 10
+) -> str:
+    messages = [{"role": "user",
+                 "content": query}]
+
+    for i in range(max_iter):
+        # THINK
+        response = model.generate(messages)
+
+        if response.is_final_answer:
+            return response.text
+
+        # ACT
+        tool = tools[response.tool_name]
+        result = tool(**response.tool_args)
+
+        # OBSERVE
+        messages.append({
+            "role": "tool",
+            "name": response.tool_name,
+            "content": str(result)
+        })
+
+    raise TimeoutError("budget exhausted")</pre>
+    </div>
+    <div style="padding-top:var(--sp-lg);">
+      <p class="body-md" style="max-width:380px;">
+        Twenty-five lines capture the entire primitive. The model
+        generates until it decides to stop or the budget runs out.
+        Everything in the scaffolding literature — ReAct, Reflexion,
+        LATS — is a variation on this loop with additional memory
+        structures or branching strategies inserted at the three
+        marked phases.
+      </p>
+    </div>
+  </div>
+  <span class="page-num">6</span>
+</section>
+
+<!-- =========================================
+     SLIDE 7 — Ending
+     Vermilion mark: a closing arrow/mark
+     ========================================= -->
+<section class="slide">
+  <div class="section-num">§ 6</div>
+  <div style="max-width:640px;">
+    <p class="closing-line" style="margin-bottom:var(--sp-xl);">
+      The agent is not the model. The agent is the loop around it —
+      and the discipline to stop.
+    </p>
+    <!-- Vermilion closing mark — a hand-drawn arrow -->
+    <svg width="60" height="20" class="hand-drawn" style="margin-bottom:var(--sp-xl);">
+      <path d="M2,10 C15,8 35,12 52,10" class="vermilion" stroke-width="2.2"/>
+      <polygon points="52,10 44,6 44,14" class="vermilion-fill"/>
+    </svg>
+    <hr class="rule">
+    <div class="ref" style="margin-top:var(--sp-lg);">
+      <div style="margin-bottom:var(--sp-sm);">[1] Yao, S. et al. "ReAct: Synergizing Reasoning and Acting in Language Models." ICLR 2023.</div>
+      <div style="margin-bottom:var(--sp-sm);">[2] Shinn, N. et al. "Reflexion: Language Agents with Verbal Reinforcement Learning." NeurIPS 2023.</div>
+      <div>[3] Anthropic. "Building Effective Agents." 2024.</div>
+    </div>
+  </div>
+  <span class="page-num">7</span>
+</section>
+
+</body>
+</html>

@@ -45,7 +45,7 @@ function hash(s: string) { let h = 0; for (let i = 0; i < s.length; i++) h = (h 
       </div>
     </div>
   )}
-  <div class="relative overflow-hidden bg-paper" style={bodyStyle}>
+  <div class="relative overflow-hidden bg-paper db-frame" style={bodyStyle}>
     {src ? (
       <iframe src={src} title={title ?? "rendering"} scrolling="no" tabindex="-1" loading="lazy"
         class="absolute top-0 left-0 origin-top-left border-0 pointer-events-none" style={iframeStyle}></iframe>

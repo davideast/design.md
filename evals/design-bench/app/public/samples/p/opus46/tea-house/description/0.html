@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kettle &amp; Leaf</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400&family=Libre+Franklin:wght@400;700&family=Source+Serif+4:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background-color: #F4EFE6;
+    color: #1B1B1B;
+    font-family: 'Source Serif 4', serif;
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 1.65;
+  }
+
+  .page {
+    max-width: 780px;
+    margin: 0 auto;
+    padding: 80px 32px;
+  }
+
+  header {
+    margin-bottom: 64px;
+  }
+
+  h1 {
+    font-family: 'Libre Franklin', sans-serif;
+    font-size: 44px;
+    font-weight: 700;
+    line-height: 1.05;
+    letter-spacing: -0.01em;
+    color: #1B1B1B;
+    margin-bottom: 12px;
+  }
+
+  .welcome {
+    font-family: 'Source Serif 4', serif;
+    font-size: 16px;
+    line-height: 1.65;
+    color: #6E675C;
+  }
+
+  h2 {
+    font-family: 'Libre Franklin', sans-serif;
+    font-size: 20px;
+    font-weight: 700;
+    line-height: 1.05;
+    letter-spacing: -0.01em;
+    color: #1B1B1B;
+    margin-bottom: 24px;
+  }
+
+  section {
+    margin-bottom: 64px;
+  }
+
+  /* Today's teas — gentle, celebrated, understated */
+  .teas {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 32px;
+  }
+
+  .tea {
+    padding-top: 16px;
+    border-top: 1px solid #E8590C;
+  }
+
+  .tea h3 {
+    font-family: 'Libre Franklin', sans-serif;
+    font-size: 16px;
+    font-weight: 700;
+    color: #1B1B1B;
+    margin-bottom: 4px;
+  }
+
+  .tea-origin {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 12px;
+    font-weight: 400;
+    line-height: 1.4;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: #6E675C;
+    margin-bottom: 12px;
+  }
+
+  .tea-note {
+    font-family: 'Source Serif 4', serif;
+    font-size: 16px;
+    line-height: 1.65;
+    color: #1B1B1B;
+  }
+
+  /* Quiet hours — small table, calm */
+  .quiet-hours table {
+    border-collapse: collapse;
+    max-width: 380px;
+  }
+
+  .quiet-hours th,
+  .quiet-hours td {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 12px;
+    font-weight: 400;
+    line-height: 1.4;
+    letter-spacing: 0.08em;
+    padding: 8px 24px 8px 0;
+    text-align: left;
+    border-bottom: 1px solid rgba(110, 103, 92, 0.25);
+    color: #1B1B1B;
+  }
+
+  .quiet-hours th {
+    color: #6E675C;
+    text-transform: uppercase;
+    padding-bottom: 12px;
+  }
+
+  /* Sourcing story — curious, humble, like a friend sharing */
+  .sourcing p {
+    font-family: 'Source Serif 4', serif;
+    font-size: 16px;
+    line-height: 1.65;
+    max-width: 600px;
+    color: #1B1B1B;
+  }
+
+  /* Address line */
+  .address-line {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 12px;
+    letter-spacing: 0.08em;
+    color: #6E675C;
+    padding: 16px 0;
+    border-top: 1px solid rgba(110, 103, 92, 0.25);
+    margin-bottom: 32px;
+  }
+
+  /* Footer — modest, discreet */
+  footer {
+    border-top: 1px solid rgba(110, 103, 92, 0.25);
+    padding-top: 16px;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 12px;
+    letter-spacing: 0.08em;
+    line-height: 1.4;
+    color: #6E675C;
+    display: flex;
+    justify-content: space-between;
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <header>
+    <h1>Kettle &amp; Leaf</h1>
+    <p class="welcome">Come in. The kettle's just boiled.</p>
+  </header>
+
+  <section>
+    <h2>Today's Brewed Teas</h2>
+    <div class="teas">
+      <div class="tea">
+        <h3>Ali Shan Oolong</h3>
+        <div class="tea-origin">Chiayi County, Taiwan</div>
+        <p class="tea-note">Buttery and floral with a lingering sweetness that recalls lilac and fresh cream.</p>
+      </div>
+      <div class="tea">
+        <h3>Kenyan Purple Leaf</h3>
+        <div class="tea-origin">Nandi Hills, Kenya</div>
+        <p class="tea-note">Bright and juicy with notes of plum, a crisp finish, and gentle astringency.</p>
+      </div>
+      <div class="tea">
+        <h3>Silver Needle</h3>
+        <div class="tea-origin">Fujian Province, China</div>
+        <p class="tea-note">Delicate and honeyed, with a whisper of melon rind and a clean, silky body.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="quiet-hours">
+    <h2>Quiet Hours</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>Day</th>
+          <th>Hours</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td>Monday</td><td>8:00 AM – 11:00 AM</td></tr>
+        <tr><td>Tuesday</td><td>8:00 AM – 11:00 AM</td></tr>
+        <tr><td>Wednesday</td><td>2:00 PM – 5:00 PM</td></tr>
+        <tr><td>Thursday</td><td>8:00 AM – 11:00 AM</td></tr>
+        <tr><td>Friday</td><td>2:00 PM – 5:00 PM</td></tr>
+        <tr><td>Saturday</td><td>9:00 AM – 12:00 PM</td></tr>
+        <tr><td>Sunday</td><td>All day</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <section class="sourcing">
+    <h2>From the Source</h2>
+    <p>Every spring and autumn, our owner Lin travels to the high mountain farms of Chiayi County in Taiwan and the rolling estates of Nandi Hills in Kenya. These aren't buying trips in any corporate sense — they're visits to farmers she's known for over a decade. In Taiwan, she cups the new flush directly at the processing shed, choosing lots by hand. In Kenya, she walks the rows at altitude, watching how the purple-leaf cultivar responds to the season's rains. What arrives at Kettle &amp; Leaf has been carried by hand, packed in foil-lined craft bags, and is never more than eight weeks from the bush.</p>
+  </section>
+
+  <div class="address-line">412 Maple Row</div>
+
+  <footer>
+    <div>
+      Mon – Sat: 7:00 AM – 6:00 PM<br>
+      Sun: 9:00 AM – 4:00 PM
+    </div>
+    <div>
+      (503) 227-1847
+    </div>
+  </footer>
+
+</div>
+</body>
+</html>

@@ -2,7 +2,7 @@
 import Base from "../../../../layouts/Base.astro";
 import TopRail from "../../../../components/TopRail.astro";
 import ProofThumb from "../../../../components/ProofThumb.astro";
-import { listJudgeable, judgeView } from "../../../../lib/runs";
+import { listJudgeable, judgeView } from "../../../../lib/data";
 
 export function getStaticPaths() {
   return listJudgeable().map((key) => ({ params: { case: key } }));

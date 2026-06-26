@@ -1,0 +1,923 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Auralis — Making digital experiences sound human</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root {
+    --bg-primary: #09090b;
+    --bg-secondary: #111114;
+    --bg-tertiary: #18181b;
+    --bg-card: #1c1c20;
+    --bg-elevated: #232328;
+    --border-subtle: rgba(255,255,255,0.06);
+    --border-default: rgba(255,255,255,0.1);
+    --border-strong: rgba(255,255,255,0.15);
+    --text-primary: #fafafa;
+    --text-secondary: #a1a1aa;
+    --text-tertiary: #71717a;
+    --accent: #7c5cfc;
+    --accent-hover: #6d4de6;
+    --accent-glow: rgba(124,92,252,0.15);
+    --green: #22c55e;
+    --green-dim: rgba(34,197,94,0.15);
+    --red: #ef4444;
+    --amber: #f59e0b;
+    --radius-sm: 6px;
+    --radius-md: 10px;
+    --radius-lg: 16px;
+    --radius-xl: 24px;
+    --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    --font-mono: 'JetBrains Mono', 'Fira Code', monospace;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: var(--font-sans);
+    background: var(--bg-primary);
+    color: var(--text-primary);
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  a { color: inherit; text-decoration: none; }
+
+  .container { max-width: 1200px; margin: 0 auto; padding: 0 24px; }
+
+  /* ─── NAV ─── */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    background: rgba(9,9,11,0.8);
+    backdrop-filter: blur(20px);
+    border-bottom: 1px solid var(--border-subtle);
+  }
+  .nav-inner {
+    max-width: 1200px; margin: 0 auto; padding: 0 24px;
+    display: flex; align-items: center; justify-content: space-between;
+    height: 64px;
+  }
+  .wordmark {
+    font-size: 20px; font-weight: 800; letter-spacing: -0.5px;
+    background: linear-gradient(135deg, #fff 0%, #a78bfa 100%);
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  }
+  .nav-links { display: flex; gap: 32px; align-items: center; }
+  .nav-links a {
+    font-size: 14px; font-weight: 500; color: var(--text-secondary);
+    transition: color 0.2s;
+  }
+  .nav-links a:hover { color: var(--text-primary); }
+  .btn-primary {
+    display: inline-flex; align-items: center; justify-content: center;
+    padding: 10px 20px; border-radius: var(--radius-sm);
+    background: var(--accent); color: #fff; font-size: 14px; font-weight: 600;
+    border: none; cursor: pointer; transition: background 0.2s, transform 0.1s;
+    white-space: nowrap;
+  }
+  .btn-primary:hover { background: var(--accent-hover); }
+  .btn-primary:active { transform: scale(0.98); }
+  .btn-secondary {
+    display: inline-flex; align-items: center; justify-content: center;
+    padding: 10px 20px; border-radius: var(--radius-sm);
+    background: transparent; color: var(--text-primary); font-size: 14px; font-weight: 600;
+    border: 1px solid var(--border-default); cursor: pointer; transition: all 0.2s;
+    white-space: nowrap;
+  }
+  .btn-secondary:hover { border-color: var(--border-strong); background: rgba(255,255,255,0.03); }
+
+  /* ─── HERO ─── */
+  .hero {
+    padding: 180px 0 100px;
+    text-align: center;
+    position: relative;
+  }
+  .hero::before {
+    content: '';
+    position: absolute; top: 60px; left: 50%; transform: translateX(-50%);
+    width: 600px; height: 400px;
+    background: radial-gradient(ellipse, var(--accent-glow) 0%, transparent 70%);
+    pointer-events: none;
+  }
+  .hero h1 {
+    font-size: 72px; font-weight: 800; letter-spacing: -2.5px;
+    line-height: 1.05; max-width: 800px; margin: 0 auto 48px;
+    background: linear-gradient(180deg, #fff 30%, #71717a 100%);
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  }
+  .hero-actions { display: flex; gap: 12px; justify-content: center; }
+
+  /* ─── PRODUCT DEMO ─── */
+  .demo-section { padding: 0 0 120px; }
+  .demo-panel {
+    background: var(--bg-secondary);
+    border: 1px solid var(--border-default);
+    border-radius: var(--radius-xl);
+    overflow: hidden;
+    box-shadow: 0 0 80px rgba(124,92,252,0.06), 0 40px 80px rgba(0,0,0,0.4);
+  }
+  .demo-tabs {
+    display: flex; align-items: center; gap: 0;
+    border-bottom: 1px solid var(--border-subtle);
+    padding: 0 24px;
+  }
+  .demo-tab {
+    padding: 16px 20px; font-size: 13px; font-weight: 600;
+    color: var(--text-tertiary); cursor: pointer; position: relative;
+    transition: color 0.2s; border: none; background: none;
+  }
+  .demo-tab.active { color: var(--text-primary); }
+  .demo-tab.active::after {
+    content: ''; position: absolute; bottom: 0; left: 20px; right: 20px;
+    height: 2px; background: var(--accent); border-radius: 1px;
+  }
+  .demo-status-bar {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 16px 24px;
+    border-bottom: 1px solid var(--border-subtle);
+  }
+  .demo-status-left { display: flex; align-items: center; gap: 12px; }
+  .live-dot {
+    width: 8px; height: 8px; border-radius: 50%; background: var(--green);
+    box-shadow: 0 0 8px var(--green);
+    animation: pulse-dot 2s infinite;
+  }
+  @keyframes pulse-dot {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.5; }
+  }
+  .demo-status-label {
+    font-size: 13px; font-weight: 600; color: var(--text-primary);
+    font-family: var(--font-mono); text-transform: uppercase; letter-spacing: 0.5px;
+  }
+  .demo-preview {
+    display: flex; align-items: center; justify-content: center;
+    padding: 80px 24px;
+    position: relative;
+    background: linear-gradient(180deg, var(--bg-secondary) 0%, var(--bg-tertiary) 100%);
+  }
+  .play-button {
+    width: 88px; height: 88px; border-radius: 50%;
+    background: var(--accent); border: none; cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    box-shadow: 0 0 40px rgba(124,92,252,0.3);
+    transition: transform 0.2s, box-shadow 0.2s;
+    position: relative; z-index: 2;
+  }
+  .play-button:hover { transform: scale(1.08); box-shadow: 0 0 60px rgba(124,92,252,0.4); }
+  .play-button svg { width: 32px; height: 32px; fill: #fff; margin-left: 4px; }
+  .waveform-bg {
+    position: absolute; left: 0; right: 0; top: 50%; transform: translateY(-50%);
+    display: flex; align-items: center; justify-content: center; gap: 3px;
+    opacity: 0.2;
+  }
+  .waveform-bg .bar {
+    width: 3px; border-radius: 2px; background: var(--accent);
+    animation: wave 1.5s ease-in-out infinite;
+  }
+  @keyframes wave {
+    0%, 100% { height: 12px; }
+    50% { height: 48px; }
+  }
+  .demo-bottom-bar {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 14px 24px;
+    border-top: 1px solid var(--border-subtle);
+    background: var(--bg-tertiary);
+  }
+  .mode-links { display: flex; gap: 0; }
+  .mode-link {
+    padding: 8px 16px; font-size: 12px; font-weight: 600;
+    color: var(--text-tertiary); border-radius: var(--radius-sm);
+    cursor: pointer; transition: all 0.2s; border: none; background: none;
+    white-space: nowrap;
+  }
+  .mode-link.active { color: var(--text-primary); background: var(--bg-elevated); }
+
+  /* ─── TRUST STRIP ─── */
+  .trust-section {
+    padding: 100px 0;
+    border-top: 1px solid var(--border-subtle);
+    border-bottom: 1px solid var(--border-subtle);
+  }
+  .trust-section h3 {
+    text-align: center; font-size: 14px; font-weight: 500;
+    color: var(--text-tertiary); text-transform: uppercase; letter-spacing: 1.5px;
+    margin-bottom: 48px;
+  }
+  .trust-logos {
+    display: flex; align-items: center; justify-content: center;
+    gap: 56px; flex-wrap: wrap;
+  }
+  .trust-logo {
+    font-size: 18px; font-weight: 700; color: var(--text-tertiary);
+    letter-spacing: 1px; text-transform: uppercase; opacity: 0.5;
+    transition: opacity 0.2s;
+  }
+  .trust-logo:hover { opacity: 0.8; }
+
+  /* ─── PLATFORM OVERVIEW ─── */
+  .platform-section { padding: 120px 0; }
+  .platform-header { text-align: center; max-width: 640px; margin: 0 auto 64px; }
+  .platform-header h2 {
+    font-size: 48px; font-weight: 800; letter-spacing: -1.5px; line-height: 1.1;
+    margin-bottom: 20px;
+  }
+  .platform-header p { font-size: 17px; color: var(--text-secondary); line-height: 1.7; }
+  .feature-blurbs {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 24px;
+    margin-bottom: 48px;
+  }
+  .feature-blurb {
+    padding: 32px;
+    background: var(--bg-secondary);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-lg);
+  }
+  .feature-blurb h4 {
+    font-size: 18px; font-weight: 700; margin-bottom: 8px;
+  }
+  .feature-blurb p { font-size: 14px; color: var(--text-secondary); line-height: 1.6; }
+
+  /* dashboard mockup */
+  .dashboard-mockup {
+    background: var(--bg-secondary);
+    border: 1px solid var(--border-default);
+    border-radius: var(--radius-xl);
+    overflow: hidden;
+    box-shadow: 0 40px 80px rgba(0,0,0,0.3);
+  }
+  .dashboard-top-bar {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 16px 24px;
+    border-bottom: 1px solid var(--border-subtle);
+    background: var(--bg-tertiary);
+  }
+  .dashboard-title {
+    font-family: var(--font-mono); font-size: 13px; font-weight: 600;
+    letter-spacing: 1px; color: var(--text-primary);
+  }
+  .dashboard-badge {
+    font-family: var(--font-mono); font-size: 10px; font-weight: 600;
+    padding: 4px 10px; border-radius: var(--radius-sm);
+    background: var(--accent-glow); color: var(--accent);
+    border: 1px solid rgba(124,92,252,0.2);
+    letter-spacing: 0.8px; text-transform: uppercase;
+  }
+  .dashboard-indicator {
+    display: flex; align-items: center; gap: 8px;
+    padding: 10px 24px;
+    border-bottom: 1px solid var(--border-subtle);
+  }
+  .dashboard-indicator .dot {
+    width: 6px; height: 6px; border-radius: 50%; background: var(--green);
+    animation: pulse-dot 2s infinite;
+  }
+  .dashboard-indicator span {
+    font-size: 12px; color: var(--green); font-family: var(--font-mono); font-weight: 500;
+  }
+  .dashboard-metrics {
+    display: grid; grid-template-columns: repeat(3, 1fr);
+    border-bottom: 1px solid var(--border-subtle);
+  }
+  .metric {
+    padding: 20px 24px;
+    border-right: 1px solid var(--border-subtle);
+  }
+  .metric:last-child { border-right: none; }
+  .metric-label {
+    font-size: 10px; font-weight: 600; color: var(--text-tertiary);
+    text-transform: uppercase; letter-spacing: 1.2px; font-family: var(--font-mono);
+    margin-bottom: 4px;
+  }
+  .metric-value {
+    font-size: 28px; font-weight: 800; letter-spacing: -0.5px;
+  }
+  .metric-value.green { color: var(--green); }
+  .metric-value.amber { color: var(--amber); }
+  .metric-unit {
+    font-size: 14px; font-weight: 500; color: var(--text-tertiary);
+    margin-left: 2px;
+  }
+  .metric-status {
+    display: inline-flex; align-items: center; gap: 6px;
+    font-size: 13px; font-weight: 600; color: var(--green);
+  }
+  .metric-status .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--green); }
+
+  .dashboard-waveform {
+    padding: 32px 24px;
+    display: flex; align-items: end; justify-content: center; gap: 2px;
+    height: 160px;
+    background: linear-gradient(180deg, transparent 0%, rgba(124,92,252,0.03) 100%);
+  }
+  .dashboard-waveform .bar {
+    width: 4px; border-radius: 2px;
+    background: linear-gradient(180deg, var(--accent) 0%, rgba(124,92,252,0.3) 100%);
+  }
+  .dashboard-transport {
+    display: flex; align-items: center; justify-content: center; gap: 24px;
+    padding: 16px 24px;
+    border-top: 1px solid var(--border-subtle);
+    background: var(--bg-tertiary);
+  }
+  .transport-btn {
+    width: 40px; height: 40px; border-radius: 50%;
+    background: var(--bg-elevated); border: 1px solid var(--border-default);
+    display: flex; align-items: center; justify-content: center;
+    cursor: pointer; transition: all 0.2s; color: var(--text-secondary);
+  }
+  .transport-btn:hover { background: var(--bg-card); color: var(--text-primary); }
+  .transport-btn.play-main {
+    width: 48px; height: 48px; background: var(--accent); border-color: var(--accent);
+    color: #fff;
+  }
+  .transport-btn svg { width: 18px; height: 18px; fill: currentColor; }
+  .transport-time {
+    font-family: var(--font-mono); font-size: 13px; color: var(--text-tertiary);
+  }
+
+  /* ─── STUDIO SECTION ─── */
+  .studio-section { padding: 120px 0; }
+  .section-header { max-width: 600px; margin-bottom: 48px; }
+  .section-header h2 {
+    font-size: 44px; font-weight: 800; letter-spacing: -1.5px; line-height: 1.1;
+    margin-bottom: 16px;
+  }
+  .section-header p { font-size: 16px; color: var(--text-secondary); line-height: 1.7; }
+
+  .studio-cards { display: grid; grid-template-columns: 1.2fr 0.8fr; gap: 24px; margin-bottom: 48px; }
+  .studio-card {
+    background: var(--bg-secondary); border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-lg); overflow: hidden;
+  }
+  .studio-card-visual {
+    height: 240px;
+    background: linear-gradient(135deg, var(--bg-tertiary) 0%, #1e1b2e 100%);
+    display: flex; align-items: center; justify-content: center;
+    position: relative;
+  }
+  .editor-mockup {
+    width: 85%; height: 80%; border-radius: var(--radius-md);
+    background: var(--bg-primary); border: 1px solid var(--border-default);
+    overflow: hidden;
+  }
+  .editor-topbar {
+    height: 28px; background: var(--bg-tertiary);
+    border-bottom: 1px solid var(--border-subtle);
+    display: flex; align-items: center; padding: 0 10px; gap: 6px;
+  }
+  .editor-dot { width: 8px; height: 8px; border-radius: 50%; }
+  .editor-dot.r { background: #ef4444; } .editor-dot.y { background: #f59e0b; } .editor-dot.g { background: #22c55e; }
+  .editor-body { padding: 12px; display: flex; gap: 8px; height: calc(100% - 28px); }
+  .editor-sidebar {
+    width: 32%; background: var(--bg-tertiary); border-radius: var(--radius-sm);
+    padding: 8px;
+  }
+  .editor-sidebar-item {
+    height: 6px; border-radius: 3px; background: rgba(255,255,255,0.06);
+    margin-bottom: 6px;
+  }
+  .editor-sidebar-item.active { background: rgba(124,92,252,0.3); }
+  .editor-main {
+    flex: 1; display: flex; flex-direction: column; gap: 6px;
+  }
+  .editor-waveform-row {
+    flex: 1; border-radius: var(--radius-sm);
+    background: rgba(124,92,252,0.06);
+    display: flex; align-items: center; justify-content: center; gap: 1px;
+  }
+  .editor-waveform-row .ebar {
+    width: 2px; border-radius: 1px; background: var(--accent); opacity: 0.5;
+  }
+
+  .studio-card-body { padding: 24px; }
+  .studio-card-label {
+    font-size: 11px; font-weight: 600; color: var(--text-tertiary);
+    text-transform: uppercase; letter-spacing: 1px; margin-bottom: 8px;
+    font-family: var(--font-mono);
+  }
+  .studio-card-title { font-size: 18px; font-weight: 700; margin-bottom: 8px; }
+  .studio-card-desc { font-size: 14px; color: var(--text-secondary); line-height: 1.6; }
+
+  .transcript-lines { margin-top: 16px; }
+  .transcript-line {
+    display: flex; align-items: baseline; gap: 12px;
+    padding: 8px 0;
+    border-bottom: 1px solid var(--border-subtle);
+    font-size: 13px;
+  }
+  .transcript-time { font-family: var(--font-mono); color: var(--text-tertiary); font-size: 11px; min-width: 50px; }
+  .transcript-text { color: var(--text-secondary); }
+
+  .studio-modes { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; }
+  .studio-mode {
+    padding: 20px;
+    background: var(--bg-secondary); border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-md); text-align: center;
+    transition: all 0.2s; cursor: pointer;
+  }
+  .studio-mode:hover { border-color: var(--border-strong); background: var(--bg-tertiary); }
+  .studio-mode-icon {
+    width: 40px; height: 40px; border-radius: var(--radius-sm);
+    background: var(--bg-elevated); display: flex; align-items: center; justify-content: center;
+    margin: 0 auto 12px; color: var(--accent);
+  }
+  .studio-mode-icon svg { width: 20px; height: 20px; fill: currentColor; }
+  .studio-mode-name { font-size: 14px; font-weight: 600; }
+
+  /* ─── AGENTS SECTION ─── */
+  .agents-section { padding: 120px 0; background: var(--bg-secondary); }
+  .agents-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+
+  .chat-card {
+    background: var(--bg-primary); border: 1px solid var(--border-default);
+    border-radius: var(--radius-lg); overflow: hidden;
+  }
+  .chat-header {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 16px 20px;
+    border-bottom: 1px solid var(--border-subtle);
+  }
+  .chat-agent-name { font-size: 14px; font-weight: 700; }
+  .chat-agent-status {
+    font-size: 10px; font-weight: 600; color: var(--green);
+    font-family: var(--font-mono); letter-spacing: 0.5px;
+  }
+  .chat-body { padding: 20px; display: flex; flex-direction: column; gap: 16px; min-height: 280px; }
+  .chat-bubble {
+    max-width: 80%; padding: 12px 16px;
+    font-size: 14px; line-height: 1.5; border-radius: var(--radius-lg);
+  }
+  .chat-bubble.bot {
+    background: var(--bg-tertiary); border: 1px solid var(--border-subtle);
+    align-self: flex-start;
+    border-bottom-left-radius: var(--radius-sm);
+  }
+  .chat-bubble.user {
+    background: var(--accent); color: #fff;
+    align-self: flex-end;
+    border-bottom-right-radius: var(--radius-sm);
+  }
+  .chat-typing {
+    display: flex; gap: 4px; align-self: flex-start;
+    padding: 12px 16px;
+    background: var(--bg-tertiary); border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-lg); border-bottom-left-radius: var(--radius-sm);
+  }
+  .chat-typing .dot {
+    width: 6px; height: 6px; border-radius: 50%; background: var(--text-tertiary);
+    animation: typing 1.4s infinite;
+  }
+  .chat-typing .dot:nth-child(2) { animation-delay: 0.2s; }
+  .chat-typing .dot:nth-child(3) { animation-delay: 0.4s; }
+  @keyframes typing {
+    0%, 60%, 100% { opacity: 0.3; transform: translateY(0); }
+    30% { opacity: 1; transform: translateY(-4px); }
+  }
+
+  .insights-card {
+    background: var(--bg-primary); border: 1px solid var(--border-default);
+    border-radius: var(--radius-lg); padding: 32px;
+    display: flex; flex-direction: column; justify-content: center;
+  }
+  .insights-badge {
+    display: inline-flex; align-items: center; gap: 6px;
+    padding: 4px 12px; border-radius: 999px;
+    background: var(--accent-glow); border: 1px solid rgba(124,92,252,0.2);
+    font-size: 11px; font-weight: 600; color: var(--accent);
+    font-family: var(--font-mono); text-transform: uppercase; letter-spacing: 0.5px;
+    margin-bottom: 20px; width: fit-content;
+  }
+  .insights-card h4 { font-size: 22px; font-weight: 800; margin-bottom: 12px; }
+  .insights-card p { font-size: 14px; color: var(--text-secondary); line-height: 1.7; }
+  .insight-metrics { display: flex; gap: 24px; margin-top: 24px; }
+  .insight-metric-label { font-size: 10px; font-weight: 600; color: var(--text-tertiary); text-transform: uppercase; letter-spacing: 1px; font-family: var(--font-mono); }
+  .insight-metric-value { font-size: 24px; font-weight: 800; margin-top: 4px; }
+
+  /* ─── FINAL CTA ─── */
+  .cta-section {
+    padding: 160px 0;
+    text-align: center;
+    position: relative;
+  }
+  .cta-section::before {
+    content: '';
+    position: absolute; bottom: 0; left: 50%; transform: translateX(-50%);
+    width: 800px; height: 400px;
+    background: radial-gradient(ellipse, var(--accent-glow) 0%, transparent 70%);
+    pointer-events: none;
+  }
+  .cta-section h2 {
+    font-size: 56px; font-weight: 800; letter-spacing: -2px; line-height: 1.1;
+    margin-bottom: 40px;
+    background: linear-gradient(180deg, #fff 30%, #71717a 100%);
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  }
+  .cta-actions { display: flex; gap: 12px; justify-content: center; }
+
+  /* ─── FOOTER ─── */
+  footer {
+    padding: 40px 0;
+    border-top: 1px solid var(--border-subtle);
+  }
+  .footer-inner {
+    display: flex; align-items: center; justify-content: space-between;
+  }
+  .footer-left { display: flex; align-items: center; gap: 24px; }
+  .footer-copy { font-size: 13px; color: var(--text-tertiary); }
+  .footer-links { display: flex; gap: 24px; }
+  .footer-links a {
+    font-size: 13px; color: var(--text-tertiary); transition: color 0.2s;
+  }
+  .footer-links a:hover { color: var(--text-secondary); }
+
+  /* Responsive */
+  @media (max-width: 768px) {
+    .hero h1 { font-size: 40px; }
+    .nav-links { display: none; }
+    .feature-blurbs, .studio-cards, .agents-grid, .studio-modes, .dashboard-metrics {
+      grid-template-columns: 1fr;
+    }
+    .platform-header h2, .section-header h2 { font-size: 32px; }
+    .cta-section h2 { font-size: 36px; }
+    .trust-logos { gap: 32px; }
+    .mode-links { overflow-x: auto; }
+    .footer-inner { flex-direction: column; gap: 16px; text-align: center; }
+    .footer-left { flex-direction: column; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ─── NAVIGATION ─── -->
+<nav>
+  <div class="nav-inner">
+    <a href="#" class="wordmark">Auralis</a>
+    <div class="nav-links">
+      <a href="#">Studio</a>
+      <a href="#">Agents</a>
+      <a href="#">API</a>
+      <a href="#">Resources</a>
+      <a href="#">Enterprise</a>
+      <a href="#">Pricing</a>
+    </div>
+    <button class="btn-primary">Sign up</button>
+  </div>
+</nav>
+
+<!-- ─── HERO ─── -->
+<section class="hero">
+  <div class="container">
+    <h1>Making digital experiences sound human</h1>
+    <div class="hero-actions">
+      <button class="btn-primary">Sign up</button>
+      <button class="btn-secondary">Contact sales</button>
+    </div>
+  </div>
+</section>
+
+<!-- ─── PRODUCT DEMO ─── -->
+<section class="demo-section">
+  <div class="container">
+    <div class="demo-panel">
+      <div class="demo-tabs">
+        <button class="demo-tab active">Auralis Studio</button>
+        <button class="demo-tab">Auralis Agents</button>
+        <button class="demo-tab">Auralis API</button>
+      </div>
+      <div class="demo-status-bar">
+        <div class="demo-status-left">
+          <div class="live-dot"></div>
+          <span class="demo-status-label">AI Voice Generator</span>
+        </div>
+      </div>
+      <div class="demo-preview">
+        <div class="waveform-bg" id="waveformBg"></div>
+        <button class="play-button">
+          <svg viewBox="0 0 24 24"><polygon points="6,3 20,12 6,21"/></svg>
+        </button>
+      </div>
+      <div class="demo-bottom-bar">
+        <div class="mode-links">
+          <button class="mode-link active">AI Voice Generator</button>
+          <button class="mode-link">Text to Speech</button>
+          <button class="mode-link">Music</button>
+          <button class="mode-link">Sound Effects</button>
+          <button class="mode-link">Voice Cloning</button>
+        </div>
+        <button class="btn-primary" style="padding: 8px 16px; font-size: 12px;">Sign up</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── TRUST STRIP ─── -->
+<section class="trust-section">
+  <div class="container">
+    <h3>Trusted by teams building modern audio experiences</h3>
+    <div class="trust-logos">
+      <span class="trust-logo">Velocity</span>
+      <span class="trust-logo">Nexus</span>
+      <span class="trust-logo">Lumina</span>
+      <span class="trust-logo">Stack</span>
+      <span class="trust-logo">Quanta</span>
+      <span class="trust-logo">Orbital</span>
+      <span class="trust-logo">Scalar</span>
+    </div>
+  </div>
+</section>
+
+<!-- ─── PLATFORM OVERVIEW ─── -->
+<section class="platform-section">
+  <div class="container">
+    <div class="platform-header">
+      <h2>Two systems, one shared intelligence layer</h2>
+      <p>Auralis Studio and Auralis Agents are built on the same neural foundation — a unified voice intelligence engine that learns from every interaction, generation, and deployment across the platform.</p>
+    </div>
+    <div class="feature-blurbs">
+      <div class="feature-blurb">
+        <h4>Precision Generation</h4>
+        <p>Create studio-grade voice, music, and sound effects with sample-level control. Every output is informed by a shared acoustic model trained on millions of hours of labeled audio data.</p>
+      </div>
+      <div class="feature-blurb">
+        <h4>Agentic Architecture</h4>
+        <p>Deploy autonomous voice agents that reason through conversations, adapt tone in real time, and integrate with your existing support, sales, and operations workflows.</p>
+      </div>
+    </div>
+
+    <!-- Dashboard Mockup -->
+    <div class="dashboard-mockup">
+      <div class="dashboard-top-bar">
+        <span class="dashboard-title">NEURAL ENGINE V4.2 PRO</span>
+        <span class="dashboard-badge">Studio Mode</span>
+      </div>
+      <div class="dashboard-indicator">
+        <span class="dot"></span>
+        <span>Real-time Synthesis Active</span>
+      </div>
+      <div class="dashboard-metrics">
+        <div class="metric">
+          <div class="metric-label">Latency</div>
+          <div class="metric-value green">12<span class="metric-unit">ms</span></div>
+        </div>
+        <div class="metric">
+          <div class="metric-label">Confidence</div>
+          <div class="metric-value" style="color: var(--text-primary);">99.8<span class="metric-unit">%</span></div>
+        </div>
+        <div class="metric">
+          <div class="metric-label">Status</div>
+          <div class="metric-status"><span class="dot"></span> Operational</div>
+        </div>
+      </div>
+      <div class="dashboard-waveform" id="dashboardWaveform"></div>
+      <div class="dashboard-transport">
+        <span class="transport-time">00:00</span>
+        <button class="transport-btn">
+          <svg viewBox="0 0 24 24"><rect x="4" y="4" width="6" height="16" rx="1"/></svg>
+        </button>
+        <button class="transport-btn">
+          <svg viewBox="0 0 24 24"><polygon points="4,4 12,12 4,20"/><line x1="12" y1="4" x2="12" y2="20" stroke="currentColor" stroke-width="2"/></svg>
+        </button>
+        <button class="transport-btn play-main">
+          <svg viewBox="0 0 24 24"><polygon points="7,4 20,12 7,20"/></svg>
+        </button>
+        <button class="transport-btn">
+          <svg viewBox="0 0 24 24"><polygon points="20,4 12,12 20,20"/><line x1="12" y1="4" x2="12" y2="20" stroke="currentColor" stroke-width="2"/></svg>
+        </button>
+        <button class="transport-btn">
+          <svg viewBox="0 0 24 24"><rect x="14" y="4" width="6" height="16" rx="1"/></svg>
+        </button>
+        <span class="transport-time">03:42</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── AURALIS STUDIO ─── -->
+<section class="studio-section">
+  <div class="container">
+    <div class="section-header">
+      <h2>Sculpt sound with absolute precision.</h2>
+      <p>Auralis Studio gives audio professionals full control over voice generation, editing, and post-production — all powered by the same neural engine that drives our agentic platform.</p>
+    </div>
+    <div class="studio-cards">
+      <div class="studio-card">
+        <div class="studio-card-visual">
+          <div class="editor-mockup">
+            <div class="editor-topbar">
+              <div class="editor-dot r"></div>
+              <div class="editor-dot y"></div>
+              <div class="editor-dot g"></div>
+            </div>
+            <div class="editor-body">
+              <div class="editor-sidebar">
+                <div class="editor-sidebar-item active"></div>
+                <div class="editor-sidebar-item"></div>
+                <div class="editor-sidebar-item"></div>
+                <div class="editor-sidebar-item"></div>
+                <div class="editor-sidebar-item"></div>
+                <div class="editor-sidebar-item active"></div>
+                <div class="editor-sidebar-item"></div>
+              </div>
+              <div class="editor-main" id="editorMain"></div>
+            </div>
+          </div>
+        </div>
+        <div class="studio-card-body">
+          <div class="studio-card-label">Visual Editor</div>
+          <div class="studio-card-title">Soft Editor UI</div>
+          <div class="studio-card-desc">A refined editing experience with waveform visualization, multi-track layering, and non-destructive editing across every supported format.</div>
+        </div>
+      </div>
+      <div class="studio-card">
+        <div class="studio-card-body">
+          <div class="studio-card-label">Transcript</div>
+          <div class="studio-card-title">Transcript Panel</div>
+          <div class="studio-card-desc">Navigate audio by reading it. Click any word to jump to that moment, select a sentence to re-generate, and export synchronized captions in any format.</div>
+          <div class="transcript-lines">
+            <div class="transcript-line">
+              <span class="transcript-time">0:00</span>
+              <span class="transcript-text">Welcome to the Auralis platform overview.</span>
+            </div>
+            <div class="transcript-line">
+              <span class="transcript-time">0:04</span>
+              <span class="transcript-text">Today we're exploring the neural engine behind our voice generation.</span>
+            </div>
+            <div class="transcript-line">
+              <span class="transcript-time">0:09</span>
+              <span class="transcript-text">Let's start with the Studio workspace.</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="studio-modes">
+      <div class="studio-mode">
+        <div class="studio-mode-icon">
+          <svg viewBox="0 0 24 24"><path d="M12 3v10.55A4 4 0 1 0 14 17V7h4V3h-6Z"/></svg>
+        </div>
+        <div class="studio-mode-name">Music</div>
+      </div>
+      <div class="studio-mode">
+        <div class="studio-mode-icon">
+          <svg viewBox="0 0 24 24"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3A4.5 4.5 0 0 0 14 8.5v7a4.49 4.49 0 0 0 2.5-3.5zM14 3.23v2.06a6.51 6.51 0 0 1 0 13.42v2.06A8.51 8.51 0 0 0 14 3.23z"/></svg>
+        </div>
+        <div class="studio-mode-name">SFX</div>
+      </div>
+      <div class="studio-mode">
+        <div class="studio-mode-icon">
+          <svg viewBox="0 0 24 24"><path d="M12 14c1.66 0 3-1.34 3-3V5c0-1.66-1.34-3-3-3S9 3.34 9 5v6c0 1.66 1.34 3 3 3zm-1-9c0-.55.45-1 1-1s1 .45 1 1v6c0 .55-.45 1-1 1s-1-.45-1-1V5zm6 6c0 2.76-2.24 5-5 5s-5-2.24-5-5H5c0 3.53 2.61 6.43 6 6.92V21h2v-3.08c3.39-.49 6-3.39 6-6.92h-2z"/></svg>
+        </div>
+        <div class="studio-mode-name">Voices</div>
+      </div>
+      <div class="studio-mode">
+        <div class="studio-mode-icon">
+          <svg viewBox="0 0 24 24"><path d="M21 19V5c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2zM8.5 13.5l2.5 3.01L14.5 12l4.5 6H5l3.5-4.5z"/></svg>
+        </div>
+        <div class="studio-mode-name">Image &amp; Video</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── AURALIS AGENTS ─── -->
+<section class="agents-section">
+  <div class="container">
+    <div class="section-header">
+      <h2>Autonomous reasoning, human delivery.</h2>
+      <p>Auralis Agents handle complex voice interactions end to end — understanding intent, reasoning through context, and responding with natural, emotionally aware speech in real time.</p>
+    </div>
+    <div class="agents-grid">
+      <div class="chat-card">
+        <div class="chat-header">
+          <div>
+            <div class="chat-agent-name">Nexus Support Agent</div>
+          </div>
+          <div class="chat-agent-status">ONLINE · LATENCY: 12ms</div>
+        </div>
+        <div class="chat-body">
+          <div class="chat-bubble bot">Hello! How can I assist you today?</div>
+          <div class="chat-bubble user">I need help checking my deployment status.</div>
+          <div class="chat-typing">
+            <span class="dot"></span>
+            <span class="dot"></span>
+            <span class="dot"></span>
+          </div>
+        </div>
+      </div>
+      <div class="insights-card">
+        <div class="insights-badge">Analytics</div>
+        <h4>Deep Insights</h4>
+        <p>Track agent performance across every conversation. Measure resolution rates, sentiment shifts, escalation patterns, and voice quality scores — all in real time.</p>
+        <div class="insight-metrics">
+          <div>
+            <div class="insight-metric-label">Resolution</div>
+            <div class="insight-metric-value green" style="color: var(--green);">94%</div>
+          </div>
+          <div>
+            <div class="insight-metric-label">Avg. Handle</div>
+            <div class="insight-metric-value">2.4<span style="font-size:14px; color: var(--text-tertiary);">min</span></div>
+          </div>
+          <div>
+            <div class="insight-metric-label">Sentiment</div>
+            <div class="insight-metric-value" style="color: var(--accent);">+87</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── FINAL CTA ─── -->
+<section class="cta-section">
+  <div class="container">
+    <h2>The future of voice starts here</h2>
+    <div class="cta-actions">
+      <button class="btn-primary">Get started</button>
+      <button class="btn-secondary">Talk to sales</button>
+    </div>
+  </div>
+</section>
+
+<!-- ─── FOOTER ─── -->
+<footer>
+  <div class="container">
+    <div class="footer-inner">
+      <div class="footer-left">
+        <span class="wordmark" style="font-size: 16px;">Auralis</span>
+        <span class="footer-copy">&copy; 2024 Auralis AI. Engineered for precision.</span>
+      </div>
+      <div class="footer-links">
+        <a href="#">Twitter</a>
+        <a href="#">GitHub</a>
+        <a href="#">Terms</a>
+        <a href="#">Privacy</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script>
+  // Generate waveform bars for the demo preview
+  (function() {
+    const bg = document.getElementById('waveformBg');
+    if (bg) {
+      for (let i = 0; i < 80; i++) {
+        const bar = document.createElement('div');
+        bar.className = 'bar';
+        const h = 8 + Math.random() * 50;
+        bar.style.height = h + 'px';
+        bar.style.animationDelay = (Math.random() * 2) + 's';
+        bg.appendChild(bar);
+      }
+    }
+  })();
+
+  // Generate waveform bars for the dashboard
+  (function() {
+    const dw = document.getElementById('dashboardWaveform');
+    if (dw) {
+      for (let i = 0; i < 120; i++) {
+        const bar = document.createElement('div');
+        bar.className = 'bar';
+        const center = 60;
+        const dist = Math.abs(i - center) / center;
+        const envelope = Math.cos(dist * Math.PI * 0.5);
+        const noise = 0.3 + Math.random() * 0.7;
+        const h = Math.max(4, envelope * noise * 100);
+        bar.style.height = h + 'px';
+        dw.appendChild(bar);
+      }
+    }
+  })();
+
+  // Generate waveform rows for the editor mockup
+  (function() {
+    const em = document.getElementById('editorMain');
+    if (em) {
+      for (let t = 0; t < 4; t++) {
+        const row = document.createElement('div');
+        row.className = 'editor-waveform-row';
+        const count = 60 + Math.floor(Math.random() * 20);
+        for (let i = 0; i < count; i++) {
+          const bar = document.createElement('div');
+          bar.className = 'ebar';
+          bar.style.height = (2 + Math.random() * 18) + 'px';
+          row.appendChild(bar);
+        }
+        em.appendChild(row);
+      }
+    }
+  })();
+</script>
+
+</body>
+</html>

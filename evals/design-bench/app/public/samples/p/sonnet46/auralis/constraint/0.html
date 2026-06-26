@@ -1,0 +1,717 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Auralis — Making digital experiences sound human</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  /*
+   * CONSTRAINT: Color may exist only where sound is being rendered.
+   * The page at rest is ink on warm off-white — monochrome field.
+   * Only the demo panel preview and the dashboard waveform may have chroma.
+   * Sound has no corners → all interactive elements are full capsule (rounded-full).
+   * No drop shadows → surfaces meet by hairline seam or tonal step.
+   * Single permitted exception: the demo panel may have one barely-perceptible shadow (~4% opacity).
+   * One typeface throughout.
+   */
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --primary: #111111;
+    --secondary: #6B6B6B;
+    --tertiary: #9958ff;
+    --neutral: #F7F7F5;
+    --surface-elevated: #ffffff;
+    --outline-muted: #E5E5E3;
+    --font: 'Geist', system-ui, sans-serif;
+    --r-sm: 0.25rem;
+    --r-md: 0.75rem;
+    --r-lg: 1.5rem;
+    --r-full: 9999px;
+    --sp-sm: 8px;
+    --sp-md: 24px;
+    --sp-lg: 64px;
+    --sp-xl: 140px;
+  }
+
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: var(--font);
+    background: var(--neutral);
+    color: var(--primary);
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+    font-size: 16px; font-weight: 400;
+  }
+
+  /* ---- NAV: monochrome, no chroma ---- */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    height: 64px;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 0 var(--sp-md);
+    background: rgba(247,247,245,0.9);
+    backdrop-filter: blur(14px);
+    border-bottom: 1px solid var(--outline-muted);
+  }
+  .wordmark {
+    font-size: 12px; font-weight: 600; letter-spacing: 0.08em; line-height: 1;
+    text-transform: uppercase; color: var(--primary);
+  }
+  .nav-links {
+    display: flex; align-items: center; gap: 28px; list-style: none;
+  }
+  .nav-links a {
+    font-size: 14px; font-weight: 500; letter-spacing: 0.01em;
+    color: var(--secondary); text-decoration: none; transition: color 0.15s;
+  }
+  .nav-links a:hover { color: var(--primary); }
+  /* Full capsule — sound has no corners */
+  .nav-cta {
+    background: var(--primary); color: var(--surface-elevated);
+    font-size: 14px; font-weight: 500; letter-spacing: 0.01em; line-height: 1;
+    padding: 10px 22px; border-radius: var(--r-full); text-decoration: none;
+    border: none; cursor: pointer; transition: opacity 0.15s;
+  }
+  .nav-cta:hover { opacity: 0.82; }
+
+  /* ---- HERO: silence — achromatic ---- */
+  .hero {
+    min-height: 100vh; display: flex; flex-direction: column;
+    align-items: center; justify-content: center; text-align: center;
+    padding: var(--sp-xl) var(--sp-md);
+    padding-top: calc(var(--sp-xl) + 64px);
+    /* no background, no gradient, no color — silent */
+  }
+  .hero h1 {
+    font-size: 72px; font-weight: 600; line-height: 0.95; letter-spacing: -0.04em;
+    color: var(--primary); max-width: 840px; margin-bottom: 40px;
+    /* no gradient text — nothing is rendering sound yet */
+  }
+  .hero-actions { display: flex; gap: var(--sp-sm); }
+  /* Full capsule controls — wave is continuous, no corners */
+  .pill-filled {
+    background: var(--primary); color: var(--surface-elevated);
+    font-size: 14px; font-weight: 500; letter-spacing: 0.01em; line-height: 1;
+    padding: 12px 28px; border-radius: var(--r-full); text-decoration: none;
+    border: none; cursor: pointer; transition: opacity 0.15s;
+  }
+  .pill-filled:hover { opacity: 0.82; }
+  .pill-ghost {
+    background: transparent; color: var(--primary);
+    font-size: 14px; font-weight: 500; letter-spacing: 0.01em; line-height: 1;
+    padding: 11px 28px; border-radius: var(--r-full); text-decoration: none;
+    border: 1px solid var(--outline-muted); cursor: pointer; transition: border-color 0.15s;
+  }
+  .pill-ghost:hover { border-color: var(--secondary); }
+
+  /* ---- DEMO PANEL: the one object actually emitting — color floods in ---- */
+  .demo-wrap {
+    padding: 0 var(--sp-md) var(--sp-lg); max-width: 1200px; margin: 0 auto;
+  }
+  .demo-panel {
+    background: var(--surface-elevated); border: 1px solid var(--outline-muted);
+    border-radius: var(--r-lg); overflow: hidden;
+    /* Single permitted shadow — demo panel "emitting", 4% opacity */
+    box-shadow: 0 12px 48px rgba(17,17,17,0.04);
+  }
+  .demo-tabs {
+    display: flex; border-bottom: 1px solid var(--outline-muted);
+    /* achromatic — not rendering sound yet */
+  }
+  .dtab {
+    padding: 14px var(--sp-md); font-size: 14px; font-weight: 500;
+    letter-spacing: 0.01em; color: var(--secondary); cursor: pointer;
+    border-right: 1px solid var(--outline-muted);
+    border-bottom: 2px solid transparent; margin-bottom: -1px; transition: color 0.15s;
+  }
+  .dtab.active { color: var(--primary); border-bottom-color: var(--primary); }
+  .demo-status {
+    margin-left: auto; display: flex; align-items: center; gap: var(--sp-sm);
+    padding: 0 var(--sp-md); font-size: 12px; font-weight: 600;
+    letter-spacing: 0.08em; text-transform: uppercase; color: var(--secondary);
+  }
+  /* Green live indicator — neutral enough, it's a status signal not a chroma accent */
+  .live-dot {
+    width: 6px; height: 6px; border-radius: 50%; background: #16a34a;
+    animation: blink 2s infinite;
+  }
+  @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0.3} }
+
+  /* The preview area IS the sound render — color blooms HERE only */
+  .demo-preview {
+    height: 360px; position: relative;
+    display: flex; align-items: center; justify-content: center;
+    background: var(--neutral); overflow: hidden;
+  }
+  /* Vivid organic cloud — pigment dropped into still water, luminous on light surface */
+  .sound-cloud-a {
+    position: absolute; width: 520px; height: 460px; border-radius: 50%;
+    background: radial-gradient(ellipse at 46% 52%, rgba(153,88,255,0.58) 0%, rgba(147,51,234,0.42) 22%, transparent 62%);
+    filter: blur(50px); top: 48%; left: 42%; transform: translate(-50%,-50%);
+  }
+  .sound-cloud-b {
+    position: absolute; width: 420px; height: 370px; border-radius: 50%;
+    background: radial-gradient(ellipse at 54% 44%, rgba(56,189,248,0.48) 0%, rgba(6,182,212,0.36) 32%, transparent 68%);
+    filter: blur(58px); top: 56%; left: 62%; transform: translate(-50%,-50%);
+  }
+  .sound-cloud-c {
+    position: absolute; width: 360px; height: 300px; border-radius: 50%;
+    background: radial-gradient(ellipse at 50% 58%, rgba(244,114,182,0.42) 0%, transparent 65%);
+    filter: blur(44px); top: 74%; left: 36%; transform: translate(-50%,-50%);
+  }
+  .sound-cloud-d {
+    position: absolute; width: 300px; height: 250px; border-radius: 50%;
+    background: radial-gradient(ellipse at 50%, rgba(217,70,239,0.4) 0%, transparent 65%);
+    filter: blur(42px); top: 30%; left: 70%; transform: translate(-50%,-50%);
+  }
+  /* Play button: full capsule, no shadow — anechoic room, no reverb, except this one emitting object */
+  .play-btn {
+    position: relative; z-index: 2;
+    width: 64px; height: 64px; border-radius: var(--r-full);
+    background: rgba(255,255,255,0.86); backdrop-filter: blur(8px);
+    border: 1px solid rgba(255,255,255,0.6);
+    display: flex; align-items: center; justify-content: center;
+    cursor: pointer; transition: background 0.15s;
+  }
+  .play-btn:hover { background: rgba(255,255,255,0.96); }
+  .play-icon {
+    width: 0; height: 0; border-style: solid;
+    border-width: 10px 0 10px 18px;
+    border-color: transparent transparent transparent var(--primary); margin-left: 3px;
+  }
+
+  .demo-modebar {
+    display: flex; align-items: center;
+    border-top: 1px solid var(--outline-muted); background: var(--surface-elevated);
+  }
+  .mode-link {
+    padding: 12px var(--sp-md); font-size: 12px; font-weight: 600;
+    letter-spacing: 0.08em; text-transform: uppercase; color: var(--secondary);
+    text-decoration: none; border-right: 1px solid var(--outline-muted);
+    white-space: nowrap; transition: color 0.15s;
+  }
+  .mode-link.active { color: var(--primary); }
+  .mode-link:hover { color: var(--primary); }
+  .modebar-cta {
+    margin-left: auto; margin-right: var(--sp-md);
+    background: var(--primary); color: var(--surface-elevated);
+    font-size: 14px; font-weight: 500; letter-spacing: 0.01em; line-height: 1;
+    padding: 8px 18px; border-radius: var(--r-full); border: none; cursor: pointer;
+  }
+
+  /* ---- TRUST STRIP: achromatic ---- */
+  .trust-strip {
+    border-top: 1px solid var(--outline-muted);
+    border-bottom: 1px solid var(--outline-muted);
+    padding: var(--sp-lg) var(--sp-md); text-align: center;
+  }
+  .trust-heading {
+    font-size: 12px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase;
+    color: var(--secondary); margin-bottom: var(--sp-md);
+  }
+  .trust-logos { display: flex; align-items: center; justify-content: center; gap: 48px; flex-wrap: wrap; }
+  .trust-name {
+    font-size: 16px; font-weight: 600; letter-spacing: -0.01em; color: var(--outline-muted);
+    transition: color 0.2s;
+  }
+  .trust-name:hover { color: var(--secondary); }
+
+  /* ---- PLATFORM: achromatic except dashboard waveform ---- */
+  .platform-section { padding: var(--sp-xl) var(--sp-md); max-width: 1200px; margin: 0 auto; }
+  .platform-header { text-align: center; margin-bottom: var(--sp-lg); }
+  .platform-header h2 {
+    font-size: 42px; font-weight: 600; line-height: 1.1; letter-spacing: -0.02em;
+    max-width: 600px; margin: 0 auto var(--sp-md);
+  }
+  .platform-header p { font-size: 16px; color: var(--secondary); max-width: 440px; margin: 0 auto; }
+  .platform-blurbs {
+    display: grid; grid-template-columns: 1fr 1fr; gap: var(--sp-md);
+    max-width: 660px; margin: 0 auto var(--sp-lg);
+  }
+  /* Surfaces meet by tonal step — no shadow */
+  .blurb {
+    background: var(--surface-elevated); border: 1px solid var(--outline-muted);
+    border-radius: var(--r-lg); padding: var(--sp-md);
+  }
+  .blurb h3 { font-size: 14px; font-weight: 600; margin-bottom: var(--sp-sm); }
+  .blurb p { font-size: 14px; color: var(--secondary); line-height: 1.5; }
+  /* Dashboard: dark, rendering output — waveform gets chroma */
+  .dashboard {
+    background: var(--primary); border-radius: var(--r-lg); overflow: hidden;
+  }
+  .dash-head {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 12px var(--sp-md); border-bottom: 1px solid rgba(255,255,255,0.07);
+  }
+  .dash-title {
+    font-size: 12px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase;
+    color: rgba(255,255,255,0.3);
+  }
+  .dash-badges { display: flex; gap: var(--sp-sm); }
+  .dbadge {
+    font-size: 10px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase;
+    padding: 4px 10px; border-radius: var(--r-full); border: 1px solid;
+  }
+  /* Mode badge: monochrome — not rendering audio */
+  .dbadge-mode { color: rgba(255,255,255,0.5); border-color: rgba(255,255,255,0.15); }
+  /* Live badge: green status signal */
+  .dbadge-live {
+    color: #4ade80; border-color: rgba(74,222,128,0.35);
+    display: flex; align-items: center; gap: 4px;
+  }
+  .dlive-dot { width: 5px; height: 5px; border-radius: 50%; background: #4ade80; animation: blink 2s infinite; }
+  .dash-metrics {
+    display: grid; grid-template-columns: repeat(3,1fr);
+    border-bottom: 1px solid rgba(255,255,255,0.07);
+  }
+  .dash-metric { padding: var(--sp-md); border-right: 1px solid rgba(255,255,255,0.07); }
+  .dash-metric:last-child { border-right: none; }
+  .dm-label {
+    font-size: 10px; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase;
+    color: rgba(255,255,255,0.28); margin-bottom: var(--sp-sm);
+  }
+  .dm-val {
+    font-size: 30px; font-weight: 600; letter-spacing: -0.04em; line-height: 0.95;
+    color: rgba(255,255,255,0.9);
+  }
+  .dm-unit { font-size: 13px; color: rgba(255,255,255,0.3); font-weight: 400; }
+  .dm-ok { color: #4ade80; font-size: 22px; }
+  /* Waveform: audio rendering output — chroma allowed here */
+  .dash-waveform {
+    height: 100px; padding: var(--sp-md); display: flex; align-items: center; gap: 2px;
+  }
+  .wbar { flex: 1; border-radius: 2px; background: var(--tertiary); opacity: 0.55; min-height: 4px; }
+  .dash-transport {
+    display: flex; align-items: center; justify-content: center; gap: 12px;
+    padding: 12px var(--sp-md); border-top: 1px solid rgba(255,255,255,0.07);
+  }
+  .tc {
+    width: 28px; height: 28px; border-radius: var(--r-full);
+    background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.08);
+    display: flex; align-items: center; justify-content: center;
+    color: rgba(255,255,255,0.3); font-size: 10px; cursor: pointer;
+  }
+  .tcplay {
+    width: 36px; height: 36px; border-radius: var(--r-full);
+    background: rgba(255,255,255,0.12); border: 1px solid rgba(255,255,255,0.2);
+    display: flex; align-items: center; justify-content: center; cursor: pointer;
+    /* no chroma — play control is not the sound itself */
+  }
+  .tcplay-icon {
+    width: 0; height: 0; border-style: solid;
+    border-width: 6px 0 6px 11px;
+    border-color: transparent transparent transparent rgba(255,255,255,0.7); margin-left: 2px;
+  }
+  .tctime { font-size: 11px; color: rgba(255,255,255,0.22); letter-spacing: 0.05em; margin-left: 8px; }
+
+  /* ---- STUDIO: achromatic ---- */
+  .studio-section {
+    border-top: 1px solid var(--outline-muted); padding: var(--sp-xl) var(--sp-md);
+  }
+  .studio-inner { max-width: 1200px; margin: 0 auto; }
+  .sec-eyebrow {
+    font-size: 12px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase;
+    color: var(--secondary); margin-bottom: var(--sp-sm);
+  }
+  .sec-h2 {
+    font-size: 42px; font-weight: 600; letter-spacing: -0.02em; line-height: 1.1;
+    max-width: 500px; margin-bottom: var(--sp-sm);
+  }
+  .sec-body { font-size: 16px; color: var(--secondary); max-width: 420px; margin-bottom: var(--sp-lg); }
+  .studio-cards { display: grid; grid-template-columns: 1fr 1fr; gap: var(--sp-md); margin-bottom: var(--sp-md); }
+  .s-card {
+    background: var(--surface-elevated); border: 1px solid var(--outline-muted);
+    border-radius: var(--r-lg); overflow: hidden;
+  }
+  .s-card-img {
+    height: 210px;
+    /* achromatic light gradient — no chroma, this is UI chrome not audio */
+    background: linear-gradient(140deg, var(--neutral) 0%, var(--surface-elevated) 100%);
+    display: flex; align-items: center; justify-content: center;
+  }
+  .editor-mock {
+    width: 78%; height: 72%; border-radius: var(--r-md);
+    background: var(--surface-elevated); border: 1px solid var(--outline-muted);
+    overflow: hidden;
+  }
+  .embar {
+    height: 26px; background: var(--neutral); border-bottom: 1px solid var(--outline-muted);
+    display: flex; align-items: center; padding: 0 10px; gap: 5px;
+  }
+  .emdot { width: 8px; height: 8px; border-radius: 50%; }
+  .emtracks { padding: 10px; display: flex; flex-direction: column; gap: 5px; }
+  .emtrack {
+    height: 18px; border-radius: var(--r-sm); background: rgba(17,17,17,0.06);
+    border: 1px solid var(--outline-muted); position: relative; overflow: hidden;
+    /* achromatic — this is the editor chrome, not audio output */
+  }
+  .emfill { position: absolute; left:0; top:0; bottom:0; background: rgba(17,17,17,0.18); }
+  .s-card-label {
+    padding: var(--sp-sm) var(--sp-md); font-size: 12px; font-weight: 600;
+    letter-spacing: 0.08em; text-transform: uppercase; color: var(--secondary);
+  }
+  .s-card-body { padding: var(--sp-md); }
+  .s-card-body h3 { font-size: 16px; font-weight: 600; margin-bottom: var(--sp-sm); }
+  .s-card-body p { font-size: 14px; color: var(--secondary); line-height: 1.5; }
+  .mode-capsules { display: flex; gap: var(--sp-sm); flex-wrap: wrap; }
+  /* Full capsule — wave is continuous */
+  .mcap {
+    padding: 9px 20px; border-radius: var(--r-full);
+    border: 1px solid var(--outline-muted); background: var(--surface-elevated);
+    font-size: 14px; font-weight: 500; letter-spacing: 0.01em; color: var(--secondary);
+    cursor: pointer; transition: all 0.15s;
+  }
+  .mcap:hover { border-color: var(--primary); color: var(--primary); }
+
+  /* ---- AGENTS: achromatic except nowhere uses chroma ---- */
+  .agents-section {
+    border-top: 1px solid var(--outline-muted); padding: var(--sp-xl) var(--sp-md);
+  }
+  .agents-inner { max-width: 1200px; margin: 0 auto; }
+  .agents-grid { display: grid; grid-template-columns: 1.1fr 0.9fr; gap: var(--sp-md); margin-top: var(--sp-lg); }
+  .chat-card {
+    background: var(--surface-elevated); border: 1px solid var(--outline-muted);
+    border-radius: var(--r-lg); overflow: hidden;
+  }
+  .chat-head {
+    padding: 14px var(--sp-md); border-bottom: 1px solid var(--outline-muted);
+    display: flex; align-items: center; justify-content: space-between;
+  }
+  .chat-name { font-size: 14px; font-weight: 600; }
+  .chat-online {
+    font-size: 10px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase;
+    color: #16a34a; display: flex; align-items: center; gap: 4px;
+  }
+  .online-dot { width: 5px; height: 5px; border-radius: 50%; background: #16a34a; }
+  .chat-body { padding: var(--sp-md); display: flex; flex-direction: column; gap: 12px; }
+  .msg-in { display: flex; align-items: flex-start; gap: var(--sp-sm); }
+  .msg-ava {
+    width: 28px; height: 28px; border-radius: var(--r-full);
+    background: var(--neutral); border: 1px solid var(--outline-muted);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 11px; font-weight: 600; color: var(--secondary); flex-shrink: 0;
+    /* achromatic avatar — no chroma accent */
+  }
+  .bub-in {
+    background: var(--neutral); border: 1px solid var(--outline-muted);
+    border-radius: var(--r-sm) var(--r-lg) var(--r-lg) var(--r-lg);
+    padding: 10px 14px; font-size: 14px; max-width: 82%;
+  }
+  .msg-out { display: flex; justify-content: flex-end; }
+  .bub-out {
+    background: var(--primary); color: var(--surface-elevated);
+    border-radius: var(--r-lg) var(--r-lg) var(--r-sm) var(--r-lg);
+    padding: 10px 14px; font-size: 14px; max-width: 82%;
+  }
+  .typ-row { display: flex; align-items: flex-start; gap: var(--sp-sm); }
+  .typ-bub {
+    background: var(--neutral); border: 1px solid var(--outline-muted);
+    border-radius: var(--r-sm) var(--r-lg) var(--r-lg) var(--r-lg);
+    padding: 12px 16px; display: flex; gap: 4px; align-items: center;
+  }
+  .td { width: 6px; height: 6px; border-radius: 50%; background: var(--secondary); animation: tdot 1.2s infinite ease-in-out; }
+  .td:nth-child(2) { animation-delay: 0.15s; }
+  .td:nth-child(3) { animation-delay: 0.3s; }
+  @keyframes tdot { 0%,60%,100%{transform:translateY(0)} 30%{transform:translateY(-5px)} }
+  .insights-card {
+    background: var(--surface-elevated); border: 1px solid var(--outline-muted);
+    border-radius: var(--r-lg); padding: var(--sp-md);
+  }
+  .ins-eyebrow {
+    font-size: 12px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase;
+    color: var(--secondary); margin-bottom: var(--sp-sm);
+    /* achromatic — not using tertiary because this isn't sound */
+  }
+  .insights-card h3 { font-size: 20px; font-weight: 600; letter-spacing: -0.02em; margin-bottom: var(--sp-sm); }
+  .insights-card p { font-size: 14px; color: var(--secondary); line-height: 1.5; margin-bottom: var(--sp-md); }
+  .stat-list { display: flex; flex-direction: column; gap: var(--sp-sm); }
+  .stat-row { display: flex; align-items: center; gap: var(--sp-sm); }
+  .slbl { font-size: 12px; color: var(--secondary); width: 110px; flex-shrink: 0; }
+  .stk { flex: 1; height: 3px; background: var(--outline-muted); border-radius: 2px; }
+  .sfil { height: 3px; border-radius: 2px; background: var(--primary); opacity: 0.3; }
+  .svl { font-size: 12px; font-weight: 600; width: 30px; text-align: right; }
+
+  /* ---- CTA: achromatic ---- */
+  .cta-section {
+    border-top: 1px solid var(--outline-muted); padding: var(--sp-xl) var(--sp-md);
+    text-align: center;
+  }
+  .cta-section h2 {
+    font-size: 42px; font-weight: 600; letter-spacing: -0.02em; line-height: 1.1; margin-bottom: 40px;
+  }
+  .cta-row { display: flex; gap: var(--sp-sm); justify-content: center; }
+
+  /* ---- FOOTER: achromatic ---- */
+  footer {
+    border-top: 1px solid var(--outline-muted); padding: var(--sp-md);
+    display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: var(--sp-md);
+  }
+  .f-left { display: flex; flex-direction: column; gap: var(--sp-sm); }
+  .f-wordmark {
+    font-size: 12px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: var(--primary);
+  }
+  .f-copy { font-size: 12px; color: var(--secondary); }
+  .f-links { display: flex; gap: var(--sp-md); }
+  .f-links a { font-size: 14px; color: var(--secondary); text-decoration: none; transition: color 0.15s; }
+  .f-links a:hover { color: var(--primary); }
+</style>
+</head>
+<body>
+
+<!-- NAV — monochrome, not rendering sound -->
+<nav>
+  <div class="wordmark">Auralis</div>
+  <ul class="nav-links">
+    <li><a href="#">Studio</a></li>
+    <li><a href="#">Agents</a></li>
+    <li><a href="#">API</a></li>
+    <li><a href="#">Resources</a></li>
+    <li><a href="#">Enterprise</a></li>
+    <li><a href="#">Pricing</a></li>
+  </ul>
+  <a href="#" class="nav-cta">Sign up</a>
+</nav>
+
+<!-- HERO — silence is achromatic -->
+<section class="hero">
+  <h1>Making digital experiences sound human</h1>
+  <div class="hero-actions">
+    <a href="#" class="pill-filled">Sign up</a>
+    <a href="#" class="pill-ghost">Contact sales</a>
+  </div>
+</section>
+
+<!-- DEMO PANEL — the one object emitting; color floods into its preview -->
+<div class="demo-wrap">
+  <div class="demo-panel">
+    <div class="demo-tabs">
+      <div class="dtab active">Auralis Studio</div>
+      <div class="dtab">Auralis Agents</div>
+      <div class="dtab">Auralis API</div>
+      <div class="demo-status">
+        <div class="live-dot"></div>
+        AI Voice Generator
+      </div>
+    </div>
+    <!-- Color blooms here — the audio is rendering -->
+    <div class="demo-preview">
+      <div class="sound-cloud-a"></div>
+      <div class="sound-cloud-b"></div>
+      <div class="sound-cloud-c"></div>
+      <div class="sound-cloud-d"></div>
+      <div class="play-btn">
+        <div class="play-icon"></div>
+      </div>
+    </div>
+    <div class="demo-modebar">
+      <a href="#" class="mode-link active">AI Voice Generator</a>
+      <a href="#" class="mode-link">Text to Speech</a>
+      <a href="#" class="mode-link">Music</a>
+      <a href="#" class="mode-link">Sound Effects</a>
+      <a href="#" class="mode-link">Voice Cloning</a>
+      <button class="modebar-cta">Sign up</button>
+    </div>
+  </div>
+</div>
+
+<!-- TRUST STRIP — silent, monochrome -->
+<div class="trust-strip">
+  <p class="trust-heading">Trusted by teams building modern audio experiences</p>
+  <div class="trust-logos">
+    <span class="trust-name">Velocity</span>
+    <span class="trust-name">Nexus</span>
+    <span class="trust-name">Lumina</span>
+    <span class="trust-name">Stack</span>
+    <span class="trust-name">Quanta</span>
+    <span class="trust-name">Orbital</span>
+    <span class="trust-name">Scalar</span>
+  </div>
+</div>
+
+<!-- PLATFORM OVERVIEW — achromatic, except waveform inside dashboard -->
+<section class="platform-section">
+  <div class="platform-header">
+    <h2>Two systems, one shared intelligence layer</h2>
+    <p>Studio and Agents share a unified synthesis core — one neural engine powering every voice output across the platform.</p>
+  </div>
+  <div class="platform-blurbs">
+    <div class="blurb">
+      <h3>Precision Generation</h3>
+      <p>Sub-20ms latency synthesis with full prosodic control. Every phoneme shaped with surgical accuracy.</p>
+    </div>
+    <div class="blurb">
+      <h3>Agentic Architecture</h3>
+      <p>Autonomous voice agents that reason, adapt, and respond in real time — integrated with your systems.</p>
+    </div>
+  </div>
+  <!-- Dashboard: rendering audio — waveform gets chroma -->
+  <div class="dashboard">
+    <div class="dash-head">
+      <span class="dash-title">NEURAL ENGINE V4.2 PRO</span>
+      <div class="dash-badges">
+        <span class="dbadge dbadge-mode">STUDIO MODE</span>
+        <span class="dbadge dbadge-live"><span class="dlive-dot"></span>Real-time Synthesis Active</span>
+      </div>
+    </div>
+    <div class="dash-metrics">
+      <div class="dash-metric">
+        <div class="dm-label">LATENCY</div>
+        <div class="dm-val">12 <span class="dm-unit">ms</span></div>
+      </div>
+      <div class="dash-metric">
+        <div class="dm-label">CONFIDENCE</div>
+        <div class="dm-val">99.8 <span class="dm-unit">%</span></div>
+      </div>
+      <div class="dash-metric">
+        <div class="dm-label">STATUS</div>
+        <div class="dm-val dm-ok">Operational</div>
+      </div>
+    </div>
+    <!-- Audio waveform: chroma allowed — this is the sound being rendered -->
+    <div class="dash-waveform">
+      <div class="wbar" style="height:20%"></div><div class="wbar" style="height:64%"></div>
+      <div class="wbar" style="height:36%"></div><div class="wbar" style="height:82%"></div>
+      <div class="wbar" style="height:52%"></div><div class="wbar" style="height:96%"></div>
+      <div class="wbar" style="height:28%"></div><div class="wbar" style="height:70%"></div>
+      <div class="wbar" style="height:44%"></div><div class="wbar" style="height:88%"></div>
+      <div class="wbar" style="height:20%"></div><div class="wbar" style="height:60%"></div>
+      <div class="wbar" style="height:48%"></div><div class="wbar" style="height:100%"></div>
+      <div class="wbar" style="height:24%"></div><div class="wbar" style="height:74%"></div>
+      <div class="wbar" style="height:40%"></div><div class="wbar" style="height:84%"></div>
+      <div class="wbar" style="height:16%"></div><div class="wbar" style="height:58%"></div>
+      <div class="wbar" style="height:44%"></div><div class="wbar" style="height:76%"></div>
+    </div>
+    <div class="dash-transport">
+      <div class="tc">⏮</div><div class="tc">⏪</div>
+      <div class="tcplay"><div class="tcplay-icon"></div></div>
+      <div class="tc">⏩</div><div class="tc">⏭</div>
+      <span class="tctime">00:00:24 / 00:01:48</span>
+    </div>
+  </div>
+</section>
+
+<!-- STUDIO SECTION — achromatic -->
+<div class="studio-section">
+  <div class="studio-inner">
+    <div class="sec-eyebrow">Auralis Studio</div>
+    <h2 class="sec-h2">Sculpt sound with absolute precision.</h2>
+    <p class="sec-body">A professional-grade audio creation suite built for teams who demand control at every layer of their voice output.</p>
+    <div class="studio-cards">
+      <div class="s-card">
+        <div class="s-card-img">
+          <div class="editor-mock">
+            <div class="embar">
+              <div class="emdot" style="background:#ddd"></div>
+              <div class="emdot" style="background:#ddd"></div>
+              <div class="emdot" style="background:#ddd"></div>
+            </div>
+            <div class="emtracks">
+              <div class="emtrack"><div class="emfill" style="width:68%"></div></div>
+              <div class="emtrack" style="opacity:0.5"><div class="emfill" style="width:42%"></div></div>
+              <div class="emtrack" style="opacity:0.3"><div class="emfill" style="width:85%"></div></div>
+            </div>
+          </div>
+        </div>
+        <div class="s-card-label">Soft Editor UI</div>
+      </div>
+      <div class="s-card">
+        <div class="s-card-body" style="padding-top:32px">
+          <div class="sec-eyebrow" style="margin-bottom:8px">Transcript Panel</div>
+          <h3>Transcript Panel</h3>
+          <p>Real-time synchronized transcripts with phoneme-level editing. Adjust timing, emphasis, and pronunciation directly — every word tied to its exact audio frame.</p>
+        </div>
+      </div>
+    </div>
+    <div class="mode-capsules">
+      <button class="mcap">Music</button>
+      <button class="mcap">SFX</button>
+      <button class="mcap">Voices</button>
+      <button class="mcap">Image &amp; Video</button>
+    </div>
+  </div>
+</div>
+
+<!-- AGENTS SECTION — achromatic -->
+<div class="agents-section">
+  <div class="agents-inner">
+    <div class="sec-eyebrow">Auralis Agents</div>
+    <h2 class="sec-h2">Autonomous reasoning, human delivery.</h2>
+    <p class="sec-body">Deploy intelligent voice agents that understand context, handle complexity, and speak with nuance.</p>
+    <div class="agents-grid">
+      <div class="chat-card">
+        <div class="chat-head">
+          <span class="chat-name">Nexus Support Agent</span>
+          <span class="chat-online"><div class="online-dot"></div>ONLINE • LATENCY: 12ms</span>
+        </div>
+        <div class="chat-body">
+          <div class="msg-in">
+            <div class="msg-ava">N</div>
+            <div class="bub-in">Hello! How can I assist you today?</div>
+          </div>
+          <div class="msg-out">
+            <div class="bub-out">I need help checking my deployment status.</div>
+          </div>
+          <div class="typ-row">
+            <div class="msg-ava">N</div>
+            <div class="typ-bub">
+              <div class="td"></div><div class="td"></div><div class="td"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="insights-card">
+        <div class="ins-eyebrow">Analytics</div>
+        <h3>Deep Insights</h3>
+        <p>Surface the patterns hidden in every voice interaction. Understand sentiment, intent, resolution rates, and conversation quality at scale.</p>
+        <div class="stat-list">
+          <div class="stat-row">
+            <span class="slbl">Resolution Rate</span>
+            <div class="stk"><div class="sfil" style="width:94%"></div></div>
+            <span class="svl">94%</span>
+          </div>
+          <div class="stat-row">
+            <span class="slbl">Avg Sentiment</span>
+            <div class="stk"><div class="sfil" style="width:87%"></div></div>
+            <span class="svl">87%</span>
+          </div>
+          <div class="stat-row">
+            <span class="slbl">Intent Accuracy</span>
+            <div class="stk"><div class="sfil" style="width:99%"></div></div>
+            <span class="svl">99%</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- CTA — waiting, silent -->
+<section class="cta-section">
+  <h2>The future of voice starts here</h2>
+  <div class="cta-row">
+    <a href="#" class="pill-filled" style="font-size:15px;padding:14px 32px">Get started</a>
+    <a href="#" class="pill-ghost" style="font-size:15px;padding:13px 32px">Talk to sales</a>
+  </div>
+</section>
+
+<!-- FOOTER — achromatic, silent -->
+<footer>
+  <div class="f-left">
+    <div class="f-wordmark">Auralis</div>
+    <div class="f-copy">© 2024 Auralis AI. Engineered for precision.</div>
+  </div>
+  <div class="f-links">
+    <a href="#">Twitter</a>
+    <a href="#">GitHub</a>
+    <a href="#">Terms</a>
+    <a href="#">Privacy</a>
+  </div>
+</footer>
+
+</body>
+</html>

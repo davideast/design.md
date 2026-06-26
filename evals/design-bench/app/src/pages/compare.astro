@@ -2,15 +2,14 @@
 import Base from "../layouts/Base.astro";
 import TopRail from "../components/TopRail.astro";
 import BrowserFrame from "../components/BrowserFrame.astro";
-import { compareView } from "../lib/runs";
+import { compareView } from "../lib/data";
 const v = compareView();
 const pct = (n: number) => `${Math.round(n * 100)}%`;
 const top = v?.tools[0];
 const bottom = v?.tools[v.tools.length - 1];
 ---
 <Base title="Same brief, two tools — Design Bench">
-  <TopRail active="Compare tools" />
-  <main class="max-w-6xl mx-auto px-lg py-xl">
+  <TopRail />  <main class="max-w-6xl mx-auto px-lg py-xl">
     {!v ? (
       <p class="text-body text-ink-muted">No tool-comparison run is present.</p>
     ) : (
@@ -42,7 +41,7 @@ const bottom = v?.tools[v.tools.length - 1];
                 address={`design-bench.local/compare/${t.tool}`}
                 title={`${t.toolName} — ${v.caseTitle}`}
                 bodyStyle="aspect-ratio:16/10"
-                iframeStyle="width:1280px;height:800px;transform:scale(0.46);"
+                iframeStyle="width:1280px;height:800px;"
               />
 
               <!-- fidelity shown ON the render, not asserted in prose -->

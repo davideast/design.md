@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kettle &amp; Leaf</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400&family=Libre+Franklin:wght@400;700&family=Source+Serif+4:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background-color: #F4EFE6;
+    color: #1B1B1B;
+    font-family: 'Source Serif 4', serif;
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 1.65;
+  }
+
+  .jacket {
+    max-width: 860px;
+    margin: 0 auto;
+    padding: 64px 64px;
+  }
+
+  /* Title block — album title and tagline */
+  .title-block {
+    margin-bottom: 8px;
+  }
+
+  h1 {
+    font-family: 'Libre Franklin', sans-serif;
+    font-size: 44px;
+    font-weight: 700;
+    line-height: 1.05;
+    letter-spacing: -0.01em;
+    color: #1B1B1B;
+  }
+
+  .title-rule {
+    width: 100%;
+    height: 3px;
+    background-color: #E8590C;
+    margin: 8px 0 16px 0;
+    border: none;
+  }
+
+  .tagline {
+    font-family: 'Source Serif 4', serif;
+    font-size: 16px;
+    line-height: 1.65;
+    color: #6E675C;
+    margin-bottom: 64px;
+  }
+
+  /* Track listing — the three teas */
+  .track-listing {
+    margin-bottom: 64px;
+  }
+
+  .date-mark {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 12px;
+    font-weight: 400;
+    line-height: 1.4;
+    letter-spacing: 0.08em;
+    color: #6E675C;
+    text-transform: uppercase;
+    margin-bottom: 16px;
+  }
+
+  .date-mark .spot {
+    color: #E8590C;
+  }
+
+  .track {
+    margin-bottom: 16px;
+    padding-bottom: 16px;
+    border-bottom: 1px solid rgba(110, 103, 92, 0.2);
+  }
+
+  .track:last-child {
+    border-bottom: none;
+  }
+
+  .track-name {
+    font-family: 'Source Serif 4', serif;
+    font-size: 16px;
+    font-weight: 700;
+    color: #1B1B1B;
+    display: inline;
+  }
+
+  .track-credit {
+    font-family: 'Source Serif 4', serif;
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 1.65;
+    color: #1B1B1B;
+    display: inline;
+  }
+
+  /* Middle band — listing and liner essay side by side */
+  .middle-band {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 64px;
+    margin-bottom: 64px;
+  }
+
+  /* Liner essay — sourcing story */
+  .liner-essay p {
+    font-family: 'Source Serif 4', serif;
+    font-size: 16px;
+    line-height: 1.65;
+    color: #1B1B1B;
+  }
+
+  /* Catalogue data — quiet hours and address */
+  .catalogue {
+    margin-bottom: 32px;
+  }
+
+  .catalogue-label {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 12px;
+    font-weight: 400;
+    line-height: 1.4;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: #6E675C;
+    margin-bottom: 8px;
+  }
+
+  .catalogue table {
+    border-collapse: collapse;
+    width: 100%;
+  }
+
+  .catalogue th,
+  .catalogue td {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 12px;
+    font-weight: 400;
+    line-height: 1.4;
+    letter-spacing: 0.08em;
+    padding: 6px 16px 6px 0;
+    text-align: left;
+    color: #6E675C;
+    border-bottom: 1px solid rgba(110, 103, 92, 0.15);
+  }
+
+  .address-line {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 12px;
+    letter-spacing: 0.08em;
+    color: #6E675C;
+    margin-top: 32px;
+  }
+
+  /* Credits block — footer */
+  .credits-rule {
+    width: 100%;
+    height: 1px;
+    background-color: #6E675C;
+    border: none;
+    margin-bottom: 16px;
+  }
+
+  footer {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 12px;
+    font-weight: 400;
+    line-height: 1.4;
+    letter-spacing: 0.08em;
+    color: #6E675C;
+    display: flex;
+    justify-content: space-between;
+  }
+</style>
+</head>
+<body>
+<div class="jacket">
+
+  <div class="title-block">
+    <h1>Kettle &amp; Leaf</h1>
+  </div>
+  <div class="title-rule"></div>
+  <p class="tagline">A neighborhood tea house for slow mornings and quiet afternoons.</p>
+
+  <div class="middle-band">
+    <div>
+      <div class="track-listing">
+        <div class="date-mark"><span class="spot">●</span> Today's Brewed Teas</div>
+        <div class="track">
+          <span class="track-name">Ali Shan Oolong</span>
+          <span class="track-credit"> — Chiayi County, Taiwan. Buttery and floral with a lingering sweetness that recalls lilac and fresh cream.</span>
+        </div>
+        <div class="track">
+          <span class="track-name">Kenyan Purple Leaf</span>
+          <span class="track-credit"> — Nandi Hills, Kenya. Bright and juicy with notes of plum, a crisp finish, and gentle astringency.</span>
+        </div>
+        <div class="track">
+          <span class="track-name">Silver Needle</span>
+          <span class="track-credit"> — Fujian Province, China. Delicate and honeyed, with a whisper of melon rind and a clean, silky body.</span>
+        </div>
+      </div>
+
+      <div class="catalogue">
+        <div class="catalogue-label">Quiet Hours</div>
+        <table>
+          <tbody>
+            <tr><td>Monday</td><td>8:00 AM – 11:00 AM</td></tr>
+            <tr><td>Tuesday</td><td>8:00 AM – 11:00 AM</td></tr>
+            <tr><td>Wednesday</td><td>2:00 PM – 5:00 PM</td></tr>
+            <tr><td>Thursday</td><td>8:00 AM – 11:00 AM</td></tr>
+            <tr><td>Friday</td><td>2:00 PM – 5:00 PM</td></tr>
+            <tr><td>Saturday</td><td>9:00 AM – 12:00 PM</td></tr>
+            <tr><td>Sunday</td><td>All day</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="address-line">412 Maple Row</div>
+    </div>
+
+    <div class="liner-essay">
+      <p>Every spring and autumn, our owner Lin travels to the high mountain farms of Chiayi County in Taiwan and the rolling estates of Nandi Hills in Kenya. These aren't buying trips in any corporate sense — they're visits to farmers she's known for over a decade. In Taiwan, she cups the new flush directly at the processing shed, choosing lots by hand. In Kenya, she walks the rows at altitude, watching how the purple-leaf cultivar responds to the season's rains. What arrives at Kettle &amp; Leaf has been carried by hand, packed in foil-lined craft bags, and is never more than eight weeks from the bush.</p>
+    </div>
+  </div>
+
+  <div class="credits-rule"></div>
+  <footer>
+    <div>
+      Mon – Sat: 7:00 AM – 6:00 PM<br>
+      Sun: 9:00 AM – 4:00 PM
+    </div>
+    <div>
+      (503) 227-1847
+    </div>
+  </footer>
+
+</div>
+</body>
+</html>

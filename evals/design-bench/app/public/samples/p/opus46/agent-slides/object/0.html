@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Agent Architecture — Lecture Handout</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500&family=IBM+Plex+Mono:wght@400&family=Source+Serif+4:opsz,wght@8..60,400&display=swap" rel="stylesheet">
+<style>
+  *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+  :root{
+    --primary:#1E1A14;
+    --secondary:#B8B0A2;
+    --tertiary:#C3402A;
+    --neutral:#F4F0E4;
+    --font-display:'Fraunces',serif;
+    --font-body:'Source Serif 4',serif;
+    --font-code:'IBM Plex Mono',monospace;
+    --sp-sm:8px;--sp-md:16px;--sp-lg:32px;--sp-xl:64px;
+  }
+  html{background:var(--secondary)}
+  body{
+    font-family:var(--font-body);
+    font-size:17px;font-weight:400;line-height:1.55;
+    color:var(--primary);
+    display:flex;flex-direction:column;align-items:center;
+    gap:var(--sp-lg);
+    padding:var(--sp-xl) var(--sp-lg);
+  }
+
+  /* ── slide page ── */
+  .slide{
+    width:1120px;height:630px;
+    background:var(--neutral);
+    position:relative;
+    padding:var(--sp-xl) var(--sp-xl) var(--sp-lg) var(--sp-xl);
+    overflow:hidden;
+    page-break-after:always;
+  }
+
+  /* section label — upper left */
+  .section-label{
+    position:absolute;top:var(--sp-lg);left:var(--sp-xl);
+    font-family:var(--font-code);font-size:12px;font-weight:400;
+    letter-spacing:0.08em;text-transform:uppercase;
+    color:var(--secondary);
+  }
+
+  /* page numeral — lower right */
+  .page-num{
+    position:absolute;bottom:var(--sp-lg);right:var(--sp-xl);
+    font-family:var(--font-code);font-size:12px;font-weight:400;
+    letter-spacing:0.08em;
+    color:var(--tertiary);
+  }
+
+  /* typography */
+  h1{font-family:var(--font-display);font-size:54px;font-weight:500;line-height:1.1;margin-bottom:var(--sp-md)}
+  h2{font-family:var(--font-display);font-size:36px;font-weight:500;line-height:1.2;margin-bottom:var(--sp-md)}
+  h3{font-family:var(--font-display);font-size:24px;font-weight:500;line-height:1.25;margin-bottom:var(--sp-sm)}
+  p{margin-bottom:var(--sp-sm)}
+  .standfirst{font-size:19px;color:var(--secondary);max-width:560px}
+  .speaker{font-family:var(--font-code);font-size:14px;color:var(--primary);margin-top:var(--sp-md)}
+  .date{font-family:var(--font-code);font-size:12px;letter-spacing:0.08em;color:var(--secondary)}
+
+  code,.code{font-family:var(--font-code);font-size:14px;font-weight:400}
+  pre{font-family:var(--font-code);font-size:14px;line-height:1.55;white-space:pre;tab-size:4}
+  .annotation{font-family:var(--font-code);font-size:12px;letter-spacing:0.08em;color:var(--secondary)}
+
+  /* diagrams */
+  svg text{font-family:'IBM Plex Mono',monospace}
+  svg .stroke{fill:none;stroke:var(--primary);stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+  svg .stroke-light{fill:none;stroke:var(--secondary);stroke-width:1.2;stroke-linecap:round;stroke-linejoin:round}
+  svg .stroke-accent{fill:none;stroke:var(--tertiary);stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+  svg .fill-accent{fill:var(--tertiary)}
+  svg .label{font-size:11px;letter-spacing:0.06em;fill:var(--primary)}
+  svg .label-sm{font-size:10px;fill:var(--secondary)}
+
+  /* two-col layout helper */
+  .cols{display:flex;gap:var(--sp-xl);align-items:flex-start}
+  .col{flex:1}
+
+  /* reference list */
+  .refs{font-family:var(--font-code);font-size:12px;line-height:1.7;color:var(--secondary);letter-spacing:0.02em}
+  .refs li{margin-bottom:4px}
+  .closing{font-family:var(--font-display);font-size:28px;font-weight:500;color:var(--primary);margin-bottom:var(--sp-lg)}
+
+  @media print{
+    body{padding:0;gap:0;background:white}
+    .slide{box-shadow:none;border:none}
+  }
+</style>
+</head>
+<body>
+
+<!-- ════════════════════════════════════════════
+     SLIDE 1 — Title
+     ════════════════════════════════════════════ -->
+<div class="slide">
+  <span class="section-label">Lecture Handout</span>
+  <div style="display:flex;flex-direction:column;justify-content:center;height:100%">
+    <h1>Agent Architecture</h1>
+    <p class="standfirst">How a language model becomes an actor: the perception–action loop, four canonical architectures, failure modes, and twenty-five lines of Python that implement the whole idea.</p>
+    <p class="speaker">David East</p>
+    <p class="date">14 Oct 2026</p>
+  </div>
+  <span class="page-num">i</span>
+</div>
+
+<!-- ════════════════════════════════════════════
+     SLIDE 2 — The Loop
+     ════════════════════════════════════════════ -->
+<div class="slide">
+  <span class="section-label">§ 1</span>
+  <h2>The Loop</h2>
+  <div class="cols">
+    <div class="col" style="max-width:420px">
+      <p>An agent is any system that perceives its environment through observations, selects an action via reasoning, executes that action, and folds the result back into the next cycle. This is the OODA loop stripped to its minimum: <strong>Think → Act → Observe</strong>. The model proposes; the tool disposes; the observation closes the loop. Every architecture in this handout is a variation on how many times the loop runs, who decides to stop, and what state persists between iterations.</p>
+    </div>
+    <div class="col" style="display:flex;align-items:center;justify-content:center">
+      <!-- Hand-drawn THINK → ACT → OBSERVE loop -->
+      <svg width="360" height="260" viewBox="0 0 360 260">
+        <!-- THINK box -->
+        <path class="stroke" d="M 62,58 L 168,60 L 166,108 L 60,106 Z" />
+        <text class="label" x="90" y="89" text-anchor="middle" style="font-size:13px" transform="translate(24,0)">THINK</text>
+
+        <!-- ACT box -->
+        <path class="stroke" d="M 222,57 L 326,59 L 324,107 L 220,105 Z" />
+        <text class="label" x="250" y="88" text-anchor="middle" style="font-size:13px" transform="translate(24,0)">ACT</text>
+
+        <!-- OBSERVE box -->
+        <path class="stroke" d="M 140,178 L 250,180 L 248,228 L 138,226 Z" />
+        <text class="label" x="170" y="209" text-anchor="middle" style="font-size:13px" transform="translate(24,0)">OBSERVE</text>
+
+        <!-- Arrow: THINK → ACT -->
+        <path class="stroke" d="M 170,82 C 185,78 206,76 220,80" />
+        <polygon points="218,74 224,80 218,86" class="fill-accent" style="fill:var(--primary)" />
+
+        <!-- Arrow: ACT → OBSERVE -->
+        <path class="stroke" d="M 290,110 C 296,138 284,164 256,178" />
+        <polygon points="260,176 254,182 252,174" class="fill-accent" style="fill:var(--primary)" />
+
+        <!-- Returning arrow: OBSERVE → THINK (vermilion) -->
+        <path class="stroke-accent" d="M 138,206 C 100,200 68,180 66,140 C 64,120 64,112 66,108" />
+        <polygon points="60,112 66,104 72,112" class="fill-accent" />
+
+        <!-- small labels -->
+        <text class="label-sm" x="194" y="70">query</text>
+        <text class="label-sm" x="302" y="148">result</text>
+        <text class="label-sm" x="58" y="160" style="fill:var(--tertiary)">feedback</text>
+      </svg>
+    </div>
+  </div>
+  <span class="page-num">ii</span>
+</div>
+
+<!-- ════════════════════════════════════════════
+     SLIDE 3 — A Worked Trace
+     ════════════════════════════════════════════ -->
+<div class="slide">
+  <span class="section-label">§ 2</span>
+  <h2>A Worked Trace</h2>
+  <p style="margin-bottom:var(--sp-md);max-width:560px">User query: <em>"What was NVDA's closing price last Friday?"</em></p>
+  <div style="display:flex;gap:var(--sp-xl)">
+    <div style="flex:1">
+      <pre style="line-height:1.8">
+<span class="annotation">STEP 1  THINK</span>
+  I need to look up NVDA's stock price.
+  I should call the market-data tool.
+
+<span class="annotation">STEP 2  ACT</span>
+  <code>get_stock_price(symbol="NVDA", date="last_friday")</code>
+
+<span class="annotation">STEP 3  OBSERVE</span>
+  → { close: 187.42, volume: 48_200_000 }
+
+<span class="annotation">STEP 4  THINK</span>
+  I have the answer. Format for the user.</pre>
+    </div>
+    <div style="flex:1">
+      <pre style="line-height:1.8">
+<span class="annotation">STEP 5  ACT</span>
+  Return final answer to user.
+
+<span class="annotation">STEP 6  OBSERVE</span>
+  "NVDA closed at $187.42 last Friday
+   on volume of 48.2 M shares."
+
+<span class="annotation">STEP 7  THINK</span>
+  Task complete. Stop loop.
+
+<span class="annotation">STEP 8  DONE</span>
+  <span style="color:var(--tertiary)">↩ yield answer</span></pre>
+    </div>
+  </div>
+  <span class="page-num">iii</span>
+</div>
+
+<!-- ════════════════════════════════════════════
+     SLIDE 4 — Four Architectures (2×2 diagrams)
+     ════════════════════════════════════════════ -->
+<div class="slide">
+  <span class="section-label">§ 3</span>
+  <h2>Four Architectures</h2>
+  <div style="display:grid;grid-template-columns:1fr 1fr;grid-template-rows:1fr 1fr;gap:var(--sp-md);height:calc(100% - 80px)">
+
+    <!-- A: Single-pass -->
+    <div style="padding:var(--sp-sm)">
+      <h3 style="font-size:16px;margin-bottom:4px">A. Single-pass</h3>
+      <svg width="220" height="100" viewBox="0 0 220 100">
+        <path class="stroke" d="M 12,40 L 68,42 L 66,72 L 10,70 Z"/>
+        <text class="label" x="38" y="60" text-anchor="middle" style="font-size:10px">LLM</text>
+        <path class="stroke" d="M 70,55 L 130,55"/>
+        <polygon points="126,50 134,55 126,60" style="fill:var(--primary)"/>
+        <path class="stroke" d="M 136,40 L 208,42 L 206,72 L 134,70 Z"/>
+        <text class="label" x="170" y="60" text-anchor="middle" style="font-size:10px">OUTPUT</text>
+        <text class="label-sm" x="96" y="48">once</text>
+      </svg>
+    </div>
+
+    <!-- B: ReAct loop -->
+    <div style="padding:var(--sp-sm)">
+      <h3 style="font-size:16px;margin-bottom:4px">B. ReAct Loop</h3>
+      <svg width="260" height="110" viewBox="0 0 260 110">
+        <path class="stroke" d="M 12,30 L 72,32 L 70,62 L 10,60 Z"/>
+        <text class="label" x="40" y="50" text-anchor="middle" style="font-size:10px">THINK</text>
+        <path class="stroke" d="M 96,30 L 156,32 L 154,62 L 94,60 Z"/>
+        <text class="label" x="124" y="50" text-anchor="middle" style="font-size:10px">ACT</text>
+        <path class="stroke" d="M 178,30 L 248,32 L 246,62 L 176,60 Z"/>
+        <text class="label" x="212" y="50" text-anchor="middle" style="font-size:10px">OBSERVE</text>
+        <!-- forward arrows -->
+        <path class="stroke" d="M 72,46 L 93,46"/>
+        <polygon points="89,42 96,46 89,50" style="fill:var(--primary)"/>
+        <path class="stroke" d="M 156,46 L 176,46"/>
+        <polygon points="172,42 179,46 172,50" style="fill:var(--primary)"/>
+        <!-- return arrow -->
+        <path class="stroke-accent" d="M 212,64 C 212,88 130,94 40,64"/>
+        <polygon points="44,68 38,62 46,60" class="fill-accent"/>
+        <text class="label-sm" x="120" y="92" text-anchor="middle" style="fill:var(--tertiary)">loop</text>
+      </svg>
+    </div>
+
+    <!-- C: Planner + Workers -->
+    <div style="padding:var(--sp-sm)">
+      <h3 style="font-size:16px;margin-bottom:4px">C. Planner + Workers</h3>
+      <svg width="240" height="110" viewBox="0 0 240 110">
+        <path class="stroke" d="M 80,8 L 160,10 L 158,42 L 78,40 Z"/>
+        <text class="label" x="118" y="30" text-anchor="middle" style="font-size:10px">PLANNER</text>
+        <!-- workers -->
+        <path class="stroke" d="M 10,68 L 62,70 L 60,98 L 8,96 Z"/>
+        <text class="label" x="34" y="87" text-anchor="middle" style="font-size:9px">W₁</text>
+        <path class="stroke" d="M 88,68 L 148,70 L 146,98 L 86,96 Z"/>
+        <text class="label" x="116" y="87" text-anchor="middle" style="font-size:9px">W₂</text>
+        <path class="stroke" d="M 172,68 L 232,70 L 230,98 L 170,96 Z"/>
+        <text class="label" x="200" y="87" text-anchor="middle" style="font-size:9px">W₃</text>
+        <!-- dispatch lines -->
+        <path class="stroke-light" d="M 100,42 C 80,52 50,58 36,66"/>
+        <path class="stroke-light" d="M 118,42 L 118,66"/>
+        <path class="stroke-light" d="M 138,42 C 156,52 180,58 200,66"/>
+        <!-- return arrow -->
+        <path class="stroke-accent" d="M 36,68 C 20,50 50,16 78,24"/>
+        <polygon points="76,18 82,24 76,30" class="fill-accent"/>
+      </svg>
+    </div>
+
+    <!-- D: Multi-agent -->
+    <div style="padding:var(--sp-sm)">
+      <h3 style="font-size:16px;margin-bottom:4px">D. Multi-Agent</h3>
+      <svg width="220" height="110" viewBox="0 0 220 110">
+        <!-- agents as circles (hand-drawn) -->
+        <path class="stroke" d="M 50,30 C 64,18 82,18 90,30 C 98,42 90,56 76,58 C 62,60 44,48 42,36 C 40,30 44,26 50,30"/>
+        <text class="label" x="66" y="42" text-anchor="middle" style="font-size:9px">A₁</text>
+        <path class="stroke" d="M 148,30 C 162,18 180,18 188,30 C 196,42 188,56 174,58 C 160,60 142,48 140,36 C 138,30 142,26 148,30"/>
+        <text class="label" x="164" y="42" text-anchor="middle" style="font-size:9px">A₂</text>
+        <path class="stroke" d="M 98,78 C 112,66 130,66 138,78 C 146,90 138,104 124,106 C 110,108 92,96 90,84 C 88,78 92,74 98,78"/>
+        <text class="label" x="114" y="90" text-anchor="middle" style="font-size:9px">A₃</text>
+        <!-- connecting lines -->
+        <path class="stroke-light" d="M 88,46 L 142,38"/>
+        <path class="stroke-light" d="M 78,58 L 104,74"/>
+        <path class="stroke-accent" d="M 158,58 L 132,74"/>
+        <polygon points="134,70 130,78 126,72" class="fill-accent"/>
+        <text class="label-sm" x="160" y="72" style="fill:var(--tertiary)">msg</text>
+      </svg>
+    </div>
+  </div>
+  <span class="page-num">iv</span>
+</div>
+
+<!-- ════════════════════════════════════════════
+     SLIDE 5 — Where Loops Fail
+     ════════════════════════════════════════════ -->
+<div class="slide">
+  <span class="section-label">§ 4</span>
+  <h2>Where Loops Fail</h2>
+  <div class="cols">
+    <div class="col" style="max-width:400px">
+      <p>The loop degrades along two axes. First, <strong>context collapse</strong>: as the conversation grows, the model's effective attention narrows and it begins to repeat or contradict itself. Second, <strong>cost explosion</strong>: every iteration re-sends the full history, so token spend grows quadratically. Most production agents cap iterations and fall back to a planner when depth exceeds a threshold.</p>
+    </div>
+    <div class="col" style="display:flex;align-items:center;justify-content:center">
+      <!-- Hand-drawn token cost plot -->
+      <svg width="320" height="220" viewBox="0 0 320 220">
+        <!-- axes -->
+        <path class="stroke" d="M 50,190 L 50,22"/>
+        <path class="stroke" d="M 48,190 L 296,192"/>
+        <!-- axis labels -->
+        <text class="label-sm" x="160" y="212" text-anchor="middle">iterations</text>
+        <text class="label-sm" x="16" y="110" text-anchor="middle" transform="rotate(-90,16,110)">tokens sent</text>
+        <!-- grid lines (light) -->
+        <path class="stroke-light" d="M 50,150 L 290,151" style="stroke-dasharray:4 6"/>
+        <path class="stroke-light" d="M 50,110 L 290,111" style="stroke-dasharray:4 6"/>
+        <path class="stroke-light" d="M 50,70 L 290,71" style="stroke-dasharray:4 6"/>
+        <!-- tick marks -->
+        <text class="label-sm" x="46" y="154" text-anchor="end">4k</text>
+        <text class="label-sm" x="46" y="114" text-anchor="end">8k</text>
+        <text class="label-sm" x="46" y="74" text-anchor="end">12k</text>
+        <text class="label-sm" x="90" y="204" text-anchor="middle">2</text>
+        <text class="label-sm" x="140" y="204" text-anchor="middle">4</text>
+        <text class="label-sm" x="190" y="204" text-anchor="middle">6</text>
+        <text class="label-sm" x="240" y="204" text-anchor="middle">8</text>
+        <!-- quadratic curve (hand-drawn wobble) -->
+        <path class="stroke" d="M 54,184 C 62,182 74,178 90,168 C 110,154 130,138 150,118 C 170,96 194,72 220,52 C 244,36 266,28 284,26" style="stroke-width:2.2"/>
+        <!-- danger zone -->
+        <path class="stroke-accent" d="M 220,50 L 220,192" style="stroke-dasharray:6 4"/>
+        <text class="label-sm" x="232" y="46" style="fill:var(--tertiary)">context limit</text>
+        <!-- annotation -->
+        <text class="label-sm" x="120" y="160">O(n²) growth</text>
+      </svg>
+    </div>
+  </div>
+  <span class="page-num">v</span>
+</div>
+
+<!-- ════════════════════════════════════════════
+     SLIDE 6 — The Loop, in Code
+     ════════════════════════════════════════════ -->
+<div class="slide">
+  <span class="section-label">§ 5</span>
+  <h2>The Loop, in Code</h2>
+  <div class="cols" style="gap:var(--sp-lg)">
+    <div class="col" style="flex:1.4">
+      <pre style="line-height:1.65">
+<span style="color:var(--secondary)">"""Minimal ReAct loop — 25 lines."""</span>
+
+<b>def</b> agent(query: str, tools: dict, model, max_iter=10):
+    history = [{"role": "user", "content": query}]
+
+    <b>for</b> i <b>in</b> range(max_iter):
+        <span style="color:var(--secondary)"># ── THINK ──</span>
+        response = model.chat(history)
+
+        <b>if</b> response.stop:
+            <b>return</b> response.content        <span class="annotation">  ← done</span>
+
+        <span style="color:var(--secondary)"># ── ACT ──</span>
+        name = response.tool_call.name
+        args = response.tool_call.args
+        result = tools[name](**args)
+
+        <span style="color:var(--secondary)"># ── OBSERVE ──</span>
+        history.append({"role": "assistant",
+                        "content": response.content})
+        history.append({"role": "tool",
+                        "name": name,
+                        "content": str(result)})
+
+    <b>raise</b> RuntimeError("max iterations")     <span class="annotation">  ← bail</span></pre>
+    </div>
+    <div class="col" style="display:flex;flex-direction:column;justify-content:center;gap:var(--sp-md)">
+      <p class="annotation" style="line-height:1.6">LINE 6 — the for-loop IS the agent.<br>Everything else is plumbing.</p>
+      <p class="annotation" style="line-height:1.6">LINE 10 — the model decides when to stop; the loop merely obeys.</p>
+      <p class="annotation" style="line-height:1.6;color:var(--tertiary)">LINE 24 — without a cap the loop runs until the context window fills.</p>
+    </div>
+  </div>
+  <span class="page-num">vi</span>
+</div>
+
+<!-- ════════════════════════════════════════════
+     SLIDE 7 — Ending
+     ════════════════════════════════════════════ -->
+<div class="slide">
+  <span class="section-label">§ 6</span>
+  <div style="display:flex;flex-direction:column;justify-content:center;height:100%">
+    <p class="closing">"The loop is the agent;<br>everything else is infrastructure."</p>
+    <ol class="refs" style="max-width:560px;margin-top:var(--sp-lg)">
+      <li>Yao, S. et al. "ReAct: Synergizing Reasoning and Acting in Language Models." <em>ICLR 2023</em>.</li>
+      <li>Wei, J. et al. "Chain-of-Thought Prompting Elicits Reasoning in Large Language Models." <em>NeurIPS 2022</em>.</li>
+      <li>Shinn, N. et al. "Reflexion: Language Agents with Verbal Reinforcement Learning." <em>NeurIPS 2023</em>.</li>
+    </ol>
+  </div>
+  <span class="page-num">vii</span>
+</div>
+
+</body>
+</html>

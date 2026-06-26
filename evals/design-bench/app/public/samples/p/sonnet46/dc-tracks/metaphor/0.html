@@ -1,0 +1,730 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Tracks of Washington DC</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;1,8..60,400&family=IBM+Plex+Mono:wght@400&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --primary:   #1B3026;  /* infield green — words */
+    --secondary: #7A6A5A;  /* weathered slate — small inscriptions */
+    --tertiary:  #B5491C;  /* terracotta — start line, once per lap */
+    --neutral:   #F2ECE2;  /* programme cream — underfoot */
+
+    --sp-sm:     8px;
+    --sp-md:     16px;
+    --sp-lg:     32px;
+    --sp-xl:     64px;
+    --sp-gutter: 24px;
+  }
+
+  /* One lap. Deliberate scroll. No hurry. */
+  html { scroll-snap-type: y mandatory; scroll-behavior: smooth; }
+
+  body {
+    font-family: 'Source Serif 4', serif;
+    background: var(--neutral);
+    color: var(--primary);
+    overflow-x: hidden;
+  }
+
+  section {
+    min-height: 100vh;
+    scroll-snap-align: start;
+    position: relative;
+    overflow: hidden;
+  }
+
+  /* The lane markings — run onto the page at full width between panels.
+     Thin, exact, low-contrast. Structure, not decoration. */
+  .between-panel-rule {
+    width: 100%;
+    height: 1px;
+    background: rgba(27,48,38,0.12);
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    z-index: 10;
+  }
+
+  .between-panel-rule-light {
+    width: 100%;
+    height: 1px;
+    background: rgba(242,236,226,0.15);
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    z-index: 10;
+  }
+
+  /* Chiseled label */
+  .chisel {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 12px;
+    font-weight: 400;
+    line-height: 1.5;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+  }
+
+  /* ── PANEL 1: THE START LINE ── */
+  /* The hero is the start line. The reader crosses it to begin. */
+  .hero {
+    background: var(--primary);
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    position: relative;
+  }
+
+  /* The oval from above — the monument approached at dawn */
+  .hero-ground {
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(ellipse 78% 52% at 52% 47%,
+        transparent 36%, #b5491c 36%, #b5491c 47%,
+        #9a3e18 47%, #9a3e18 58%, #7a2e10 58%, #7a2e10 68%, transparent 68%
+      ),
+      radial-gradient(ellipse 56% 34% at 52% 47%, #1B3026 0%, #1B3026 34%, transparent 36%),
+      radial-gradient(ellipse 150% 50% at 55% -10%, rgba(220,130,50,0.22) 0%, transparent 55%),
+      linear-gradient(175deg, #0e1a11 0%, #1B3026 45%, #2a4535 80%);
+  }
+  /* Lane markings — horizontal at full width */
+  .hero-ground::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: repeating-linear-gradient(
+      -10deg,
+      transparent 0, transparent 44px,
+      rgba(242,236,226,0.065) 44px, rgba(242,236,226,0.065) 45px
+    );
+  }
+  .hero-ground::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to bottom, rgba(27,48,38,0.05) 0%, rgba(27,48,38,0.45) 55%, rgba(27,48,38,0.92) 100%);
+  }
+
+  /* The start line — terracotta, once. The only shout at a monument. */
+  .start-line-accent {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: var(--tertiary);
+    z-index: 5;
+  }
+
+  .hero-content {
+    position: relative;
+    z-index: 4;
+    padding: var(--sp-xl) var(--sp-xl) calc(var(--sp-xl) + 24px);
+    max-width: 1100px;
+  }
+
+  .hero-inscription {
+    color: var(--secondary);
+    margin-bottom: var(--sp-lg);
+  }
+
+  /* Carved in the editorial serif — authoritative, left-aligned, never centered */
+  .hero-h1 {
+    font-family: 'DM Serif Display', serif;
+    font-size: 48px;
+    font-weight: 400;
+    line-height: 1.1;
+    letter-spacing: -0.01em;
+    color: var(--neutral);
+    margin-bottom: var(--sp-md);
+    max-width: 18ch;
+  }
+
+  /* Guidebook prose */
+  .hero-sub {
+    font-family: 'Source Serif 4', serif;
+    font-size: 17px;
+    line-height: 1.7;
+    color: rgba(242,236,226,0.65);
+    max-width: 54ch;
+    margin-bottom: var(--sp-xl);
+  }
+
+  /* The single instruction — terracotta lane marker, once per lap */
+  .lap-btn {
+    display: inline-block;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 12px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--primary);
+    background: var(--tertiary);
+    padding: 14px 36px;
+    text-decoration: none;
+    border-radius: 0;
+    border: none;
+    /* Outer ring — 10% opacity, not solid */
+    box-shadow: 0 0 0 4px rgba(27,48,38,0.1);
+    cursor: pointer;
+  }
+  .lap-btn:hover { opacity: 0.88; }
+
+  /* ── PANEL 2: THE FIRST STRAIGHT ── */
+  /* Georgetown — the eye settles into rhythm */
+  .straight-panel {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    min-height: 100vh;
+    position: relative;
+  }
+
+  /* Vertical lane line within — structure within the panel */
+  .straight-panel::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 50%;
+    width: 1px;
+    height: 100%;
+    background: rgba(27,48,38,0.08);
+    pointer-events: none;
+    z-index: 5;
+  }
+
+  .straight-photo {
+    position: relative;
+    overflow: hidden;
+  }
+
+  .straight-photo::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: repeating-linear-gradient(
+      -20deg,
+      transparent 0, transparent 50px,
+      rgba(242,236,226,0.09) 50px, rgba(242,236,226,0.09) 51px
+    );
+    z-index: 1;
+  }
+
+  .straight-text {
+    background: var(--neutral);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: var(--sp-xl);
+    position: relative;
+  }
+
+  /* Start line — terracotta, once this panel */
+  .panel-accent-top {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: var(--tertiary);
+  }
+
+  .panel-eyebrow {
+    color: var(--secondary);
+    margin-bottom: var(--sp-md);
+    margin-top: var(--sp-lg);
+  }
+
+  /* Inscription headline — carved, left-aligned */
+  .panel-h2 {
+    font-family: 'DM Serif Display', serif;
+    font-size: 48px;
+    font-weight: 400;
+    line-height: 1.1;
+    letter-spacing: -0.01em;
+    color: var(--primary);
+    margin-bottom: var(--sp-lg);
+  }
+
+  /* Guidebook prose */
+  .panel-prose {
+    font-family: 'Source Serif 4', serif;
+    font-size: 17px;
+    line-height: 1.7;
+    color: var(--primary);
+    max-width: 44ch;
+    margin-bottom: var(--sp-md);
+  }
+
+  /* Chiseled data — every distance, surface, split */
+  .panel-data {
+    margin-top: var(--sp-lg);
+    padding-top: var(--sp-lg);
+    border-top: 1px solid rgba(27,48,38,0.12);
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .data-row {
+    display: flex;
+    gap: var(--sp-lg);
+    align-items: baseline;
+  }
+
+  .data-key {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 12px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--secondary);
+    width: 88px;
+    flex-shrink: 0;
+  }
+
+  .data-val {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 12px;
+    letter-spacing: 0.12em;
+    color: var(--primary);
+  }
+
+  /* Georgetown photo */
+  .photo-gt {
+    background:
+      radial-gradient(ellipse 125% 88% at 44% 55%, #b5491c 0%, #8a3515 20%, #1B3026 55%, #0d1a13 100%);
+  }
+
+  /* Anacostia photo */
+  .photo-an {
+    background:
+      radial-gradient(ellipse 118% 84% at 55% 50%, #7a3018 0%, #b5491c 22%, #1B3026 58%, #0d1a13 100%);
+  }
+
+  /* ── PANEL 3: THE BACK STRAIGHT ── */
+  /* Nothing to do but think. The image is the content. */
+  .back-straight {
+    background: var(--primary);
+    display: flex;
+    align-items: flex-end;
+    justify-content: flex-start;
+    padding: 0;
+    position: relative;
+  }
+
+  .back-straight-bg {
+    position: absolute;
+    inset: 0;
+    background:
+      linear-gradient(to right, rgba(27,48,38,0.88) 0%, rgba(27,48,38,0.35) 48%, rgba(27,48,38,0.08) 100%),
+      radial-gradient(ellipse 108% 68% at 65% 55%, #b5491c 0%, #7a2e10 28%, #1B3026 62%);
+  }
+
+  /* Horizontal lane markings — metered, deliberate */
+  .back-straight-bg::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: repeating-linear-gradient(
+      0deg,
+      transparent 0, transparent 34px,
+      rgba(242,236,226,0.04) 34px, rgba(242,236,226,0.04) 35px
+    );
+  }
+
+  /* Start line — terracotta — the one band per lap */
+  .back-start {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: var(--tertiary);
+    z-index: 3;
+  }
+
+  .pull-quote-block {
+    position: relative;
+    z-index: 2;
+    padding: var(--sp-xl) var(--sp-xl) calc(var(--sp-xl) + 24px);
+    max-width: 820px;
+  }
+
+  /* Inscription — carved, not decorated. Monuments endure flat and exact. */
+  .pull-quote {
+    font-family: 'DM Serif Display', serif;
+    font-size: 48px;
+    font-weight: 400;
+    font-style: italic;
+    line-height: 1.1;
+    letter-spacing: -0.01em;
+    color: var(--neutral);
+    /* 2px terracotta rule — the runner's voice */
+    border-left: 2px solid var(--tertiary);
+    padding-left: var(--sp-xl);
+  }
+
+  /* ── PANEL 5: AERIAL VIEW ── */
+  /* The map — the view a runner holds in their head */
+  .aerial-panel {
+    background: var(--primary);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: var(--sp-xl);
+    position: relative;
+  }
+
+  /* One band of terracotta per lap */
+  .aerial-accent {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: var(--tertiary);
+  }
+
+  .aerial-label {
+    color: var(--secondary);
+    margin-bottom: var(--sp-md);
+  }
+
+  .aerial-h2 {
+    font-family: 'DM Serif Display', serif;
+    font-size: 48px;
+    font-weight: 400;
+    line-height: 1.1;
+    letter-spacing: -0.01em;
+    color: var(--neutral);
+    margin-bottom: var(--sp-xl);
+  }
+
+  .map-frame {
+    position: relative;
+    width: 100%;
+    max-width: 880px;
+    height: 400px;
+    border: 1px solid rgba(242,236,226,0.1);
+  }
+
+  /* Lane markings extended onto the map frame */
+  .map-frame::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background:
+      linear-gradient(rgba(242,236,226,0.05) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(242,236,226,0.05) 1px, transparent 1px);
+    background-size: 88px 80px;
+  }
+
+  /* Vertical lane line within */
+  .map-vline {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    width: 1px;
+    height: 100%;
+    background: rgba(242,236,226,0.08);
+  }
+
+  .oval-pin {
+    position: absolute;
+    display: flex;
+    align-items: center;
+    gap: var(--sp-sm);
+  }
+
+  .oval-dot {
+    width: 8px;
+    height: 8px;
+    background: var(--tertiary);
+    flex-shrink: 0;
+    /* Square — no roundness. The track is geometry. */
+  }
+
+  .oval-text { display: flex; flex-direction: column; gap: 2px; }
+
+  .oval-name {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 12px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--neutral);
+    white-space: nowrap;
+  }
+
+  .oval-spec {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.10em;
+    color: var(--secondary);
+    white-space: nowrap;
+  }
+
+  .op1 { top: 18%; left: 8%; }
+  .op2 { top: 35%; left: 52%; }
+  .op3 { top: 52%; left: 20%; }
+  .op4 { top: 67%; left: 61%; }
+  .op5 { top: 79%; left: 37%; }
+
+  /* ── PANEL 6: THE FINAL BEND ── */
+  /* Returns the reader to the start. Breathing harder. */
+  .final-bend {
+    background: var(--neutral);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: var(--sp-xl);
+    position: relative;
+  }
+
+  /* The start line — terracotta — delivers you back where you began */
+  .final-start {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: var(--tertiary);
+  }
+
+  /* Vertical lane line — structural */
+  .final-vline {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    right: calc(40% + var(--sp-xl));
+    width: 1px;
+    background: rgba(27,48,38,0.1);
+    pointer-events: none;
+  }
+
+  .final-eyebrow {
+    color: var(--secondary);
+    margin-bottom: var(--sp-md);
+  }
+
+  /* The monument's final inscription */
+  .final-h2 {
+    font-family: 'DM Serif Display', serif;
+    font-size: 48px;
+    font-weight: 400;
+    line-height: 1.1;
+    letter-spacing: -0.01em;
+    color: var(--primary);
+    margin-bottom: var(--sp-md);
+  }
+
+  .final-prose {
+    font-family: 'Source Serif 4', serif;
+    font-size: 17px;
+    line-height: 1.7;
+    color: var(--secondary);
+    max-width: 52ch;
+    margin-bottom: var(--sp-xl);
+  }
+
+  .final-form { display: flex; max-width: 440px; }
+
+  .final-input {
+    flex: 1;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 12px;
+    letter-spacing: 0.12em;
+    padding: 14px var(--sp-md);
+    border: 1px solid rgba(27,48,38,0.22);
+    border-right: none;
+    background: rgba(255,255,255,0.5);
+    color: var(--primary);
+    outline: none;
+    border-radius: 0;
+  }
+  .final-input::placeholder { color: var(--secondary); opacity: 0.45; }
+  .final-input:focus { border-color: var(--primary); }
+
+  .final-btn {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 12px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--primary);
+    background: var(--tertiary);
+    padding: 14px var(--sp-lg);
+    border: none;
+    border-radius: 0;
+    cursor: pointer;
+    box-shadow: 0 0 0 4px rgba(27,48,38,0.1);
+  }
+  .final-btn:hover { opacity: 0.88; }
+</style>
+</head>
+<body>
+
+<!-- PANEL 1: THE START LINE — the hero, where the lap begins -->
+<section class="hero">
+  <div class="hero-ground"></div>
+  <div class="hero-content">
+    <p class="chisel hero-inscription">Washington Circuit — Lap I</p>
+    <h1 class="hero-h1">The Tracks of Washington DC</h1>
+    <p class="hero-sub">A field guide to the city's ovals — their surfaces, their histories, their regulars.</p>
+    <a href="#straight-one" class="lap-btn">Begin the Circuit</a>
+  </div>
+  <div class="start-line-accent"></div>
+</section>
+
+<!-- PANEL 2: THE FIRST STRAIGHT — Georgetown, the eye settles into rhythm -->
+<section id="straight-one" class="straight-panel">
+  <div class="straight-photo">
+    <div class="photo-gt" style="position:absolute;inset:0;"></div>
+    <svg style="position:absolute;inset:0;width:100%;height:100%;opacity:0.2;z-index:2" viewBox="0 0 500 900" preserveAspectRatio="xMidYMid slice">
+      <ellipse cx="250" cy="440" rx="205" ry="115" fill="none" stroke="#F2ECE2" stroke-width="1.5"/>
+      <ellipse cx="250" cy="440" rx="175" ry="88" fill="none" stroke="#F2ECE2" stroke-width="1.5"/>
+      <ellipse cx="250" cy="440" rx="145" ry="62" fill="none" stroke="#F2ECE2" stroke-width="1"/>
+      <line x1="45" y1="440" x2="455" y2="440" stroke="#F2ECE2" stroke-width="1"/>
+    </svg>
+  </div>
+  <div class="straight-text">
+    <div class="panel-accent-top"></div>
+    <p class="chisel panel-eyebrow" style="margin-top:calc(var(--sp-xl) + 4px)">Track No. 01 &nbsp;·&nbsp; Georgetown</p>
+    <h2 class="panel-h2">Where the Potomac Keeps the Pace</h2>
+    <p class="panel-prose">Georgetown Waterfront's oval sits where canal meets river. At dusk the water doubles the sky so completely that a runner on the back straight feels suspended between two horizons. Fresh tartan, meticulously kept.</p>
+    <p class="panel-prose">Regulars: scullers before the water warms, Hill staffers at noon, the solitary who come after midnight when the towpath empties and the lanes glow faint orange.</p>
+    <div class="panel-data">
+      <div class="data-row">
+        <span class="data-key">Distance</span>
+        <span class="data-val">400 m</span>
+      </div>
+      <div class="data-row">
+        <span class="data-key">Surface</span>
+        <span class="data-val">Polyurethane / Tartan</span>
+      </div>
+      <div class="data-row">
+        <span class="data-key">Ward</span>
+        <span class="data-val">Ward 2</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PANEL 3: THE BACK STRAIGHT — nothing to do but think -->
+<section class="back-straight">
+  <div class="back-straight-bg"></div>
+  <div class="back-start"></div>
+  <div class="pull-quote-block">
+    <blockquote class="pull-quote">
+      "The oval teaches you that return is not defeat — it is the whole point."
+    </blockquote>
+  </div>
+</section>
+
+<!-- PANEL 4: THE SECOND STRAIGHT — Anacostia, a different character -->
+<section class="straight-panel">
+  <div class="straight-text">
+    <div class="panel-accent-top"></div>
+    <p class="chisel panel-eyebrow" style="margin-top:calc(var(--sp-xl) + 4px)">Track No. 02 &nbsp;·&nbsp; Anacostia</p>
+    <h2 class="panel-h2">The Oldest Oval East of the River</h2>
+    <p class="panel-prose">Anacostia Park's track carries decades in its surface — rubberized asphalt that absorbs heat by ten in the morning and holds it past evening. No gate, no fee, no expected pace. The oval belongs to whoever shows up.</p>
+    <p class="panel-prose">The Anacostia River is close enough to hear on windless nights. Reagan's flight paths mark the laps in 737 shadows — the most honest split timer in the city.</p>
+    <div class="panel-data">
+      <div class="data-row">
+        <span class="data-key">Distance</span>
+        <span class="data-val">~400 m</span>
+      </div>
+      <div class="data-row">
+        <span class="data-key">Surface</span>
+        <span class="data-val">Rubberized Asphalt</span>
+      </div>
+      <div class="data-row">
+        <span class="data-key">Ward</span>
+        <span class="data-val">Ward 8</span>
+      </div>
+    </div>
+  </div>
+  <div class="straight-photo">
+    <div class="photo-an" style="position:absolute;inset:0;"></div>
+    <svg style="position:absolute;inset:0;width:100%;height:100%;opacity:0.2;z-index:2" viewBox="0 0 500 900" preserveAspectRatio="xMidYMid slice">
+      <ellipse cx="250" cy="450" rx="210" ry="120" fill="none" stroke="#F2ECE2" stroke-width="1.5"/>
+      <ellipse cx="250" cy="450" rx="178" ry="92" fill="none" stroke="#F2ECE2" stroke-width="1.5"/>
+      <ellipse cx="250" cy="450" rx="148" ry="65" fill="none" stroke="#F2ECE2" stroke-width="1"/>
+      <line x1="40" y1="450" x2="460" y2="450" stroke="#F2ECE2" stroke-width="1"/>
+    </svg>
+  </div>
+</section>
+
+<!-- PANEL 5: THE AERIAL VIEW — the runner's mental map -->
+<section class="aerial-panel">
+  <div class="aerial-accent"></div>
+  <p class="chisel aerial-label">The Washington Circuit</p>
+  <h2 class="aerial-h2">The City's Ovals</h2>
+  <div class="map-frame">
+    <div class="map-vline"></div>
+    <svg style="position:absolute;inset:0;width:100%;height:100%" viewBox="0 0 880 400" preserveAspectRatio="none">
+      <line x1="0" y1="128" x2="880" y2="205" stroke="rgba(242,236,226,0.1)" stroke-width="1"/>
+      <line x1="0" y1="272" x2="880" y2="195" stroke="rgba(242,236,226,0.1)" stroke-width="1"/>
+      <line x1="0" y1="55" x2="880" y2="365" stroke="rgba(242,236,226,0.07)" stroke-width="1"/>
+      <line x1="176" y1="0" x2="176" y2="400" stroke="rgba(242,236,226,0.07)" stroke-width="1"/>
+      <line x1="440" y1="0" x2="440" y2="400" stroke="rgba(242,236,226,0.07)" stroke-width="1"/>
+      <line x1="704" y1="0" x2="704" y2="400" stroke="rgba(242,236,226,0.07)" stroke-width="1"/>
+      <path d="M0,295 Q220,270 440,280 Q660,290 880,268" stroke="rgba(27,48,38,0.3)" stroke-width="6" fill="none"/>
+    </svg>
+    <div class="oval-pin op1">
+      <div class="oval-dot"></div>
+      <div class="oval-text">
+        <span class="oval-name">Georgetown Waterfront</span>
+        <span class="oval-spec">400 m · Tartan · Ward 2</span>
+      </div>
+    </div>
+    <div class="oval-pin op2">
+      <div class="oval-dot"></div>
+      <div class="oval-text">
+        <span class="oval-name">Catholic University</span>
+        <span class="oval-spec">400 m · Polyurethane · Ward 5</span>
+      </div>
+    </div>
+    <div class="oval-pin op3">
+      <div class="oval-dot"></div>
+      <div class="oval-text">
+        <span class="oval-name">Banneker Recreation</span>
+        <span class="oval-spec">400 m · Mondo · Ward 1</span>
+      </div>
+    </div>
+    <div class="oval-pin op4">
+      <div class="oval-dot"></div>
+      <div class="oval-text">
+        <span class="oval-name">Anacostia Park</span>
+        <span class="oval-spec">~400 m · Asphalt · Ward 8</span>
+      </div>
+    </div>
+    <div class="oval-pin op5">
+      <div class="oval-dot"></div>
+      <div class="oval-text">
+        <span class="oval-name">Eastern High School</span>
+        <span class="oval-spec">400 m · Mondotrack · Ward 6</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PANEL 6: THE FINAL BEND — delivers the reader back to the start, breathing harder -->
+<section class="final-bend">
+  <div class="final-start"></div>
+  <div class="final-vline"></div>
+  <p class="chisel final-eyebrow">The Guide &nbsp;·&nbsp; Quarterly</p>
+  <h2 class="final-h2">Know every oval.</h2>
+  <p class="final-prose">Track profiles, surface reports, and seasonal dispatches from the Washington circuit — delivered quarterly to those who understand that running the same oval twice is never the same thing twice.</p>
+  <form class="final-form" onsubmit="return false;">
+    <input type="email" class="final-input" placeholder="your@email.com" aria-label="Email address">
+    <button type="submit" class="final-btn">Get the Guide</button>
+  </form>
+</section>
+
+</body>
+</html>

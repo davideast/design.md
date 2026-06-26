@@ -1,7 +1,22 @@
 ---
 // Read-only viewer: the grid is the navigation; the logo returns to the wall of
 // results. Authoring/generation moved to MCP tools — no creation UI here.
+const { active } = Astro.props as { active?: string };
+const links = [
+  { label: "Cases", href: "/cases/agent-slides" },
+  { label: "Measurements", href: "/measurements" },
+  { label: "Matrix", href: "/matrix" },
+];
 ---
-<nav class="bg-paper border-b border-line h-12 flex items-center px-lg sticky top-0 z-50">
-  <a href="/" class="font-display font-semibold tracking-tight text-base text-ink">Design Bench</a>
+<nav class="bg-paper border-b border-line h-12 flex items-center px-lg sticky top-0 z-50 gap-lg">
+  <a href="/" class="font-display font-semibold tracking-tight text-base text-ink mr-auto">Design Bench</a>
+  {links.map((l) => (
+    <a href={l.href}
+      class:list={[
+        "font-label text-label uppercase hover:text-primary transition-colors",
+        { "text-primary": active === l.label, "text-ink-muted": active !== l.label },
+      ]}
+      style="font-size:10px;letter-spacing:0.06em">{l.label}</a>
+  ))}
 </nav>
+

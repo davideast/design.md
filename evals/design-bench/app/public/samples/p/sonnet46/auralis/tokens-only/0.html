@@ -1,0 +1,720 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Auralis — Making digital experiences sound human</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --primary: #111111;
+    --secondary: #6B6B6B;
+    --tertiary: #9958ff;
+    --neutral: #F7F7F5;
+    --surface-elevated: #ffffff;
+    --outline-muted: #E5E5E3;
+    --font: 'Geist', system-ui, sans-serif;
+    --r-sm: 0.25rem;
+    --r-md: 0.75rem;
+    --r-lg: 1.5rem;
+    --r-full: 9999px;
+    --sp-sm: 8px;
+    --sp-md: 24px;
+    --sp-lg: 64px;
+    --sp-xl: 140px;
+    --sp-gutter: 24px;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: var(--font);
+    background: var(--neutral);
+    color: var(--primary);
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+    font-size: 16px;
+    font-weight: 400;
+  }
+
+  /* NAV */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    height: 64px;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 0 var(--sp-md);
+    background: rgba(247,247,245,0.9);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--outline-muted);
+  }
+  .wordmark {
+    font-size: 12px; font-weight: 600; letter-spacing: 0.08em;
+    line-height: 1; text-transform: uppercase; color: var(--primary);
+  }
+  .nav-links {
+    display: flex; align-items: center; gap: var(--sp-md);
+    list-style: none;
+  }
+  .nav-links a {
+    font-size: 14px; font-weight: 500; color: var(--secondary);
+    text-decoration: none; letter-spacing: 0.01em; transition: color 0.15s;
+  }
+  .nav-links a:hover { color: var(--primary); }
+  .btn-nav {
+    background: var(--primary); color: var(--surface-elevated);
+    font-size: 14px; font-weight: 500; letter-spacing: 0.01em;
+    padding: 9px 20px; border-radius: var(--r-full);
+    text-decoration: none; border: none; cursor: pointer;
+    transition: opacity 0.15s;
+  }
+  .btn-nav:hover { opacity: 0.85; }
+
+  /* HERO */
+  .hero {
+    padding: var(--sp-xl) var(--sp-md);
+    padding-top: calc(var(--sp-xl) + 64px);
+    display: flex; flex-direction: column; align-items: center;
+    text-align: center; min-height: 100vh; justify-content: center;
+  }
+  .hero h1 {
+    font-size: 72px; font-weight: 600; line-height: 0.95;
+    letter-spacing: -0.04em; max-width: 900px;
+    color: var(--primary); margin-bottom: 40px;
+  }
+  .hero-actions { display: flex; gap: var(--sp-sm); align-items: center; }
+  .btn-primary {
+    background: var(--primary); color: var(--surface-elevated);
+    font-size: 14px; font-weight: 500; letter-spacing: 0.01em;
+    padding: 12px 28px; border-radius: var(--r-full);
+    text-decoration: none; border: none; cursor: pointer;
+    transition: opacity 0.15s; line-height: 1;
+  }
+  .btn-primary:hover { opacity: 0.85; }
+  .btn-outline {
+    background: transparent; color: var(--primary);
+    font-size: 14px; font-weight: 500; letter-spacing: 0.01em;
+    padding: 11px 28px; border-radius: var(--r-full);
+    text-decoration: none; border: 1px solid var(--outline-muted);
+    cursor: pointer; transition: border-color 0.15s; line-height: 1;
+  }
+  .btn-outline:hover { border-color: var(--secondary); }
+
+  /* DEMO PANEL */
+  .demo-wrap {
+    padding: 0 var(--sp-md) var(--sp-lg);
+    max-width: 1200px; margin: 0 auto;
+  }
+  .demo-panel {
+    background: var(--surface-elevated);
+    border: 1px solid var(--outline-muted);
+    border-radius: var(--r-lg);
+    overflow: hidden;
+    box-shadow: 0 40px 80px rgba(17,17,17,0.08);
+  }
+  .demo-tabs {
+    display: flex; border-bottom: 1px solid var(--outline-muted);
+    align-items: stretch;
+  }
+  .tab {
+    padding: 14px var(--sp-md); font-size: 14px; font-weight: 500;
+    color: var(--secondary); cursor: pointer;
+    border-right: 1px solid var(--outline-muted);
+    letter-spacing: 0.01em; transition: color 0.15s;
+    border-bottom: 2px solid transparent; margin-bottom: -1px;
+  }
+  .tab.active { color: var(--primary); border-bottom-color: var(--primary); }
+  .demo-status-bar {
+    margin-left: auto; display: flex; align-items: center; gap: var(--sp-sm);
+    padding: 0 var(--sp-md); font-size: 12px; font-weight: 600;
+    letter-spacing: 0.08em; text-transform: uppercase; color: var(--secondary);
+  }
+  .live-indicator {
+    width: 6px; height: 6px; border-radius: 50%;
+    background: #22c55e; animation: blink 1.8s infinite;
+  }
+  @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0.35} }
+  .demo-preview {
+    height: 320px; position: relative;
+    display: flex; align-items: center; justify-content: center;
+    background: #f9f8ff; overflow: hidden;
+  }
+  .demo-cloud-1 {
+    position: absolute; width: 500px; height: 400px;
+    border-radius: 50%;
+    background: radial-gradient(ellipse, rgba(153,88,255,0.35) 0%, rgba(96,165,250,0.2) 50%, transparent 75%);
+    filter: blur(48px); top: 50%; left: 45%; transform: translate(-50%,-50%);
+  }
+  .demo-cloud-2 {
+    position: absolute; width: 350px; height: 300px;
+    border-radius: 50%;
+    background: radial-gradient(ellipse, rgba(244,114,182,0.25) 0%, rgba(34,211,238,0.2) 60%, transparent 80%);
+    filter: blur(56px); top: 60%; left: 55%; transform: translate(-50%,-50%);
+  }
+  .play-btn {
+    width: 64px; height: 64px; border-radius: 50%;
+    background: var(--surface-elevated); border: 1px solid var(--outline-muted);
+    display: flex; align-items: center; justify-content: center;
+    cursor: pointer; position: relative; z-index: 2;
+    transition: box-shadow 0.2s;
+    box-shadow: 0 4px 16px rgba(17,17,17,0.1);
+  }
+  .play-btn:hover { box-shadow: 0 8px 32px rgba(17,17,17,0.15); }
+  .play-icon {
+    width: 0; height: 0; border-style: solid;
+    border-width: 10px 0 10px 18px;
+    border-color: transparent transparent transparent var(--primary);
+    margin-left: 3px;
+  }
+  .demo-modebar {
+    border-top: 1px solid var(--outline-muted);
+    display: flex; align-items: center; background: var(--surface-elevated);
+  }
+  .mode-link {
+    padding: 12px var(--sp-md); font-size: 12px; font-weight: 600;
+    letter-spacing: 0.08em; text-transform: uppercase; color: var(--secondary);
+    text-decoration: none; border-right: 1px solid var(--outline-muted);
+    white-space: nowrap; transition: color 0.15s;
+  }
+  .mode-link.active { color: var(--primary); }
+  .mode-link:hover { color: var(--primary); }
+  .modebar-cta {
+    margin-left: auto; margin-right: var(--sp-md);
+    background: var(--primary); color: var(--surface-elevated);
+    font-size: 14px; font-weight: 500; letter-spacing: 0.01em;
+    padding: 8px 18px; border-radius: var(--r-full); border: none;
+    cursor: pointer; line-height: 1;
+  }
+
+  /* TRUST STRIP */
+  .trust-section {
+    border-top: 1px solid var(--outline-muted);
+    border-bottom: 1px solid var(--outline-muted);
+    padding: var(--sp-lg) var(--sp-md);
+    text-align: center;
+  }
+  .trust-heading {
+    font-size: 12px; font-weight: 600; letter-spacing: 0.08em;
+    text-transform: uppercase; color: var(--secondary); margin-bottom: var(--sp-md);
+  }
+  .trust-logos {
+    display: flex; align-items: center; justify-content: center;
+    gap: 48px; flex-wrap: wrap;
+  }
+  .trust-name {
+    font-size: 16px; font-weight: 600; color: var(--outline-muted);
+    letter-spacing: -0.01em; transition: color 0.2s;
+  }
+  .trust-name:hover { color: var(--secondary); }
+
+  /* PLATFORM */
+  .platform-section {
+    padding: var(--sp-xl) var(--sp-md);
+    max-width: 1200px; margin: 0 auto;
+  }
+  .platform-header { text-align: center; margin-bottom: var(--sp-lg); }
+  .platform-header h2 {
+    font-size: 42px; font-weight: 600; line-height: 1.1;
+    letter-spacing: -0.02em; margin-bottom: var(--sp-md);
+  }
+  .platform-header p { font-size: 16px; color: var(--secondary); max-width: 480px; margin: 0 auto; }
+  .platform-blurbs {
+    display: grid; grid-template-columns: 1fr 1fr;
+    gap: var(--sp-md); margin-bottom: var(--sp-lg);
+    max-width: 700px; margin-left: auto; margin-right: auto; margin-bottom: var(--sp-lg);
+  }
+  .blurb {
+    background: var(--surface-elevated); border: 1px solid var(--outline-muted);
+    border-radius: var(--r-md); padding: var(--sp-md);
+  }
+  .blurb h3 { font-size: 14px; font-weight: 600; margin-bottom: var(--sp-sm); }
+  .blurb p { font-size: 14px; color: var(--secondary); line-height: 1.5; }
+  .dashboard {
+    background: var(--primary); border-radius: var(--r-lg); overflow: hidden;
+    margin-top: var(--sp-lg);
+  }
+  .dash-header {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: var(--sp-sm) var(--sp-md);
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+  }
+  .dash-title {
+    font-size: 12px; font-weight: 600; letter-spacing: 0.08em;
+    text-transform: uppercase; color: rgba(255,255,255,0.4);
+  }
+  .dash-badges { display: flex; gap: var(--sp-sm); }
+  .dash-badge {
+    font-size: 10px; font-weight: 600; letter-spacing: 0.08em;
+    text-transform: uppercase; padding: 4px 10px; border-radius: var(--r-full);
+    border: 1px solid;
+  }
+  .dash-badge-studio { color: #c084fc; border-color: rgba(192,132,252,0.3); }
+  .dash-badge-live { color: #4ade80; border-color: rgba(74,222,128,0.3); display: flex; align-items: center; gap: 5px; }
+  .dash-badge-live-dot { width: 5px; height: 5px; border-radius: 50%; background: #4ade80; animation: blink 1.8s infinite; }
+  .dash-metrics {
+    display: grid; grid-template-columns: repeat(3,1fr);
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+  }
+  .dash-metric {
+    padding: var(--sp-md); border-right: 1px solid rgba(255,255,255,0.08);
+  }
+  .dash-metric:last-child { border-right: none; }
+  .dash-metric-label {
+    font-size: 10px; font-weight: 600; letter-spacing: 0.12em;
+    text-transform: uppercase; color: rgba(255,255,255,0.3); margin-bottom: var(--sp-sm);
+  }
+  .dash-metric-value {
+    font-size: 32px; font-weight: 600; letter-spacing: -0.04em;
+    color: rgba(255,255,255,0.9); line-height: 0.95;
+  }
+  .dash-metric-unit { font-size: 14px; color: rgba(255,255,255,0.4); font-weight: 400; }
+  .dash-metric-op { color: #4ade80; font-size: 22px; }
+  .dash-viz {
+    padding: var(--sp-md); height: 100px;
+    display: flex; align-items: center; gap: 2px;
+  }
+  .viz-bar {
+    flex: 1; border-radius: 2px;
+    background: var(--tertiary); opacity: 0.55; min-height: 4px;
+  }
+  .dash-transport {
+    display: flex; align-items: center; justify-content: center; gap: 12px;
+    padding: var(--sp-sm) var(--sp-md);
+    border-top: 1px solid rgba(255,255,255,0.08);
+  }
+  .tctrl {
+    width: 28px; height: 28px; border-radius: 50%;
+    background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.1);
+    display: flex; align-items: center; justify-content: center;
+    color: rgba(255,255,255,0.4); font-size: 10px; cursor: pointer;
+  }
+  .tplay {
+    width: 36px; height: 36px; border-radius: 50%;
+    background: var(--tertiary); border: none; cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .tplay-icon {
+    width: 0; height: 0; border-style: solid;
+    border-width: 6px 0 6px 11px;
+    border-color: transparent transparent transparent #fff; margin-left: 2px;
+  }
+  .ttime { font-size: 11px; color: rgba(255,255,255,0.3); letter-spacing: 0.05em; margin-left: 8px; }
+
+  /* STUDIO */
+  .studio-section {
+    padding: var(--sp-xl) var(--sp-md);
+    border-top: 1px solid var(--outline-muted);
+  }
+  .studio-inner { max-width: 1200px; margin: 0 auto; }
+  .section-eyebrow {
+    font-size: 12px; font-weight: 600; letter-spacing: 0.08em;
+    text-transform: uppercase; color: var(--secondary); margin-bottom: var(--sp-sm);
+  }
+  .section-h2 {
+    font-size: 42px; font-weight: 600; line-height: 1.1;
+    letter-spacing: -0.02em; margin-bottom: var(--sp-sm); max-width: 540px;
+  }
+  .section-p { font-size: 16px; color: var(--secondary); max-width: 440px; margin-bottom: var(--sp-lg); }
+  .studio-cards { display: grid; grid-template-columns: 1fr 1fr; gap: var(--sp-md); margin-bottom: var(--sp-md); }
+  .s-card {
+    background: var(--surface-elevated); border: 1px solid var(--outline-muted);
+    border-radius: var(--r-lg); overflow: hidden;
+  }
+  .s-card-img {
+    height: 200px; background: linear-gradient(135deg, #f0eeff 0%, #e6f0ff 100%);
+    display: flex; align-items: center; justify-content: center;
+    position: relative; overflow: hidden;
+  }
+  .editor-mock {
+    width: 80%; height: 72%; border-radius: var(--r-md);
+    background: var(--surface-elevated); border: 1px solid var(--outline-muted);
+    overflow: hidden; box-shadow: 0 4px 20px rgba(17,17,17,0.08);
+  }
+  .editor-top {
+    height: 28px; background: var(--neutral); border-bottom: 1px solid var(--outline-muted);
+    display: flex; align-items: center; padding: 0 12px; gap: 5px;
+  }
+  .ed-dot { width: 8px; height: 8px; border-radius: 50%; }
+  .editor-body { padding: 10px; display: flex; flex-direction: column; gap: 5px; }
+  .ed-track {
+    height: 18px; border-radius: 3px; position: relative;
+    background: rgba(153,88,255,0.1); border: 1px solid rgba(153,88,255,0.15);
+    overflow: hidden;
+  }
+  .ed-fill { position: absolute; left: 0; top: 0; bottom: 0; background: rgba(153,88,255,0.3); border-radius: 2px; }
+  .s-card-label {
+    padding: var(--sp-sm) var(--sp-md);
+    font-size: 12px; font-weight: 600; letter-spacing: 0.08em;
+    text-transform: uppercase; color: var(--secondary);
+  }
+  .s-card-body { padding: var(--sp-md); }
+  .s-card-body h3 { font-size: 16px; font-weight: 600; margin-bottom: var(--sp-sm); }
+  .s-card-body p { font-size: 14px; color: var(--secondary); line-height: 1.5; }
+  .studio-modes { display: flex; gap: var(--sp-sm); flex-wrap: wrap; }
+  .mode-pill {
+    padding: 9px 20px; border-radius: var(--r-full);
+    border: 1px solid var(--outline-muted); background: var(--surface-elevated);
+    font-size: 14px; font-weight: 500; color: var(--secondary);
+    cursor: pointer; transition: all 0.15s; letter-spacing: 0.01em;
+  }
+  .mode-pill:hover { border-color: var(--primary); color: var(--primary); }
+
+  /* AGENTS */
+  .agents-section {
+    padding: var(--sp-xl) var(--sp-md);
+    border-top: 1px solid var(--outline-muted);
+  }
+  .agents-inner { max-width: 1200px; margin: 0 auto; }
+  .agents-grid { display: grid; grid-template-columns: 1.1fr 0.9fr; gap: var(--sp-md); margin-top: var(--sp-lg); }
+  .chat-card {
+    background: var(--surface-elevated); border: 1px solid var(--outline-muted);
+    border-radius: var(--r-lg); overflow: hidden;
+  }
+  .chat-hdr {
+    padding: var(--sp-sm) var(--sp-md); border-bottom: 1px solid var(--outline-muted);
+    display: flex; align-items: center; justify-content: space-between;
+  }
+  .chat-name { font-size: 14px; font-weight: 600; }
+  .chat-status-text {
+    font-size: 10px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase;
+    color: #16a34a; display: flex; align-items: center; gap: 4px;
+  }
+  .status-dot { width: 5px; height: 5px; border-radius: 50%; background: #16a34a; }
+  .chat-msgs { padding: var(--sp-md); display: flex; flex-direction: column; gap: 12px; }
+  .msg-row { display: flex; align-items: flex-start; gap: var(--sp-sm); }
+  .msg-ava {
+    width: 28px; height: 28px; border-radius: 50%;
+    background: rgba(153,88,255,0.12); border: 1px solid rgba(153,88,255,0.2);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 11px; font-weight: 600; color: var(--tertiary); flex-shrink: 0;
+  }
+  .bubble-in {
+    background: var(--neutral); border: 1px solid var(--outline-muted);
+    border-radius: var(--r-sm) var(--r-md) var(--r-md) var(--r-md);
+    padding: 10px 14px; font-size: 13px; max-width: 80%;
+  }
+  .msg-out { display: flex; justify-content: flex-end; }
+  .bubble-out {
+    background: var(--primary); color: var(--surface-elevated);
+    border-radius: var(--r-md) var(--r-md) var(--r-sm) var(--r-md);
+    padding: 10px 14px; font-size: 13px; max-width: 80%;
+  }
+  .typing-row { display: flex; align-items: flex-start; gap: var(--sp-sm); }
+  .typing-bubble {
+    background: var(--neutral); border: 1px solid var(--outline-muted);
+    border-radius: var(--r-sm) var(--r-md) var(--r-md) var(--r-md);
+    padding: 12px 16px; display: flex; gap: 4px; align-items: center;
+  }
+  .t-dot {
+    width: 6px; height: 6px; border-radius: 50%;
+    background: var(--secondary); animation: bounce 1.2s infinite ease-in-out;
+  }
+  .t-dot:nth-child(2) { animation-delay: 0.15s; }
+  .t-dot:nth-child(3) { animation-delay: 0.3s; }
+  @keyframes bounce { 0%,60%,100%{transform:translateY(0)} 30%{transform:translateY(-5px)} }
+  .insights-card {
+    background: var(--surface-elevated); border: 1px solid var(--outline-muted);
+    border-radius: var(--r-lg); padding: var(--sp-md);
+  }
+  .insights-eyebrow {
+    font-size: 12px; font-weight: 600; letter-spacing: 0.08em;
+    text-transform: uppercase; color: var(--tertiary); margin-bottom: var(--sp-sm);
+  }
+  .insights-card h3 { font-size: 20px; font-weight: 600; letter-spacing: -0.02em; margin-bottom: var(--sp-sm); }
+  .insights-card p { font-size: 14px; color: var(--secondary); line-height: 1.5; margin-bottom: var(--sp-md); }
+  .stat-rows { display: flex; flex-direction: column; gap: var(--sp-sm); }
+  .stat-row { display: flex; align-items: center; gap: var(--sp-sm); }
+  .stat-label { font-size: 12px; color: var(--secondary); width: 110px; flex-shrink: 0; }
+  .stat-track { flex: 1; height: 3px; background: var(--outline-muted); border-radius: 2px; }
+  .stat-fill { height: 3px; border-radius: 2px; background: var(--tertiary); }
+  .stat-val { font-size: 12px; font-weight: 600; width: 30px; text-align: right; }
+
+  /* CTA */
+  .cta-section {
+    padding: var(--sp-xl) var(--sp-md);
+    text-align: center; border-top: 1px solid var(--outline-muted);
+  }
+  .cta-section h2 {
+    font-size: 42px; font-weight: 600; line-height: 1.1;
+    letter-spacing: -0.02em; margin-bottom: 40px;
+  }
+  .cta-actions { display: flex; gap: var(--sp-sm); justify-content: center; }
+
+  /* FOOTER */
+  footer {
+    padding: var(--sp-md) var(--sp-md);
+    border-top: 1px solid var(--outline-muted);
+    display: flex; align-items: center; justify-content: space-between;
+    flex-wrap: wrap; gap: var(--sp-md);
+  }
+  .footer-left { display: flex; flex-direction: column; gap: var(--sp-sm); }
+  .footer-wordmark {
+    font-size: 12px; font-weight: 600; letter-spacing: 0.08em;
+    text-transform: uppercase; color: var(--primary);
+  }
+  .footer-copy { font-size: 12px; color: var(--secondary); }
+  .footer-links { display: flex; gap: var(--sp-md); }
+  .footer-links a {
+    font-size: 14px; color: var(--secondary); text-decoration: none; transition: color 0.15s;
+  }
+  .footer-links a:hover { color: var(--primary); }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="wordmark">Auralis</div>
+  <ul class="nav-links">
+    <li><a href="#">Studio</a></li>
+    <li><a href="#">Agents</a></li>
+    <li><a href="#">API</a></li>
+    <li><a href="#">Resources</a></li>
+    <li><a href="#">Enterprise</a></li>
+    <li><a href="#">Pricing</a></li>
+  </ul>
+  <a href="#" class="btn-nav">Sign up</a>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <h1>Making digital experiences sound human</h1>
+  <div class="hero-actions">
+    <a href="#" class="btn-primary">Sign up</a>
+    <a href="#" class="btn-outline">Contact sales</a>
+  </div>
+</section>
+
+<!-- DEMO PANEL -->
+<div class="demo-wrap">
+  <div class="demo-panel">
+    <div class="demo-tabs">
+      <div class="tab active">Auralis Studio</div>
+      <div class="tab">Auralis Agents</div>
+      <div class="tab">Auralis API</div>
+      <div class="demo-status-bar">
+        <div class="live-indicator"></div>
+        AI Voice Generator
+      </div>
+    </div>
+    <div class="demo-preview">
+      <div class="demo-cloud-1"></div>
+      <div class="demo-cloud-2"></div>
+      <div class="play-btn">
+        <div class="play-icon"></div>
+      </div>
+    </div>
+    <div class="demo-modebar">
+      <a href="#" class="mode-link active">AI Voice Generator</a>
+      <a href="#" class="mode-link">Text to Speech</a>
+      <a href="#" class="mode-link">Music</a>
+      <a href="#" class="mode-link">Sound Effects</a>
+      <a href="#" class="mode-link">Voice Cloning</a>
+      <button class="modebar-cta">Sign up</button>
+    </div>
+  </div>
+</div>
+
+<!-- TRUST STRIP -->
+<div class="trust-section">
+  <p class="trust-heading">Trusted by teams building modern audio experiences</p>
+  <div class="trust-logos">
+    <span class="trust-name">Velocity</span>
+    <span class="trust-name">Nexus</span>
+    <span class="trust-name">Lumina</span>
+    <span class="trust-name">Stack</span>
+    <span class="trust-name">Quanta</span>
+    <span class="trust-name">Orbital</span>
+    <span class="trust-name">Scalar</span>
+  </div>
+</div>
+
+<!-- PLATFORM OVERVIEW -->
+<section class="platform-section">
+  <div class="platform-header">
+    <h2>Two systems, one shared intelligence layer</h2>
+    <p>Studio and Agents share a unified synthesis core. One neural engine powering every voice output across every product.</p>
+  </div>
+  <div class="platform-blurbs">
+    <div class="blurb">
+      <h3>Precision Generation</h3>
+      <p>Sub-20ms latency synthesis with full prosodic control. Every phoneme shaped with surgical accuracy.</p>
+    </div>
+    <div class="blurb">
+      <h3>Agentic Architecture</h3>
+      <p>Autonomous voice agents that reason, adapt, and respond in real time, integrated with your existing systems.</p>
+    </div>
+  </div>
+  <div class="dashboard">
+    <div class="dash-header">
+      <span class="dash-title">Neural Engine V4.2 Pro</span>
+      <div class="dash-badges">
+        <span class="dash-badge dash-badge-studio">Studio Mode</span>
+        <span class="dash-badge dash-badge-live"><span class="dash-badge-live-dot"></span>Real-time Synthesis Active</span>
+      </div>
+    </div>
+    <div class="dash-metrics">
+      <div class="dash-metric">
+        <div class="dash-metric-label">Latency</div>
+        <div class="dash-metric-value">12 <span class="dash-metric-unit">ms</span></div>
+      </div>
+      <div class="dash-metric">
+        <div class="dash-metric-label">Confidence</div>
+        <div class="dash-metric-value">99.8 <span class="dash-metric-unit">%</span></div>
+      </div>
+      <div class="dash-metric">
+        <div class="dash-metric-label">Status</div>
+        <div class="dash-metric-value dash-metric-op">Operational</div>
+      </div>
+    </div>
+    <div class="dash-viz">
+      <div class="viz-bar" style="height:22%"></div><div class="viz-bar" style="height:65%"></div>
+      <div class="viz-bar" style="height:38%"></div><div class="viz-bar" style="height:82%"></div>
+      <div class="viz-bar" style="height:55%"></div><div class="viz-bar" style="height:96%"></div>
+      <div class="viz-bar" style="height:30%"></div><div class="viz-bar" style="height:70%"></div>
+      <div class="viz-bar" style="height:45%"></div><div class="viz-bar" style="height:88%"></div>
+      <div class="viz-bar" style="height:20%"></div><div class="viz-bar" style="height:60%"></div>
+      <div class="viz-bar" style="height:48%"></div><div class="viz-bar" style="height:100%"></div>
+      <div class="viz-bar" style="height:25%"></div><div class="viz-bar" style="height:74%"></div>
+      <div class="viz-bar" style="height:40%"></div><div class="viz-bar" style="height:84%"></div>
+      <div class="viz-bar" style="height:18%"></div><div class="viz-bar" style="height:58%"></div>
+      <div class="viz-bar" style="height:44%"></div><div class="viz-bar" style="height:78%"></div>
+      <div class="viz-bar" style="height:28%"></div><div class="viz-bar" style="height:66%"></div>
+      <div class="viz-bar" style="height:52%"></div><div class="viz-bar" style="height:90%"></div>
+    </div>
+    <div class="dash-transport">
+      <div class="tctrl">⏮</div>
+      <div class="tctrl">⏪</div>
+      <div class="tplay"><div class="tplay-icon"></div></div>
+      <div class="tctrl">⏩</div>
+      <div class="tctrl">⏭</div>
+      <span class="ttime">00:00:24 / 00:01:48</span>
+    </div>
+  </div>
+</section>
+
+<!-- STUDIO SECTION -->
+<div class="studio-section">
+  <div class="studio-inner">
+    <div class="section-eyebrow">Auralis Studio</div>
+    <h2 class="section-h2">Sculpt sound with absolute precision.</h2>
+    <p class="section-p">A professional-grade audio creation suite built for teams who demand control at every layer of their voice output.</p>
+    <div class="studio-cards">
+      <div class="s-card">
+        <div class="s-card-img">
+          <div class="editor-mock">
+            <div class="editor-top">
+              <div class="ed-dot" style="background:#ff5f57"></div>
+              <div class="ed-dot" style="background:#febc2e"></div>
+              <div class="ed-dot" style="background:#28c840"></div>
+            </div>
+            <div class="editor-body">
+              <div class="ed-track"><div class="ed-fill" style="width:68%"></div></div>
+              <div class="ed-track" style="opacity:0.6"><div class="ed-fill" style="width:42%"></div></div>
+              <div class="ed-track" style="opacity:0.35"><div class="ed-fill" style="width:85%"></div></div>
+            </div>
+          </div>
+        </div>
+        <div class="s-card-label">Soft Editor UI</div>
+      </div>
+      <div class="s-card">
+        <div class="s-card-body" style="padding-top:32px">
+          <div class="section-eyebrow" style="margin-bottom:8px">Transcript Panel</div>
+          <h3>Transcript Panel</h3>
+          <p>Real-time synchronized transcripts with phoneme-level editing. Adjust timing, emphasis, and pronunciation directly from the transcript view — every word tied to its exact audio frame.</p>
+        </div>
+      </div>
+    </div>
+    <div class="studio-modes">
+      <button class="mode-pill">Music</button>
+      <button class="mode-pill">SFX</button>
+      <button class="mode-pill">Voices</button>
+      <button class="mode-pill">Image &amp; Video</button>
+    </div>
+  </div>
+</div>
+
+<!-- AGENTS SECTION -->
+<div class="agents-section">
+  <div class="agents-inner">
+    <div class="section-eyebrow">Auralis Agents</div>
+    <h2 class="section-h2">Autonomous reasoning, human delivery.</h2>
+    <p class="section-p">Deploy intelligent voice agents that understand context, handle complexity, and speak with nuance.</p>
+    <div class="agents-grid">
+      <div class="chat-card">
+        <div class="chat-hdr">
+          <span class="chat-name">Nexus Support Agent</span>
+          <span class="chat-status-text"><div class="status-dot"></div>ONLINE • LATENCY: 12ms</span>
+        </div>
+        <div class="chat-msgs">
+          <div class="msg-row">
+            <div class="msg-ava">N</div>
+            <div class="bubble-in">Hello! How can I assist you today?</div>
+          </div>
+          <div class="msg-out">
+            <div class="bubble-out">I need help checking my deployment status.</div>
+          </div>
+          <div class="typing-row">
+            <div class="msg-ava">N</div>
+            <div class="typing-bubble">
+              <div class="t-dot"></div>
+              <div class="t-dot"></div>
+              <div class="t-dot"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="insights-card">
+        <div class="insights-eyebrow">Analytics</div>
+        <h3>Deep Insights</h3>
+        <p>Surface the patterns hidden in every voice interaction. Understand sentiment, intent, resolution rates, and conversation quality at scale.</p>
+        <div class="stat-rows">
+          <div class="stat-row">
+            <span class="stat-label">Resolution Rate</span>
+            <div class="stat-track"><div class="stat-fill" style="width:94%"></div></div>
+            <span class="stat-val">94%</span>
+          </div>
+          <div class="stat-row">
+            <span class="stat-label">Avg Sentiment</span>
+            <div class="stat-track"><div class="stat-fill" style="width:87%"></div></div>
+            <span class="stat-val">87%</span>
+          </div>
+          <div class="stat-row">
+            <span class="stat-label">Intent Accuracy</span>
+            <div class="stat-track"><div class="stat-fill" style="width:99%"></div></div>
+            <span class="stat-val">99%</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- CTA -->
+<section class="cta-section">
+  <h2>The future of voice starts here</h2>
+  <div class="cta-actions">
+    <a href="#" class="btn-primary" style="padding:14px 32px;font-size:15px">Get started</a>
+    <a href="#" class="btn-outline" style="padding:13px 32px;font-size:15px">Talk to sales</a>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-left">
+    <div class="footer-wordmark">Auralis</div>
+    <div class="footer-copy">© 2024 Auralis AI. Engineered for precision.</div>
+  </div>
+  <div class="footer-links">
+    <a href="#">Twitter</a>
+    <a href="#">GitHub</a>
+    <a href="#">Terms</a>
+    <a href="#">Privacy</a>
+  </div>
+</footer>
+
+</body>
+</html>

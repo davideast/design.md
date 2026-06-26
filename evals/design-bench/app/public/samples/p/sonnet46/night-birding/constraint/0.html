@@ -1,0 +1,596 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+  <title>Urban Nocturnal: Field Notes</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=League+Spartan:wght@500;700&family=Source+Serif+4:ital,wght@0,400;1,400&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    /* Three-ink palette on paper stock */
+    :root {
+      --paper: #F9F6EE;   /* base paper */
+      --ink: #1A1A1B;     /* primary ink */
+      --screen: #707372;  /* secondary screen ink */
+      --spot: #C53030;    /* spot color */
+    }
+
+    body {
+      font-family: 'Source Serif 4', 'Century Schoolbook', Georgia, serif;
+      background: var(--paper);
+      color: var(--ink);
+      width: 390px;
+      max-width: 390px;
+      min-height: 100vh;
+      margin: 0 auto;
+      font-size: 13px;
+      line-height: 1.5;
+    }
+
+    /* ─── MASTHEAD — printed header block ─── */
+    .masthead {
+      border: 1px solid var(--ink);
+      border-bottom: 3px solid var(--ink);
+      padding: 0;
+    }
+
+    .masthead-top {
+      background: var(--ink);
+      padding: 6px 10px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .pub-title {
+      font-family: 'League Spartan', sans-serif;
+      font-size: 18px;
+      font-weight: 700;
+      color: var(--paper);
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+
+    .pub-date {
+      font-family: 'League Spartan', sans-serif;
+      font-size: 9px;
+      font-weight: 500;
+      color: var(--screen);
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      text-align: right;
+    }
+
+    .masthead-rule {
+      background: var(--spot);
+      height: 3px;
+    }
+
+    .masthead-bottom {
+      padding: 4px 10px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .field-note-label {
+      font-family: 'League Spartan', sans-serif;
+      font-size: 9px;
+      font-weight: 700;
+      color: var(--ink);
+      text-transform: uppercase;
+      letter-spacing: 0.15em;
+    }
+
+    .masthead-dividers {
+      flex: 1;
+      height: 1px;
+      background: var(--screen);
+    }
+
+    .print-ref {
+      font-family: 'League Spartan', sans-serif;
+      font-size: 8px;
+      font-weight: 500;
+      color: var(--screen);
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+    }
+
+    /* ─── PANE SYSTEM — locked plate grid ─── */
+    .pane {
+      border: 1px solid var(--ink);
+      border-top: none;
+    }
+
+    .pane-head {
+      background: var(--ink);
+      padding: 3px 10px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .pane-title {
+      font-family: 'League Spartan', sans-serif;
+      font-size: 8px;
+      font-weight: 700;
+      color: var(--paper);
+      text-transform: uppercase;
+      letter-spacing: 0.18em;
+    }
+
+    .pane-code {
+      font-family: 'League Spartan', sans-serif;
+      font-size: 7px;
+      font-weight: 700;
+      color: var(--spot);
+      letter-spacing: 0.1em;
+    }
+
+    /* ─── MOON PANE ─── */
+    .moon-pane {
+      display: grid;
+      grid-template-columns: 1fr 1px 1fr 1px 1fr;
+    }
+
+    .ink-divider { background: var(--ink); }
+
+    .mc {
+      padding: 8px 10px;
+    }
+
+    .mc-label {
+      font-family: 'League Spartan', sans-serif;
+      font-size: 7px;
+      font-weight: 700;
+      color: var(--screen);
+      text-transform: uppercase;
+      letter-spacing: 0.16em;
+      display: block;
+      margin-bottom: 2px;
+    }
+
+    .mc-val {
+      font-family: 'League Spartan', sans-serif;
+      font-size: 16px;
+      font-weight: 700;
+      color: var(--ink);
+      line-height: 1;
+    }
+
+    .mc-val.sm { font-size: 11px; }
+
+    .moon-sub {
+      border-top: 1px solid var(--ink);
+      padding: 5px 10px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .moon-phase-text {
+      font-family: 'League Spartan', sans-serif;
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--ink);
+    }
+
+    .illum-rule-wrap {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .illum-track {
+      flex: 1;
+      height: 6px;
+      border: 1px solid var(--ink);
+      position: relative;
+    }
+
+    /* Solid ink fill — no gradient, offset litho constraint */
+    .illum-fill {
+      position: absolute;
+      left: 0; top: 0;
+      height: 100%;
+      width: 82%;
+      background: var(--ink);
+    }
+
+    /* Spot pointer indicator */
+    .spot-pointer {
+      color: var(--spot);
+      font-family: 'League Spartan', sans-serif;
+      font-size: 9px;
+      font-weight: 700;
+    }
+
+    /* ─── SPECIES PANE ─── */
+    .species-pane {
+      display: grid;
+      grid-template-columns: 118px 1fr;
+      border-top: 1px solid var(--ink);
+    }
+
+    .sp-illus {
+      border-right: 1px solid var(--ink);
+      padding: 10px 8px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .sp-illus-cap {
+      font-family: 'League Spartan', sans-serif;
+      font-size: 7px;
+      font-weight: 500;
+      color: var(--screen);
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      text-align: center;
+    }
+
+    .sp-data {
+      padding: 8px 10px;
+    }
+
+    .sp-name {
+      font-family: 'League Spartan', sans-serif;
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--ink);
+      border-bottom: 1px solid var(--ink);
+      padding-bottom: 4px;
+      margin-bottom: 5px;
+    }
+
+    .sp-row {
+      display: flex;
+      gap: 0;
+      border-bottom: 1px solid rgba(112,115,114,0.3);
+      padding: 3px 0;
+      font-size: 11px;
+      align-items: flex-start;
+    }
+
+    .sp-row:last-child { border-bottom: none; }
+
+    .sp-k {
+      font-family: 'League Spartan', sans-serif;
+      font-size: 7px;
+      font-weight: 700;
+      color: var(--screen);
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      min-width: 48px;
+      padding-top: 2px;
+    }
+
+    .sp-v { color: var(--ink); line-height: 1.35; }
+
+    /* ─── LOG PANE ─── */
+    .log-pane {
+      border-top: 1px solid var(--ink);
+      padding: 8px 10px;
+    }
+
+    .log-plate {
+      border: 1px solid var(--ink);
+    }
+
+    .log-head {
+      background: var(--ink);
+      padding: 4px 8px;
+      display: flex;
+      align-items: baseline;
+      gap: 10px;
+    }
+
+    .log-time {
+      font-family: 'League Spartan', sans-serif;
+      font-size: 18px;
+      font-weight: 700;
+      color: var(--paper);
+    }
+
+    .log-species-tag {
+      font-family: 'League Spartan', sans-serif;
+      font-size: 9px;
+      font-weight: 700;
+      color: var(--spot);
+      letter-spacing: 0.06em;
+    }
+
+    .log-fields {
+      display: grid;
+      grid-template-columns: 58px 1fr;
+    }
+
+    .lk {
+      font-family: 'League Spartan', sans-serif;
+      font-size: 7px;
+      font-weight: 700;
+      color: var(--screen);
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      padding: 4px 6px;
+      border-right: 1px solid var(--screen);
+      border-bottom: 1px solid rgba(112,115,114,0.3);
+      display: flex;
+      align-items: flex-start;
+    }
+
+    .lv {
+      font-size: 11px;
+      color: var(--ink);
+      padding: 4px 6px;
+      line-height: 1.4;
+      border-bottom: 1px solid rgba(112,115,114,0.3);
+    }
+
+    .lk:last-of-type, .lv:last-child { border-bottom: none; }
+
+    /* ─── LISTEN PANE ─── */
+    .listen-pane {
+      border-top: 1px solid var(--ink);
+      padding: 8px 10px;
+    }
+
+    .listen-intro {
+      font-size: 11px;
+      color: var(--screen);
+      font-style: italic;
+      margin-bottom: 6px;
+      padding: 5px 8px;
+      border-left: 3px solid var(--ink);
+      line-height: 1.5;
+    }
+
+    /* Locked plate rows — no fluid scrolling */
+    .filter-plate {
+      border: 1px solid var(--ink);
+    }
+
+    .fp-row {
+      display: grid;
+      grid-template-columns: 20px 52px 1fr;
+      border-bottom: 1px solid var(--ink);
+    }
+
+    .fp-row:last-child { border-bottom: none; }
+
+    .fp-n {
+      font-family: 'League Spartan', sans-serif;
+      font-size: 9px;
+      font-weight: 700;
+      color: var(--paper);
+      background: var(--screen);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-right: 1px solid var(--ink);
+    }
+
+    .fp-k {
+      font-family: 'League Spartan', sans-serif;
+      font-size: 8px;
+      font-weight: 700;
+      color: var(--ink);
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      padding: 5px 5px;
+      border-right: 1px solid var(--ink);
+      display: flex;
+      align-items: flex-start;
+      line-height: 1.3;
+    }
+
+    .fp-d {
+      font-size: 11px;
+      color: var(--ink);
+      padding: 5px 6px;
+      line-height: 1.4;
+    }
+
+    /* Spot color cue — only usage of spot outside pointers */
+    .spot { color: var(--spot); font-weight: 700; font-style: italic; }
+
+    /* ─── COLOPHON ─── */
+    .colophon {
+      border: 1px solid var(--ink);
+      border-top: 3px solid var(--ink);
+      padding: 5px 10px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .col-text {
+      font-family: 'League Spartan', sans-serif;
+      font-size: 7px;
+      font-weight: 500;
+      color: var(--screen);
+      text-transform: uppercase;
+      letter-spacing: 0.14em;
+    }
+
+    .col-spot {
+      font-family: 'League Spartan', sans-serif;
+      font-size: 8px;
+      font-weight: 700;
+      color: var(--spot);
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Masthead — locked header block -->
+  <div class="masthead">
+    <div class="masthead-top">
+      <span class="pub-title">Urban Nocturnal</span>
+      <span class="pub-date">Field Notes<br>Night Session</span>
+    </div>
+    <div class="masthead-rule"></div>
+    <div class="masthead-bottom">
+      <span class="field-note-label">Nocturnal Avian Survey</span>
+      <div class="masthead-dividers"></div>
+      <span class="print-ref">Offset Litho · 3-Ink</span>
+    </div>
+  </div>
+
+  <!-- Pane 1: Moon & Light -->
+  <div class="pane">
+    <div class="pane-head">
+      <span class="pane-title">Moon &amp; Light Conditions</span>
+      <span class="pane-code">INK-01</span>
+    </div>
+    <div class="moon-pane">
+      <div class="mc">
+        <span class="mc-label">Illumination</span>
+        <span class="mc-val">82%</span>
+      </div>
+      <div class="ink-divider"></div>
+      <div class="mc">
+        <span class="mc-label">Moonrise</span>
+        <span class="mc-val">17:42</span>
+      </div>
+      <div class="ink-divider"></div>
+      <div class="mc">
+        <span class="mc-label">Sky Quality</span>
+        <span class="mc-val sm">Bortle 8<br>Inner City</span>
+      </div>
+    </div>
+    <div class="moon-sub">
+      <span class="moon-phase-text">Waxing Gibbous</span>
+      <div class="illum-rule-wrap">
+        <div class="illum-track"><div class="illum-fill"></div></div>
+        <span class="spot-pointer">▶82</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Pane 2: Species -->
+  <div class="pane">
+    <div class="pane-head">
+      <span class="pane-title">Tonight's Likely Species</span>
+      <span class="pane-code">INK-02</span>
+    </div>
+    <div class="species-pane">
+      <div class="sp-illus">
+        <svg width="100" height="130" viewBox="0 0 100 130" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <!-- Body — solid ink block, no gradient -->
+          <ellipse cx="58" cy="90" rx="32" ry="22" fill="#1A1A1B"/>
+          <!-- Wing — secondary screen ink overprint -->
+          <ellipse cx="65" cy="86" rx="22" ry="15" fill="#707372"/>
+          <!-- Head -->
+          <circle cx="26" cy="63" r="16" fill="#1A1A1B"/>
+          <!-- Eye — paper knockout -->
+          <circle cx="22" cy="65" r="3.5" fill="#F9F6EE"/>
+          <circle cx="22" cy="65" r="1.8" fill="#1A1A1B"/>
+          <!-- Beak -->
+          <path d="M14 70 L0 78" stroke="#1A1A1B" stroke-width="3.5" stroke-linecap="round"/>
+          <!-- Neck -->
+          <path d="M36 76 C46 81 54 87 60 90" stroke="#1A1A1B" stroke-width="12" stroke-linecap="round"/>
+          <!-- Tail -->
+          <path d="M88 88 C97 84 106 82 114 86" stroke="#1A1A1B" stroke-width="4" stroke-linecap="round"/>
+          <!-- Legs — solid ink -->
+          <line x1="54" y1="110" x2="48" y2="126" stroke="#1A1A1B" stroke-width="2.5"/>
+          <line x1="66" y1="110" x2="72" y2="126" stroke="#1A1A1B" stroke-width="2.5"/>
+          <!-- Spot pointer: Crown -->
+          <line x1="26" y1="48" x2="26" y2="38" stroke="#C53030" stroke-width="1.5"/>
+          <polygon points="26,32 23,40 29,40" fill="#C53030"/>
+          <line x1="26" y1="32" x2="2" y2="26" stroke="#C53030" stroke-width="1"/>
+          <text x="2" y="24" fill="#C53030" font-family="sans-serif" font-size="7" font-weight="700">CROWN</text>
+          <!-- Spot pointer: Wing -->
+          <line x1="70" y1="78" x2="84" y2="66" stroke="#C53030" stroke-width="1.5"/>
+          <polygon points="88,62 82,68 88,72" fill="#C53030"/>
+          <text x="56" y="58" fill="#C53030" font-family="sans-serif" font-size="7" font-weight="700">GREY</text>
+        </svg>
+        <div class="sp-illus-cap">Fig. 2 · Perched silhouette</div>
+      </div>
+      <div class="sp-data">
+        <div class="sp-name">Black-crowned Night Heron</div>
+        <div class="sp-row">
+          <span class="sp-k">Marks</span>
+          <span class="sp-v">Stocky build, black crown and back, contrasting grey wings.</span>
+        </div>
+        <div class="sp-row">
+          <span class="sp-k">In Flight</span>
+          <span class="sp-v">Thick neck tucked, feet barely extending beyond tail.</span>
+        </div>
+        <div class="sp-row">
+          <span class="sp-k">Context</span>
+          <span class="sp-v">Waterfront construction sites or park ponds.</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Pane 3: Sightings Log -->
+  <div class="pane">
+    <div class="pane-head">
+      <span class="pane-title">Sightings Log</span>
+      <span class="pane-code">INK-03</span>
+    </div>
+    <div class="log-pane">
+      <div class="log-plate">
+        <div class="log-head">
+          <span class="log-time">23:14</span>
+          <span class="log-species-tag">● Common Nighthawk (2)</span>
+        </div>
+        <div class="log-fields">
+          <span class="lk">Location</span>
+          <span class="lv">West Side Railyards</span>
+          <span class="lk">Species</span>
+          <span class="lv">Common Nighthawk (2)</span>
+          <span class="lk">Behavior</span>
+          <span class="lv">Aerial foraging under stadium lights; erratic, bat-like flight pattern.</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Pane 4: Listening Guide -->
+  <div class="pane">
+    <div class="pane-head">
+      <span class="pane-title">Guide to Listening: The Urban Filter</span>
+      <span class="pane-code">INK-04</span>
+    </div>
+    <div class="listen-pane">
+      <div class="listen-intro">To identify birds by sound in the city, you must mentally subtract the machine:</div>
+      <div class="filter-plate">
+        <div class="fp-row">
+          <span class="fp-n">1</span>
+          <span class="fp-k">The Base</span>
+          <span class="fp-d">Ignore the low-frequency rumble of the expressway or subway vents.</span>
+        </div>
+        <div class="fp-row">
+          <span class="fp-n">2</span>
+          <span class="fp-k">The Signal</span>
+          <span class="fp-d">Focus on the <span class="spot">"Peent"</span>—a sharp, nasal electric buzz cutting through the hum.</span>
+        </div>
+        <div class="fp-row">
+          <span class="fp-n">3</span>
+          <span class="fp-k">Physical</span>
+          <span class="fp-d">Listen for the <span class="spot">"Whoosh"</span> of air through primary feathers during a territorial dive.</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Colophon -->
+  <div class="colophon">
+    <span class="col-text">Urban Nocturnal · 3-Ink Offset Lithograph · Inner City Sky · Bortle 8</span>
+    <span class="col-spot">▶ SPOT</span>
+  </div>
+
+</body>
+</html>

@@ -1,0 +1,469 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Tracks of Washington DC</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Source+Serif+4:wght@400&family=IBM+Plex+Mono:wght@400&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+:root {
+  --primary: #1B3026;
+  --secondary: #7A6A5A;
+  --tertiary: #B5491C;
+  --neutral: #F2ECE2;
+  --sm: 8px;
+  --md: 16px;
+  --lg: 32px;
+  --xl: 64px;
+  --gutter: 24px;
+  --tertiary-ring: rgba(27, 48, 38, 0.1);
+}
+
+/*
+  No shadows anywhere. The page reads like a printed object.
+  Roundedness: 0px. The track is geometry.
+  Scrolling feels deliberate — scroll-snap behavior.
+*/
+html { scroll-snap-type: y mandatory; scroll-behavior: smooth; }
+body {
+  font-family: 'Source Serif 4', serif;
+  font-size: 17px;
+  font-weight: 400;
+  line-height: 1.7;
+  color: var(--primary);
+  background: var(--neutral);
+  margin: 0;
+}
+
+section {
+  min-height: 100vh;
+  scroll-snap-align: start;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Headlines: left-aligned, never centered */
+.headline-lg {
+  font-family: 'DM Serif Display', serif;
+  font-size: 48px;
+  font-weight: 400;
+  line-height: 1.1;
+  letter-spacing: -0.01em;
+  color: var(--primary);
+  text-align: left;
+}
+
+.label-sm {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 12px;
+  font-weight: 400;
+  line-height: 1.5;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+/* Canvas grid: thin ruled lines like lane markings — low contrast, architectural */
+.lane-rule-h {
+  width: 100%;
+  height: 1px;
+  background: rgba(27,48,38,0.06);
+}
+
+/* Buttons: 0px radius, terracotta fill, dark forest green text, outer ring at 10% */
+.btn-cta {
+  display: inline-block;
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 12px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  background: var(--tertiary);
+  color: var(--primary);
+  padding: 14px 36px;
+  text-decoration: none;
+  border: none;
+  border-radius: 0;
+  outline: 2px solid var(--tertiary-ring);
+  outline-offset: 4px;
+  cursor: pointer;
+}
+
+/* ── Panel 1: Hero — split layout, left-aligned ── */
+.hero {
+  display: grid;
+  grid-template-columns: 3fr 2fr;
+  min-height: 100vh;
+  background:
+    linear-gradient(90deg, rgba(27,48,38,0.55) 0%, rgba(27,48,38,0.3) 60%, transparent 100%),
+    url('https://images.unsplash.com/photo-1590333748338-d629e4564ad9?w=1920&q=80') center/cover no-repeat;
+  color: var(--neutral);
+}
+.hero-left {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding: var(--xl) calc(var(--xl) + var(--gutter));
+}
+.hero-right {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  align-items: flex-start;
+  padding: var(--xl) var(--xl) var(--xl) 0;
+}
+.hero .headline-lg {
+  font-size: clamp(42px, 6vw, 72px);
+  color: var(--neutral);
+  margin-bottom: var(--lg);
+}
+.hero-sub {
+  font-size: 17px;
+  line-height: 1.7;
+  color: rgba(242,236,226,0.8);
+  max-width: 380px;
+  margin-bottom: var(--xl);
+}
+.hero .btn-cta {
+  outline-color: rgba(242,236,226,0.15);
+}
+
+/* ── Track Panels — lookbook spread ── */
+.spread {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  min-height: 100vh;
+}
+.spread .full-bleed {
+  background-size: cover;
+  background-position: center;
+  min-height: 100vh;
+}
+.spread .editorial {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: var(--xl) calc(var(--xl) + var(--gutter));
+  background: var(--neutral);
+  /* Vertical lane marking */
+  border-left: 1px solid rgba(27,48,38,0.06);
+}
+/* Inline heading + subheading: heading dark, subheading warm gray */
+.spread .section-header {
+  display: flex;
+  align-items: baseline;
+  gap: var(--md);
+  margin-bottom: var(--md);
+}
+.spread .section-header .eyebrow {
+  color: var(--secondary);
+  white-space: nowrap;
+}
+.spread .headline-lg {
+  margin-bottom: var(--gutter);
+}
+.spread .prose {
+  margin-bottom: var(--lg);
+  max-width: 460px;
+}
+/* Track labels: monospace eyebrow style */
+.track-data {
+  display: flex;
+  gap: var(--lg);
+  border-top: 1px solid rgba(27,48,38,0.06);
+  padding-top: var(--gutter);
+}
+.track-data .field dt {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--secondary);
+  margin-bottom: 4px;
+}
+.track-data .field dd {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 15px;
+  color: var(--primary);
+  margin: 0;
+  letter-spacing: 0.04em;
+}
+
+/* Mirrored spread — text on opposite side */
+.spread.mirrored { direction: rtl; }
+.spread.mirrored > * { direction: ltr; }
+.spread.mirrored .editorial {
+  border-left: none;
+  border-right: 1px solid rgba(27,48,38,0.06);
+}
+
+/* ── Panel 3: Pull Quote — left-bordered with 2px terracotta rule ── */
+.quote-panel {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  background:
+    linear-gradient(180deg, rgba(27,48,38,0.35) 0%, rgba(27,48,38,0.6) 100%),
+    url('https://images.unsplash.com/photo-1552674605-db6ffd4facb5?w=1920&q=80') center/cover no-repeat;
+  color: var(--neutral);
+  padding: var(--xl) calc(var(--xl) + var(--gutter));
+}
+.quote-panel blockquote {
+  font-family: 'DM Serif Display', serif;
+  font-size: clamp(28px, 4vw, 44px);
+  line-height: 1.25;
+  max-width: 700px;
+  font-style: italic;
+  letter-spacing: -0.01em;
+  text-align: left;
+  border-left: 2px solid var(--tertiary);
+  padding-left: var(--gutter);
+}
+
+/* ── Panel 5: Map ── */
+.map-panel {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  background: var(--primary);
+  color: var(--neutral);
+  padding: var(--xl) calc(var(--xl) + var(--gutter));
+  min-height: 100vh;
+}
+.map-panel .section-header {
+  display: flex;
+  align-items: baseline;
+  gap: var(--md);
+  margin-bottom: var(--xl);
+}
+.map-panel .headline-lg {
+  color: var(--neutral);
+}
+.map-panel .section-header .eyebrow {
+  color: var(--secondary);
+}
+.map-canvas {
+  position: relative;
+  width: min(720px, 85vw);
+  height: min(480px, 58vh);
+}
+.map-canvas svg { width: 100%; height: 100%; }
+/* Vertical lane markings within the map */
+.grid-line { stroke: rgba(242,236,226,0.04); stroke-width: 1; }
+.point {
+  position: absolute;
+  display: flex;
+  align-items: flex-start;
+  gap: var(--sm);
+}
+/* Terracotta once: the dot markers */
+.point-mark {
+  width: 8px;
+  height: 8px;
+  border-radius: 0;
+  background: var(--tertiary);
+  flex-shrink: 0;
+  margin-top: 4px;
+}
+.point-name {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--neutral);
+}
+.point-spec {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 10px;
+  color: var(--secondary);
+  letter-spacing: 0.04em;
+}
+
+/* ── Panel 6: Newsletter ── */
+.guide-panel {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  min-height: 100vh;
+  background: var(--neutral);
+  padding: var(--xl) calc(var(--xl) + var(--gutter));
+  border-top: 1px solid rgba(27,48,38,0.06);
+}
+.guide-panel .headline-lg {
+  margin-bottom: var(--gutter);
+}
+.guide-panel .prose {
+  max-width: 440px;
+  margin-bottom: var(--xl);
+  color: var(--secondary);
+}
+
+@media (max-width: 768px) {
+  .hero { grid-template-columns: 1fr; }
+  .hero-right { padding: 0 var(--gutter) var(--xl); }
+  .spread { grid-template-columns: 1fr; }
+  .spread .full-bleed { min-height: 50vh; }
+  .spread .editorial { padding: var(--lg) var(--gutter); border-left: none; }
+  .spread.mirrored { direction: ltr; }
+  .spread.mirrored .editorial { border-right: none; }
+  .headline-lg { font-size: 36px; }
+  .hero-left, .quote-panel, .map-panel, .guide-panel { padding: var(--xl) var(--gutter); }
+}
+</style>
+</head>
+<body>
+
+<!-- Panel 1: Hero — split layout: large headline left (3/5), description + CTA right (2/5) -->
+<section class="hero">
+  <div class="hero-left">
+    <h1 class="headline-lg">The Tracks of Washington DC</h1>
+  </div>
+  <div class="hero-right">
+    <p class="hero-sub">A field guide to the city's ovals — their surfaces, their histories, their regulars.</p>
+    <a href="#georgetown" class="btn-cta">Begin the Circuit</a>
+  </div>
+</section>
+
+<div class="lane-rule-h"></div>
+
+<!-- Panel 2: Georgetown Waterfront Track -->
+<section id="georgetown" class="spread">
+  <div class="full-bleed" style="background-image: url('https://images.unsplash.com/photo-1596568362004-3f5a0f142dad?w=1200&q=80');"></div>
+  <div class="editorial">
+    <div class="section-header">
+      <span class="label-sm eyebrow">Georgetown Waterfront Track</span>
+    </div>
+    <h2 class="headline-lg">Where the River Keeps the Pace</h2>
+    <p class="prose">The Georgetown Waterfront Track sits just above the Potomac, a 400-meter oval where the city's diplomats, students, and dawn regulars share lanes in quiet rotation. The surface is newer than most — a rubberized compound laid in 2016 — but the rhythm is old: the same river light each morning, the same towpath breeze pulling at the back straight. It is the kind of track that earns loyalty through consistency, not spectacle.</p>
+    <dl class="track-data">
+      <div class="field">
+        <dt>Distance</dt>
+        <dd>400m</dd>
+      </div>
+      <div class="field">
+        <dt>Surface</dt>
+        <dd>Rubberized</dd>
+      </div>
+      <div class="field">
+        <dt>Ward</dt>
+        <dd>Ward 2</dd>
+      </div>
+    </dl>
+  </div>
+</section>
+
+<div class="lane-rule-h"></div>
+
+<!-- Panel 3: Pull Quote — left-bordered with 2px terracotta rule -->
+<section class="quote-panel">
+  <blockquote>"The oval teaches you that progress is not a straight line — it is the same turn, taken better."</blockquote>
+</section>
+
+<div class="lane-rule-h"></div>
+
+<!-- Panel 4: Anacostia Park Track — mirrored spread, text on opposite side -->
+<section class="spread mirrored">
+  <div class="full-bleed" style="background-image: url('https://images.unsplash.com/photo-1574629810360-7efbbe195018?w=1200&q=80');"></div>
+  <div class="editorial">
+    <div class="section-header">
+      <span class="label-sm eyebrow">Anacostia Park Track</span>
+    </div>
+    <h2 class="headline-lg">The East Side's Quiet Engine</h2>
+    <p class="prose">Anacostia's track is older and less celebrated, but its regulars would not trade it. Set within the broad green expanse of Anacostia Park, the oval is a 440-yard cinder loop that still carries the texture of a different era. Morning runners here are neighborhood fixtures — coaches who trained on this same surface decades ago, families walking the outer lane, sprinters working intervals in lane one.</p>
+    <dl class="track-data">
+      <div class="field">
+        <dt>Distance</dt>
+        <dd>440yd</dd>
+      </div>
+      <div class="field">
+        <dt>Surface</dt>
+        <dd>Cinder</dd>
+      </div>
+      <div class="field">
+        <dt>Ward</dt>
+        <dd>Ward 8</dd>
+      </div>
+    </dl>
+  </div>
+</section>
+
+<div class="lane-rule-h"></div>
+
+<!-- Panel 5: The Washington Circuit Map -->
+<section class="map-panel">
+  <div class="section-header">
+    <h2 class="headline-lg">The Washington Circuit</h2>
+    <span class="label-sm eyebrow" style="color: var(--secondary);">6 Tracks · 4 Wards</span>
+  </div>
+  <div class="map-canvas">
+    <svg viewBox="0 0 720 480" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <!-- Vertical + horizontal lane markings within the page container -->
+      <line x1="0" y1="120" x2="720" y2="120" class="grid-line"/>
+      <line x1="0" y1="240" x2="720" y2="240" class="grid-line"/>
+      <line x1="0" y1="360" x2="720" y2="360" class="grid-line"/>
+      <line x1="180" y1="0" x2="180" y2="480" class="grid-line"/>
+      <line x1="360" y1="0" x2="360" y2="480" class="grid-line"/>
+      <line x1="540" y1="0" x2="540" y2="480" class="grid-line"/>
+      <!-- Potomac -->
+      <path d="M 80 10 Q 110 200, 50 480" stroke="rgba(122,106,90,0.12)" stroke-width="2" fill="none"/>
+      <!-- The Mall -->
+      <rect x="240" y="225" width="240" height="30" fill="none" stroke="rgba(242,236,226,0.03)" stroke-width="0.5"/>
+    </svg>
+    <div class="point" style="top: 14%; left: 10%;">
+      <div class="point-mark"></div>
+      <div>
+        <div class="point-name">Georgetown Waterfront</div>
+        <div class="point-spec">400m · Rubberized · W2</div>
+      </div>
+    </div>
+    <div class="point" style="top: 62%; left: 58%;">
+      <div class="point-mark"></div>
+      <div>
+        <div class="point-name">Anacostia Park</div>
+        <div class="point-spec">440yd · Cinder · W8</div>
+      </div>
+    </div>
+    <div class="point" style="top: 26%; left: 46%;">
+      <div class="point-mark"></div>
+      <div>
+        <div class="point-name">Dunbar High School</div>
+        <div class="point-spec">400m · Synthetic · W6</div>
+      </div>
+    </div>
+    <div class="point" style="top: 40%; left: 22%;">
+      <div class="point-mark"></div>
+      <div>
+        <div class="point-name">National Mall Loop</div>
+        <div class="point-spec">800m · Gravel · W2</div>
+      </div>
+    </div>
+    <div class="point" style="top: 52%; left: 36%;">
+      <div class="point-mark"></div>
+      <div>
+        <div class="point-name">Banneker HS</div>
+        <div class="point-spec">400m · Rubberized · W1</div>
+      </div>
+    </div>
+    <div class="point" style="top: 76%; left: 18%;">
+      <div class="point-mark"></div>
+      <div>
+        <div class="point-name">Fort Stanton Park</div>
+        <div class="point-spec">400m · Asphalt · W8</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="lane-rule-h"></div>
+
+<!-- Panel 6: Newsletter — the lane marker, the single instruction -->
+<section class="guide-panel">
+  <h2 class="headline-lg">Know every oval.</h2>
+  <p class="prose">Surface reports, route maps, and stories from the regulars — delivered to your inbox each week.</p>
+  <a href="#" class="btn-cta">Get the Guide</a>
+</section>
+
+</body>
+</html>

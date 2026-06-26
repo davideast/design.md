@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kettle &amp; Leaf — Neighborhood Tea House</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Lato:wght@300;400;700&family=Lato:ital@1&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --cream: #FAF6EE;
+    --warm-dark: #2C2416;
+    --moss: #4A6741;
+    --terracotta: #C0613A;
+    --tan: #C8B89A;
+    --light-tan: #EDE5D5;
+  }
+
+  body {
+    background-color: var(--cream);
+    color: var(--warm-dark);
+    font-family: 'Lato', sans-serif;
+    font-weight: 400;
+    line-height: 1.6;
+    min-height: 100vh;
+  }
+
+  /* Header */
+  header {
+    background-color: var(--moss);
+    color: var(--cream);
+    padding: 56px 80px 48px;
+    border-bottom: 4px solid var(--terracotta);
+  }
+
+  header .eyebrow {
+    font-family: 'Lato', sans-serif;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--tan);
+    margin-bottom: 12px;
+  }
+
+  header h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: 52px;
+    font-weight: 700;
+    line-height: 1.1;
+    margin-bottom: 16px;
+  }
+
+  header .welcome {
+    font-family: 'Playfair Display', serif;
+    font-size: 20px;
+    font-weight: 400;
+    font-style: italic;
+    color: #c8e0c0;
+  }
+
+  /* Main content */
+  main {
+    max-width: 1080px;
+    margin: 0 auto;
+    padding: 64px 80px;
+  }
+
+  section {
+    margin-bottom: 64px;
+  }
+
+  .section-label {
+    font-family: 'Lato', sans-serif;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--terracotta);
+    margin-bottom: 24px;
+  }
+
+  /* Teas */
+  .teas-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 32px;
+  }
+
+  .tea-card {
+    background-color: var(--light-tan);
+    border-top: 3px solid var(--terracotta);
+    padding: 28px 24px;
+  }
+
+  .tea-card .tea-name {
+    font-family: 'Playfair Display', serif;
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--warm-dark);
+    margin-bottom: 6px;
+  }
+
+  .tea-card .tea-origin {
+    font-family: 'Lato', sans-serif;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--moss);
+    margin-bottom: 12px;
+  }
+
+  .tea-card .tea-note {
+    font-family: 'Lato', sans-serif;
+    font-size: 14px;
+    color: #4a4030;
+    line-height: 1.6;
+  }
+
+  /* Quiet hours table */
+  .quiet-hours table {
+    border-collapse: collapse;
+    width: 100%;
+    max-width: 520px;
+  }
+
+  .quiet-hours th {
+    font-family: 'Lato', sans-serif;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--terracotta);
+    text-align: left;
+    padding: 0 16px 10px 0;
+    border-bottom: 1px solid var(--tan);
+  }
+
+  .quiet-hours td {
+    font-family: 'Lato', sans-serif;
+    font-size: 14px;
+    color: var(--warm-dark);
+    padding: 10px 16px 10px 0;
+    border-bottom: 1px solid var(--light-tan);
+    vertical-align: top;
+  }
+
+  .quiet-hours td:first-child {
+    font-weight: 700;
+    width: 160px;
+  }
+
+  /* Sourcing */
+  .sourcing p {
+    font-family: 'Playfair Display', serif;
+    font-size: 17px;
+    line-height: 1.8;
+    color: #3a3025;
+    max-width: 680px;
+  }
+
+  /* Map / address */
+  .address-section {
+    background-color: var(--light-tan);
+    border-left: 4px solid var(--moss);
+    padding: 20px 28px;
+    display: inline-flex;
+    align-items: center;
+    gap: 16px;
+  }
+
+  .address-section .pin {
+    font-size: 24px;
+  }
+
+  .address-section .addr-text {
+    font-family: 'Lato', sans-serif;
+    font-size: 15px;
+    color: var(--warm-dark);
+  }
+
+  .address-section .addr-text strong {
+    display: block;
+    font-weight: 700;
+    margin-bottom: 2px;
+  }
+
+  .address-section .addr-text span {
+    font-size: 13px;
+    color: var(--moss);
+  }
+
+  /* Footer */
+  footer {
+    background-color: var(--warm-dark);
+    color: var(--cream);
+    padding: 40px 80px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 32px;
+  }
+
+  footer .footer-brand {
+    font-family: 'Playfair Display', serif;
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--cream);
+  }
+
+  footer .footer-detail {
+    font-family: 'Lato', sans-serif;
+    font-size: 13px;
+    color: #b0a898;
+    line-height: 1.8;
+    text-align: right;
+  }
+
+  footer .footer-detail strong {
+    color: var(--tan);
+    font-weight: 700;
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <p class="eyebrow">Neighborhood Tea House · Est. 2011</p>
+  <h1>Kettle &amp; Leaf</h1>
+  <p class="welcome">Come in. Slow down. Stay a while.</p>
+</header>
+
+<main>
+
+  <!-- Today's Teas -->
+  <section>
+    <p class="section-label">Today's Brewed Teas</p>
+    <div class="teas-grid">
+      <div class="tea-card">
+        <div class="tea-name">Alishan High Mountain</div>
+        <div class="tea-origin">Ali Shan, Taiwan · Oolong</div>
+        <div class="tea-note">Creamy orchid sweetness with a lingering floral finish. Picked at 1,400 metres in morning mist.</div>
+      </div>
+      <div class="tea-card">
+        <div class="tea-name">Lamu Island White</div>
+        <div class="tea-origin">Coast Province, Kenya · White Tea</div>
+        <div class="tea-note">Light and honeyed, with a clean melon note and the faintest savory mineral close.</div>
+      </div>
+      <div class="tea-card">
+        <div class="tea-name">Ruby 18</div>
+        <div class="tea-origin">Sun Moon Lake, Taiwan · Black Tea</div>
+        <div class="tea-note">Rich cinnamon and wintergreen warmth, naturally sweet with a smooth, cocoa-tinged finish.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Quiet Hours -->
+  <section class="quiet-hours">
+    <p class="section-label">Weekly Quiet Hours</p>
+    <table>
+      <thead>
+        <tr>
+          <th>Day</th>
+          <th>Hours</th>
+          <th>Notes</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Monday</td>
+          <td>8:00 am – 10:00 am</td>
+          <td>Soft music, no calls please</td>
+        </tr>
+        <tr>
+          <td>Wednesday</td>
+          <td>2:00 pm – 5:00 pm</td>
+          <td>Reading hour — laptops welcome</td>
+        </tr>
+        <tr>
+          <td>Friday</td>
+          <td>8:00 am – 11:00 am</td>
+          <td>Early quiet, full menu available</td>
+        </tr>
+        <tr>
+          <td>Saturday</td>
+          <td>9:00 am – 12:00 pm</td>
+          <td>Morning quiet, table service only</td>
+        </tr>
+        <tr>
+          <td>Sunday</td>
+          <td>10:00 am – 1:00 pm</td>
+          <td>Slow Sunday — ambient sounds only</td>
+        </tr>
+      </tbody>
+    </table>
+  </section>
+
+  <!-- Sourcing -->
+  <section class="sourcing">
+    <p class="section-label">From the Source</p>
+    <p>Every tea on our menu begins with a trip. Owner Mei-Lin Huang spends two weeks each spring in the high-mountain gardens of Taiwan's Ali Shan and Sun Moon Lake, tasting alongside the families who have been growing tea for three generations. Each autumn she travels to Kenya's coastal smallholdings, where a small cluster of growers near Lamu have begun producing white and green teas that quietly rival anything from East Asia. These aren't buying trips in the ordinary sense — they're long conversations over shared meals, slow walks through wet rows of leaf, and a kind of trust built cup by cup over many years. What arrives here is what those friendships allow.</p>
+  </section>
+
+  <!-- Address -->
+  <section>
+    <p class="section-label">Find Us</p>
+    <div class="address-section">
+      <span class="pin">📍</span>
+      <div class="addr-text">
+        <strong>Kettle &amp; Leaf</strong>
+        412 Maple Row, the corner shop with the green door
+        <span>Easy street parking · Ten-minute walk from the central bus stop</span>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <div class="footer-brand">Kettle &amp; Leaf</div>
+  <div class="footer-detail">
+    <strong>Hours</strong><br>
+    Mon–Fri 7:30 am – 7:00 pm &nbsp;·&nbsp; Sat 8:00 am – 6:00 pm &nbsp;·&nbsp; Sun 9:00 am – 5:00 pm<br>
+    <strong>Phone</strong>&nbsp; (503) 741-2288
+  </div>
+</footer>
+
+</body>
+</html>

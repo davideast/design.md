@@ -1,0 +1,621 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+  <title>Urban Nocturnal: Field Notes</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=League+Spartan:wght@500;700&family=Source+Serif+4:ital,wght@0,400;1,400&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #F9F6EE;
+      --text: #1A1A1B;
+      --neutral: #707372;
+      --accent: #C53030;
+    }
+
+    body {
+      font-family: 'Source Serif 4', 'Century Schoolbook', Georgia, serif;
+      background: var(--bg);
+      color: var(--text);
+      width: 390px;
+      max-width: 390px;
+      min-height: 100vh;
+      margin: 0 auto;
+      font-size: 13px;
+      line-height: 1.5;
+    }
+
+    /* ─── COVER / SPINE ─── */
+    .guide-cover {
+      background: var(--text);
+      padding: 14px 16px 10px;
+      border-bottom: 4px solid var(--accent);
+    }
+
+    .guide-series {
+      font-family: 'League Spartan', sans-serif;
+      font-size: 8px;
+      font-weight: 700;
+      color: var(--neutral);
+      text-transform: uppercase;
+      letter-spacing: 0.18em;
+      margin-bottom: 4px;
+    }
+
+    .guide-title {
+      font-family: 'League Spartan', sans-serif;
+      font-size: 20px;
+      font-weight: 700;
+      color: var(--bg);
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      line-height: 1.1;
+      margin-bottom: 2px;
+    }
+
+    .guide-subtitle {
+      font-family: 'League Spartan', sans-serif;
+      font-size: 11px;
+      font-weight: 500;
+      color: var(--neutral);
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+    }
+
+    /* ─── INDEX TAB ─── */
+    .index-tab {
+      background: var(--bg);
+      border-bottom: 1px solid var(--text);
+      display: flex;
+      padding: 0;
+    }
+
+    .tab {
+      font-family: 'League Spartan', sans-serif;
+      font-size: 9px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      padding: 5px 10px;
+      border-right: 1px solid var(--text);
+      color: var(--neutral);
+    }
+
+    .tab.active {
+      background: var(--text);
+      color: var(--bg);
+    }
+
+    /* ─── SECTION ─── */
+    .section {
+      border-bottom: 1px solid var(--text);
+    }
+
+    .plate-header {
+      display: flex;
+      align-items: center;
+      padding: 4px 10px;
+      background: var(--bg);
+      border-bottom: 1px solid var(--text);
+    }
+
+    .plate-label {
+      font-family: 'League Spartan', sans-serif;
+      font-size: 8px;
+      font-weight: 700;
+      color: var(--neutral);
+      text-transform: uppercase;
+      letter-spacing: 0.18em;
+    }
+
+    .plate-num {
+      font-family: 'League Spartan', sans-serif;
+      font-size: 8px;
+      font-weight: 700;
+      color: var(--accent);
+      margin-left: auto;
+      letter-spacing: 0.1em;
+    }
+
+    /* ─── MOON PANEL ─── */
+    .moon-plate {
+      padding: 10px;
+    }
+
+    .moon-row {
+      display: grid;
+      grid-template-columns: 90px 1fr;
+      border: 1px solid var(--text);
+      margin-bottom: 6px;
+    }
+
+    .moon-diagram-cell {
+      border-right: 1px solid var(--text);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 10px;
+    }
+
+    .moon-data-cell {
+      padding: 8px;
+    }
+
+    .moon-phase-name {
+      font-family: 'League Spartan', sans-serif;
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--text);
+      border-bottom: 1px solid var(--neutral);
+      padding-bottom: 4px;
+      margin-bottom: 6px;
+    }
+
+    .moon-stat-row {
+      display: flex;
+      gap: 0;
+      border-bottom: 1px solid rgba(112,115,114,0.25);
+      padding: 2px 0;
+    }
+
+    .moon-stat-row:last-child { border-bottom: none; }
+
+    .ms-key {
+      font-family: 'League Spartan', sans-serif;
+      font-size: 8px;
+      font-weight: 500;
+      color: var(--neutral);
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      min-width: 70px;
+    }
+
+    .ms-val {
+      font-family: 'League Spartan', sans-serif;
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--text);
+    }
+
+    /* ─── PLATE: SPECIES ─── */
+    .species-plate {
+      padding: 0;
+    }
+
+    .species-top {
+      display: grid;
+      grid-template-columns: 140px 1fr;
+      border-bottom: 1px solid var(--text);
+    }
+
+    .illus-cell {
+      border-right: 1px solid var(--text);
+      padding: 12px 10px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .illus-caption {
+      font-family: 'League Spartan', sans-serif;
+      font-size: 7px;
+      font-weight: 500;
+      color: var(--neutral);
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      text-align: center;
+    }
+
+    .data-cell {
+      padding: 8px 10px;
+    }
+
+    .species-entry {
+      border-bottom: 1px solid var(--neutral);
+      padding-bottom: 5px;
+      margin-bottom: 5px;
+    }
+
+    .species-entry:last-child { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
+
+    .species-common {
+      font-family: 'League Spartan', sans-serif;
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--text);
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+    .species-pointer {
+      color: var(--accent);
+      font-size: 11px;
+    }
+
+    .species-latin {
+      font-size: 10px;
+      color: var(--neutral);
+      font-style: italic;
+      margin-bottom: 4px;
+    }
+
+    .field-mark-item {
+      display: flex;
+      gap: 5px;
+      margin-bottom: 3px;
+      font-size: 11px;
+      line-height: 1.35;
+    }
+
+    .fm-bullet {
+      color: var(--accent);
+      font-family: 'League Spartan', sans-serif;
+      font-weight: 700;
+      font-size: 10px;
+      flex-shrink: 0;
+      margin-top: 1px;
+    }
+
+    .fm-key {
+      font-family: 'League Spartan', sans-serif;
+      font-size: 8px;
+      font-weight: 700;
+      color: var(--neutral);
+      text-transform: uppercase;
+      letter-spacing: 0.07em;
+      min-width: 44px;
+      margin-top: 2px;
+      flex-shrink: 0;
+    }
+
+    .fm-text { color: var(--text); }
+
+    /* ─── LOG PLATE ─── */
+    .log-plate {
+      padding: 10px;
+    }
+
+    .log-entry {
+      border: 1px solid var(--text);
+    }
+
+    .log-head {
+      background: var(--text);
+      padding: 4px 8px;
+      display: flex;
+      align-items: baseline;
+      gap: 8px;
+    }
+
+    .log-time {
+      font-family: 'League Spartan', sans-serif;
+      font-size: 16px;
+      font-weight: 700;
+      color: var(--bg);
+    }
+
+    .log-sp {
+      font-family: 'League Spartan', sans-serif;
+      font-size: 9px;
+      font-weight: 700;
+      color: var(--accent);
+      letter-spacing: 0.06em;
+    }
+
+    .log-body {
+      display: grid;
+      grid-template-columns: 58px 1fr;
+    }
+
+    .lk {
+      font-family: 'League Spartan', sans-serif;
+      font-size: 7px;
+      font-weight: 700;
+      color: var(--neutral);
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      border-right: 1px solid var(--neutral);
+      border-bottom: 1px solid rgba(112,115,114,0.3);
+      padding: 4px 6px;
+      display: flex;
+      align-items: flex-start;
+    }
+
+    .lv {
+      font-size: 11px;
+      color: var(--text);
+      line-height: 1.4;
+      border-bottom: 1px solid rgba(112,115,114,0.3);
+      padding: 4px 6px;
+    }
+
+    .lk:last-of-type, .lv:last-child { border-bottom: none; }
+
+    /* ─── LISTENING PLATE ─── */
+    .listen-plate {
+      padding: 10px;
+    }
+
+    .listen-lead {
+      font-size: 11px;
+      color: var(--neutral);
+      font-style: italic;
+      margin-bottom: 8px;
+      padding: 6px 8px;
+      border: 1px solid var(--neutral);
+      line-height: 1.5;
+    }
+
+    .filter-grid {
+      border: 1px solid var(--text);
+    }
+
+    .fg-row {
+      display: grid;
+      grid-template-columns: 24px 56px 1fr;
+      border-bottom: 1px solid var(--text);
+    }
+
+    .fg-row:last-child { border-bottom: none; }
+
+    .fg-num {
+      font-family: 'League Spartan', sans-serif;
+      font-size: 10px;
+      font-weight: 700;
+      color: var(--bg);
+      background: var(--neutral);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-right: 1px solid var(--text);
+    }
+
+    .fg-key {
+      font-family: 'League Spartan', sans-serif;
+      font-size: 8px;
+      font-weight: 700;
+      color: var(--text);
+      text-transform: uppercase;
+      letter-spacing: 0.07em;
+      border-right: 1px solid var(--text);
+      padding: 5px 6px;
+      display: flex;
+      align-items: flex-start;
+    }
+
+    .fg-desc {
+      font-size: 11px;
+      color: var(--text);
+      padding: 5px 6px;
+      line-height: 1.4;
+    }
+
+    .sound-mark {
+      color: var(--accent);
+      font-weight: 700;
+      font-style: italic;
+    }
+
+    /* ─── GUIDE FOOTER ─── */
+    .guide-footer {
+      background: var(--text);
+      padding: 6px 12px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .gf-text {
+      font-family: 'League Spartan', sans-serif;
+      font-size: 8px;
+      font-weight: 500;
+      color: var(--neutral);
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+    }
+
+    .gf-page {
+      font-family: 'League Spartan', sans-serif;
+      font-size: 10px;
+      font-weight: 700;
+      color: var(--bg);
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Guide Cover / Spine -->
+  <div class="guide-cover">
+    <div class="guide-series">A Peterson Field Guide · Urban Nocturnal Series</div>
+    <div class="guide-title">Urban Nocturnal</div>
+    <div class="guide-subtitle">Field Notes — Night Session</div>
+  </div>
+
+  <!-- Index Tabs -->
+  <div class="index-tab">
+    <div class="tab active">Moon</div>
+    <div class="tab">Species</div>
+    <div class="tab">Log</div>
+    <div class="tab">Audio</div>
+  </div>
+
+  <!-- Plate 1: Moon & Light -->
+  <div class="section">
+    <div class="plate-header">
+      <span class="plate-label">Moon &amp; Light Conditions</span>
+      <span class="plate-num">Plate 01</span>
+    </div>
+    <div class="moon-plate">
+      <div class="moon-row">
+        <div class="moon-diagram-cell">
+          <svg width="68" height="68" viewBox="0 0 68 68" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <!-- Moon circle -->
+            <circle cx="34" cy="34" r="30" fill="#1A1A1B" stroke="#1A1A1B" stroke-width="1"/>
+            <!-- Illuminated area (82%) -->
+            <clipPath id="mc">
+              <circle cx="34" cy="34" r="30"/>
+            </clipPath>
+            <rect x="4" y="4" width="56" height="60" fill="#F9F6EE" clip-path="url(#mc)"/>
+            <!-- Shadow oval covering ~18% left -->
+            <ellipse cx="18" cy="34" rx="14" ry="30" fill="#1A1A1B" clip-path="url(#mc)"/>
+            <!-- Pointer label -->
+            <line x1="58" y1="20" x2="66" y2="14" stroke="#C53030" stroke-width="1"/>
+            <text x="4" y="66" fill="#707372" font-family="sans-serif" font-size="7" font-weight="700">82% ILLUM.</text>
+          </svg>
+        </div>
+        <div class="moon-data-cell">
+          <div class="moon-phase-name">Waxing Gibbous</div>
+          <div class="moon-stat-row">
+            <span class="ms-key">Illumination</span>
+            <span class="ms-val">82%</span>
+          </div>
+          <div class="moon-stat-row">
+            <span class="ms-key">Moonrise</span>
+            <span class="ms-val">17:42</span>
+          </div>
+          <div class="moon-stat-row">
+            <span class="ms-key">Sky Quality</span>
+            <span class="ms-val">Bortle 8</span>
+          </div>
+          <div class="moon-stat-row">
+            <span class="ms-key">Zone</span>
+            <span class="ms-val" style="font-size:10px;">Inner City Sky</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Plate 2: Species -->
+  <div class="section">
+    <div class="plate-header">
+      <span class="plate-label">Tonight's Likely Species</span>
+      <span class="plate-num">Plate 02</span>
+    </div>
+    <div class="species-plate">
+      <div class="species-top">
+        <div class="illus-cell">
+          <svg width="116" height="140" viewBox="0 0 116 140" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <!-- Body -->
+            <ellipse cx="68" cy="96" rx="36" ry="26" fill="#1A1A1B"/>
+            <!-- Wing grey -->
+            <ellipse cx="76" cy="92" rx="26" ry="18" fill="#707372"/>
+            <!-- Head -->
+            <circle cx="32" cy="68" r="18" fill="#1A1A1B"/>
+            <!-- Eye -->
+            <circle cx="27" cy="70" r="4" fill="#F9F6EE"/>
+            <circle cx="27" cy="70" r="2" fill="#1A1A1B"/>
+            <!-- Beak -->
+            <path d="M18 76 L2 84" stroke="#1A1A1B" stroke-width="4" stroke-linecap="round"/>
+            <!-- Neck -->
+            <path d="M42 82 C52 87 60 93 68 96" stroke="#1A1A1B" stroke-width="13" stroke-linecap="round"/>
+            <!-- Tail -->
+            <path d="M102 94 C112 90 122 88 130 92" stroke="#1A1A1B" stroke-width="5" stroke-linecap="round"/>
+            <!-- Legs -->
+            <line x1="62" y1="120" x2="56" y2="138" stroke="#1A1A1B" stroke-width="2.5"/>
+            <line x1="74" y1="120" x2="80" y2="138" stroke="#1A1A1B" stroke-width="2.5"/>
+            <!-- Pointer: Crown -->
+            <line x1="32" y1="52" x2="32" y2="40" stroke="#C53030" stroke-width="1.5"/>
+            <polygon points="32,34 29,42 35,42" fill="#C53030"/>
+            <line x1="32" y1="34" x2="2" y2="28" stroke="#C53030" stroke-width="1"/>
+            <text x="2" y="26" fill="#C53030" font-family="sans-serif" font-size="7" font-weight="700">BLACK CROWN</text>
+            <!-- Pointer: Wing -->
+            <line x1="80" y1="82" x2="96" y2="70" stroke="#C53030" stroke-width="1.5"/>
+            <polygon points="100,66 94,72 100,76" fill="#C53030"/>
+            <text x="64" y="62" fill="#C53030" font-family="sans-serif" font-size="7" font-weight="700">GREY WING</text>
+            <!-- Pointer: Eye -->
+            <line x1="24" y1="68" x2="10" y2="58" stroke="#C53030" stroke-width="1"/>
+            <polygon points="6,54 12,60 8,66" fill="#C53030"/>
+          </svg>
+          <div class="illus-caption">Fig. 1 — Perched · Night</div>
+        </div>
+        <div class="data-cell">
+          <div class="species-entry">
+            <div class="species-common">
+              <span class="species-pointer">▶</span>
+              Black-crowned Night Heron
+            </div>
+            <div class="species-latin">Nycticorax nycticorax</div>
+            <div class="field-mark-item">
+              <span class="fm-key">Marks</span>
+              <span class="fm-text">Stocky build, black crown and back, contrasting grey wings.</span>
+            </div>
+            <div class="field-mark-item">
+              <span class="fm-key">Flight</span>
+              <span class="fm-text">Thick neck tucked, feet barely extending beyond tail.</span>
+            </div>
+            <div class="field-mark-item">
+              <span class="fm-key">Habitat</span>
+              <span class="fm-text">Waterfront construction sites or park ponds.</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Plate 3: Sightings Log -->
+  <div class="section">
+    <div class="plate-header">
+      <span class="plate-label">Sightings Log</span>
+      <span class="plate-num">Plate 03</span>
+    </div>
+    <div class="log-plate">
+      <div class="log-entry">
+        <div class="log-head">
+          <span class="log-time">23:14</span>
+          <span class="log-sp">Common Nighthawk (2)</span>
+        </div>
+        <div class="log-body">
+          <span class="lk">Location</span>
+          <span class="lv">West Side Railyards</span>
+          <span class="lk">Species</span>
+          <span class="lv">Common Nighthawk (2)</span>
+          <span class="lk">Behavior</span>
+          <span class="lv">Aerial foraging under stadium lights; erratic, bat-like flight pattern.</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Plate 4: Audio Guide -->
+  <div class="section">
+    <div class="plate-header">
+      <span class="plate-label">Guide to Listening: The Urban Filter</span>
+      <span class="plate-num">Plate 04</span>
+    </div>
+    <div class="listen-plate">
+      <div class="listen-lead">To identify birds by sound in the city, you must mentally subtract the machine:</div>
+      <div class="filter-grid">
+        <div class="fg-row">
+          <span class="fg-num">1</span>
+          <span class="fg-key">The Base</span>
+          <span class="fg-desc">Ignore the low-frequency rumble of the expressway or subway vents.</span>
+        </div>
+        <div class="fg-row">
+          <span class="fg-num">2</span>
+          <span class="fg-key">The Signal</span>
+          <span class="fg-desc">Focus on the <span class="sound-mark">"Peent"</span>—a sharp, nasal electric buzz cutting through the hum.</span>
+        </div>
+        <div class="fg-row">
+          <span class="fg-num">3</span>
+          <span class="fg-key">Physical</span>
+          <span class="fg-desc">Listen for the <span class="sound-mark">"Whoosh"</span> of air through primary feathers during a territorial dive.</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="guide-footer">
+    <span class="gf-text">A Peterson Field Guide · Urban Series</span>
+    <span class="gf-page">NOCTURNAL · FIELD REF.</span>
+  </div>
+
+</body>
+</html>

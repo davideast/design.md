@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kettle &amp; Leaf</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Libre+Franklin:wght@400;700&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&family=IBM+Plex+Mono:wght@400&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --primary: #1B1B1B;
+    --secondary: #6E675C;
+    --tertiary: #E8590C;
+    --neutral: #F4EFE6;
+    --spacing-sm: 8px;
+    --spacing-md: 16px;
+    --spacing-lg: 32px;
+    --spacing-xl: 64px;
+  }
+
+  body {
+    background-color: var(--neutral);
+    color: var(--primary);
+    font-family: 'Source Serif 4', serif;
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 1.65;
+    min-height: 100vh;
+  }
+
+  /* ── Typography roles ── */
+  .headline-lg {
+    font-family: 'Libre Franklin', sans-serif;
+    font-size: 44px;
+    font-weight: 700;
+    line-height: 1.05;
+    letter-spacing: -0.01em;
+  }
+
+  .label-sm {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 12px;
+    font-weight: 400;
+    line-height: 1.4;
+    letter-spacing: 0.08em;
+    color: var(--secondary);
+  }
+
+  /* ── Page header — warm welcome ── */
+  .page-header {
+    padding: var(--spacing-xl) var(--spacing-xl) var(--spacing-lg);
+  }
+
+  .page-header h1 {
+    color: var(--primary);
+    margin-bottom: var(--spacing-md);
+  }
+
+  .page-header .welcome {
+    font-family: 'Source Serif 4', serif;
+    font-size: 18px;
+    font-style: italic;
+    line-height: 1.65;
+    color: var(--secondary);
+    margin-bottom: var(--spacing-lg);
+  }
+
+  .title-rule {
+    height: 2px;
+    background-color: var(--tertiary);
+    width: 80px;
+  }
+
+  /* ── Main ── */
+  main {
+    padding: var(--spacing-xl);
+    max-width: 960px;
+  }
+
+  section {
+    margin-bottom: var(--spacing-xl);
+  }
+
+  .section-label {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 12px;
+    font-weight: 400;
+    line-height: 1.4;
+    letter-spacing: 0.08em;
+    color: var(--secondary);
+    text-transform: uppercase;
+    margin-bottom: var(--spacing-lg);
+  }
+
+  /* ── Teas — three steeps, gentle dignity ── */
+  .teas-list {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-lg);
+    max-width: 720px;
+  }
+
+  .tea-row {
+    display: grid;
+    grid-template-columns: 220px 1fr;
+    gap: var(--spacing-lg);
+    padding-bottom: var(--spacing-lg);
+    border-bottom: 1px solid rgba(27,27,27,0.1);
+  }
+
+  .tea-row:last-child {
+    border-bottom: none;
+  }
+
+  .tea-meta .tea-name {
+    font-family: 'Source Serif 4', serif;
+    font-size: 16px;
+    font-weight: 600;
+    line-height: 1.4;
+    color: var(--primary);
+    margin-bottom: var(--spacing-sm);
+  }
+
+  .tea-meta .tea-origin {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 12px;
+    font-weight: 400;
+    letter-spacing: 0.08em;
+    color: var(--secondary);
+  }
+
+  .tea-note-text {
+    font-family: 'Source Serif 4', serif;
+    font-size: 16px;
+    line-height: 1.65;
+    color: var(--primary);
+    padding-top: 2px;
+  }
+
+  /* ── Quiet hours — small table, discreet ── */
+  .quiet-hours table {
+    border-collapse: collapse;
+    max-width: 540px;
+  }
+
+  .quiet-hours th {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 12px;
+    font-weight: 400;
+    letter-spacing: 0.08em;
+    color: var(--secondary);
+    text-align: left;
+    padding: var(--spacing-sm) var(--spacing-md) var(--spacing-sm) 0;
+    border-bottom: 1px solid rgba(27,27,27,0.2);
+  }
+
+  .quiet-hours td {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 12px;
+    font-weight: 400;
+    letter-spacing: 0.08em;
+    color: var(--primary);
+    padding: var(--spacing-sm) var(--spacing-md) var(--spacing-sm) 0;
+    border-bottom: 1px solid rgba(27,27,27,0.06);
+    vertical-align: top;
+  }
+
+  .quiet-hours td:first-child {
+    width: 148px;
+    color: var(--secondary);
+  }
+
+  /* ── Sourcing essay — warm and well-worn ── */
+  .sourcing-essay {
+    font-family: 'Source Serif 4', serif;
+    font-size: 16px;
+    line-height: 1.8;
+    color: var(--primary);
+    max-width: 640px;
+  }
+
+  /* ── Address ── */
+  .address-block {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 12px;
+    font-weight: 400;
+    letter-spacing: 0.08em;
+    color: var(--secondary);
+    line-height: 2;
+  }
+
+  .address-block .addr-primary {
+    color: var(--primary);
+    font-size: 14px;
+    margin-bottom: var(--spacing-sm);
+    display: block;
+  }
+
+  /* ── Footer ── */
+  footer {
+    border-top: 1px solid rgba(27,27,27,0.2);
+    padding: var(--spacing-lg) var(--spacing-xl);
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: var(--spacing-lg);
+  }
+
+  footer .footer-name {
+    font-family: 'Libre Franklin', sans-serif;
+    font-size: 18px;
+    font-weight: 700;
+    letter-spacing: -0.01em;
+    color: var(--primary);
+  }
+
+  footer .footer-details {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 12px;
+    font-weight: 400;
+    letter-spacing: 0.08em;
+    color: var(--secondary);
+    text-align: right;
+    line-height: 1.8;
+  }
+</style>
+</head>
+<body>
+
+<div class="page-header">
+  <h1 class="headline-lg">Kettle &amp; Leaf</h1>
+  <p class="welcome">A quiet place on Maple Row — come in, take your time.</p>
+  <div class="title-rule"></div>
+</div>
+
+<main>
+
+  <!-- Today's Teas -->
+  <section>
+    <p class="section-label">Today's brewed teas</p>
+    <div class="teas-list">
+      <div class="tea-row">
+        <div class="tea-meta">
+          <div class="tea-name">Alishan High Mountain</div>
+          <div class="tea-origin">Ali Shan, Taiwan<br>Oolong</div>
+        </div>
+        <div class="tea-note-text">Creamy orchid sweetness with a sustained floral finish. Grown at 1,400 metres in mist-shrouded gardens, this oolong is picked by hand in early spring when the air still carries winter's chill.</div>
+      </div>
+      <div class="tea-row">
+        <div class="tea-meta">
+          <div class="tea-name">Lamu Island White</div>
+          <div class="tea-origin">Coast Province, Kenya<br>White Tea</div>
+        </div>
+        <div class="tea-note-text">Delicate and honeyed, with a clean melon note and a quiet mineral finish. One of the few white teas produced on the Kenyan coast, picked at first light and sun-dried on woven mats.</div>
+      </div>
+      <div class="tea-row">
+        <div class="tea-meta">
+          <div class="tea-name">Ruby 18</div>
+          <div class="tea-origin">Sun Moon Lake, Taiwan<br>Black Tea</div>
+        </div>
+        <div class="tea-note-text">Warm cinnamon and natural wintergreen, with a smooth cocoa close and no astringency. A cultivar unique to Taiwan's Sun Moon Lake, developed over decades for its singular softness.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Quiet Hours -->
+  <section class="quiet-hours">
+    <p class="section-label">Weekly quiet hours</p>
+    <table>
+      <thead>
+        <tr>
+          <th>Day</th>
+          <th>Hours</th>
+          <th>Notes</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Monday</td>
+          <td>8:00 – 10:00 am</td>
+          <td>Soft music, no calls please</td>
+        </tr>
+        <tr>
+          <td>Wednesday</td>
+          <td>2:00 – 5:00 pm</td>
+          <td>Reading hour — laptops welcome</td>
+        </tr>
+        <tr>
+          <td>Friday</td>
+          <td>8:00 – 11:00 am</td>
+          <td>Early quiet, full menu available</td>
+        </tr>
+        <tr>
+          <td>Saturday</td>
+          <td>9:00 am – 12:00 pm</td>
+          <td>Morning quiet, table service only</td>
+        </tr>
+        <tr>
+          <td>Sunday</td>
+          <td>10:00 am – 1:00 pm</td>
+          <td>Slow Sunday — ambient sounds only</td>
+        </tr>
+      </tbody>
+    </table>
+  </section>
+
+  <!-- Sourcing -->
+  <section>
+    <p class="section-label">From the source</p>
+    <p class="sourcing-essay">Owner Mei-Lin Huang travels twice a year to find what ends up in your cup. Each spring she visits the high-mountain gardens of Taiwan — Ali Shan and Sun Moon Lake — sitting with the families who have cultivated these slopes for three generations. The conversations are long, the meals shared, and the trust built slowly across many visits. Each autumn she travels to the coastal smallholdings near Lamu, Kenya, where a small community of growers has begun producing white and green teas of quiet, unassuming quality. She brings back only what she would want to drink herself, which is why the menu is short and changes with the seasons.</p>
+  </section>
+
+  <!-- Address -->
+  <section>
+    <p class="section-label">Find us</p>
+    <div class="address-block">
+      <span class="addr-primary">412 Maple Row</span>
+      The corner shop, green door, stone step — easy to miss if you're not looking.
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <div class="footer-name">Kettle &amp; Leaf</div>
+  <div class="footer-details">
+    Mon–Fri 7:30 am – 7:00 pm &nbsp;·&nbsp; Sat 8:00 am – 6:00 pm &nbsp;·&nbsp; Sun 9:00 am – 5:00 pm<br>
+    (503) 741-2288
+  </div>
+</footer>
+
+</body>
+</html>

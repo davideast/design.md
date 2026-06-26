@@ -1,0 +1,752 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Agent Architecture</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500&family=IBM+Plex+Mono:wght@400&family=Source+Serif+4:opsz,wght@8..60,400&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+
+  :root {
+    --color-primary: #1E1A14;
+    --color-secondary: #B8B0A2;
+    --color-tertiary: #C3402A;
+    --color-neutral: #F4F0E4;
+
+    --font-display: 'Fraunces', serif;
+    --font-body: 'Source Serif 4', serif;
+    --font-code: 'IBM Plex Mono', monospace;
+
+    --display-size: 54px;
+    --display-weight: 500;
+    --display-lh: 1.1;
+    --display-ls: 0.01em;
+
+    --body-md-size: 17px;
+    --body-md-weight: 400;
+    --body-md-lh: 1.62;
+
+    --code-size: 14px;
+    --code-weight: 400;
+    --code-lh: 1.5;
+
+    --label-sm-size: 12px;
+    --label-sm-weight: 400;
+    --label-sm-lh: 1.4;
+    --label-sm-ls: 0.08em;
+
+    --rounded: 0px;
+
+    --sp-sm: 8px;
+    --sp-md: 16px;
+    --sp-lg: 32px;
+    --sp-xl: 64px;
+  }
+
+  html {
+    background: var(--color-primary);
+  }
+
+  body {
+    font-family: var(--font-body);
+    font-size: var(--body-md-size);
+    font-weight: var(--body-md-weight);
+    line-height: var(--body-md-lh);
+    color: var(--color-primary);
+    background: var(--color-primary);
+  }
+
+  .slide {
+    width: 100%;
+    max-width: 1280px;
+    margin: 0 auto var(--sp-lg) auto;
+    aspect-ratio: 16 / 9;
+    background: var(--color-neutral);
+    border-radius: var(--rounded);
+    overflow: hidden;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+  }
+
+  h1 {
+    font-family: var(--font-display);
+    font-size: var(--display-size);
+    font-weight: var(--display-weight);
+    line-height: var(--display-lh);
+    letter-spacing: var(--display-ls);
+    color: var(--color-primary);
+  }
+
+  h2 {
+    font-family: var(--font-display);
+    font-size: 36px;
+    font-weight: var(--display-weight);
+    line-height: var(--display-lh);
+    letter-spacing: var(--display-ls);
+    color: var(--color-primary);
+  }
+
+  h3 {
+    font-family: var(--font-display);
+    font-size: 24px;
+    font-weight: var(--display-weight);
+    line-height: var(--display-lh);
+    letter-spacing: var(--display-ls);
+    color: var(--color-primary);
+  }
+
+  .label {
+    font-family: var(--font-code);
+    font-size: var(--label-sm-size);
+    font-weight: var(--label-sm-weight);
+    line-height: var(--label-sm-lh);
+    letter-spacing: var(--label-sm-ls);
+    text-transform: uppercase;
+    color: var(--color-secondary);
+  }
+
+  .accent {
+    color: var(--color-tertiary);
+  }
+
+  code, .code {
+    font-family: var(--font-code);
+    font-size: var(--code-size);
+    font-weight: var(--code-weight);
+    line-height: var(--code-lh);
+  }
+
+  /* ── Slide 1: Title ── */
+  .slide--title {
+    justify-content: center;
+    padding: var(--sp-xl) var(--sp-xl) var(--sp-xl) var(--sp-xl);
+  }
+
+  .slide--title .subtitle {
+    font-family: var(--font-body);
+    font-size: 20px;
+    line-height: 1.5;
+    color: var(--color-secondary);
+    max-width: 560px;
+    margin-top: var(--sp-md);
+  }
+
+  .slide--title .meta {
+    position: absolute;
+    bottom: var(--sp-xl);
+    left: var(--sp-xl);
+  }
+
+  .slide--title .meta span {
+    font-family: var(--font-code);
+    font-size: var(--label-sm-size);
+    letter-spacing: var(--label-sm-ls);
+    color: var(--color-secondary);
+  }
+
+  .slide--title .meta span + span::before {
+    content: " · ";
+  }
+
+  /* ── Slide 2: The Loop ── */
+  .slide--loop {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    padding: var(--sp-xl);
+    gap: var(--sp-xl);
+  }
+
+  .slide--loop .text-col {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+
+  .slide--loop .text-col p {
+    margin-top: var(--sp-md);
+    color: var(--color-primary);
+    max-width: 480px;
+  }
+
+  .slide--loop .diagram-col {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .slide--loop .diagram-col .caption {
+    font-family: var(--font-code);
+    font-size: var(--label-sm-size);
+    letter-spacing: var(--label-sm-ls);
+    color: var(--color-secondary);
+    margin-top: var(--sp-md);
+    text-align: center;
+  }
+
+  /* ── Slide 3: Worked Trace ── */
+  .slide--trace {
+    padding: var(--sp-xl) var(--sp-xl) var(--sp-lg) var(--sp-xl);
+    overflow: hidden;
+  }
+
+  .slide--trace h2 {
+    margin-bottom: var(--sp-md);
+  }
+
+  .trace-query {
+    font-family: var(--font-code);
+    font-size: var(--code-size);
+    line-height: var(--code-lh);
+    color: var(--color-primary);
+    background: rgba(30, 26, 20, 0.06);
+    padding: var(--sp-sm) var(--sp-md);
+    margin-bottom: var(--sp-md);
+    border-left: 3px solid var(--color-tertiary);
+  }
+
+  .trace-steps {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+
+  .trace-step {
+    display: grid;
+    grid-template-columns: 100px 1fr 180px;
+    gap: var(--sp-md);
+    align-items: baseline;
+    padding: 4px 0;
+  }
+
+  .trace-step .step-type {
+    font-family: var(--font-code);
+    font-size: 12px;
+    letter-spacing: var(--label-sm-ls);
+    text-transform: uppercase;
+    font-weight: 400;
+  }
+
+  .trace-step .step-type.thought { color: var(--color-tertiary); }
+  .trace-step .step-type.action { color: var(--color-primary); }
+  .trace-step .step-type.observation { color: var(--color-secondary); }
+
+  .trace-step .step-content {
+    font-family: var(--font-code);
+    font-size: 13px;
+    line-height: 1.45;
+    color: var(--color-primary);
+  }
+
+  .trace-step .step-annotation {
+    font-family: var(--font-code);
+    font-size: 11px;
+    letter-spacing: var(--label-sm-ls);
+    color: var(--color-secondary);
+    text-align: right;
+  }
+
+  /* ── Slide 4: Four Architectures ── */
+  .slide--four {
+    padding: var(--sp-xl);
+    display: flex;
+    flex-direction: column;
+  }
+
+  .slide--four h2 {
+    margin-bottom: var(--sp-lg);
+  }
+
+  .arch-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 1fr 1fr;
+    gap: var(--sp-lg);
+    flex: 1;
+  }
+
+  .arch-cell {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: var(--sp-sm);
+  }
+
+  .arch-cell .arch-label {
+    font-family: var(--font-code);
+    font-size: var(--label-sm-size);
+    letter-spacing: var(--label-sm-ls);
+    text-transform: uppercase;
+    color: var(--color-primary);
+    font-weight: 400;
+  }
+
+  /* ── Slide 5: Where Loops Fail ── */
+  .slide--fail {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    padding: var(--sp-xl);
+    gap: var(--sp-xl);
+  }
+
+  .slide--fail .text-col {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+
+  .slide--fail .text-col p {
+    margin-top: var(--sp-md);
+    max-width: 460px;
+  }
+
+  .slide--fail .chart-col {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  /* ── Slide 6: Code ── */
+  .slide--code {
+    display: grid;
+    grid-template-columns: 1fr 220px;
+    padding: var(--sp-xl);
+    gap: var(--sp-lg);
+  }
+
+  .slide--code .code-col {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+
+  .slide--code h2 {
+    margin-bottom: var(--sp-md);
+  }
+
+  .code-block {
+    font-family: var(--font-code);
+    font-size: 13px;
+    line-height: 1.55;
+    color: var(--color-primary);
+    background: rgba(30, 26, 20, 0.05);
+    padding: var(--sp-md) var(--sp-lg);
+    white-space: pre;
+    overflow-x: auto;
+  }
+
+  .code-block .kw { color: var(--color-tertiary); }
+  .code-block .cm { color: var(--color-secondary); }
+  .code-block .st { color: #6B5D3E; }
+
+  .slide--code .annotation-col {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: var(--sp-lg);
+  }
+
+  .annotation {
+    border-left: 2px solid var(--color-tertiary);
+    padding-left: var(--sp-md);
+  }
+
+  .annotation .ann-label {
+    font-family: var(--font-code);
+    font-size: 11px;
+    letter-spacing: var(--label-sm-ls);
+    text-transform: uppercase;
+    color: var(--color-tertiary);
+    margin-bottom: 4px;
+  }
+
+  .annotation p {
+    font-family: var(--font-body);
+    font-size: 14px;
+    line-height: 1.5;
+    color: var(--color-secondary);
+  }
+
+  .closing-remark {
+    font-family: var(--font-body);
+    font-size: 15px;
+    color: var(--color-secondary);
+    margin-top: var(--sp-md);
+    font-style: italic;
+  }
+
+  /* ── Slide 7: Ending ── */
+  .slide--end {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: var(--sp-xl);
+  }
+
+  .slide--end h2 {
+    font-size: 40px;
+    margin-bottom: var(--sp-xl);
+    max-width: 700px;
+  }
+
+  .references {
+    display: flex;
+    flex-direction: column;
+    gap: var(--sp-sm);
+  }
+
+  .references .ref {
+    font-family: var(--font-code);
+    font-size: 13px;
+    line-height: 1.5;
+    color: var(--color-secondary);
+  }
+
+  .references .ref .ref-num {
+    color: var(--color-tertiary);
+    margin-right: var(--sp-sm);
+  }
+</style>
+</head>
+<body>
+
+<!-- ════════════════════════════════════════════
+     SLIDE 1 — Title
+     ════════════════════════════════════════════ -->
+<section class="slide slide--title">
+  <h1>Agent Architecture</h1>
+  <p class="subtitle">On loops, traces, and the structures by which language models act.</p>
+  <div class="meta">
+    <span>David East</span>
+    <span>Google DeepMind</span>
+    <span>14 October 2026</span>
+  </div>
+</section>
+
+<!-- ════════════════════════════════════════════
+     SLIDE 2 — The Loop
+     ════════════════════════════════════════════ -->
+<section class="slide slide--loop">
+  <div class="text-col">
+    <p class="label">Slide 2</p>
+    <h2>§ 1. The Loop</h2>
+    <p>
+      At its core, an agent is a loop. The ReAct framework introduced the idea that a language model
+      should interleave reasoning with action: first <em>think</em> about what to do, then <em>act</em>
+      on the world, then <em>observe</em> the result. The cycle repeats until the task is complete or
+      a termination condition is met. This THINK → ACT → OBSERVE loop is the minimal viable
+      architecture for tool-using agents. Everything else — memory, planning, reflection — is
+      scaffolding built around it.
+    </p>
+  </div>
+  <div class="diagram-col">
+    <svg width="280" height="280" viewBox="0 0 280 280" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <!-- Circular arrows -->
+      <circle cx="140" cy="140" r="100" stroke="#B8B0A2" stroke-width="1.5" fill="none" stroke-dasharray="4 4"/>
+
+      <!-- THINK node -->
+      <rect x="95" y="20" width="90" height="36" fill="#1E1A14" rx="0"/>
+      <text x="140" y="43" text-anchor="middle" fill="#F4F0E4" font-family="IBM Plex Mono" font-size="12" letter-spacing="0.08em">THINK</text>
+
+      <!-- ACT node -->
+      <rect x="195" y="180" width="72" height="36" fill="#C3402A" rx="0"/>
+      <text x="231" y="203" text-anchor="middle" fill="#F4F0E4" font-family="IBM Plex Mono" font-size="12" letter-spacing="0.08em">ACT</text>
+
+      <!-- OBSERVE node -->
+      <rect x="13" y="180" width="90" height="36" fill="none" stroke="#1E1A14" stroke-width="1.5" rx="0"/>
+      <text x="58" y="203" text-anchor="middle" fill="#1E1A14" font-family="IBM Plex Mono" font-size="12" letter-spacing="0.08em">OBSERVE</text>
+
+      <!-- Arrow: THINK → ACT -->
+      <path d="M175 56 Q 230 100 240 175" stroke="#1E1A14" stroke-width="1.5" fill="none" marker-end="url(#arrow)"/>
+      <!-- Arrow: ACT → OBSERVE -->
+      <path d="M195 210 Q 140 260 103 216" stroke="#1E1A14" stroke-width="1.5" fill="none" marker-end="url(#arrow)"/>
+      <!-- Arrow: OBSERVE → THINK -->
+      <path d="M40 180 Q 40 100 100 50" stroke="#1E1A14" stroke-width="1.5" fill="none" marker-end="url(#arrow)"/>
+
+      <defs>
+        <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+          <path d="M 0 0 L 10 5 L 0 10 z" fill="#1E1A14"/>
+        </marker>
+      </defs>
+    </svg>
+    <p class="caption">Fig. 1 — The ReAct cycle. Each pass through the loop<br>costs tokens and clock time.</p>
+  </div>
+</section>
+
+<!-- ════════════════════════════════════════════
+     SLIDE 3 — A Worked Trace
+     ════════════════════════════════════════════ -->
+<section class="slide slide--trace">
+  <p class="label">Slide 3</p>
+  <h2>§ 2. A Worked Trace</h2>
+  <div class="trace-query">USER → "What was NVDA's closing price yesterday and how does it compare to its 52-week high?"</div>
+  <div class="trace-steps">
+    <div class="trace-step">
+      <span class="step-type thought">Thought</span>
+      <span class="step-content">I need to look up NVDA's most recent closing price. I'll query a financial data API.</span>
+      <span class="step-annotation">← reasoning before acting</span>
+    </div>
+    <div class="trace-step">
+      <span class="step-type action">Action</span>
+      <span class="step-content">search_api(query="NVDA closing price today")</span>
+      <span class="step-annotation">← tool invocation</span>
+    </div>
+    <div class="trace-step">
+      <span class="step-type observation">Observe</span>
+      <span class="step-content">{"symbol": "NVDA", "close": 142.56, "date": "2026-10-13"}</span>
+      <span class="step-annotation">← structured return value</span>
+    </div>
+    <div class="trace-step">
+      <span class="step-type thought">Thought</span>
+      <span class="step-content">Now I need the 52-week high to compute the comparison.</span>
+      <span class="step-annotation"></span>
+    </div>
+    <div class="trace-step">
+      <span class="step-type action">Action</span>
+      <span class="step-content">search_api(query="NVDA 52-week high")</span>
+      <span class="step-annotation"></span>
+    </div>
+    <div class="trace-step">
+      <span class="step-type observation">Observe</span>
+      <span class="step-content">{"symbol": "NVDA", "52_week_high": 168.91, "date": "2026-07-22"}</span>
+      <span class="step-annotation">← second retrieval cycle</span>
+    </div>
+    <div class="trace-step">
+      <span class="step-type thought">Thought</span>
+      <span class="step-content">142.56 / 168.91 ≈ 0.844 → NVDA is trading ~15.6% below its 52-week high.</span>
+      <span class="step-annotation">← arithmetic in context</span>
+    </div>
+    <div class="trace-step">
+      <span class="step-type action">Action</span>
+      <span class="step-content">respond("NVDA closed at $142.56 on Oct 13, ~15.6% below its 52-wk high of $168.91.")</span>
+      <span class="step-annotation">← final answer, loop exits</span>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════════════════════════
+     SLIDE 4 — Four Architectures
+     ════════════════════════════════════════════ -->
+<section class="slide slide--four">
+  <p class="label">Slide 4</p>
+  <h2>§ 3. Four Architectures</h2>
+  <div class="arch-grid">
+    <!-- ReAct -->
+    <div class="arch-cell">
+      <svg width="200" height="120" viewBox="0 0 200 120" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <rect x="10" y="42" width="50" height="28" stroke="#1E1A14" stroke-width="1.5" fill="none"/>
+        <text x="35" y="60" text-anchor="middle" fill="#1E1A14" font-family="IBM Plex Mono" font-size="10">THINK</text>
+        <rect x="75" y="42" width="50" height="28" fill="#C3402A"/>
+        <text x="100" y="60" text-anchor="middle" fill="#F4F0E4" font-family="IBM Plex Mono" font-size="10">ACT</text>
+        <rect x="140" y="42" width="50" height="28" stroke="#1E1A14" stroke-width="1.5" fill="none"/>
+        <text x="165" y="60" text-anchor="middle" fill="#1E1A14" font-family="IBM Plex Mono" font-size="10">OBS</text>
+        <line x1="60" y1="56" x2="75" y2="56" stroke="#1E1A14" stroke-width="1.5" marker-end="url(#arrow2)"/>
+        <line x1="125" y1="56" x2="140" y2="56" stroke="#1E1A14" stroke-width="1.5" marker-end="url(#arrow2)"/>
+        <path d="M165 70 Q 165 100 100 100 Q 35 100 35 70" stroke="#1E1A14" stroke-width="1" stroke-dasharray="3 3" marker-end="url(#arrow2)"/>
+        <defs><marker id="arrow2" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 z" fill="#1E1A14"/></marker></defs>
+      </svg>
+      <span class="arch-label">React</span>
+    </div>
+    <!-- Reflexion -->
+    <div class="arch-cell">
+      <svg width="200" height="120" viewBox="0 0 200 120" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <rect x="55" y="10" width="90" height="26" stroke="#1E1A14" stroke-width="1.5" fill="none"/>
+        <text x="100" y="27" text-anchor="middle" fill="#1E1A14" font-family="IBM Plex Mono" font-size="10">EXECUTE</text>
+        <rect x="55" y="48" width="90" height="26" stroke="#1E1A14" stroke-width="1.5" fill="none"/>
+        <text x="100" y="65" text-anchor="middle" fill="#1E1A14" font-family="IBM Plex Mono" font-size="10">EVALUATE</text>
+        <rect x="55" y="86" width="90" height="26" fill="#C3402A"/>
+        <text x="100" y="103" text-anchor="middle" fill="#F4F0E4" font-family="IBM Plex Mono" font-size="10">REFLECT</text>
+        <line x1="100" y1="36" x2="100" y2="48" stroke="#1E1A14" stroke-width="1.5" marker-end="url(#arrow2)"/>
+        <line x1="100" y1="74" x2="100" y2="86" stroke="#1E1A14" stroke-width="1.5" marker-end="url(#arrow2)"/>
+        <path d="M55 99 Q 20 99 20 23 Q 20 10 55 10" stroke="#1E1A14" stroke-width="1" stroke-dasharray="3 3" marker-end="url(#arrow2)"/>
+        <text x="178" y="100" fill="#B8B0A2" font-family="IBM Plex Mono" font-size="9">memory</text>
+        <path d="M145 99 Q 170 99 170 65" stroke="#B8B0A2" stroke-width="1" stroke-dasharray="2 2"/>
+      </svg>
+      <span class="arch-label">Reflexion</span>
+    </div>
+    <!-- Plan-and-Execute -->
+    <div class="arch-cell">
+      <svg width="200" height="120" viewBox="0 0 200 120" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <rect x="55" y="8" width="90" height="26" fill="#C3402A"/>
+        <text x="100" y="25" text-anchor="middle" fill="#F4F0E4" font-family="IBM Plex Mono" font-size="10">PLAN</text>
+        <line x1="100" y1="34" x2="100" y2="46" stroke="#1E1A14" stroke-width="1.5" marker-end="url(#arrow2)"/>
+        <rect x="20" y="48" width="50" height="22" stroke="#1E1A14" stroke-width="1.5" fill="none"/>
+        <text x="45" y="63" text-anchor="middle" fill="#1E1A14" font-family="IBM Plex Mono" font-size="9">STEP 1</text>
+        <rect x="75" y="48" width="50" height="22" stroke="#1E1A14" stroke-width="1.5" fill="none"/>
+        <text x="100" y="63" text-anchor="middle" fill="#1E1A14" font-family="IBM Plex Mono" font-size="9">STEP 2</text>
+        <rect x="130" y="48" width="50" height="22" stroke="#1E1A14" stroke-width="1.5" fill="none"/>
+        <text x="155" y="63" text-anchor="middle" fill="#1E1A14" font-family="IBM Plex Mono" font-size="9">STEP N</text>
+        <line x1="70" y1="59" x2="75" y2="59" stroke="#1E1A14" stroke-width="1"/>
+        <line x1="125" y1="59" x2="130" y2="59" stroke="#1E1A14" stroke-width="1"/>
+        <rect x="55" y="86" width="90" height="26" stroke="#1E1A14" stroke-width="1.5" fill="none"/>
+        <text x="100" y="103" text-anchor="middle" fill="#1E1A14" font-family="IBM Plex Mono" font-size="10">REPLAN</text>
+        <path d="M100 70 L100 86" stroke="#1E1A14" stroke-width="1" marker-end="url(#arrow2)"/>
+        <path d="M55 99 Q 10 99 10 21 Q 10 8 55 8" stroke="#1E1A14" stroke-width="1" stroke-dasharray="3 3" marker-end="url(#arrow2)"/>
+      </svg>
+      <span class="arch-label">Plan-and-Execute</span>
+    </div>
+    <!-- Tree of Thoughts -->
+    <div class="arch-cell">
+      <svg width="200" height="120" viewBox="0 0 200 120" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <!-- Root -->
+        <circle cx="100" cy="18" r="10" fill="#1E1A14"/>
+        <!-- Level 1 -->
+        <circle cx="55" cy="55" r="8" stroke="#1E1A14" stroke-width="1.5" fill="none"/>
+        <circle cx="100" cy="55" r="8" stroke="#1E1A14" stroke-width="1.5" fill="none"/>
+        <circle cx="145" cy="55" r="8" stroke="#1E1A14" stroke-width="1.5" fill="none"/>
+        <line x1="93" y1="26" x2="60" y2="47" stroke="#1E1A14" stroke-width="1"/>
+        <line x1="100" y1="28" x2="100" y2="47" stroke="#1E1A14" stroke-width="1"/>
+        <line x1="107" y1="26" x2="140" y2="47" stroke="#1E1A14" stroke-width="1"/>
+        <!-- Level 2 from left -->
+        <circle cx="35" cy="92" r="7" stroke="#B8B0A2" stroke-width="1" fill="none"/>
+        <circle cx="75" cy="92" r="7" fill="#C3402A"/>
+        <line x1="50" y1="61" x2="39" y2="85" stroke="#B8B0A2" stroke-width="1"/>
+        <line x1="60" y1="61" x2="71" y2="85" stroke="#1E1A14" stroke-width="1"/>
+        <!-- Level 2 from mid -->
+        <circle cx="100" cy="92" r="7" stroke="#B8B0A2" stroke-width="1" fill="none"/>
+        <line x1="100" y1="63" x2="100" y2="85" stroke="#B8B0A2" stroke-width="1"/>
+        <!-- Level 2 from right -->
+        <circle cx="130" cy="92" r="7" stroke="#B8B0A2" stroke-width="1" fill="none"/>
+        <circle cx="160" cy="92" r="7" stroke="#B8B0A2" stroke-width="1" fill="none"/>
+        <line x1="140" y1="61" x2="134" y2="85" stroke="#B8B0A2" stroke-width="1"/>
+        <line x1="150" y1="61" x2="156" y2="85" stroke="#B8B0A2" stroke-width="1"/>
+        <!-- Eval label -->
+        <text x="100" y="116" text-anchor="middle" fill="#B8B0A2" font-family="IBM Plex Mono" font-size="9">eval → prune → expand</text>
+      </svg>
+      <span class="arch-label">Tree-of-Thoughts</span>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════════════════════════
+     SLIDE 5 — Where Loops Fail
+     ════════════════════════════════════════════ -->
+<section class="slide slide--fail">
+  <div class="text-col">
+    <p class="label">Slide 5</p>
+    <h2>§ 4. Where Loops Fail</h2>
+    <p>
+      Every iteration costs tokens. Worse, accuracy often <em>degrades</em> after a threshold number
+      of iterations as the context window fills with redundant observations. The agent begins to
+      repeat actions, hallucinate tool outputs, or lose track of its original goal. Bounded loops
+      with early-exit heuristics help, but the fundamental tension remains: more iterations increase
+      coverage at the cost of coherence.
+    </p>
+  </div>
+  <div class="chart-col">
+    <svg width="360" height="260" viewBox="0 0 360 260" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <!-- Axes -->
+      <line x1="50" y1="220" x2="340" y2="220" stroke="#1E1A14" stroke-width="1.5"/>
+      <line x1="50" y1="220" x2="50" y2="20" stroke="#1E1A14" stroke-width="1.5"/>
+
+      <!-- Y axis label -->
+      <text x="16" y="120" text-anchor="middle" fill="#B8B0A2" font-family="IBM Plex Mono" font-size="10" transform="rotate(-90, 16, 120)">CUMULATIVE TOKENS</text>
+
+      <!-- X axis label -->
+      <text x="195" y="250" text-anchor="middle" fill="#B8B0A2" font-family="IBM Plex Mono" font-size="10">ITERATIONS</text>
+
+      <!-- X ticks -->
+      <text x="80" y="236" text-anchor="middle" fill="#B8B0A2" font-family="IBM Plex Mono" font-size="9">2</text>
+      <text x="140" y="236" text-anchor="middle" fill="#B8B0A2" font-family="IBM Plex Mono" font-size="9">4</text>
+      <text x="200" y="236" text-anchor="middle" fill="#B8B0A2" font-family="IBM Plex Mono" font-size="9">6</text>
+      <text x="260" y="236" text-anchor="middle" fill="#B8B0A2" font-family="IBM Plex Mono" font-size="9">8</text>
+      <text x="320" y="236" text-anchor="middle" fill="#B8B0A2" font-family="IBM Plex Mono" font-size="9">10</text>
+
+      <!-- Token cost curve (exponential-ish) -->
+      <polyline points="50,210 80,195 110,175 140,150 170,118 200,85 230,58 260,40 290,30 320,26"
+                stroke="#C3402A" stroke-width="2" fill="none"/>
+
+      <!-- Accuracy curve (rises then falls) -->
+      <polyline points="50,200 80,160 110,120 140,90 170,70 200,65 230,72 260,90 290,115 320,140"
+                stroke="#1E1A14" stroke-width="2" fill="none"/>
+
+      <!-- Optimal zone -->
+      <rect x="130" y="18" width="80" height="200" fill="#C3402A" fill-opacity="0.06"/>
+      <text x="170" y="14" text-anchor="middle" fill="#C3402A" font-family="IBM Plex Mono" font-size="9" letter-spacing="0.05em">OPTIMAL</text>
+
+      <!-- Legend -->
+      <line x1="230" y1="12" x2="250" y2="12" stroke="#C3402A" stroke-width="2"/>
+      <text x="256" y="16" fill="#B8B0A2" font-family="IBM Plex Mono" font-size="9">tokens</text>
+      <line x1="296" y1="12" x2="316" y2="12" stroke="#1E1A14" stroke-width="2"/>
+      <text x="322" y="16" fill="#B8B0A2" font-family="IBM Plex Mono" font-size="9">acc.</text>
+    </svg>
+  </div>
+</section>
+
+<!-- ════════════════════════════════════════════
+     SLIDE 6 — The Loop, in Code
+     ════════════════════════════════════════════ -->
+<section class="slide slide--code">
+  <div class="code-col">
+    <p class="label">Slide 6</p>
+    <h2>§ 5. The Loop, in Code</h2>
+    <div class="code-block"><span class="kw">from</span> dataclasses <span class="kw">import</span> dataclass
+<span class="kw">from</span> typing <span class="kw">import</span> Callable
+
+<span class="kw">@dataclass</span>
+<span class="kw">class</span> <span class="st">Trace</span>:
+    steps: list[dict]
+    done: bool = <span class="kw">False</span>
+
+<span class="kw">def</span> <span class="st">react_loop</span>(
+    model: Callable,
+    tools: dict[str, Callable],
+    query: str,
+    max_iter: int = <span class="st">10</span>,
+) -> Trace:
+    trace = Trace(steps=[])
+    <span class="kw">for</span> i <span class="kw">in</span> range(max_iter):
+        thought = model.think(query, trace)     <span class="cm"># ①</span>
+        action  = model.act(thought)             <span class="cm"># ②</span>
+        result  = tools[action.name](*action.args)
+        trace.steps.append({
+            <span class="st">"thought"</span>: thought,
+            <span class="st">"action"</span>:  action,
+            <span class="st">"observation"</span>: result,
+        })
+        <span class="kw">if</span> action.name == <span class="st">"finish"</span>:          <span class="cm"># ③</span>
+            trace.done = <span class="kw">True</span>
+            <span class="kw">break</span>
+    <span class="kw">return</span> trace</div>
+    <p class="closing-remark">Twenty-eight lines. The rest is prompt engineering.</p>
+  </div>
+  <div class="annotation-col">
+    <div class="annotation">
+      <div class="ann-label">① Think</div>
+      <p>The model generates a chain-of-thought conditioned on the full trace so far.</p>
+    </div>
+    <div class="annotation">
+      <div class="ann-label">② Act</div>
+      <p>A structured action is extracted — function name and arguments — then dispatched.</p>
+    </div>
+    <div class="annotation">
+      <div class="ann-label">③ Exit</div>
+      <p>The loop terminates on a sentinel action. Without it, you burn tokens until max_iter.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════════════════════════
+     SLIDE 7 — Ending
+     ════════════════════════════════════════════ -->
+<section class="slide slide--end">
+  <p class="label">Slide 7</p>
+  <h2>The structure is the intelligence.<br>The loop is the agent.</h2>
+  <div class="references">
+    <p class="ref"><span class="ref-num">[1]</span>Yao, S. et al. "ReAct: Synergizing Reasoning and Acting in Language Models." ICLR 2023.</p>
+    <p class="ref"><span class="ref-num">[2]</span>Shinn, N. et al. "Reflexion: Language Agents with Verbal Reinforcement Learning." NeurIPS 2023.</p>
+    <p class="ref"><span class="ref-num">[3]</span>Yao, S. et al. "Tree of Thoughts: Deliberate Problem Solving with Large Language Models." NeurIPS 2023.</p>
+  </div>
+</section>
+
+</body>
+</html>

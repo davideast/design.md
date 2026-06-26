@@ -1,0 +1,723 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AURALIS — Making digital experiences sound human</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  /*
+   * METAPHOR: A recording studio.
+   * The page at large = the treated room: pale walls, acoustic modules, hairline seams.
+   * The demo panel = the live room: behind the glass, the voice appears in color.
+   * The dashboard = the control room: the one dim space, all meters and transport.
+   * The hero = the soundproof door: vast quiet wall, one sentence, two pill switches.
+   * Treatment has no hard edges — foam, capsules — every surface curves.
+   * A treated room has no echo — nothing casts a shadow (except one monitor's faint footprint).
+   * Studio signage: one typeface, terse tracked-caps labels on every door.
+   */
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --primary: #111111;
+    --secondary: #6B6B6B;
+    --tertiary: #9958ff;
+    --neutral: #F7F7F5;
+    --surface-elevated: #ffffff;
+    --outline-muted: #E5E5E3;
+    --font: 'Geist', system-ui, sans-serif;
+    --r-sm: 0.25rem;
+    --r-md: 0.75rem;
+    --r-lg: 1.5rem;
+    --r-full: 9999px;
+    --sp-sm: 8px;
+    --sp-md: 24px;
+    --sp-lg: 64px;
+    --sp-xl: 140px;
+  }
+
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: var(--font);
+    background: var(--neutral); /* warm off-white walls */
+    color: var(--primary);
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+    font-size: 16px; font-weight: 400;
+  }
+
+  /* ---- NAV: studio entrance signage — door plate ---- */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    height: 64px;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 0 var(--sp-md);
+    background: rgba(247,247,245,0.92);
+    backdrop-filter: blur(14px);
+    border-bottom: 1px solid var(--outline-muted);
+  }
+  /* AURALIS on the front plate — terse tracked-caps */
+  .door-plate {
+    font-size: 12px; font-weight: 600; letter-spacing: 0.08em; line-height: 1;
+    text-transform: uppercase; color: var(--primary);
+  }
+  .nav-links {
+    display: flex; align-items: center; gap: 28px; list-style: none;
+  }
+  .nav-links a {
+    font-size: 12px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase;
+    color: var(--secondary); text-decoration: none; transition: color 0.15s;
+  }
+  .nav-links a:hover { color: var(--primary); }
+  /* Console switch — soft pill, the hardware of the studio console */
+  .console-switch {
+    background: var(--primary); color: var(--surface-elevated);
+    font-size: 14px; font-weight: 500; letter-spacing: 0.01em; line-height: 1;
+    padding: 10px 22px; border-radius: var(--r-full); text-decoration: none;
+    border: none; cursor: pointer; transition: opacity 0.15s;
+  }
+  .console-switch:hover { opacity: 0.82; }
+
+  /* ---- HERO: the soundproof door — vast quiet wall ---- */
+  .hero {
+    min-height: 100vh; display: flex; flex-direction: column;
+    align-items: center; justify-content: center; text-align: center;
+    padding: var(--sp-xl) var(--sp-md);
+    padding-top: calc(var(--sp-xl) + 64px);
+    /* The treated room: plain, pale, nothing decorative */
+  }
+  /* One sentence, tight and dense like studio signage */
+  .hero h1 {
+    font-size: 72px; font-weight: 600; line-height: 0.95; letter-spacing: -0.04em;
+    color: var(--primary); max-width: 840px; margin-bottom: 40px;
+  }
+  .hero-switches { display: flex; gap: var(--sp-sm); }
+  /* Two pill switches — talkback controls on the console */
+  .switch-filled {
+    background: var(--primary); color: var(--surface-elevated);
+    font-size: 14px; font-weight: 500; letter-spacing: 0.01em; line-height: 1;
+    padding: 12px 28px; border-radius: var(--r-full); text-decoration: none;
+    border: none; cursor: pointer; transition: opacity 0.15s;
+  }
+  .switch-filled:hover { opacity: 0.82; }
+  .switch-soft {
+    background: transparent; color: var(--primary);
+    font-size: 14px; font-weight: 500; letter-spacing: 0.01em; line-height: 1;
+    padding: 11px 28px; border-radius: var(--r-full); text-decoration: none;
+    border: 1px solid var(--outline-muted); cursor: pointer; transition: border-color 0.15s;
+  }
+  .switch-soft:hover { border-color: var(--secondary); }
+
+  /* ---- DEMO PANEL: the live room — behind glass, voice appears in color ---- */
+  .demo-wrap {
+    padding: 0 var(--sp-md) var(--sp-lg); max-width: 1200px; margin: 0 auto;
+  }
+  /* The acoustic module housing the live room — one faint footprint shadow */
+  .live-room {
+    background: var(--surface-elevated); /* white acoustic module */
+    border: 1px solid var(--outline-muted); /* hairline seam */
+    border-radius: var(--r-lg); /* treatment has no hard edges */
+    overflow: hidden;
+    box-shadow: 0 8px 32px rgba(17,17,17,0.04); /* one soft footprint */
+  }
+  .demo-tabs {
+    display: flex; border-bottom: 1px solid var(--outline-muted);
+    background: var(--neutral); /* acoustic foam — warm, pale */
+  }
+  .dtab {
+    padding: 14px var(--sp-md); font-size: 12px; font-weight: 600;
+    letter-spacing: 0.08em; text-transform: uppercase; color: var(--secondary);
+    cursor: pointer; border-right: 1px solid var(--outline-muted);
+    border-bottom: 2px solid transparent; margin-bottom: -1px; transition: color 0.15s;
+  }
+  .dtab.active { color: var(--primary); border-bottom-color: var(--primary); }
+  .demo-status {
+    margin-left: auto; display: flex; align-items: center; gap: var(--sp-sm);
+    padding: 0 var(--sp-md); font-size: 12px; font-weight: 600;
+    letter-spacing: 0.08em; text-transform: uppercase; color: var(--secondary);
+  }
+  .live-lamp {
+    width: 6px; height: 6px; border-radius: 50%; background: #16a34a;
+    animation: lamp 2s infinite;
+  }
+  @keyframes lamp { 0%,100%{opacity:1} 50%{opacity:0.3} }
+
+  /* Behind the glass: the voice appears — vivid bloom of purple, magenta, cerulean, pink */
+  .glass-panel {
+    height: 380px; position: relative;
+    display: flex; align-items: center; justify-content: center;
+    background: var(--neutral); /* warm pale room beyond the glass */
+    overflow: hidden;
+  }
+  /* The way sound would look if you could see it hanging in air */
+  .voice-bloom-1 {
+    position: absolute; width: 540px; height: 460px; border-radius: 50%;
+    background: radial-gradient(ellipse at 46% 52%, rgba(153,88,255,0.6) 0%, rgba(147,51,234,0.44) 22%, transparent 60%);
+    filter: blur(52px); top: 46%; left: 42%; transform: translate(-50%,-50%);
+  }
+  .voice-bloom-2 {
+    position: absolute; width: 440px; height: 380px; border-radius: 50%;
+    background: radial-gradient(ellipse at 54% 44%, rgba(56,189,248,0.5) 0%, rgba(6,182,212,0.38) 32%, transparent 66%);
+    filter: blur(60px); top: 56%; left: 62%; transform: translate(-50%,-50%);
+  }
+  .voice-bloom-3 {
+    position: absolute; width: 380px; height: 320px; border-radius: 50%;
+    background: radial-gradient(ellipse at 50% 60%, rgba(244,114,182,0.44) 0%, transparent 65%);
+    filter: blur(46px); top: 74%; left: 36%; transform: translate(-50%,-50%);
+  }
+  .voice-bloom-4 {
+    position: absolute; width: 320px; height: 260px; border-radius: 50%;
+    background: radial-gradient(ellipse at 50%, rgba(217,70,239,0.42) 0%, transparent 66%);
+    filter: blur(44px); top: 30%; left: 70%; transform: translate(-50%,-50%);
+  }
+  /* Single white capsule — the talkback switch at center, the one living button */
+  .talkback {
+    position: relative; z-index: 2;
+    width: 64px; height: 64px; border-radius: var(--r-full);
+    background: rgba(255,255,255,0.88); backdrop-filter: blur(8px);
+    border: 1px solid rgba(255,255,255,0.6);
+    display: flex; align-items: center; justify-content: center;
+    cursor: pointer; transition: background 0.15s;
+  }
+  .talkback:hover { background: rgba(255,255,255,0.96); }
+  .talkback-icon {
+    width: 0; height: 0; border-style: solid;
+    border-width: 10px 0 10px 18px;
+    border-color: transparent transparent transparent var(--primary); margin-left: 3px;
+  }
+
+  .demo-modebar {
+    display: flex; align-items: center;
+    border-top: 1px solid var(--outline-muted); background: var(--neutral);
+  }
+  .mode-link {
+    padding: 12px var(--sp-md); font-size: 12px; font-weight: 600;
+    letter-spacing: 0.08em; text-transform: uppercase; color: var(--secondary);
+    text-decoration: none; border-right: 1px solid var(--outline-muted);
+    white-space: nowrap; transition: color 0.15s;
+  }
+  .mode-link.active { color: var(--primary); }
+  .mode-link:hover { color: var(--primary); }
+  .modebar-switch {
+    margin-left: auto; margin-right: var(--sp-md);
+    background: var(--primary); color: var(--surface-elevated);
+    font-size: 14px; font-weight: 500; letter-spacing: 0.01em; line-height: 1;
+    padding: 8px 18px; border-radius: var(--r-full); border: none; cursor: pointer;
+  }
+
+  /* ---- TRUST STRIP: corridor signage ---- */
+  .trust-strip {
+    border-top: 1px solid var(--outline-muted);
+    border-bottom: 1px solid var(--outline-muted);
+    padding: var(--sp-lg) var(--sp-md); text-align: center;
+  }
+  .trust-heading {
+    font-size: 12px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase;
+    color: var(--secondary); margin-bottom: var(--sp-md);
+  }
+  .trust-logos { display: flex; align-items: center; justify-content: center; gap: 48px; flex-wrap: wrap; }
+  .trust-name {
+    font-size: 12px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase;
+    color: var(--outline-muted); transition: color 0.2s;
+  }
+  .trust-name:hover { color: var(--secondary); }
+
+  /* ---- PLATFORM OVERVIEW ---- */
+  .platform-section { padding: var(--sp-xl) var(--sp-md); max-width: 1200px; margin: 0 auto; }
+  .platform-header { text-align: center; margin-bottom: var(--sp-lg); }
+  .platform-header h2 {
+    font-size: 42px; font-weight: 600; line-height: 1.1; letter-spacing: -0.02em;
+    max-width: 600px; margin: 0 auto var(--sp-md);
+  }
+  .platform-header p { font-size: 16px; color: var(--secondary); max-width: 440px; margin: 0 auto; }
+  .platform-blurbs {
+    display: grid; grid-template-columns: 1fr 1fr; gap: var(--sp-md);
+    max-width: 660px; margin: 0 auto var(--sp-lg);
+  }
+  /* Acoustic modules — white, hairline seams, no shadow */
+  .a-module {
+    background: var(--surface-elevated); border: 1px solid var(--outline-muted);
+    border-radius: var(--r-lg); padding: var(--sp-md);
+  }
+  .door-label {
+    font-size: 12px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase;
+    color: var(--secondary); margin-bottom: var(--sp-sm);
+  }
+  .a-module h3 { font-size: 14px; font-weight: 600; margin-bottom: var(--sp-sm); }
+  .a-module p { font-size: 14px; color: var(--secondary); line-height: 1.5; }
+
+  /* Control room — the one dim space, all meters and waveform and transport */
+  .control-room {
+    background: var(--primary); border-radius: var(--r-lg); overflow: hidden;
+  }
+  .cr-head {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 12px var(--sp-md); border-bottom: 1px solid rgba(255,255,255,0.07);
+  }
+  .cr-label {
+    font-size: 12px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase;
+    color: rgba(255,255,255,0.3);
+  }
+  .cr-badges { display: flex; gap: var(--sp-sm); }
+  .cr-badge {
+    font-size: 10px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase;
+    padding: 4px 10px; border-radius: var(--r-full); border: 1px solid;
+  }
+  .cr-badge-mode { color: rgba(255,255,255,0.4); border-color: rgba(255,255,255,0.12); }
+  .cr-badge-live {
+    color: #4ade80; border-color: rgba(74,222,128,0.35);
+    display: flex; align-items: center; gap: 4px;
+  }
+  .cr-live-dot { width: 5px; height: 5px; border-radius: 50%; background: #4ade80; animation: lamp 2s infinite; }
+  /* Meters */
+  .cr-meters {
+    display: grid; grid-template-columns: repeat(3,1fr);
+    border-bottom: 1px solid rgba(255,255,255,0.07);
+  }
+  .cr-meter { padding: var(--sp-md); border-right: 1px solid rgba(255,255,255,0.07); }
+  .cr-meter:last-child { border-right: none; }
+  .cr-meter-label {
+    font-size: 10px; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase;
+    color: rgba(255,255,255,0.28); margin-bottom: var(--sp-sm);
+  }
+  .cr-meter-val {
+    font-size: 30px; font-weight: 600; letter-spacing: -0.04em; line-height: 0.95;
+    color: rgba(255,255,255,0.9);
+  }
+  .cr-unit { font-size: 13px; color: rgba(255,255,255,0.3); font-weight: 400; }
+  .cr-ok { color: #4ade80; font-size: 22px; }
+  /* Waveform readout — lit by its own display */
+  .cr-waveform {
+    height: 100px; padding: var(--sp-md); display: flex; align-items: center; gap: 2px;
+  }
+  .cw-bar { flex: 1; border-radius: 2px; background: var(--tertiary); opacity: 0.5; min-height: 4px; }
+  /* Transport controls */
+  .cr-transport {
+    display: flex; align-items: center; justify-content: center; gap: 12px;
+    padding: 12px var(--sp-md); border-top: 1px solid rgba(255,255,255,0.07);
+  }
+  .cr-ctrl {
+    width: 28px; height: 28px; border-radius: var(--r-full);
+    background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.08);
+    display: flex; align-items: center; justify-content: center;
+    color: rgba(255,255,255,0.3); font-size: 10px; cursor: pointer;
+  }
+  .cr-play {
+    width: 36px; height: 36px; border-radius: var(--r-full);
+    background: var(--tertiary); border: none; cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .cr-play-icon {
+    width: 0; height: 0; border-style: solid;
+    border-width: 6px 0 6px 11px;
+    border-color: transparent transparent transparent #fff; margin-left: 2px;
+  }
+  .cr-time { font-size: 11px; color: rgba(255,255,255,0.22); letter-spacing: 0.05em; margin-left: 8px; }
+
+  /* ---- STUDIO SECTION: iso booth ---- */
+  .studio-section {
+    border-top: 1px solid var(--outline-muted); padding: var(--sp-xl) var(--sp-md);
+  }
+  .studio-inner { max-width: 1200px; margin: 0 auto; }
+  .room-label {
+    font-size: 12px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase;
+    color: var(--secondary); margin-bottom: var(--sp-sm);
+  }
+  .room-h2 {
+    font-size: 42px; font-weight: 600; letter-spacing: -0.02em; line-height: 1.1;
+    max-width: 500px; margin-bottom: var(--sp-sm);
+  }
+  .room-body { font-size: 16px; color: var(--secondary); max-width: 420px; margin-bottom: var(--sp-lg); }
+  .studio-cards { display: grid; grid-template-columns: 1fr 1fr; gap: var(--sp-md); margin-bottom: var(--sp-md); }
+  .s-mod {
+    background: var(--surface-elevated); border: 1px solid var(--outline-muted);
+    border-radius: var(--r-lg); overflow: hidden; /* foam, fabric, capsules — no hard edges */
+  }
+  .s-mod-img {
+    height: 210px; background: linear-gradient(140deg, var(--neutral) 0%, var(--surface-elevated) 100%);
+    display: flex; align-items: center; justify-content: center;
+  }
+  .ed-mock {
+    width: 78%; height: 72%; border-radius: var(--r-md);
+    background: var(--surface-elevated); border: 1px solid var(--outline-muted); overflow: hidden;
+  }
+  .emb {
+    height: 26px; background: var(--neutral); border-bottom: 1px solid var(--outline-muted);
+    display: flex; align-items: center; padding: 0 10px; gap: 5px;
+  }
+  .emd { width: 8px; height: 8px; border-radius: 50%; }
+  .em-tracks { padding: 10px; display: flex; flex-direction: column; gap: 5px; }
+  .em-t {
+    height: 18px; border-radius: var(--r-sm);
+    background: rgba(17,17,17,0.06); border: 1px solid var(--outline-muted);
+    position: relative; overflow: hidden;
+  }
+  .em-f { position: absolute; left:0; top:0; bottom:0; background: rgba(153,88,255,0.3); }
+  .s-mod-label {
+    padding: var(--sp-sm) var(--sp-md); font-size: 12px; font-weight: 600;
+    letter-spacing: 0.08em; text-transform: uppercase; color: var(--secondary);
+  }
+  .s-mod-body { padding: var(--sp-md); }
+  .s-mod-body h3 { font-size: 16px; font-weight: 600; margin-bottom: var(--sp-sm); }
+  .s-mod-body p { font-size: 14px; color: var(--secondary); line-height: 1.5; }
+  .mode-switches { display: flex; gap: var(--sp-sm); flex-wrap: wrap; }
+  /* Mode controls — console switches, soft pills */
+  .mswitch {
+    padding: 9px 20px; border-radius: var(--r-full);
+    border: 1px solid var(--outline-muted); background: var(--surface-elevated);
+    font-size: 14px; font-weight: 500; letter-spacing: 0.01em; color: var(--secondary);
+    cursor: pointer; transition: all 0.15s;
+  }
+  .mswitch:hover { border-color: var(--primary); color: var(--primary); }
+
+  /* ---- AGENTS SECTION ---- */
+  .agents-section {
+    border-top: 1px solid var(--outline-muted); padding: var(--sp-xl) var(--sp-md);
+  }
+  .agents-inner { max-width: 1200px; margin: 0 auto; }
+  .agents-grid { display: grid; grid-template-columns: 1.1fr 0.9fr; gap: var(--sp-md); margin-top: var(--sp-lg); }
+  .chat-module {
+    background: var(--surface-elevated); border: 1px solid var(--outline-muted);
+    border-radius: var(--r-lg); overflow: hidden;
+  }
+  .chat-hdr {
+    padding: 14px var(--sp-md); border-bottom: 1px solid var(--outline-muted);
+    display: flex; align-items: center; justify-content: space-between;
+  }
+  .chat-nm { font-size: 14px; font-weight: 600; }
+  .chat-st {
+    font-size: 10px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase;
+    color: #16a34a; display: flex; align-items: center; gap: 4px;
+  }
+  .ch-dot { width: 5px; height: 5px; border-radius: 50%; background: #16a34a; }
+  .chat-body { padding: var(--sp-md); display: flex; flex-direction: column; gap: 12px; }
+  .msg-in { display: flex; align-items: flex-start; gap: var(--sp-sm); }
+  .msg-ava {
+    width: 28px; height: 28px; border-radius: var(--r-full);
+    background: var(--neutral); border: 1px solid var(--outline-muted);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 11px; font-weight: 600; color: var(--secondary); flex-shrink: 0;
+  }
+  .bub-in {
+    background: var(--neutral); border: 1px solid var(--outline-muted);
+    border-radius: var(--r-sm) var(--r-lg) var(--r-lg) var(--r-lg);
+    padding: 10px 14px; font-size: 14px; max-width: 82%;
+  }
+  .msg-out { display: flex; justify-content: flex-end; }
+  .bub-out {
+    background: var(--primary); color: var(--surface-elevated);
+    border-radius: var(--r-lg) var(--r-lg) var(--r-sm) var(--r-lg);
+    padding: 10px 14px; font-size: 14px; max-width: 82%;
+  }
+  .typ-row { display: flex; align-items: flex-start; gap: var(--sp-sm); }
+  .typ-bub {
+    background: var(--neutral); border: 1px solid var(--outline-muted);
+    border-radius: var(--r-sm) var(--r-lg) var(--r-lg) var(--r-lg);
+    padding: 12px 16px; display: flex; gap: 4px; align-items: center;
+  }
+  .td { width: 6px; height: 6px; border-radius: 50%; background: var(--secondary); animation: tdot 1.2s infinite ease-in-out; }
+  .td:nth-child(2) { animation-delay: 0.15s; }
+  .td:nth-child(3) { animation-delay: 0.3s; }
+  @keyframes tdot { 0%,60%,100%{transform:translateY(0)} 30%{transform:translateY(-5px)} }
+  .insights-module {
+    background: var(--surface-elevated); border: 1px solid var(--outline-muted);
+    border-radius: var(--r-lg); padding: var(--sp-md);
+  }
+  .ins-label {
+    font-size: 12px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase;
+    color: var(--secondary); margin-bottom: var(--sp-sm);
+  }
+  .insights-module h3 { font-size: 20px; font-weight: 600; letter-spacing: -0.02em; margin-bottom: var(--sp-sm); }
+  .insights-module p { font-size: 14px; color: var(--secondary); line-height: 1.5; margin-bottom: var(--sp-md); }
+  .stat-list { display: flex; flex-direction: column; gap: var(--sp-sm); }
+  .stat-row { display: flex; align-items: center; gap: var(--sp-sm); }
+  .slbl { font-size: 12px; color: var(--secondary); width: 110px; flex-shrink: 0; }
+  .stk { flex: 1; height: 3px; background: var(--outline-muted); border-radius: 2px; }
+  .sfil { height: 3px; border-radius: 2px; background: var(--primary); opacity: 0.25; }
+  .svl { font-size: 12px; font-weight: 600; width: 30px; text-align: right; }
+
+  /* ---- CTA: the studio exit — the silence after ---- */
+  .cta-section {
+    border-top: 1px solid var(--outline-muted); padding: var(--sp-xl) var(--sp-md);
+    text-align: center;
+  }
+  .cta-section h2 {
+    font-size: 42px; font-weight: 600; letter-spacing: -0.02em; line-height: 1.1; margin-bottom: 40px;
+  }
+  .cta-row { display: flex; gap: var(--sp-sm); justify-content: center; }
+
+  /* ---- FOOTER ---- */
+  footer {
+    border-top: 1px solid var(--outline-muted); padding: var(--sp-md);
+    display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: var(--sp-md);
+  }
+  .f-left { display: flex; flex-direction: column; gap: var(--sp-sm); }
+  .f-plate {
+    font-size: 12px; font-weight: 600; letter-spacing: 0.08em;
+    text-transform: uppercase; color: var(--primary);
+  }
+  .f-copy { font-size: 12px; color: var(--secondary); }
+  .f-links { display: flex; gap: var(--sp-md); }
+  .f-links a { font-size: 14px; color: var(--secondary); text-decoration: none; transition: color 0.15s; }
+  .f-links a:hover { color: var(--primary); }
+</style>
+</head>
+<body>
+
+<!-- NAV: front door plate, studio entrance -->
+<nav>
+  <div class="door-plate">AURALIS</div>
+  <ul class="nav-links">
+    <li><a href="#">Studio</a></li>
+    <li><a href="#">Agents</a></li>
+    <li><a href="#">API</a></li>
+    <li><a href="#">Resources</a></li>
+    <li><a href="#">Enterprise</a></li>
+    <li><a href="#">Pricing</a></li>
+  </ul>
+  <a href="#" class="console-switch">Sign up</a>
+</nav>
+
+<!-- HERO: the soundproof door — vast quiet wall, one sentence, two pill switches -->
+<section class="hero">
+  <h1>Making digital experiences sound human</h1>
+  <div class="hero-switches">
+    <a href="#" class="switch-filled">Sign up</a>
+    <a href="#" class="switch-soft">Contact sales</a>
+  </div>
+</section>
+
+<!-- DEMO PANEL: the live room — behind the glass, the voice appears -->
+<div class="demo-wrap">
+  <div class="live-room">
+    <div class="demo-tabs">
+      <div class="dtab active">Auralis Studio</div>
+      <div class="dtab">Auralis Agents</div>
+      <div class="dtab">Auralis API</div>
+      <div class="demo-status">
+        <div class="live-lamp"></div>
+        AI Voice Generator
+      </div>
+    </div>
+    <!-- Behind the glass — the voice itself appears, luminous and organic -->
+    <div class="glass-panel">
+      <div class="voice-bloom-1"></div>
+      <div class="voice-bloom-2"></div>
+      <div class="voice-bloom-3"></div>
+      <div class="voice-bloom-4"></div>
+      <!-- The talkback switch — white capsule at center -->
+      <div class="talkback">
+        <div class="talkback-icon"></div>
+      </div>
+    </div>
+    <div class="demo-modebar">
+      <a href="#" class="mode-link active">AI Voice Generator</a>
+      <a href="#" class="mode-link">Text to Speech</a>
+      <a href="#" class="mode-link">Music</a>
+      <a href="#" class="mode-link">Sound Effects</a>
+      <a href="#" class="mode-link">Voice Cloning</a>
+      <button class="modebar-switch">Sign up</button>
+    </div>
+  </div>
+</div>
+
+<!-- TRUST STRIP: corridor name plates -->
+<div class="trust-strip">
+  <p class="trust-heading">Trusted by teams building modern audio experiences</p>
+  <div class="trust-logos">
+    <span class="trust-name">Velocity</span>
+    <span class="trust-name">Nexus</span>
+    <span class="trust-name">Lumina</span>
+    <span class="trust-name">Stack</span>
+    <span class="trust-name">Quanta</span>
+    <span class="trust-name">Orbital</span>
+    <span class="trust-name">Scalar</span>
+  </div>
+</div>
+
+<!-- PLATFORM OVERVIEW: studio modules + control room -->
+<section class="platform-section">
+  <div class="platform-header">
+    <h2>Two systems, one shared intelligence layer</h2>
+    <p>Studio and Agents run on a unified neural engine, sharing the same synthesis core and voice intelligence.</p>
+  </div>
+  <div class="platform-blurbs">
+    <div class="a-module">
+      <div class="door-label">Precision Generation</div>
+      <h3>Precision Generation</h3>
+      <p>Sub-20ms latency synthesis with full prosodic control. Every phoneme shaped with surgical accuracy.</p>
+    </div>
+    <div class="a-module">
+      <div class="door-label">Agentic Architecture</div>
+      <h3>Agentic Architecture</h3>
+      <p>Autonomous voice agents that reason, adapt, and respond in real time — integrated with your systems.</p>
+    </div>
+  </div>
+  <!-- The control room: the one dim space, all meters and waveform and transport -->
+  <div class="control-room">
+    <div class="cr-head">
+      <span class="cr-label">NEURAL ENGINE V4.2 PRO</span>
+      <div class="cr-badges">
+        <span class="cr-badge cr-badge-mode">STUDIO MODE</span>
+        <span class="cr-badge cr-badge-live"><span class="cr-live-dot"></span>Real-time Synthesis Active</span>
+      </div>
+    </div>
+    <div class="cr-meters">
+      <div class="cr-meter">
+        <div class="cr-meter-label">LATENCY</div>
+        <div class="cr-meter-val">12 <span class="cr-unit">ms</span></div>
+      </div>
+      <div class="cr-meter">
+        <div class="cr-meter-label">CONFIDENCE</div>
+        <div class="cr-meter-val">99.8 <span class="cr-unit">%</span></div>
+      </div>
+      <div class="cr-meter">
+        <div class="cr-meter-label">STATUS</div>
+        <div class="cr-meter-val cr-ok">Operational</div>
+      </div>
+    </div>
+    <div class="cr-waveform">
+      <div class="cw-bar" style="height:20%"></div><div class="cw-bar" style="height:64%"></div>
+      <div class="cw-bar" style="height:36%"></div><div class="cw-bar" style="height:82%"></div>
+      <div class="cw-bar" style="height:52%"></div><div class="cw-bar" style="height:96%"></div>
+      <div class="cw-bar" style="height:28%"></div><div class="cw-bar" style="height:70%"></div>
+      <div class="cw-bar" style="height:44%"></div><div class="cw-bar" style="height:88%"></div>
+      <div class="cw-bar" style="height:20%"></div><div class="cw-bar" style="height:60%"></div>
+      <div class="cw-bar" style="height:48%"></div><div class="cw-bar" style="height:100%"></div>
+      <div class="cw-bar" style="height:24%"></div><div class="cw-bar" style="height:74%"></div>
+      <div class="cw-bar" style="height:40%"></div><div class="cw-bar" style="height:84%"></div>
+      <div class="cw-bar" style="height:16%"></div><div class="cw-bar" style="height:58%"></div>
+      <div class="cw-bar" style="height:42%"></div><div class="cw-bar" style="height:76%"></div>
+    </div>
+    <div class="cr-transport">
+      <div class="cr-ctrl">⏮</div><div class="cr-ctrl">⏪</div>
+      <div class="cr-play"><div class="cr-play-icon"></div></div>
+      <div class="cr-ctrl">⏩</div><div class="cr-ctrl">⏭</div>
+      <span class="cr-time">00:00:24 / 00:01:48</span>
+    </div>
+  </div>
+</section>
+
+<!-- STUDIO SECTION: the iso booth -->
+<div class="studio-section">
+  <div class="studio-inner">
+    <div class="room-label">AURALIS STUDIO</div>
+    <h2 class="room-h2">Sculpt sound with absolute precision.</h2>
+    <p class="room-body">A professional-grade audio creation suite built for teams who demand control at every layer of their voice output.</p>
+    <div class="studio-cards">
+      <div class="s-mod">
+        <div class="s-mod-img">
+          <div class="ed-mock">
+            <div class="emb">
+              <div class="emd" style="background:#ddd"></div>
+              <div class="emd" style="background:#ddd"></div>
+              <div class="emd" style="background:#ddd"></div>
+            </div>
+            <div class="em-tracks">
+              <div class="em-t"><div class="em-f" style="width:68%"></div></div>
+              <div class="em-t" style="opacity:0.55"><div class="em-f" style="width:42%"></div></div>
+              <div class="em-t" style="opacity:0.35"><div class="em-f" style="width:85%"></div></div>
+            </div>
+          </div>
+        </div>
+        <div class="s-mod-label">Soft Editor UI</div>
+      </div>
+      <div class="s-mod">
+        <div class="s-mod-body" style="padding-top:32px">
+          <div class="room-label" style="margin-bottom:8px">Transcript Panel</div>
+          <h3>Transcript Panel</h3>
+          <p>Real-time synchronized transcripts with phoneme-level editing. Adjust timing, emphasis, and pronunciation directly from the transcript view — every word tied to its exact audio frame.</p>
+        </div>
+      </div>
+    </div>
+    <div class="mode-switches">
+      <button class="mswitch">Music</button>
+      <button class="mswitch">SFX</button>
+      <button class="mswitch">Voices</button>
+      <button class="mswitch">Image &amp; Video</button>
+    </div>
+  </div>
+</div>
+
+<!-- AGENTS SECTION -->
+<div class="agents-section">
+  <div class="agents-inner">
+    <div class="room-label">AURALIS AGENTS</div>
+    <h2 class="room-h2">Autonomous reasoning, human delivery.</h2>
+    <p class="room-body">Deploy intelligent voice agents that understand context, handle complexity, and speak with nuance.</p>
+    <div class="agents-grid">
+      <div class="chat-module">
+        <div class="chat-hdr">
+          <span class="chat-nm">Nexus Support Agent</span>
+          <span class="chat-st"><div class="ch-dot"></div>ONLINE • LATENCY: 12ms</span>
+        </div>
+        <div class="chat-body">
+          <div class="msg-in">
+            <div class="msg-ava">N</div>
+            <div class="bub-in">Hello! How can I assist you today?</div>
+          </div>
+          <div class="msg-out">
+            <div class="bub-out">I need help checking my deployment status.</div>
+          </div>
+          <div class="typ-row">
+            <div class="msg-ava">N</div>
+            <div class="typ-bub">
+              <div class="td"></div><div class="td"></div><div class="td"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="insights-module">
+        <div class="ins-label">Analytics</div>
+        <h3>Deep Insights</h3>
+        <p>Surface the patterns hidden in every voice interaction. Understand sentiment, intent, resolution rates, and conversation quality at scale — across every deployment.</p>
+        <div class="stat-list">
+          <div class="stat-row">
+            <span class="slbl">Resolution Rate</span>
+            <div class="stk"><div class="sfil" style="width:94%"></div></div>
+            <span class="svl">94%</span>
+          </div>
+          <div class="stat-row">
+            <span class="slbl">Avg Sentiment</span>
+            <div class="stk"><div class="sfil" style="width:87%"></div></div>
+            <span class="svl">87%</span>
+          </div>
+          <div class="stat-row">
+            <span class="slbl">Intent Accuracy</span>
+            <div class="stk"><div class="sfil" style="width:99%"></div></div>
+            <span class="svl">99%</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- CTA: studio exit -->
+<section class="cta-section">
+  <h2>The future of voice starts here</h2>
+  <div class="cta-row">
+    <a href="#" class="switch-filled" style="font-size:15px;padding:14px 32px">Get started</a>
+    <a href="#" class="switch-soft" style="font-size:15px;padding:13px 32px">Talk to sales</a>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="f-left">
+    <div class="f-plate">AURALIS</div>
+    <div class="f-copy">© 2024 Auralis AI. Engineered for precision.</div>
+  </div>
+  <div class="f-links">
+    <a href="#">Twitter</a>
+    <a href="#">GitHub</a>
+    <a href="#">Terms</a>
+    <a href="#">Privacy</a>
+  </div>
+</footer>
+
+</body>
+</html>

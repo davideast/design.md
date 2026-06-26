@@ -2,7 +2,7 @@
 import Base from "../../../layouts/Base.astro";
 import TopRail from "../../../components/TopRail.astro";
 import ProofThumb from "../../../components/ProofThumb.astro";
-import { listCases, caseView, treatmentSheet } from "../../../lib/runs";
+import { listCases, caseView, treatmentSheet } from "../../../lib/data";
 
 export function getStaticPaths() {
   const paths: any[] = [];
@@ -44,11 +44,12 @@ const tightest = s.spread != null && s.spread <= 0.05;
         <a href={`/cases/${s.caseKey}/${s.treatmentKey}/${m.n}`} class="block group">
           <ProofThumb src={m.samplePath} />
           <div class="mt-xs flex items-baseline justify-between">
-            <span class="font-label text-label uppercase text-ink-muted group-hover:text-primary">{m.n + 1} of {shown.length}</span>
+            <span class="font-label text-label uppercase text-ink group-hover:text-primary" style="font-size:10px">{s.treatmentName}</span>
             {!s.isControl && (
               <span class="font-data text-data text-ink bg-accent-wash px-1">{m.distance != null ? m.distance.toFixed(2) : "—"}</span>
             )}
           </div>
+          <div class="font-data text-data text-ink-muted" style="font-size:9px">{s.tool} · sample {m.n + 1} of {shown.length}</div>
         </a>
       ))}
     </div>

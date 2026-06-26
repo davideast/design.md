@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kettle &amp; Leaf</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Lato:wght@300;400;700&family=Source+Code+Pro:wght@400&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root {
+    --warm-cream: #FAF6F0;
+    --deep-brown: #3B2F2F;
+    --medium-brown: #7A6A5B;
+    --terracotta: #C2703E;
+    --soft-sage: #A8B5A0;
+    --light-border: #E0D8CC;
+  }
+
+  body {
+    font-family: 'Lato', sans-serif;
+    background-color: var(--warm-cream);
+    color: var(--deep-brown);
+    line-height: 1.7;
+    font-size: 16px;
+  }
+
+  .page {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 80px 40px;
+  }
+
+  header {
+    text-align: center;
+    margin-bottom: 72px;
+  }
+
+  header h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: 52px;
+    font-weight: 700;
+    color: var(--deep-brown);
+    letter-spacing: -0.02em;
+    line-height: 1.1;
+    margin-bottom: 12px;
+  }
+
+  header p {
+    font-size: 18px;
+    font-weight: 300;
+    color: var(--medium-brown);
+  }
+
+  section {
+    margin-bottom: 64px;
+  }
+
+  h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: 28px;
+    font-weight: 700;
+    margin-bottom: 24px;
+    color: var(--deep-brown);
+  }
+
+  .teas {
+    display: flex;
+    gap: 32px;
+  }
+
+  .tea-card {
+    flex: 1;
+    border-top: 3px solid var(--terracotta);
+    padding-top: 20px;
+  }
+
+  .tea-card h3 {
+    font-family: 'Playfair Display', serif;
+    font-size: 20px;
+    font-weight: 700;
+    margin-bottom: 4px;
+  }
+
+  .tea-origin {
+    font-family: 'Source Code Pro', monospace;
+    font-size: 12px;
+    letter-spacing: 0.06em;
+    color: var(--medium-brown);
+    text-transform: uppercase;
+    margin-bottom: 10px;
+  }
+
+  .tea-note {
+    font-size: 15px;
+    color: var(--deep-brown);
+    line-height: 1.6;
+  }
+
+  .quiet-hours table {
+    width: 100%;
+    max-width: 420px;
+    border-collapse: collapse;
+  }
+
+  .quiet-hours th,
+  .quiet-hours td {
+    text-align: left;
+    padding: 8px 16px;
+    font-size: 14px;
+    border-bottom: 1px solid var(--light-border);
+  }
+
+  .quiet-hours th {
+    font-weight: 700;
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--medium-brown);
+  }
+
+  .quiet-hours td {
+    color: var(--deep-brown);
+  }
+
+  .sourcing p {
+    font-size: 16px;
+    line-height: 1.75;
+    max-width: 640px;
+    color: var(--deep-brown);
+  }
+
+  .map-line {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 15px;
+    color: var(--medium-brown);
+    margin-bottom: 64px;
+  }
+
+  .map-line .pin {
+    color: var(--terracotta);
+    font-size: 20px;
+  }
+
+  footer {
+    border-top: 1px solid var(--light-border);
+    padding-top: 24px;
+    display: flex;
+    justify-content: space-between;
+    font-size: 14px;
+    color: var(--medium-brown);
+  }
+
+  footer span {
+    display: block;
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <header>
+    <h1>Kettle &amp; Leaf</h1>
+    <p>A quiet corner for tea, brewed slow and served with care.</p>
+  </header>
+
+  <section>
+    <h2>Today's Brewed Teas</h2>
+    <div class="teas">
+      <div class="tea-card">
+        <h3>Ali Shan Oolong</h3>
+        <div class="tea-origin">Chiayi County, Taiwan</div>
+        <p class="tea-note">Buttery and floral with a lingering sweetness that recalls lilac and fresh cream.</p>
+      </div>
+      <div class="tea-card">
+        <h3>Kenyan Purple Leaf</h3>
+        <div class="tea-origin">Nandi Hills, Kenya</div>
+        <p class="tea-note">Bright and juicy with notes of plum, a crisp finish, and gentle astringency.</p>
+      </div>
+      <div class="tea-card">
+        <h3>Silver Needle</h3>
+        <div class="tea-origin">Fujian Province, China</div>
+        <p class="tea-note">Delicate and honeyed, with a whisper of melon rind and a clean, silky body.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="quiet-hours">
+    <h2>Quiet Hours</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>Day</th>
+          <th>Quiet Hours</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td>Monday</td><td>8:00 AM – 11:00 AM</td></tr>
+        <tr><td>Tuesday</td><td>8:00 AM – 11:00 AM</td></tr>
+        <tr><td>Wednesday</td><td>2:00 PM – 5:00 PM</td></tr>
+        <tr><td>Thursday</td><td>8:00 AM – 11:00 AM</td></tr>
+        <tr><td>Friday</td><td>2:00 PM – 5:00 PM</td></tr>
+        <tr><td>Saturday</td><td>9:00 AM – 12:00 PM</td></tr>
+        <tr><td>Sunday</td><td>All day</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <section class="sourcing">
+    <h2>From the Source</h2>
+    <p>Every spring and autumn, our owner Lin travels to the high mountain farms of Chiayi County in Taiwan and the rolling estates of Nandi Hills in Kenya. These aren't buying trips in any corporate sense — they're visits to farmers she's known for over a decade. In Taiwan, she cups the new flush directly at the processing shed, choosing lots by hand. In Kenya, she walks the rows at altitude, watching how the purple-leaf cultivar responds to the season's rains. What arrives at Kettle &amp; Leaf has been carried by hand, packed in foil-lined craft bags, and is never more than eight weeks from the bush.</p>
+  </section>
+
+  <div class="map-line">
+    <span class="pin">📍</span>
+    <span>412 Maple Row</span>
+  </div>
+
+  <footer>
+    <div>
+      <span>Monday – Saturday: 7:00 AM – 6:00 PM</span>
+      <span>Sunday: 9:00 AM – 4:00 PM</span>
+    </div>
+    <div>
+      <span>(503) 227-1847</span>
+    </div>
+  </footer>
+
+</div>
+</body>
+</html>

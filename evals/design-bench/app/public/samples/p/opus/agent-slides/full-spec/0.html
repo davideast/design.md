@@ -1,0 +1,605 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Agent Architecture — Slide Deck</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;1,9..144,400;1,9..144,500&family=IBM+Plex+Mono:ital,wght@0,400;1,400&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;1,8..60,400&display=swap" rel="stylesheet">
+<style>
+  *,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
+  :root{
+    --primary:#1E1A14;
+    --secondary:#B8B0A2;
+    --tertiary:#C3402A;
+    --neutral:#F4F0E4;
+    --sm:8px;--md:16px;--lg:32px;--xl:64px;
+  }
+  @page{size:landscape;margin:0;}
+  html{background:var(--neutral);}
+  body{
+    font-family:'Source Serif 4',serif;
+    font-size:17px;
+    font-weight:400;
+    line-height:1.62;
+    color:var(--primary);
+    background:var(--neutral);
+  }
+  .slide{
+    width:100vw;
+    height:100vh;
+    padding:var(--xl) 80px var(--xl) 80px;
+    position:relative;
+    overflow:hidden;
+    page-break-after:always;
+    display:flex;
+    flex-direction:column;
+  }
+  /* Section label — upper left */
+  .section-label{
+    font-family:'IBM Plex Mono',monospace;
+    font-size:12px;
+    font-weight:400;
+    line-height:1.4;
+    letter-spacing:0.08em;
+    text-transform:uppercase;
+    color:var(--primary);
+    position:absolute;
+    top:var(--lg);
+    left:80px;
+  }
+  /* Page numeral — lower right */
+  .page-num{
+    font-family:'IBM Plex Mono',monospace;
+    font-size:12px;
+    font-weight:400;
+    line-height:1.4;
+    letter-spacing:0.08em;
+    color:var(--tertiary);
+    position:absolute;
+    bottom:var(--lg);
+    right:80px;
+  }
+  h1.display{
+    font-family:'Fraunces',serif;
+    font-size:54px;
+    font-weight:500;
+    line-height:1.1;
+    letter-spacing:0.01em;
+    color:var(--primary);
+    margin:0;
+  }
+  h2.section-title{
+    font-family:'Fraunces',serif;
+    font-size:36px;
+    font-weight:500;
+    line-height:1.15;
+    letter-spacing:0.01em;
+    color:var(--primary);
+    margin:0 0 var(--lg) 0;
+  }
+  p.body-text{
+    font-family:'Source Serif 4',serif;
+    font-size:17px;
+    font-weight:400;
+    line-height:1.62;
+    max-width:62ch;
+    color:var(--primary);
+    margin-bottom:var(--md);
+  }
+  .standfirst{
+    font-family:'Source Serif 4',serif;
+    font-style:italic;
+    font-size:14px;
+    font-weight:400;
+    line-height:1.62;
+    max-width:55ch;
+    color:var(--primary);
+    margin-top:var(--md);
+  }
+  .mono{
+    font-family:'IBM Plex Mono',monospace;
+    font-size:14px;
+    font-weight:400;
+    line-height:1.5;
+  }
+  .mono-sm{
+    font-family:'IBM Plex Mono',monospace;
+    font-size:12px;
+    font-weight:400;
+    line-height:1.4;
+    letter-spacing:0.08em;
+    text-transform:uppercase;
+  }
+  .caption{
+    font-family:'Source Serif 4',serif;
+    font-style:italic;
+    font-size:14px;
+    line-height:1.5;
+    color:var(--primary);
+  }
+  .margin-note{
+    font-family:'Source Serif 4',serif;
+    font-style:italic;
+    font-size:13px;
+    line-height:1.5;
+    color:var(--primary);
+  }
+  code,.inline-code{
+    font-family:'IBM Plex Mono',monospace;
+    font-size:14px;
+    font-weight:400;
+    line-height:1.5;
+    background:none;
+    border:none;
+    padding:0;
+  }
+  .hairline{
+    border:none;
+    border-top:1px solid var(--secondary);
+    margin:var(--md) 0;
+  }
+  .vermilion-underline{
+    text-decoration:underline;
+    text-decoration-color:var(--tertiary);
+    text-underline-offset:4px;
+    text-decoration-thickness:2px;
+  }
+  svg text{
+    font-family:'IBM Plex Mono',monospace;
+  }
+  /* Slide-specific layouts */
+  .slide-content{flex:1;display:flex;flex-direction:column;justify-content:flex-start;}
+  .two-col{display:flex;gap:var(--xl);align-items:flex-start;}
+  .two-col .col{flex:1;}
+  .code-block{
+    font-family:'IBM Plex Mono',monospace;
+    font-size:14px;
+    font-weight:400;
+    line-height:1.5;
+    white-space:pre;
+    color:var(--primary);
+    background:none;
+    border:none;
+    padding:0;
+    margin:0;
+  }
+  .trace-step{
+    display:flex;
+    gap:var(--lg);
+    margin-bottom:var(--sm);
+    align-items:baseline;
+  }
+  .trace-label{
+    font-family:'IBM Plex Mono',monospace;
+    font-size:12px;
+    font-weight:400;
+    letter-spacing:0.08em;
+    text-transform:uppercase;
+    min-width:110px;
+    flex-shrink:0;
+  }
+  .trace-content{
+    font-family:'Source Serif 4',serif;
+    font-size:15px;
+    line-height:1.5;
+    max-width:55ch;
+  }
+  .speaker-meta{
+    font-family:'IBM Plex Mono',monospace;
+    font-size:12px;
+    font-weight:400;
+    line-height:1.4;
+    letter-spacing:0.08em;
+    color:var(--primary);
+  }
+  .references{
+    font-family:'Source Serif 4',serif;
+    font-size:14px;
+    line-height:1.7;
+    color:var(--primary);
+  }
+  .references em{font-style:italic;}
+</style>
+</head>
+<body>
+
+<!-- ============================================================ -->
+<!-- SLIDE 1 — Title -->
+<!-- ============================================================ -->
+<div class="slide" style="justify-content:center;">
+  <!-- Small loop motif — margin mark, upper-right area -->
+  <svg width="40" height="40" viewBox="0 0 40 40" fill="none" style="position:absolute;top:40px;right:100px;" aria-hidden="true">
+    <path d="M20 5 C30 4, 36 12, 35 20 C34 28, 27 35, 19 35 C11 35, 5 28, 5.5 20 C6 12, 12 6, 20 5" stroke="var(--primary)" stroke-width="1.6" fill="none" stroke-linecap="round"/>
+    <path d="M20 5 L17 9 M20 5 L23 8" stroke="var(--tertiary)" stroke-width="1.8" fill="none" stroke-linecap="round"/>
+  </svg>
+
+  <div class="slide-content" style="justify-content:center;padding-top:60px;">
+    <h1 class="display" style="font-size:60px;margin-bottom:var(--md);">Agent Architecture</h1>
+    <p class="standfirst" style="font-size:16px;max-width:50ch;">On loops, traces, and the structures by which language models act.</p>
+  </div>
+
+  <div style="position:absolute;bottom:var(--lg);left:80px;" class="speaker-meta">D. East</div>
+  <div style="position:absolute;bottom:var(--lg);right:200px;" class="speaker-meta">14 Oct 2026</div>
+  <span class="page-num">i</span>
+</div>
+
+<!-- ============================================================ -->
+<!-- SLIDE 2 — § 1. The Loop -->
+<!-- ============================================================ -->
+<div class="slide">
+  <span class="section-label">§ 1. The Loop</span>
+  <div class="slide-content" style="padding-top:60px;">
+    <div class="two-col">
+      <div class="col" style="max-width:50%;">
+        <h2 class="section-title">The Loop</h2>
+        <p class="body-text">
+          An agent is not a model. An agent is a <span class="vermilion-underline">loop</span> wrapped around a model.
+          The model thinks; the loop acts and observes. Each cycle refines the agent's
+          understanding of the world. The architecture is minimal: receive an observation,
+          produce a thought, take an action, observe the result, and repeat. Every modern
+          agent framework — from ReAct to Reflexion to Plan-and-Execute — is a variation
+          on this single structure. The loop is the invariant.
+        </p>
+        <p class="caption" style="margin-top:var(--md);">Fig. 1 — The elementary agent cycle</p>
+      </div>
+      <div class="col" style="display:flex;align-items:center;justify-content:center;">
+        <!-- Hand-drawn THINK → ACT → OBSERVE cycle -->
+        <svg width="340" height="300" viewBox="0 0 340 300" fill="none">
+          <!-- THINK node -->
+          <ellipse cx="170" cy="48" rx="62" ry="28" stroke="var(--primary)" stroke-width="1.7" fill="none" transform="rotate(-1 170 48)"/>
+          <text x="170" y="53" text-anchor="middle" fill="var(--primary)" font-size="14" letter-spacing="0.08em">THINK</text>
+
+          <!-- ACT node -->
+          <ellipse cx="290" cy="230" rx="45" ry="26" stroke="var(--primary)" stroke-width="1.6" fill="none" transform="rotate(2 290 230)"/>
+          <text x="290" y="235" text-anchor="middle" fill="var(--primary)" font-size="14" letter-spacing="0.08em">ACT</text>
+
+          <!-- OBSERVE node -->
+          <ellipse cx="55" cy="230" rx="52" ry="26" stroke="var(--primary)" stroke-width="1.8" fill="none" transform="rotate(-1.5 55 230)"/>
+          <text x="55" y="235" text-anchor="middle" fill="var(--primary)" font-size="14" letter-spacing="0.08em">OBSERVE</text>
+
+          <!-- Arrow: THINK → ACT (right side, curving down) -->
+          <path d="M228 65 C260 90, 295 140, 292 200" stroke="var(--primary)" stroke-width="1.7" fill="none" stroke-linecap="round"/>
+          <path d="M292 200 L288 192 M292 200 L297 193" stroke="var(--primary)" stroke-width="1.7" fill="none" stroke-linecap="round"/>
+
+          <!-- Arrow: ACT → OBSERVE (bottom, curving left) -->
+          <path d="M245 242 C200 268, 140 270, 108 242" stroke="var(--primary)" stroke-width="1.6" fill="none" stroke-linecap="round"/>
+          <path d="M108 242 L114 236 M108 242 L115 248" stroke="var(--primary)" stroke-width="1.6" fill="none" stroke-linecap="round"/>
+
+          <!-- Arrow: OBSERVE → THINK (left side, curving up) — VERMILION closing arrow -->
+          <path d="M62 202 C55 150, 80 100, 118 68" stroke="var(--tertiary)" stroke-width="2" fill="none" stroke-linecap="round"/>
+          <path d="M118 68 L112 74 M118 68 L124 76" stroke="var(--tertiary)" stroke-width="2" fill="none" stroke-linecap="round"/>
+        </svg>
+      </div>
+    </div>
+  </div>
+  <span class="page-num">1</span>
+</div>
+
+<!-- ============================================================ -->
+<!-- SLIDE 3 — § 2. A Worked Trace -->
+<!-- ============================================================ -->
+<div class="slide">
+  <span class="section-label">§ 2. A Worked Trace</span>
+  <div class="slide-content" style="padding-top:56px;">
+    <h2 class="section-title" style="font-size:30px;margin-bottom:var(--md);">A Worked Trace</h2>
+    <p class="body-text" style="font-size:15px;margin-bottom:var(--md);">
+      <span class="vermilion-underline">Query</span>: <code>"What was NVDA's closing price last Friday?"</code>
+    </p>
+    <hr class="hairline" style="max-width:700px;">
+
+    <div style="display:flex;gap:var(--xl);margin-top:var(--md);">
+      <div style="flex:1;max-width:680px;">
+        <div class="trace-step">
+          <span class="trace-label">Thought 1</span>
+          <span class="trace-content">I need to find NVDA's closing price from last Friday. I should use a financial data tool.</span>
+        </div>
+        <div class="trace-step">
+          <span class="trace-label">Action 1</span>
+          <span class="trace-content"><code>search("NVDA stock price last Friday")</code></span>
+        </div>
+        <div class="trace-step">
+          <span class="trace-label">Observation 1</span>
+          <span class="trace-content">Error: search tool returned rate-limit exceeded. Retry in 5s.</span>
+        </div>
+        <hr class="hairline" style="max-width:600px;">
+        <div class="trace-step">
+          <span class="trace-label">Thought 2</span>
+          <span class="trace-content">Rate-limited. I'll switch to the financial API instead.</span>
+        </div>
+        <div class="trace-step">
+          <span class="trace-label">Action 2</span>
+          <span class="trace-content"><code>finance.get_price(ticker="NVDA", date="2026-10-09")</code></span>
+        </div>
+        <div class="trace-step">
+          <span class="trace-label">Observation 2</span>
+          <span class="trace-content">{"ticker": "NVDA", "close": 148.36, "date": "2026-10-09"}</span>
+        </div>
+        <hr class="hairline" style="max-width:600px;">
+        <div class="trace-step">
+          <span class="trace-label">Thought 3</span>
+          <span class="trace-content">I have the closing price. I can now respond to the user.</span>
+        </div>
+        <div class="trace-step">
+          <span class="trace-label">Action 3</span>
+          <span class="trace-content"><code>respond("NVDA closed at $148.36 on Friday, October 9.")</code></span>
+        </div>
+      </div>
+
+      <!-- Margin annotations -->
+      <div style="flex:0 0 200px;padding-top:0;">
+        <p class="margin-note" style="margin-bottom:50px;margin-top:4px;">↗ First tool selection — greedy, picks search over API</p>
+        <p class="margin-note" style="margin-bottom:70px;">↗ Error recovery: the loop self-corrects without external prompt</p>
+        <p class="margin-note">↗ Termination condition — agent judges sufficiency of evidence</p>
+      </div>
+    </div>
+  </div>
+  <span class="page-num">2</span>
+</div>
+
+<!-- ============================================================ -->
+<!-- SLIDE 4 — § 3. Four Architectures -->
+<!-- ============================================================ -->
+<div class="slide">
+  <span class="section-label">§ 3. Four Architectures</span>
+  <div class="slide-content" style="padding-top:56px;">
+    <h2 class="section-title" style="font-size:30px;margin-bottom:var(--lg);">Four <span class="vermilion-underline">Architectures</span></h2>
+
+    <div style="display:grid;grid-template-columns:1fr 1fr;grid-template-rows:1fr 1fr;gap:var(--lg) var(--xl);flex:1;">
+
+      <!-- REACT -->
+      <div>
+        <p class="mono-sm" style="margin-bottom:var(--sm);">ReAct</p>
+        <svg width="280" height="130" viewBox="0 0 280 130" fill="none">
+          <text x="14" y="68" fill="var(--primary)" font-size="12" letter-spacing="0.06em" font-family="'IBM Plex Mono',monospace">T</text>
+          <text x="130" y="30" fill="var(--primary)" font-size="12" letter-spacing="0.06em" font-family="'IBM Plex Mono',monospace">A</text>
+          <text x="240" y="68" fill="var(--primary)" font-size="12" letter-spacing="0.06em" font-family="'IBM Plex Mono',monospace">O</text>
+          <rect x="6" y="48" width="22" height="22" stroke="var(--primary)" stroke-width="1.6" fill="none" rx="0" transform="rotate(-1 17 59)"/>
+          <rect x="122" y="12" width="22" height="22" stroke="var(--primary)" stroke-width="1.5" fill="none" rx="0" transform="rotate(1.5 133 23)"/>
+          <rect x="232" y="48" width="22" height="22" stroke="var(--primary)" stroke-width="1.7" fill="none" rx="0" transform="rotate(-0.8 243 59)"/>
+          <!-- T → A -->
+          <path d="M30 54 C60 38, 95 25, 120 22" stroke="var(--primary)" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+          <path d="M120 22 L114 18 M120 22 L115 27" stroke="var(--primary)" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+          <!-- A → O -->
+          <path d="M146 28 C175 38, 210 48, 230 55" stroke="var(--primary)" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+          <path d="M230 55 L224 50 M230 55 L225 60" stroke="var(--primary)" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+          <!-- O → T (closing) -->
+          <path d="M235 72 C200 105, 80 108, 22 72" stroke="var(--primary)" stroke-width="1.6" fill="none" stroke-linecap="round"/>
+          <path d="M22 72 L27 66 M22 72 L28 78" stroke="var(--primary)" stroke-width="1.6" fill="none" stroke-linecap="round"/>
+          <text x="115" y="118" text-anchor="middle" fill="var(--secondary)" font-size="11" font-style="italic" font-family="'Source Serif 4',serif">single flat loop</text>
+        </svg>
+      </div>
+
+      <!-- REFLEXION -->
+      <div>
+        <p class="mono-sm" style="margin-bottom:var(--sm);">Reflexion</p>
+        <svg width="300" height="130" viewBox="0 0 300 130" fill="none">
+          <!-- Inner loop -->
+          <ellipse cx="100" cy="55" rx="60" ry="30" stroke="var(--primary)" stroke-width="1.5" fill="none" transform="rotate(-1 100 55)"/>
+          <text x="100" y="59" text-anchor="middle" fill="var(--primary)" font-size="11" letter-spacing="0.06em" font-family="'IBM Plex Mono',monospace">T → A → O</text>
+          <!-- Outer loop (reflection) -->
+          <path d="M162 50 C190 30, 220 35, 230 55 C240 78, 215 100, 180 105 C140 110, 60 108, 38 85" stroke="var(--primary)" stroke-width="1.6" fill="none" stroke-linecap="round" stroke-dasharray="6 4"/>
+          <path d="M38 85 L43 79 M38 85 L33 79" stroke="var(--primary)" stroke-width="1.6" fill="none" stroke-linecap="round"/>
+          <text x="230" y="75" fill="var(--primary)" font-size="11" font-family="'IBM Plex Mono',monospace">reflect</text>
+          <text x="145" y="125" text-anchor="middle" fill="var(--secondary)" font-size="11" font-style="italic" font-family="'Source Serif 4',serif">inner loop + outer critique</text>
+        </svg>
+      </div>
+
+      <!-- PLAN-AND-EXECUTE -->
+      <div>
+        <p class="mono-sm" style="margin-bottom:var(--sm);">Plan-and-Execute</p>
+        <svg width="320" height="130" viewBox="0 0 320 130" fill="none">
+          <!-- Plan box -->
+          <rect x="10" y="30" width="65" height="28" stroke="var(--primary)" stroke-width="1.6" fill="none" transform="rotate(-0.5 42 44)"/>
+          <text x="42" y="48" text-anchor="middle" fill="var(--primary)" font-size="11" letter-spacing="0.06em" font-family="'IBM Plex Mono',monospace">PLAN</text>
+          <!-- Steps -->
+          <rect x="110" y="20" width="18" height="14" stroke="var(--primary)" stroke-width="1.4" fill="none" transform="rotate(1 119 27)"/>
+          <text x="119" y="30" text-anchor="middle" fill="var(--primary)" font-size="9" font-family="'IBM Plex Mono',monospace">1</text>
+          <rect x="140" y="20" width="18" height="14" stroke="var(--primary)" stroke-width="1.4" fill="none" transform="rotate(-0.5 149 27)"/>
+          <text x="149" y="30" text-anchor="middle" fill="var(--primary)" font-size="9" font-family="'IBM Plex Mono',monospace">2</text>
+          <rect x="170" y="20" width="18" height="14" stroke="var(--primary)" stroke-width="1.4" fill="none" transform="rotate(0.8 179 27)"/>
+          <text x="179" y="30" text-anchor="middle" fill="var(--primary)" font-size="9" font-family="'IBM Plex Mono',monospace">3</text>
+          <rect x="200" y="20" width="18" height="14" stroke="var(--primary)" stroke-width="1.4" fill="none"/>
+          <text x="209" y="30" text-anchor="middle" fill="var(--primary)" font-size="9" font-family="'IBM Plex Mono',monospace">n</text>
+          <!-- Arrow plan to steps -->
+          <path d="M77 44 C90 40, 100 32, 108 28" stroke="var(--primary)" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+          <path d="M108 28 L103 25 M108 28 L104 32" stroke="var(--primary)" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+          <!-- Execute loop under steps -->
+          <path d="M119 36 C119 65, 140 75, 160 75 C180 75, 210 65, 210 40" stroke="var(--primary)" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+          <!-- Replan arrow back -->
+          <path d="M165 78 C120 95, 60 80, 45 60" stroke="var(--primary)" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-dasharray="5 4"/>
+          <path d="M45 60 L49 54 M45 60 L40 55" stroke="var(--primary)" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+          <text x="95" y="100" fill="var(--secondary)" font-size="11" font-style="italic" font-family="'Source Serif 4',serif">plan first, execute steps, replan</text>
+        </svg>
+      </div>
+
+      <!-- TREE-OF-THOUGHTS -->
+      <div>
+        <p class="mono-sm" style="margin-bottom:var(--sm);">Tree-of-Thoughts</p>
+        <svg width="300" height="130" viewBox="0 0 300 130" fill="none">
+          <!-- Root -->
+          <circle cx="40" cy="55" r="8" stroke="var(--primary)" stroke-width="1.6" fill="none"/>
+          <!-- Branches level 1 -->
+          <path d="M48 50 C65 35, 80 22, 100 18" stroke="var(--primary)" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+          <path d="M48 55 C70 55, 85 55, 100 55" stroke="var(--primary)" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+          <path d="M48 60 C65 75, 80 88, 100 92" stroke="var(--primary)" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+          <circle cx="102" cy="18" r="6" stroke="var(--primary)" stroke-width="1.5" fill="none"/>
+          <circle cx="102" cy="55" r="6" stroke="var(--primary)" stroke-width="1.5" fill="none"/>
+          <circle cx="102" cy="92" r="6" stroke="var(--primary)" stroke-width="1.5" fill="none"/>
+          <!-- Branches level 2 from middle -->
+          <path d="M108 52 C130 40, 145 30, 165 28" stroke="var(--primary)" stroke-width="1.4" fill="none" stroke-linecap="round"/>
+          <path d="M108 58 C130 68, 145 76, 165 78" stroke="var(--primary)" stroke-width="1.4" fill="none" stroke-linecap="round"/>
+          <circle cx="167" cy="28" r="5" stroke="var(--primary)" stroke-width="1.4" fill="none"/>
+          <circle cx="167" cy="78" r="5" stroke="var(--primary)" stroke-width="1.4" fill="none"/>
+          <!-- Evaluation marks (x for pruned, ✓ for chosen) -->
+          <text x="98" y="7" fill="var(--secondary)" font-size="11" font-family="'IBM Plex Mono',monospace">×</text>
+          <text x="98" y="106" fill="var(--secondary)" font-size="11" font-family="'IBM Plex Mono',monospace">×</text>
+          <text x="163" y="92" fill="var(--secondary)" font-size="11" font-family="'IBM Plex Mono',monospace">×</text>
+          <!-- Chosen path highlight -->
+          <path d="M173 26 C195 24, 215 24, 230 26" stroke="var(--primary)" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+          <path d="M230 26 L225 22 M230 26 L225 31" stroke="var(--primary)" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+          <text x="238" y="30" fill="var(--primary)" font-size="11" font-family="'IBM Plex Mono',monospace">best</text>
+          <text x="140" y="118" text-anchor="middle" fill="var(--secondary)" font-size="11" font-style="italic" font-family="'Source Serif 4',serif">branch, evaluate, prune</text>
+        </svg>
+      </div>
+
+    </div>
+  </div>
+  <span class="page-num">3</span>
+</div>
+
+<!-- ============================================================ -->
+<!-- SLIDE 5 — § 4. Where Loops Fail -->
+<!-- ============================================================ -->
+<div class="slide">
+  <span class="section-label">§ 4. Where Loops Fail</span>
+  <div class="slide-content" style="padding-top:56px;">
+    <div class="two-col">
+      <div class="col" style="max-width:45%;">
+        <h2 class="section-title" style="font-size:30px;">Where Loops Fail</h2>
+        <p class="body-text" style="font-size:16px;">
+          Loops degrade. Each iteration consumes tokens that crowd the context window, diluting
+          the signal that earlier observations carried. Past a threshold — usually 8–12 iterations
+          for current models — the agent begins to <span class="vermilion-underline">hallucinate actions</span> it already took,
+          re-attempt failed strategies, or lose track of the original goal entirely. The
+          failure mode is not a crash; it is a slow drift into incoherence.
+        </p>
+      </div>
+      <div class="col" style="display:flex;flex-direction:column;align-items:center;justify-content:center;">
+        <!-- Hand-drawn tokens-vs-iterations plot -->
+        <svg width="380" height="280" viewBox="0 0 380 280" fill="none">
+          <!-- Y axis (wobbly) -->
+          <path d="M60 240 L60 32" stroke="var(--primary)" stroke-width="1.6" fill="none" stroke-linecap="round"/>
+          <path d="M60 32 L56 40 M60 32 L64 40" stroke="var(--primary)" stroke-width="1.6" fill="none" stroke-linecap="round"/>
+          <!-- X axis (wobbly) -->
+          <path d="M55 240 L350 242" stroke="var(--primary)" stroke-width="1.6" fill="none" stroke-linecap="round"/>
+          <path d="M350 242 L342 238 M350 242 L342 246" stroke="var(--primary)" stroke-width="1.6" fill="none" stroke-linecap="round"/>
+
+          <!-- Axis labels -->
+          <text x="30" y="140" fill="var(--primary)" font-size="12" font-family="'IBM Plex Mono',monospace" transform="rotate(-90 30 140)" text-anchor="middle" letter-spacing="0.06em">tokens used</text>
+          <text x="200" y="268" fill="var(--primary)" font-size="12" font-family="'IBM Plex Mono',monospace" text-anchor="middle" letter-spacing="0.06em">iterations</text>
+
+          <!-- Tick marks -->
+          <line x1="56" y1="200" x2="64" y2="200" stroke="var(--primary)" stroke-width="1.2"/>
+          <line x1="56" y1="160" x2="64" y2="160" stroke="var(--primary)" stroke-width="1.2"/>
+          <line x1="56" y1="120" x2="64" y2="120" stroke="var(--primary)" stroke-width="1.2"/>
+          <line x1="56" y1="80" x2="64" y2="80" stroke="var(--primary)" stroke-width="1.2"/>
+
+          <line x1="120" y1="236" x2="120" y2="246" stroke="var(--primary)" stroke-width="1.2"/>
+          <line x1="180" y1="236" x2="180" y2="246" stroke="var(--primary)" stroke-width="1.2"/>
+          <line x1="240" y1="236" x2="240" y2="248" stroke="var(--primary)" stroke-width="1.2"/>
+          <line x1="300" y1="237" x2="300" y2="247" stroke="var(--primary)" stroke-width="1.2"/>
+
+          <!-- Curve: tokens consumed (hand-drawn, accelerating) -->
+          <path d="M62 235 C80 230, 100 220, 120 205 C140 188, 160 165, 180 140 C200 112, 220 82, 250 60 C270 48, 300 42, 330 40" stroke="var(--primary)" stroke-width="1.8" fill="none" stroke-linecap="round"/>
+
+          <!-- Context window limit line (dashed) -->
+          <path d="M58 55 L340 57" stroke="var(--secondary)" stroke-width="1.2" fill="none" stroke-dasharray="8 5"/>
+          <text x="342" y="52" fill="var(--secondary)" font-size="11" font-style="italic" font-family="'Source Serif 4',serif">context limit</text>
+
+          <!-- Danger zone marker -->
+          <path d="M240 248 L240 60" stroke="var(--tertiary)" stroke-width="1.3" fill="none" stroke-dasharray="4 4" opacity="0.6"/>
+          <text x="248" y="105" fill="var(--tertiary)" font-size="11" font-family="'IBM Plex Mono',monospace" letter-spacing="0.04em">drift zone</text>
+        </svg>
+        <p class="caption" style="margin-top:var(--sm);">Fig. 2 — Token consumption per iteration; beyond ~8 steps, signal degrades</p>
+      </div>
+    </div>
+  </div>
+  <span class="page-num">4</span>
+</div>
+
+<!-- ============================================================ -->
+<!-- SLIDE 6 — § 5. The Loop, in Code -->
+<!-- ============================================================ -->
+<div class="slide">
+  <span class="section-label">§ 5. The Loop, in Code</span>
+  <div class="slide-content" style="padding-top:56px;">
+    <h2 class="section-title" style="font-size:30px;margin-bottom:var(--lg);">The Loop, in Code</h2>
+    <div style="display:flex;gap:var(--xl);">
+      <div style="flex:1;max-width:620px;">
+<pre class="code-block" style="font-size:14px;line-height:1.65;">
+<span class="vermilion-underline">def</span> agent_loop(query, tools, model, max_iter=10):
+    trace = []
+    observation = query
+
+    for i in range(max_iter):
+        # THINK
+        thought = model.generate(
+            prompt=format_prompt(trace, observation)
+        )
+
+        # ACT
+        action = parse_action(thought)
+        if action.type == "respond":
+            return action.payload
+
+        result = tools.execute(action)
+
+        # OBSERVE
+        observation = result
+        trace.append({
+            "thought": thought,
+            "action": action,
+            "observation": observation,
+        })
+
+    raise LoopExhausted(trace)
+</pre>
+      </div>
+      <div style="flex:0 0 240px;padding-top:16px;">
+        <p class="margin-note" style="margin-bottom:60px;">
+          ← The prompt is rebuilt each cycle. The trace is the memory; there is no external state.
+        </p>
+        <p class="margin-note" style="margin-bottom:60px;">
+          ← Termination: the model itself decides when to stop. <code>respond</code> breaks the loop.
+        </p>
+        <p class="margin-note">
+          ← A hard ceiling. Without it the loop drifts — cf. § 4.
+        </p>
+      </div>
+    </div>
+    <p class="body-text" style="margin-top:var(--lg);font-size:15px;max-width:58ch;">
+      Twenty-five lines. The rest — retrieval, planning, reflection — is furniture arranged around this room.
+    </p>
+  </div>
+  <span class="page-num">5</span>
+</div>
+
+<!-- ============================================================ -->
+<!-- SLIDE 7 — § 6. Ending -->
+<!-- ============================================================ -->
+<div class="slide">
+  <span class="section-label">§ 6. Ending</span>
+  <div class="slide-content" style="padding-top:80px;">
+    <h2 class="section-title" style="font-size:34px;margin-bottom:var(--lg);">The architecture <span class="vermilion-underline">is</span> the loop.</h2>
+    <p class="body-text" style="font-size:17px;max-width:54ch;margin-bottom:var(--xl);">
+      What varies is the memory passed to the next iteration, the policy for selecting actions,
+      and the criteria for stopping. Everything else is commentary.
+    </p>
+
+    <hr class="hairline" style="max-width:500px;margin-bottom:var(--lg);">
+
+    <div class="references" style="max-width:54ch;">
+      <p style="margin-bottom:var(--sm);">Yao, S. et al. "ReAct: Synergizing Reasoning and Acting in Language Models." <em>ICLR</em>, 2023.</p>
+      <p style="margin-bottom:var(--sm);">Shinn, N. et al. "Reflexion: Language Agents with Verbal Reinforcement Learning." <em>NeurIPS</em>, 2023.</p>
+      <p>Yao, S. et al. "Tree of Thoughts: Deliberate Problem Solving with Large Language Models." <em>NeurIPS</em>, 2023.</p>
+    </div>
+  </div>
+
+  <!-- Large loop motif redrawn -->
+  <svg width="200" height="200" viewBox="0 0 200 200" fill="none" style="position:absolute;bottom:50px;right:100px;" aria-hidden="true">
+    <path d="M100 18 C148 15, 185 50, 184 100 C183 148, 150 182, 100 184 C52 186, 17 150, 18 100 C19 52, 50 20, 100 18" stroke="var(--primary)" stroke-width="2" fill="none" stroke-linecap="round"/>
+    <!-- Small gap near top to break perfection -->
+    <circle cx="100" cy="18" r="3" fill="var(--neutral)"/>
+    <!-- Closing arrowhead in vermilion -->
+    <path d="M96 20 L100 12 M104 20 L100 12" stroke="var(--tertiary)" stroke-width="2.2" fill="none" stroke-linecap="round"/>
+    <!-- Second subtle gap at bottom-left -->
+    <circle cx="30" cy="130" r="2" fill="var(--neutral)"/>
+  </svg>
+
+  <span class="page-num">6</span>
+</div>
+
+</body>
+</html>

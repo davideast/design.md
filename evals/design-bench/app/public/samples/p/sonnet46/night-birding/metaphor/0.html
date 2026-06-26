@@ -1,0 +1,645 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+  <title>Urban Nocturnal: Field Notes</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=League+Spartan:wght@500;700&family=Source+Serif+4:ital,wght@0,400;1,400&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    /* Map layer palette */
+    :root {
+      --terrain:  #F9F6EE;  /* base terrain paper */
+      --grid:     #1A1A1B;  /* map grid lines + legend text */
+      --noise:    #707372;  /* secondary features / urban background */
+      --signal:   #C53030;  /* identification signal / pointer pins */
+    }
+
+    body {
+      font-family: 'Source Serif 4', 'Century Schoolbook', Georgia, serif;
+      background: var(--terrain);
+      color: var(--grid);
+      width: 390px;
+      max-width: 390px;
+      min-height: 100vh;
+      margin: 0 auto;
+      font-size: 13px;
+      line-height: 1.5;
+      /* Map grid background overlay */
+      background-image:
+        linear-gradient(var(--noise) 1px, transparent 1px),
+        linear-gradient(90deg, var(--noise) 1px, transparent 1px);
+      background-size: 32px 32px;
+      background-color: var(--terrain);
+      background-attachment: local;
+    }
+
+    /* ─── MAP LEGEND HEADER ─── */
+    .map-legend {
+      background: var(--terrain);
+      border: 1px solid var(--grid);
+      border-bottom: 3px solid var(--grid);
+      margin: 0;
+    }
+
+    .legend-top {
+      background: var(--grid);
+      padding: 8px 12px;
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+    }
+
+    .map-title {
+      font-family: 'League Spartan', sans-serif;
+      font-size: 19px;
+      font-weight: 700;
+      color: var(--terrain);
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+
+    .map-ref {
+      text-align: right;
+    }
+
+    .map-ref-num {
+      font-family: 'League Spartan', sans-serif;
+      font-size: 8px;
+      font-weight: 700;
+      color: var(--signal);
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+    }
+
+    .map-ref-sub {
+      font-family: 'League Spartan', sans-serif;
+      font-size: 7px;
+      font-weight: 500;
+      color: var(--noise);
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+    }
+
+    .legend-scale {
+      padding: 5px 12px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      border-bottom: 1px solid var(--grid);
+    }
+
+    .scale-label {
+      font-family: 'League Spartan', sans-serif;
+      font-size: 7px;
+      font-weight: 700;
+      color: var(--noise);
+      text-transform: uppercase;
+      letter-spacing: 0.14em;
+    }
+
+    .scale-bar {
+      flex: 1;
+      height: 1px;
+      background: var(--grid);
+      position: relative;
+    }
+
+    .scale-bar::before, .scale-bar::after {
+      content: '';
+      position: absolute;
+      top: -3px;
+      width: 1px;
+      height: 7px;
+      background: var(--grid);
+    }
+
+    .scale-bar::before { left: 0; }
+    .scale-bar::after { right: 0; }
+
+    .coord-key {
+      font-family: 'League Spartan', sans-serif;
+      font-size: 8px;
+      font-weight: 500;
+      color: var(--noise);
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+    }
+
+    /* ─── SPECIMEN CELLS ─── */
+    .specimen {
+      background: var(--terrain);
+      border: 1px solid var(--grid);
+      border-top: none;
+    }
+
+    .specimen-head {
+      background: var(--grid);
+      padding: 3px 12px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .specimen-title {
+      font-family: 'League Spartan', sans-serif;
+      font-size: 7px;
+      font-weight: 700;
+      color: var(--terrain);
+      text-transform: uppercase;
+      letter-spacing: 0.18em;
+    }
+
+    .coord-pin {
+      font-family: 'League Spartan', sans-serif;
+      font-size: 7px;
+      font-weight: 700;
+      color: var(--signal);
+      letter-spacing: 0.1em;
+    }
+
+    /* ─── MOON SPECIMEN ─── */
+    .moon-specimen {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+    }
+
+    .moon-coord {
+      padding: 8px 10px;
+      border-right: 1px solid var(--grid);
+    }
+
+    .moon-coord:last-child { border-right: none; }
+
+    .coord-label {
+      font-family: 'League Spartan', sans-serif;
+      font-size: 7px;
+      font-weight: 700;
+      color: var(--noise);
+      text-transform: uppercase;
+      letter-spacing: 0.14em;
+      display: block;
+      margin-bottom: 2px;
+    }
+
+    .coord-val {
+      font-family: 'League Spartan', sans-serif;
+      font-size: 17px;
+      font-weight: 700;
+      color: var(--grid);
+      line-height: 1;
+    }
+
+    .coord-val.sm { font-size: 11px; }
+
+    .moon-phase-strip {
+      border-top: 1px solid var(--grid);
+      padding: 5px 10px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    /* Signal pin ▶ indicates the signal layer on the map */
+    .signal-pin {
+      color: var(--signal);
+      font-family: 'League Spartan', sans-serif;
+      font-size: 11px;
+      font-weight: 700;
+      flex-shrink: 0;
+    }
+
+    .phase-name {
+      font-family: 'League Spartan', sans-serif;
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--grid);
+    }
+
+    /* Solid 1pt terrain bar — no gradient (map constraint) */
+    .terrain-bar {
+      flex: 1;
+      height: 8px;
+      border: 1px solid var(--grid);
+      position: relative;
+      background: var(--terrain);
+    }
+
+    .terrain-fill {
+      position: absolute;
+      left: 0; top: 0;
+      height: 100%;
+      width: 82%;
+      background: var(--grid);
+    }
+
+    /* ─── SPECIMEN MAPPING: SPECIES ─── */
+    .species-specimen {
+      display: grid;
+      grid-template-columns: 130px 1fr;
+    }
+
+    .pin-field {
+      border-right: 1px solid var(--grid);
+      padding: 10px 8px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 5px;
+    }
+
+    .pin-field-cap {
+      font-family: 'League Spartan', sans-serif;
+      font-size: 7px;
+      font-weight: 500;
+      color: var(--noise);
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      text-align: center;
+    }
+
+    .detail-field {
+      padding: 8px 10px;
+    }
+
+    .specimen-id {
+      font-family: 'League Spartan', sans-serif;
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--grid);
+      border-bottom: 1px solid var(--grid);
+      padding-bottom: 4px;
+      margin-bottom: 6px;
+    }
+
+    /* Morphological detail rows — map fine print */
+    .morph-row {
+      display: flex;
+      gap: 5px;
+      border-bottom: 1px solid rgba(112,115,114,0.3);
+      padding: 3px 0;
+      font-size: 11px;
+      align-items: flex-start;
+    }
+
+    .morph-row:last-child { border-bottom: none; }
+
+    .morph-pin {
+      color: var(--signal);
+      font-size: 8px;
+      margin-top: 2px;
+      flex-shrink: 0;
+    }
+
+    .morph-key {
+      font-family: 'League Spartan', sans-serif;
+      font-size: 7px;
+      font-weight: 700;
+      color: var(--noise);
+      text-transform: uppercase;
+      letter-spacing: 0.09em;
+      min-width: 44px;
+      margin-top: 2px;
+      flex-shrink: 0;
+    }
+
+    .morph-text { color: var(--grid); line-height: 1.35; }
+
+    /* ─── LOG SPECIMEN ─── */
+    .log-specimen {
+      padding: 8px 10px;
+    }
+
+    .log-entry {
+      border: 1px solid var(--grid);
+    }
+
+    .log-head {
+      background: var(--grid);
+      padding: 4px 8px;
+      display: flex;
+      align-items: baseline;
+      gap: 8px;
+    }
+
+    .log-coord {
+      font-family: 'League Spartan', sans-serif;
+      font-size: 9px;
+      font-weight: 700;
+      color: var(--terrain);
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+    }
+
+    .log-time {
+      font-family: 'League Spartan', sans-serif;
+      font-size: 18px;
+      font-weight: 700;
+      color: var(--terrain);
+    }
+
+    .log-signal {
+      font-family: 'League Spartan', sans-serif;
+      font-size: 9px;
+      font-weight: 700;
+      color: var(--signal);
+      letter-spacing: 0.06em;
+    }
+
+    .log-fields {
+      display: grid;
+      grid-template-columns: 60px 1fr;
+    }
+
+    .lk {
+      font-family: 'League Spartan', sans-serif;
+      font-size: 7px;
+      font-weight: 700;
+      color: var(--noise);
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      padding: 4px 6px;
+      border-right: 1px solid rgba(112,115,114,0.5);
+      border-bottom: 1px solid rgba(112,115,114,0.3);
+      display: flex;
+      align-items: flex-start;
+    }
+
+    .lv {
+      font-size: 11px;
+      color: var(--grid);
+      padding: 4px 6px;
+      line-height: 1.4;
+      border-bottom: 1px solid rgba(112,115,114,0.3);
+    }
+
+    .lk:last-of-type, .lv:last-child { border-bottom: none; }
+
+    /* ─── FILTER SPECIMEN — Subtraction of Layers ─── */
+    .filter-specimen {
+      padding: 8px 10px;
+    }
+
+    .filter-intro {
+      font-size: 11px;
+      color: var(--noise);
+      font-style: italic;
+      margin-bottom: 6px;
+      border-left: 2px solid var(--noise);
+      padding-left: 7px;
+      line-height: 1.5;
+    }
+
+    /* Map layer subtraction table */
+    .layer-map {
+      border: 1px solid var(--grid);
+    }
+
+    .layer-row {
+      display: grid;
+      grid-template-columns: 22px 58px 1fr;
+      border-bottom: 1px solid var(--grid);
+    }
+
+    .layer-row:last-child { border-bottom: none; }
+
+    .layer-pin {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-right: 1px solid var(--grid);
+      font-family: 'League Spartan', sans-serif;
+      font-size: 10px;
+      font-weight: 700;
+      color: var(--terrain);
+      background: var(--noise);
+    }
+
+    .layer-key {
+      font-family: 'League Spartan', sans-serif;
+      font-size: 8px;
+      font-weight: 700;
+      color: var(--grid);
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      padding: 5px 6px;
+      border-right: 1px solid var(--grid);
+      display: flex;
+      align-items: flex-start;
+      line-height: 1.3;
+    }
+
+    .layer-desc {
+      font-size: 11px;
+      color: var(--grid);
+      padding: 5px 6px;
+      line-height: 1.4;
+    }
+
+    /* Signal highlight — only use of signal color in text */
+    .signal-text {
+      color: var(--signal);
+      font-weight: 700;
+      font-style: italic;
+    }
+
+    /* ─── MAP INDEX FOOTER ─── */
+    .map-index {
+      background: var(--terrain);
+      border: 1px solid var(--grid);
+      border-top: 3px solid var(--grid);
+      padding: 5px 12px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .mi-text {
+      font-family: 'League Spartan', sans-serif;
+      font-size: 7px;
+      font-weight: 500;
+      color: var(--noise);
+      text-transform: uppercase;
+      letter-spacing: 0.14em;
+    }
+
+    .mi-signal {
+      font-family: 'League Spartan', sans-serif;
+      font-size: 8px;
+      font-weight: 700;
+      color: var(--signal);
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Map Legend Header -->
+  <div class="map-legend">
+    <div class="legend-top">
+      <span class="map-title">Urban Nocturnal</span>
+      <div class="map-ref">
+        <div class="map-ref-num">▶ Field Notes</div>
+        <div class="map-ref-sub">Taxonomic Map</div>
+      </div>
+    </div>
+    <div class="legend-scale">
+      <span class="scale-label">Map Key:</span>
+      <div class="scale-bar"></div>
+      <span class="coord-key">Coord. System · UTM</span>
+    </div>
+  </div>
+
+  <!-- Specimen A: Moon & Light Conditions -->
+  <div class="specimen">
+    <div class="specimen-head">
+      <span class="specimen-title">Moon &amp; Light Conditions</span>
+      <span class="coord-pin">▶ Coord A-01</span>
+    </div>
+    <div class="moon-specimen">
+      <div class="moon-coord">
+        <span class="coord-label">Illumination</span>
+        <span class="coord-val">82%</span>
+      </div>
+      <div class="moon-coord">
+        <span class="coord-label">Moonrise</span>
+        <span class="coord-val">17:42</span>
+      </div>
+      <div class="moon-coord">
+        <span class="coord-label">Sky Quality</span>
+        <span class="coord-val sm">Bortle 8 Inner City</span>
+      </div>
+    </div>
+    <div class="moon-phase-strip">
+      <span class="signal-pin">▶</span>
+      <span class="phase-name">Waxing Gibbous</span>
+      <div class="terrain-bar"><div class="terrain-fill"></div></div>
+    </div>
+  </div>
+
+  <!-- Specimen B: Species -->
+  <div class="specimen">
+    <div class="specimen-head">
+      <span class="specimen-title">Tonight's Likely Species</span>
+      <span class="coord-pin">▶ Coord B-01</span>
+    </div>
+    <div class="species-specimen">
+      <div class="pin-field">
+        <svg width="112" height="138" viewBox="0 0 112 138" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <!-- Body — solid terrain-placed specimen -->
+          <ellipse cx="66" cy="96" rx="34" ry="24" fill="#1A1A1B"/>
+          <!-- Wing — noise layer overprint -->
+          <ellipse cx="74" cy="91" rx="24" ry="16" fill="#707372"/>
+          <!-- Head -->
+          <circle cx="30" cy="68" r="17" fill="#1A1A1B"/>
+          <!-- Eye knockout -->
+          <circle cx="26" cy="70" r="4" fill="#F9F6EE"/>
+          <circle cx="26" cy="70" r="2" fill="#1A1A1B"/>
+          <!-- Beak -->
+          <path d="M16 76 L0 84" stroke="#1A1A1B" stroke-width="3.5" stroke-linecap="round"/>
+          <!-- Neck -->
+          <path d="M40 80 C50 86 58 92 66 96" stroke="#1A1A1B" stroke-width="13" stroke-linecap="round"/>
+          <!-- Tail -->
+          <path d="M98 94 C108 90 118 88 126 92" stroke="#1A1A1B" stroke-width="4.5" stroke-linecap="round"/>
+          <!-- Legs -->
+          <line x1="60" y1="118" x2="54" y2="134" stroke="#1A1A1B" stroke-width="2.5"/>
+          <line x1="72" y1="118" x2="78" y2="134" stroke="#1A1A1B" stroke-width="2.5"/>
+          <!-- Signal pins — map specimen pins -->
+          <!-- Crown pin -->
+          <line x1="30" y1="52" x2="30" y2="40" stroke="#C53030" stroke-width="1.5"/>
+          <polygon points="30,34 27,42 33,42" fill="#C53030"/>
+          <line x1="30" y1="34" x2="4" y2="28" stroke="#C53030" stroke-width="1"/>
+          <text x="4" y="26" fill="#C53030" font-family="sans-serif" font-size="7" font-weight="700">BLACK CROWN</text>
+          <!-- Wing pin -->
+          <line x1="78" y1="82" x2="92" y2="70" stroke="#C53030" stroke-width="1.5"/>
+          <polygon points="96,66 90,72 96,76" fill="#C53030"/>
+          <text x="66" y="62" fill="#C53030" font-family="sans-serif" font-size="7" font-weight="700">GREY WING</text>
+        </svg>
+        <div class="pin-field-cap">Specimen · Pinned Silhouette</div>
+      </div>
+      <div class="detail-field">
+        <div class="specimen-id">Black-crowned Night Heron</div>
+        <div class="morph-row">
+          <span class="morph-pin">▶</span>
+          <span class="morph-key">Marks</span>
+          <span class="morph-text">Stocky build, black crown and back, contrasting grey wings.</span>
+        </div>
+        <div class="morph-row">
+          <span class="morph-pin">▶</span>
+          <span class="morph-key">In Flight</span>
+          <span class="morph-text">Thick neck tucked, feet barely extending beyond tail.</span>
+        </div>
+        <div class="morph-row">
+          <span class="morph-pin">▶</span>
+          <span class="morph-key">Context</span>
+          <span class="morph-text">Waterfront construction sites or park ponds.</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Specimen C: Sightings Log -->
+  <div class="specimen">
+    <div class="specimen-head">
+      <span class="specimen-title">Sightings Log</span>
+      <span class="coord-pin">▶ Coord C-01</span>
+    </div>
+    <div class="log-specimen">
+      <div class="log-entry">
+        <div class="log-head">
+          <span class="log-coord">Obs.</span>
+          <span class="log-time">23:14</span>
+          <span class="log-signal">● Signal Confirmed</span>
+        </div>
+        <div class="log-fields">
+          <span class="lk">Location</span>
+          <span class="lv">West Side Railyards</span>
+          <span class="lk">Species</span>
+          <span class="lv">Common Nighthawk (2)</span>
+          <span class="lk">Behavior</span>
+          <span class="lv">Aerial foraging under stadium lights; erratic, bat-like flight pattern.</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Specimen D: Listening / Urban Filter -->
+  <div class="specimen">
+    <div class="specimen-head">
+      <span class="specimen-title">Guide to Listening: The Urban Filter</span>
+      <span class="coord-pin">▶ Coord D-01</span>
+    </div>
+    <div class="filter-specimen">
+      <p class="filter-intro">To identify birds by sound in the city, you must mentally subtract the machine:</p>
+      <div class="layer-map">
+        <div class="layer-row">
+          <span class="layer-pin">1</span>
+          <span class="layer-key">The Base</span>
+          <span class="layer-desc">Ignore the low-frequency rumble of the expressway or subway vents.</span>
+        </div>
+        <div class="layer-row">
+          <span class="layer-pin">2</span>
+          <span class="layer-key">The Signal</span>
+          <span class="layer-desc">Focus on the <span class="signal-text">"Peent"</span>—a sharp, nasal electric buzz cutting through the hum.</span>
+        </div>
+        <div class="layer-row">
+          <span class="layer-pin">3</span>
+          <span class="layer-key">Physical</span>
+          <span class="layer-desc">Listen for the <span class="signal-text">"Whoosh"</span> of air through primary feathers during a territorial dive.</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Map Index Footer -->
+  <div class="map-index">
+    <span class="mi-text">Urban Nocturnal · Static Taxonomic Map · Bortle 8 · Inner City Sky</span>
+    <span class="mi-signal">▶ Signal</span>
+  </div>
+
+</body>
+</html>

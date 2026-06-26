@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kettle &amp; Leaf</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Libre+Franklin:wght@400;700;900&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,700;1,8..60,400&family=IBM+Plex+Mono:wght@400&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --primary: #1B1B1B;
+    --secondary: #6E675C;
+    --tertiary: #E8590C;
+    --neutral: #F4EFE6;
+    --spacing-sm: 8px;
+    --spacing-md: 16px;
+    --spacing-lg: 32px;
+    --spacing-xl: 64px;
+  }
+
+  /* The jacket: flat on the surface, square corners everywhere */
+  html, body {
+    background-color: var(--neutral);
+    color: var(--primary);
+    min-height: 100vh;
+  }
+
+  body {
+    font-family: 'Source Serif 4', serif;
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 1.65;
+  }
+
+  .jacket {
+    max-width: 960px;
+    margin: 0 auto;
+    padding: var(--spacing-xl);
+    background-color: var(--neutral);
+  }
+
+  /* ── TITLE BLOCK — album title and tagline ── */
+  .title-block {
+    margin-bottom: var(--spacing-lg);
+  }
+
+  .title-rule {
+    height: 3px;
+    background-color: var(--tertiary);
+    margin-bottom: var(--spacing-md);
+    width: 100%;
+  }
+
+  .shop-name {
+    font-family: 'Libre Franklin', sans-serif;
+    font-size: 44px;
+    font-weight: 700;
+    line-height: 1.05;
+    letter-spacing: -0.01em;
+    color: var(--primary);
+    margin-bottom: var(--spacing-sm);
+  }
+
+  .welcome {
+    font-family: 'Source Serif 4', serif;
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 1.65;
+    color: var(--secondary);
+  }
+
+  /* ── MIDDLE BAND — track listing + liner essay ── */
+  .middle-band {
+    display: grid;
+    grid-template-columns: 320px 1fr;
+    gap: var(--spacing-xl);
+    margin-top: var(--spacing-lg);
+    padding-top: var(--spacing-lg);
+    border-top: 1px solid var(--primary);
+  }
+
+  /* Track listing */
+  .track-listing {
+    border-right: 1px solid rgba(27,27,27,0.15);
+    padding-right: var(--spacing-xl);
+  }
+
+  .listing-heading {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 12px;
+    font-weight: 400;
+    line-height: 1.4;
+    letter-spacing: 0.08em;
+    color: var(--secondary);
+    text-transform: uppercase;
+    margin-bottom: var(--spacing-lg);
+  }
+
+  .track {
+    margin-bottom: var(--spacing-lg);
+  }
+
+  .track-name {
+    font-family: 'Source Serif 4', serif;
+    font-size: 16px;
+    font-weight: 700;
+    line-height: 1.4;
+    color: var(--primary);
+    margin-bottom: 2px;
+  }
+
+  .track-credit {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 12px;
+    font-weight: 400;
+    line-height: 1.4;
+    letter-spacing: 0.08em;
+    color: var(--secondary);
+    margin-bottom: var(--spacing-sm);
+  }
+
+  .track-note {
+    font-family: 'Source Serif 4', serif;
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 1.65;
+    color: var(--primary);
+  }
+
+  /* Liner essay */
+  .liner-essay {}
+
+  .essay-heading {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 12px;
+    font-weight: 400;
+    line-height: 1.4;
+    letter-spacing: 0.08em;
+    color: var(--secondary);
+    text-transform: uppercase;
+    margin-bottom: var(--spacing-lg);
+  }
+
+  .essay-text {
+    font-family: 'Source Serif 4', serif;
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 1.65;
+    color: var(--primary);
+    margin-bottom: var(--spacing-lg);
+  }
+
+  /* Catalogue data — quiet hours + address */
+  .catalogue-data {
+    margin-top: var(--spacing-lg);
+    padding-top: var(--spacing-sm);
+  }
+
+  .catalogue-heading {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 12px;
+    font-weight: 400;
+    line-height: 1.4;
+    letter-spacing: 0.08em;
+    color: var(--secondary);
+    text-transform: uppercase;
+    margin-bottom: var(--spacing-md);
+  }
+
+  table.hours-table {
+    border-collapse: collapse;
+    width: 100%;
+  }
+
+  table.hours-table th {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 12px;
+    font-weight: 400;
+    letter-spacing: 0.08em;
+    color: var(--secondary);
+    text-align: left;
+    padding: 4px var(--spacing-md) 4px 0;
+    border-bottom: 1px solid rgba(27,27,27,0.2);
+  }
+
+  table.hours-table td {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 12px;
+    font-weight: 400;
+    letter-spacing: 0.08em;
+    color: var(--primary);
+    padding: 4px var(--spacing-md) 4px 0;
+    border-bottom: 1px solid rgba(27,27,27,0.06);
+    vertical-align: top;
+  }
+
+  table.hours-table td:first-child {
+    width: 120px;
+    color: var(--secondary);
+  }
+
+  .address-datum {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 12px;
+    font-weight: 400;
+    letter-spacing: 0.08em;
+    color: var(--secondary);
+    margin-top: var(--spacing-md);
+  }
+
+  /* ── CREDITS BLOCK — ruled footer ── */
+  .credits-block {
+    margin-top: var(--spacing-xl);
+    padding-top: var(--spacing-md);
+    border-top: 1px solid var(--primary);
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: var(--spacing-lg);
+  }
+
+  .credits-name {
+    font-family: 'Libre Franklin', sans-serif;
+    font-size: 20px;
+    font-weight: 700;
+    letter-spacing: -0.01em;
+    color: var(--primary);
+  }
+
+  .credits-info {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 12px;
+    font-weight: 400;
+    letter-spacing: 0.08em;
+    color: var(--secondary);
+    text-align: right;
+    line-height: 1.8;
+  }
+</style>
+</head>
+<body>
+
+<div class="jacket">
+
+  <!-- Title block — album title & tagline -->
+  <div class="title-block">
+    <div class="title-rule"></div>
+    <h1 class="shop-name">Kettle &amp; Leaf</h1>
+    <p class="welcome">A neighborhood tea house at 412 Maple Row — open every day, unhurried always.</p>
+  </div>
+
+  <!-- Middle band — track listing + liner essay -->
+  <div class="middle-band">
+
+    <!-- Track listing: the three teas -->
+    <div class="track-listing">
+      <p class="listing-heading">Today's brewed teas</p>
+
+      <div class="track">
+        <div class="track-name">Alishan High Mountain</div>
+        <div class="track-credit">Ali Shan, Taiwan · Oolong</div>
+        <div class="track-note">Creamy orchid sweetness with a sustained floral finish, grown at 1,400 metres in morning mist.</div>
+      </div>
+
+      <div class="track">
+        <div class="track-name">Lamu Island White</div>
+        <div class="track-credit">Coast Province, Kenya · White Tea</div>
+        <div class="track-note">Delicate and honeyed, with a clean melon note and a quiet mineral close.</div>
+      </div>
+
+      <div class="track">
+        <div class="track-name">Ruby 18</div>
+        <div class="track-credit">Sun Moon Lake, Taiwan · Black Tea</div>
+        <div class="track-note">Warm cinnamon and natural wintergreen, smooth cocoa finish, no astringency.</div>
+      </div>
+    </div>
+
+    <!-- Liner essay + catalogue data -->
+    <div class="liner-essay">
+      <p class="essay-heading">From the source</p>
+      <p class="essay-text">Owner Mei-Lin Huang travels twice a year to find what ends up in your cup. Each spring she visits the high-mountain gardens of Taiwan — Ali Shan and Sun Moon Lake — sitting with the families who have cultivated these slopes for three generations. The conversations are long, the meals shared, and the trust built slowly across many visits. Each autumn she travels to the coastal smallholdings near Lamu, Kenya, where a small community of growers has begun producing white and green teas of quiet, unassuming quality. She brings back only what she would want to drink herself, which is why the menu is short and changes with the seasons.</p>
+
+      <!-- Catalogue data: quiet hours -->
+      <div class="catalogue-data">
+        <p class="catalogue-heading">Quiet hours</p>
+        <table class="hours-table">
+          <thead>
+            <tr>
+              <th>Day</th>
+              <th>Hours</th>
+              <th>Notes</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Mon</td>
+              <td>8:00–10:00 am</td>
+              <td>Soft music, no calls</td>
+            </tr>
+            <tr>
+              <td>Wed</td>
+              <td>2:00–5:00 pm</td>
+              <td>Reading hour, laptops welcome</td>
+            </tr>
+            <tr>
+              <td>Fri</td>
+              <td>8:00–11:00 am</td>
+              <td>Early quiet, full menu</td>
+            </tr>
+            <tr>
+              <td>Sat</td>
+              <td>9:00 am–12:00 pm</td>
+              <td>Table service only</td>
+            </tr>
+            <tr>
+              <td>Sun</td>
+              <td>10:00 am–1:00 pm</td>
+              <td>Ambient sounds only</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <p class="address-datum">&#9632;&nbsp; 412 Maple Row</p>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Credits block — ruled foot -->
+  <div class="credits-block">
+    <div class="credits-name">Kettle &amp; Leaf</div>
+    <div class="credits-info">
+      Mon–Fri 7:30 am – 7:00 pm &nbsp;·&nbsp; Sat 8:00 am – 6:00 pm &nbsp;·&nbsp; Sun 9:00 am – 5:00 pm<br>
+      (503) 741-2288
+    </div>
+  </div>
+
+</div>
+
+</body>
+</html>
