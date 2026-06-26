@@ -5,7 +5,6 @@ node_modules/
 .stitch-key
 .agent-provider.json
 ignored/
-bench.db
 bench.db-shm
 bench.db-wal
 bench.db-journal
