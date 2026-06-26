@@ -19,7 +19,9 @@ export { CASE_TITLES, CASE_WORLDS, TREATMENTS, ORDER } from "./vocab";
 // Database connection (read-only)
 // ---------------------------------------------------------------------------
 
-const DB_PATH = resolve(process.cwd(), "..", "bench.db");
+const BRANCH = process.env.BENCH_BRANCH?.trim() || null;
+const DB_FILE = BRANCH ? `bench.${BRANCH}.db` : "bench.db";
+const DB_PATH = resolve(process.cwd(), "..", DB_FILE);
 
 type Db = InstanceType<typeof Database>;
 

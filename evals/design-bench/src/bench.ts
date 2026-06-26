@@ -22,12 +22,20 @@ import {
   allProviders,
   allRuns,
   runStats,
+  DB_PATH,
+  activeBranch,
   type CellInsert,
 } from "./db.ts";
 import { getMetric, DEFAULT_METRIC, loadCaseSamples } from "./metrics/index.ts";
 import type { MetricContext, CellSamples } from "./metrics/types.ts";
 
 const [subcommand, ...rest] = process.argv.slice(2);
+
+// Show active branch for any command (except help)
+const branch = activeBranch();
+if (branch && subcommand && subcommand !== "--help" && subcommand !== "-h") {
+  console.log(`\x1b[36m[branch: ${branch}]\x1b[0m using bench.${branch}.db`);
+}
 
 switch (subcommand) {
   case "init":
@@ -42,6 +50,9 @@ switch (subcommand) {
   case "status":
     cmdStatus();
     break;
+  case "branch":
+    cmdBranch(rest);
+    break;
   case "dev":
     await cmdDev();
     break;
@@ -53,7 +64,11 @@ Commands:
   measure   Score all HTML files in a run and write results to the database
   seed      Rebuild the database from existing runs/ on disk
   status    Show providers, runs, and measurement status
+  branch    Create, list, or delete branch databases
   dev       Start the Astro viewer
+
+Environment:
+  BENCH_BRANCH=<name>   Operate on bench.<name>.db instead of the primary
 
 Run any command with --help for details.`);
     if (subcommand && subcommand !== "--help" && subcommand !== "-h") {
@@ -428,6 +443,102 @@ function cmdStatus() {
   }
 
   db.close();
+}
+
+// ---------------------------------------------------------------------------
+// branch: create, list, or delete branch databases
+// ---------------------------------------------------------------------------
+
+function cmdBranch(args: string[]) {
+  const { values, positionals } = parseArgs({
+    args,
+    options: {
+      list: { type: "boolean", short: "l" },
+      delete: { type: "string", short: "d" },
+      help: { type: "boolean", short: "h" },
+    },
+    allowPositionals: true,
+  });
+
+  if (values.help) {
+    console.log(`bun bench branch [name]       Create a branch (copy primary → bench.<name>.db)
+bun bench branch --list       List all branch databases
+bun bench branch --delete <n> Delete a branch database
+
+Use BENCH_BRANCH=<name> to operate on a branch:
+  BENCH_BRANCH=dev bun bench status
+  BENCH_BRANCH=dev bun bench dev`);
+    return;
+  }
+
+  const primaryPath = join(ROOT, "bench.db");
+
+  // --list: find all bench.*.db files
+  if (values.list) {
+    const files = readdirSync(ROOT).filter(
+      (f) => f.startsWith("bench.") && f.endsWith(".db") && f !== "bench.db",
+    );
+    if (!files.length) {
+      console.log("No branch databases found.");
+      return;
+    }
+    const active = activeBranch();
+    console.log("Branch databases:");
+    for (const f of files) {
+      const name = f.slice("bench.".length, -".db".length);
+      const stat = statSync(join(ROOT, f));
+      const size = (stat.size / 1024).toFixed(0) + "K";
+      const marker = name === active ? " ← active" : "";
+      console.log(`  ${name.padEnd(20)} ${size.padStart(6)}${marker}`);
+    }
+    return;
+  }
+
+  // --delete: remove a branch database
+  if (values.delete) {
+    const target = join(ROOT, `bench.${values.delete}.db`);
+    if (!existsSync(target)) {
+      console.error(`Branch "${values.delete}" not found (${target})`);
+      process.exit(1);
+    }
+    // Also clean up WAL/SHM files
+    for (const ext of ["", "-shm", "-wal", "-journal"]) {
+      const f = target + ext;
+      if (existsSync(f)) {
+        const { unlinkSync } = require("node:fs");
+        unlinkSync(f);
+      }
+    }
+    console.log(`Deleted branch: ${values.delete}`);
+    return;
+  }
+
+  // Positional: create a new branch
+  const name = positionals[0];
+  if (!name) {
+    console.error("Usage: bun bench branch <name>");
+    process.exit(1);
+  }
+
+  if (!existsSync(primaryPath)) {
+    console.error(`Primary database not found at ${primaryPath}`);
+    process.exit(1);
+  }
+
+  const branchPath = join(ROOT, `bench.${name}.db`);
+  if (existsSync(branchPath)) {
+    console.error(`Branch "${name}" already exists (${branchPath}). Delete it first with --delete.`);
+    process.exit(1);
+  }
+
+  // Copy primary → branch
+  const { copyFileSync } = require("node:fs");
+  copyFileSync(primaryPath, branchPath);
+  console.log(`Created branch: ${name}`);
+  console.log(`  ${branchPath}`);
+  console.log(`\nUse it with:`);
+  console.log(`  BENCH_BRANCH=${name} bun bench status`);
+  console.log(`  BENCH_BRANCH=${name} bun bench dev`);
 }
 
 // ---------------------------------------------------------------------------

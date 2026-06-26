@@ -5,13 +5,23 @@
  * the Astro viewer opens in read-only mode.
  *
  * Uses bun:sqlite — zero npm dependencies. The database file lives at the
- * project root (evals/design-bench/bench.db) and is gitignored.
+ * project root (evals/design-bench/bench.db).
+ *
+ * Set BENCH_BRANCH=<name> to operate on bench.<name>.db instead of the
+ * primary. Branch databases are gitignored via the bench.*.db pattern.
  */
 import { Database } from "bun:sqlite";
 import { join } from "node:path";
 import { ROOT } from "./cases.ts";
 
-const DB_PATH = join(ROOT, "bench.db");
+const BRANCH = process.env.BENCH_BRANCH?.trim() || null;
+const DB_FILE = BRANCH ? `bench.${BRANCH}.db` : "bench.db";
+export const DB_PATH = join(ROOT, DB_FILE);
+
+/** Returns the active branch name, or null if using the primary. */
+export function activeBranch(): string | null {
+  return BRANCH;
+}
 
 // ---------------------------------------------------------------------------
 // Schema
